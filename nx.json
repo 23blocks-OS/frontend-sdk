@@ -33,13 +33,10 @@
     "projectsRelationship": "independent",
     "releaseTagPattern": "{projectName}@{version}",
     "changelog": {
+      "automaticFromRef": true,
       "projectChangelogs": {
         "createRelease": "github",
         "file": "{projectRoot}/CHANGELOG.md"
-      },
-      "workspaceChangelog": {
-        "createRelease": "github",
-        "file": "CHANGELOG.md"
       }
     },
     "version": {
