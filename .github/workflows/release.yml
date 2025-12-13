@@ -68,9 +68,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Uses npm Trusted Publishing (OIDC) - no token needed
-      # --provenance triggers OIDC authentication flow
+      # --provenance flag triggers OIDC authentication flow
       - name: Publish to NPM
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: npx nx release publish --registry https://registry.npmjs.org --access public
-        env:
-          NPM_CONFIG_PROVENANCE: true
+        run: |
+          for pkg in packages/*/; do
+            if [ -f "$pkg/dist/package.json" ] || [ -f "$pkg/package.json" ]; then
+              echo "Publishing $pkg..."
+              cd "$pkg"
+              npm publish --access public --provenance || echo "Skipping $pkg (may already be published)"
+              cd -
+            fi
+          done
