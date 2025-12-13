@@ -78,7 +78,7 @@
     "@swc/helpers": "~0.5.11"
   },
   "peerDependencies": {
-    "@angular/core": ">=17.0.0",
-    "rxjs": ">=7.0.0"
+    "@angular/core": ">=10.0.0",
+    "rxjs": ">=6.0.0"
   }
 }
