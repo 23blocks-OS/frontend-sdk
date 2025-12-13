@@ -14,7 +14,6 @@ export {
   type Permission,
   type UserAvatar,
   type UserProfile,
-  getFullName,
 
   // Company types
   type Company,
