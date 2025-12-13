@@ -78,21 +78,34 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Debug OIDC token availability
+      # Debug OIDC and publish info
       - name: Debug OIDC
         run: |
+          echo "=== OIDC Environment ==="
           echo "ACTIONS_ID_TOKEN_REQUEST_URL: ${ACTIONS_ID_TOKEN_REQUEST_URL:-NOT SET}"
-          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+SET (hidden)}"
+          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+SET}"
+          echo ""
+          echo "=== GitHub Context ==="
+          echo "Repository: ${{ github.repository }}"
+          echo "Repository Owner: ${{ github.repository_owner }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Workflow Ref: ${{ github.workflow_ref }}"
+          echo ""
+          echo "=== npm info ==="
+          echo "npm version: $(npm -v)"
+          npm whoami 2>&1 || echo "Not logged in (expected for OIDC)"
 
-      # Uses npm Trusted Publishing (OIDC) - no token needed
-      # --provenance flag triggers OIDC authentication flow
+      # Uses npm Trusted Publishing (OIDC)
+      # Each package must have Trusted Publisher configured on npm
       - name: Publish to NPM
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
-          echo "npm version: $(npm -v)"
           for pkg in packages/*/; do
             if [ -f "$pkg/package.json" ]; then
-              echo "Publishing $pkg..."
-              npm publish "$pkg" --access public --provenance || echo "Skipping $pkg (may already be published)"
+              pkgname=$(node -p "require('./$pkg/package.json').name")
+              pkgver=$(node -p "require('./$pkg/package.json').version")
+              echo ""
+              echo "=== Publishing $pkgname@$pkgver ==="
+              npm publish "$pkg" --access public --provenance 2>&1 || echo ">> Failed or already published"
             fi
           done
