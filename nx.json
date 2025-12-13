@@ -51,6 +51,10 @@
       "commit": true,
       "tag": true,
       "commitMessage": "chore(release): publish {version}"
+    },
+    "publish": {
+      "registry": "https://registry.npmjs.org",
+      "provenance": true
     }
   },
   "defaultBase": "main",
