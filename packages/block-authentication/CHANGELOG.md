@@ -1,3 +1,14 @@
+## 1.0.1 (2025-12-13)
+
+### 🩹 Fixes
+
+- **block-authentication:** remove getFullName utility from public exports ([6576861](https://github.com/23blocks-OS/frontend-sdk/commit/6576861))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 # 1.0.0 (2025-12-13)
 
 ### 🧱 Updated Dependencies

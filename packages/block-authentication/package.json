@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-authentication",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Authentication block for 23blocks SDK - users, roles, API keys, subscriptions",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
