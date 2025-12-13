@@ -1,3 +1,27 @@
+## 0.2.1 (2025-12-13)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 0.1.2
+- Updated @23blocks/block-conversations to 0.2.1
+- Updated @23blocks/block-geolocation to 0.2.1
+- Updated @23blocks/block-onboarding to 0.2.1
+- Updated @23blocks/block-university to 0.2.1
+- Updated @23blocks/block-campaigns to 0.2.1
+- Updated @23blocks/block-products to 0.2.1
+- Updated @23blocks/block-company to 0.2.1
+- Updated @23blocks/block-content to 0.2.1
+- Updated @23blocks/block-rewards to 0.2.1
+- Updated @23blocks/block-assets to 0.2.1
+- Updated @23blocks/block-jarvis to 0.2.1
+- Updated @23blocks/block-search to 0.1.2
+- Updated @23blocks/block-wallet to 0.2.1
+- Updated @23blocks/block-files to 0.2.1
+- Updated @23blocks/block-forms to 0.2.1
+- Updated @23blocks/block-sales to 0.2.1
+- Updated @23blocks/block-crm to 0.2.1
+- Updated @23blocks/contracts to 0.1.2
+
 ## 0.2.0 (2025-12-13)
 
 ### 🚀 Features
