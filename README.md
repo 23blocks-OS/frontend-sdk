@@ -19,11 +19,27 @@ A modular, framework-agnostic TypeScript SDK for building applications with [23b
 npm install @23blocks/sdk
 ```
 
-Or install only what you need:
+```typescript
+import { create23BlocksClient } from '@23blocks/sdk';
 
-```bash
-npm install @23blocks/transport-http @23blocks/block-authentication
+// Create client - that's it!
+const client = create23BlocksClient({
+  baseUrl: 'https://api.yourapp.com',
+  appId: 'your-app-id',
+});
+
+// Sign in - tokens are stored automatically
+await client.auth.signIn({ email: 'user@example.com', password: 'password' });
+
+// All subsequent requests include auth automatically
+const products = await client.products.products.list();
+const user = await client.auth.getCurrentUser();
+
+// Sign out - tokens are cleared automatically
+await client.auth.signOut();
 ```
+
+> **Note:** This SDK requires a 23blocks-compatible backend API. The backend must implement the 23blocks API contract including specific resource types, endpoints, and JSON:API response formats.
 
 See [Installation Guide](./docs/installation.md) for detailed options.
 

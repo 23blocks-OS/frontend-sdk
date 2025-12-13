@@ -79,6 +79,14 @@ export interface TransportConfig {
   timeout?: number;
   /** Retry configuration */
   retry?: RetryConfig;
+  /**
+   * Credentials mode for fetch requests
+   * - 'include': Always send cookies, even for cross-origin requests
+   * - 'same-origin': Only send cookies for same-origin requests (default browser behavior)
+   * - 'omit': Never send cookies
+   * Use 'include' for cookie-based authentication
+   */
+  credentials?: RequestCredentials;
 }
 
 /**

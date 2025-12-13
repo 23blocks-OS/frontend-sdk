@@ -1,5 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
-import { Observable, from } from 'rxjs';
+import { Injectable, Inject, Optional } from '@angular/core';
+import { Observable, from, tap } from 'rxjs';
 import type { Transport } from '@23blocks/contracts';
 import {
   createAuthenticationBlock,
@@ -24,6 +24,7 @@ import {
   type UpdateRoleRequest,
 } from '@23blocks/block-authentication';
 import { TRANSPORT, AUTHENTICATION_CONFIG } from '../tokens.js';
+import { TOKEN_MANAGER, SIMPLE_CONFIG, type TokenManagerService, type Simple23BlocksConfig } from '../simple-providers.js';
 
 /**
  * Angular service wrapping the Authentication block.
@@ -47,28 +48,71 @@ import { TRANSPORT, AUTHENTICATION_CONFIG } from '../tokens.js';
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private readonly block: AuthenticationBlock;
+  private readonly tokenManager: TokenManagerService | null;
+  private readonly simpleConfig: Simple23BlocksConfig | null;
 
   constructor(
     @Inject(TRANSPORT) transport: Transport,
-    @Inject(AUTHENTICATION_CONFIG) config: AuthenticationBlockConfig
+    @Inject(AUTHENTICATION_CONFIG) config: AuthenticationBlockConfig,
+    @Optional() @Inject(TOKEN_MANAGER) tokenManager: TokenManagerService | null,
+    @Optional() @Inject(SIMPLE_CONFIG) simpleConfig: Simple23BlocksConfig | null
   ) {
     this.block = createAuthenticationBlock(transport, config);
+    this.tokenManager = tokenManager;
+    this.simpleConfig = simpleConfig;
+  }
+
+  /**
+   * Check if using simplified API with automatic token management
+   */
+  private get isTokenMode(): boolean {
+    return this.tokenManager !== null && this.simpleConfig?.authMode !== 'cookie';
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
   // Auth Service
   // ─────────────────────────────────────────────────────────────────────────────
 
+  /**
+   * Sign in with email and password.
+   * When using simplified API (provideBlocks23), tokens are stored automatically.
+   */
   signIn(request: SignInRequest): Observable<SignInResponse> {
-    return from(this.block.auth.signIn(request));
+    return from(this.block.auth.signIn(request)).pipe(
+      tap((response) => {
+        if (this.isTokenMode && this.tokenManager && response.accessToken) {
+          this.tokenManager.setTokens(response.accessToken, response.refreshToken);
+        }
+      })
+    );
   }
 
+  /**
+   * Sign up a new user.
+   * When using simplified API, tokens are stored automatically if returned.
+   */
   signUp(request: SignUpRequest): Observable<SignUpResponse> {
-    return from(this.block.auth.signUp(request));
+    return from(this.block.auth.signUp(request)).pipe(
+      tap((response) => {
+        if (this.isTokenMode && this.tokenManager && response.accessToken) {
+          this.tokenManager.setTokens(response.accessToken);
+        }
+      })
+    );
   }
 
+  /**
+   * Sign out the current user.
+   * When using simplified API, tokens are cleared automatically.
+   */
   signOut(): Observable<void> {
-    return from(this.block.auth.signOut());
+    return from(this.block.auth.signOut()).pipe(
+      tap(() => {
+        if (this.isTokenMode && this.tokenManager) {
+          this.tokenManager.clearTokens();
+        }
+      })
+    );
   }
 
   requestPasswordReset(request: PasswordResetRequest): Observable<void> {
@@ -157,6 +201,53 @@ export class AuthenticationService {
 
   revokeApiKey(id: string): Observable<void> {
     return from(this.block.apiKeys.revoke(id));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Token Management (only applicable with provideBlocks23)
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get the current access token (token mode only).
+   * Returns null if using cookie mode or no token is stored.
+   */
+  getAccessToken(): string | null {
+    return this.tokenManager?.getAccessToken() ?? null;
+  }
+
+  /**
+   * Get the current refresh token (token mode only).
+   * Returns null if using cookie mode or no token is stored.
+   */
+  getRefreshToken(): string | null {
+    return this.tokenManager?.getRefreshToken() ?? null;
+  }
+
+  /**
+   * Manually set tokens (token mode only).
+   * Useful for SSR hydration or external auth flows.
+   */
+  setTokens(accessToken: string, refreshToken?: string): void {
+    this.tokenManager?.setTokens(accessToken, refreshToken);
+  }
+
+  /**
+   * Clear stored tokens.
+   */
+  clearTokens(): void {
+    this.tokenManager?.clearTokens();
+  }
+
+  /**
+   * Check if user is likely authenticated.
+   * In token mode: checks if token exists.
+   * In cookie mode: always returns null (use validateToken instead).
+   */
+  isAuthenticated(): boolean | null {
+    if (!this.tokenManager || this.simpleConfig?.authMode === 'cookie') {
+      return null;
+    }
+    return !!this.tokenManager.getAccessToken();
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

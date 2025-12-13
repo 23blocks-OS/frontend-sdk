@@ -5,19 +5,124 @@ Framework-agnostic usage of the 23blocks SDK. Works with any JavaScript environm
 ## Installation
 
 ```bash
-npm install @23blocks/transport-http
-
-# Plus the blocks you need
-npm install @23blocks/block-authentication @23blocks/block-search
+npm install @23blocks/sdk
 ```
 
-Or with the full SDK:
+## Quick Start (Recommended)
+
+The simplest way to use the SDK with automatic token management:
+
+```typescript
+import { create23BlocksClient } from '@23blocks/sdk';
+
+const client = create23BlocksClient({
+  baseUrl: 'https://api.yourapp.com',
+  appId: 'your-app-id',
+});
+
+// Sign in - tokens are stored automatically
+const { user } = await client.auth.signIn({
+  email: 'user@example.com',
+  password: 'password',
+});
+console.log('Welcome', user.email);
+
+// All requests now include auth automatically
+const results = await client.search.search.search({
+  query: 'hello world',
+  limit: 10,
+});
+
+const products = await client.products.products.list({ limit: 20 });
+
+// Sign out - tokens are cleared automatically
+await client.auth.signOut();
+```
+
+## Client Configuration
+
+### Token Mode (Default)
+
+Tokens are stored in localStorage and attached to requests automatically:
+
+```typescript
+const client = create23BlocksClient({
+  baseUrl: 'https://api.yourapp.com',
+  appId: 'your-app-id',
+  // authMode: 'token', // default
+  // storage: 'localStorage', // 'sessionStorage' | 'memory'
+});
+```
+
+### Cookie Mode (Recommended for Security)
+
+Backend manages authentication via httpOnly cookies:
+
+```typescript
+const client = create23BlocksClient({
+  baseUrl: 'https://api.yourapp.com',
+  appId: 'your-app-id',
+  authMode: 'cookie',
+});
+
+// Sign in - backend sets httpOnly cookie
+await client.auth.signIn({ email, password });
+
+// Requests automatically include cookies
+const products = await client.products.products.list();
+```
+
+### SSR / Server-Side Usage
+
+For server-side rendering, use memory storage and pass tokens manually:
+
+```typescript
+const client = create23BlocksClient({
+  baseUrl: 'https://api.yourapp.com',
+  appId: 'your-app-id',
+  storage: 'memory',
+  headers: {
+    Authorization: `Bearer ${tokenFromRequest}`,
+  },
+});
+```
+
+### Multi-Tenant Setup
+
+```typescript
+const client = create23BlocksClient({
+  baseUrl: 'https://api.yourapp.com',
+  appId: 'your-app-id',
+  tenantId: 'tenant-123',
+});
+```
+
+## Token Utilities
+
+```typescript
+// Check if authenticated (token mode only)
+const isLoggedIn = client.isAuthenticated();
+
+// Get tokens manually
+const accessToken = client.getAccessToken();
+const refreshToken = client.getRefreshToken();
+
+// Set tokens manually (useful for SSR hydration)
+client.setTokens(accessToken, refreshToken);
+
+// Clear session
+client.clearSession();
+```
+
+---
+
+## Advanced Setup (Custom Transport)
+
+For advanced use cases requiring custom transport configuration:
 
 ```bash
-npm install @23blocks/sdk @23blocks/transport-http
+npm install @23blocks/transport-http @23blocks/block-authentication @23blocks/block-search
 ```
-
-## Basic Setup
 
 ### 1. Create the transport
 

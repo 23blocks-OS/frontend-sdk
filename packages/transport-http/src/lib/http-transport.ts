@@ -120,7 +120,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
  * Create an HTTP transport instance
  */
 export function createHttpTransport(config: TransportConfig): Transport {
-  const { baseUrl, headers: configHeaders, timeout: defaultTimeout = 30000 } = config;
+  const { baseUrl, headers: configHeaders, timeout: defaultTimeout = 30000, credentials } = config;
 
   async function request<T>(
     method: string,
@@ -143,6 +143,7 @@ export function createHttpTransport(config: TransportConfig): Transport {
         headers,
         body: body ? JSON.stringify(body) : undefined,
         signal: options?.signal ?? controller.signal,
+        credentials,
       });
 
       return handleResponse<T>(response);

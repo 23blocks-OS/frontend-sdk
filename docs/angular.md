@@ -5,21 +5,162 @@ Setup and usage guide for Angular applications using `@23blocks/angular`.
 ## Installation
 
 ```bash
-npm install @23blocks/transport-http @23blocks/angular
-
-# Plus the blocks you need
-npm install @23blocks/block-authentication @23blocks/block-search
+npm install @23blocks/angular
 ```
 
-Or with the full SDK:
+## Quick Start (Recommended)
+
+The simplest way to use the SDK with automatic token management:
+
+### 1. Configure providers
+
+```typescript
+// app.config.ts
+import { ApplicationConfig } from '@angular/core';
+import { provideBlocks23 } from '@23blocks/angular';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBlocks23({
+      baseUrl: 'https://api.yourapp.com',
+      appId: 'your-app-id',
+    }),
+  ],
+};
+```
+
+### 2. Bootstrap with the config
+
+```typescript
+// main.ts
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, appConfig);
+```
+
+### 3. Use the services
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { AuthenticationService } from '@23blocks/angular';
+
+@Component({
+  selector: 'app-login',
+  template: `
+    <form (ngSubmit)="login()">
+      <input [(ngModel)]="email" placeholder="Email" />
+      <input [(ngModel)]="password" type="password" placeholder="Password" />
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Signing in...' : 'Sign In' }}
+      </button>
+      <p *ngIf="error" class="error">{{ error }}</p>
+    </form>
+  `,
+})
+export class LoginComponent {
+  private auth = inject(AuthenticationService);
+
+  email = '';
+  password = '';
+  loading = false;
+  error = '';
+
+  login() {
+    this.loading = true;
+    this.error = '';
+
+    // Tokens are stored automatically!
+    this.auth.signIn({ email: this.email, password: this.password })
+      .subscribe({
+        next: (response) => {
+          console.log('Welcome', response.user.email);
+        },
+        error: (err) => {
+          this.error = err.message;
+          this.loading = false;
+        },
+        complete: () => {
+          this.loading = false;
+        },
+      });
+  }
+
+  logout() {
+    // Tokens are cleared automatically!
+    this.auth.signOut().subscribe();
+  }
+
+  checkAuth() {
+    // Check if user is authenticated (token mode only)
+    return this.auth.isAuthenticated();
+  }
+}
+```
+
+## Configuration Options
+
+### Token Mode (Default)
+
+```typescript
+provideBlocks23({
+  baseUrl: 'https://api.yourapp.com',
+  appId: 'your-app-id',
+  // authMode: 'token', // default
+  // storage: 'localStorage', // 'sessionStorage' | 'memory'
+})
+```
+
+### Cookie Mode (Recommended for Security)
+
+```typescript
+provideBlocks23({
+  baseUrl: 'https://api.yourapp.com',
+  appId: 'your-app-id',
+  authMode: 'cookie',
+})
+```
+
+### Multi-Tenant Setup
+
+```typescript
+provideBlocks23({
+  baseUrl: 'https://api.yourapp.com',
+  appId: 'your-app-id',
+  tenantId: 'tenant-123',
+})
+```
+
+### NgModule-based Applications
+
+```typescript
+// app.module.ts
+import { NgModule } from '@angular/core';
+import { getBlocks23Providers } from '@23blocks/angular';
+
+@NgModule({
+  providers: [
+    ...getBlocks23Providers({
+      baseUrl: 'https://api.yourapp.com',
+      appId: 'your-app-id',
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+---
+
+## Advanced Setup (Custom Transport)
+
+For advanced use cases requiring custom transport configuration:
 
 ```bash
-npm install @23blocks/sdk @23blocks/transport-http @23blocks/angular
+npm install @23blocks/transport-http @23blocks/angular @23blocks/block-authentication
 ```
 
-## Setup
-
-### 1. Configure providers in your app
+### 1. Configure providers
 
 ```typescript
 // app.config.ts
@@ -58,7 +199,7 @@ import { AppComponent } from './app/app.component';
 bootstrapApplication(AppComponent, appConfig);
 ```
 
-## Using Services
+## Using Services (Advanced API)
 
 ### AuthenticationService
 

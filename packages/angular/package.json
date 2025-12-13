@@ -57,6 +57,7 @@
   },
   "dependencies": {
     "@23blocks/contracts": "*",
+    "@23blocks/transport-http": "*",
     "@23blocks/block-authentication": "*",
     "@23blocks/block-search": "*",
     "@23blocks/block-products": "*",

@@ -1,3 +1,20 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Simplified API (Recommended)
+// ─────────────────────────────────────────────────────────────────────────────
+export {
+  provideBlocks23,
+  getBlocks23Providers,
+  type Simple23BlocksConfig,
+  type AuthMode,
+  type StorageType,
+  type TokenManagerService,
+  TOKEN_MANAGER,
+  SIMPLE_CONFIG,
+} from './simple-providers.js';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Advanced API (Custom transport)
+// ─────────────────────────────────────────────────────────────────────────────
 // Tokens
 export {
   TRANSPORT,
@@ -21,7 +38,7 @@ export {
   UNIVERSITY_CONFIG,
 } from './tokens.js';
 
-// Provider functions
+// Provider functions (advanced - requires custom transport)
 export { provide23Blocks, get23BlocksProviders, type Provide23BlocksConfig } from './providers.js';
 
 // Services

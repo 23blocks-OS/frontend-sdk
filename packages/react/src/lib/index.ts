@@ -1,3 +1,20 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Simplified API (Recommended)
+// ─────────────────────────────────────────────────────────────────────────────
+export {
+  SimpleBlocks23Provider,
+  useSimpleBlocks23,
+  useSimpleAuth,
+  type SimpleBlocks23ProviderProps,
+  type SimpleBlocks23Context,
+  type AuthMode,
+  type StorageType,
+  type TokenManager,
+} from './simple-provider.js';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Advanced API (Custom transport)
+// ─────────────────────────────────────────────────────────────────────────────
 // Context and Provider
 export {
   Blocks23Provider,

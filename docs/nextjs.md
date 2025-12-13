@@ -5,19 +5,155 @@ Setup and usage guide for React and Next.js applications using `@23blocks/react`
 ## Installation
 
 ```bash
-npm install @23blocks/transport-http @23blocks/react
-
-# Plus the blocks you need
-npm install @23blocks/block-authentication @23blocks/block-search
+npm install @23blocks/react
 ```
 
-Or with the full SDK:
+## Quick Start (Recommended)
+
+The simplest way to use the SDK with automatic token management:
+
+### 1. Wrap your app
+
+```tsx
+// app/layout.tsx (Next.js App Router)
+'use client';
+
+import { SimpleBlocks23Provider } from '@23blocks/react';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <SimpleBlocks23Provider
+          baseUrl={process.env.NEXT_PUBLIC_API_URL!}
+          appId={process.env.NEXT_PUBLIC_APP_ID!}
+        >
+          {children}
+        </SimpleBlocks23Provider>
+      </body>
+    </html>
+  );
+}
+```
+
+### 2. Use the hooks
+
+```tsx
+'use client';
+
+import { useSimpleAuth } from '@23blocks/react';
+import { useState } from 'react';
+
+export function LoginForm() {
+  const { signIn, signOut, isAuthenticated, authentication } = useSimpleAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // Tokens are stored automatically!
+    const { user } = await signIn({ email, password });
+    console.log('Welcome', user.email);
+  };
+
+  if (isAuthenticated()) {
+    return (
+      <div>
+        <p>You're logged in!</p>
+        <button onClick={signOut}>Sign Out</button>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+      />
+      <button type="submit">Sign In</button>
+    </form>
+  );
+}
+```
+
+### 3. Access any block
+
+```tsx
+'use client';
+
+import { useSimpleBlocks23 } from '@23blocks/react';
+import { useEffect, useState } from 'react';
+
+export function ProductList() {
+  const { products } = useSimpleBlocks23();
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    products.products.list({ limit: 20 })
+      .then((response) => setItems(response.data));
+  }, [products]);
+
+  return (
+    <div>
+      {items.map((item) => (
+        <div key={item.id}>{item.name}</div>
+      ))}
+    </div>
+  );
+}
+```
+
+## Configuration Options
+
+### Token Mode (Default)
+
+```tsx
+<SimpleBlocks23Provider
+  baseUrl="https://api.yourapp.com"
+  appId="your-app-id"
+  // authMode="token" // default
+  // storage="localStorage" // 'sessionStorage' | 'memory'
+>
+```
+
+### Cookie Mode (Recommended for Security)
+
+```tsx
+<SimpleBlocks23Provider
+  baseUrl="https://api.yourapp.com"
+  appId="your-app-id"
+  authMode="cookie"
+>
+```
+
+### Multi-Tenant Setup
+
+```tsx
+<SimpleBlocks23Provider
+  baseUrl="https://api.yourapp.com"
+  appId="your-app-id"
+  tenantId="tenant-123"
+>
+```
+
+---
+
+## Advanced Setup (Custom Transport)
+
+For advanced use cases requiring custom transport configuration:
 
 ```bash
-npm install @23blocks/sdk @23blocks/transport-http @23blocks/react
+npm install @23blocks/transport-http @23blocks/react @23blocks/block-authentication
 ```
-
-## Setup
 
 ### 1. Create a provider wrapper
 
@@ -104,7 +240,7 @@ createRoot(document.getElementById('root')!).render(
 );
 ```
 
-## Using Hooks
+## Using Hooks (Advanced API)
 
 ### useAuth
 
