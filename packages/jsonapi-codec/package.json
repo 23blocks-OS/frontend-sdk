@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/jsonapi-codec",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JSON:API v1.0 codec for encoding/decoding API responses",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

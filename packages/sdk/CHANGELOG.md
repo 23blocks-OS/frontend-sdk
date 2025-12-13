@@ -1,3 +1,38 @@
+## 0.2.0 (2025-12-13)
+
+### 🚀 Features
+
+- add all block packages with React and Angular bindings ([bbeecf7](https://github.com/23blocks-OS/frontend-sdk/commit/bbeecf7))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 0.1.1
+- Updated @23blocks/block-conversations to 0.2.0
+- Updated @23blocks/block-geolocation to 0.2.0
+- Updated @23blocks/block-onboarding to 0.2.0
+- Updated @23blocks/block-university to 0.2.0
+- Updated @23blocks/block-campaigns to 0.2.0
+- Updated @23blocks/block-products to 0.2.0
+- Updated @23blocks/transport-http to 0.1.1
+- Updated @23blocks/block-company to 0.2.0
+- Updated @23blocks/block-content to 0.2.0
+- Updated @23blocks/block-rewards to 0.2.0
+- Updated @23blocks/jsonapi-codec to 0.1.1
+- Updated @23blocks/block-assets to 0.2.0
+- Updated @23blocks/block-jarvis to 0.2.0
+- Updated @23blocks/block-search to 0.1.1
+- Updated @23blocks/block-wallet to 0.2.0
+- Updated @23blocks/block-files to 0.2.0
+- Updated @23blocks/block-forms to 0.2.0
+- Updated @23blocks/block-sales to 0.2.0
+- Updated @23blocks/block-crm to 0.2.0
+- Updated @23blocks/contracts to 0.1.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 0.1.0 (2025-12-13)
 
 ### 🚀 Features

@@ -1,3 +1,19 @@
+## 0.2.0 (2025-12-13)
+
+### 🚀 Features
+
+- add all block packages with React and Angular bindings ([bbeecf7](https://github.com/23blocks-OS/frontend-sdk/commit/bbeecf7))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/jsonapi-codec to 0.1.1
+- Updated @23blocks/contracts to 0.1.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 0.1.0 (2025-12-13)
 
 ### 🚀 Features
