@@ -75,11 +75,11 @@ jobs:
       - name: Publish to NPM
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
+          echo "npm version: $(npm -v)"
+          echo "ACTIONS_ID_TOKEN_REQUEST_URL is set: ${{ env.ACTIONS_ID_TOKEN_REQUEST_URL != '' }}"
           for pkg in packages/*/; do
-            if [ -f "$pkg/dist/package.json" ] || [ -f "$pkg/package.json" ]; then
+            if [ -f "$pkg/package.json" ]; then
               echo "Publishing $pkg..."
-              cd "$pkg"
-              npm publish --access public --provenance || echo "Skipping $pkg (may already be published)"
-              cd -
+              npm publish "$pkg" --access public --provenance || echo "Skipping $pkg (may already be published)"
             fi
           done
