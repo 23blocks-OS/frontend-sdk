@@ -78,13 +78,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Debug OIDC token availability
+      - name: Debug OIDC
+        run: |
+          echo "ACTIONS_ID_TOKEN_REQUEST_URL: ${ACTIONS_ID_TOKEN_REQUEST_URL:-NOT SET}"
+          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+SET (hidden)}"
+
       # Uses npm Trusted Publishing (OIDC) - no token needed
       # --provenance flag triggers OIDC authentication flow
       - name: Publish to NPM
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
           echo "npm version: $(npm -v)"
-          echo "ACTIONS_ID_TOKEN_REQUEST_URL is set: ${{ env.ACTIONS_ID_TOKEN_REQUEST_URL != '' }}"
           for pkg in packages/*/; do
             if [ -f "$pkg/package.json" ]; then
               echo "Publishing $pkg..."
