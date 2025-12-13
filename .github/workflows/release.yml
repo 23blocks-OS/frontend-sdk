@@ -38,7 +38,8 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          registry-url: 'https://registry.npmjs.org'
+          # Note: Do NOT set registry-url here - it creates token-based auth
+          # which interferes with npm Trusted Publishing (OIDC)
 
       - name: Configure Git
         run: |
@@ -67,7 +68,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Uses npm Trusted Publishing (OIDC) - no token needed
-      # Provenance is automatic with trusted publishing
+      # --provenance triggers OIDC authentication flow
       - name: Publish to NPM
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: npx nx release publish
+        run: npx nx release publish --registry https://registry.npmjs.org --access public
+        env:
+          NPM_CONFIG_PROVENANCE: true
