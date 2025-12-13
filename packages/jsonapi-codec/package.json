@@ -1,0 +1,55 @@
+{
+  "name": "@23blocks/jsonapi-codec",
+  "version": "0.0.1",
+  "description": "JSON:API v1.0 codec for encoding/decoding API responses",
+  "license": "MIT",
+  "author": "23blocks <hello@23blocks.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/23blocks-OS/frontend-sdk.git",
+    "directory": "packages/jsonapi-codec"
+  },
+  "homepage": "https://github.com/23blocks-OS/frontend-sdk/tree/main/packages/jsonapi-codec",
+  "bugs": {
+    "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
+  },
+  "keywords": ["23blocks", "sdk", "jsonapi", "json-api", "codec", "parser"],
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "nx": {
+    "sourceRoot": "packages/jsonapi-codec/src",
+    "targets": {
+      "build": {
+        "executor": "@nx/js:swc",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "options": {
+          "outputPath": "packages/jsonapi-codec/dist",
+          "main": "packages/jsonapi-codec/src/index.ts",
+          "tsConfig": "packages/jsonapi-codec/tsconfig.lib.json",
+          "skipTypeCheck": true,
+          "stripLeadingPaths": true
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@23blocks/contracts": "^0.0.1",
+    "@swc/helpers": "~0.5.11"
+  }
+}

@@ -1,21 +1,43 @@
 {
   "compilerOptions": {
     "composite": true,
+    "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": true,
     "importHelpers": true,
     "isolatedModules": true,
-    "lib": ["es2022"],
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "lib": ["ES2022"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2022",
-    "customConditions": ["@blocks-sdk/source"]
+    "target": "ES2022",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@23blocks/contracts": ["packages/contracts/src/index.ts"],
+      "@23blocks/jsonapi-codec": ["packages/jsonapi-codec/src/index.ts"],
+      "@23blocks/transport-http": ["packages/transport-http/src/index.ts"],
+      "@23blocks/block-authentication": ["packages/block-authentication/src/index.ts"],
+      "@23blocks/block-content": ["packages/block-content/src/index.ts"],
+      "@23blocks/block-crm": ["packages/block-crm/src/index.ts"],
+      "@23blocks/block-forms": ["packages/block-forms/src/index.ts"],
+      "@23blocks/block-products": ["packages/block-products/src/index.ts"],
+      "@23blocks/block-search": ["packages/block-search/src/index.ts"],
+      "@23blocks/block-files": ["packages/block-files/src/index.ts"],
+      "@23blocks/block-rewards": ["packages/block-rewards/src/index.ts"],
+      "@23blocks/block-assets": ["packages/block-assets/src/index.ts"],
+      "@23blocks/block-wallet": ["packages/block-wallet/src/index.ts"],
+      "@23blocks/block-jarvis": ["packages/block-jarvis/src/index.ts"],
+      "@23blocks/angular": ["packages/angular/src/index.ts"],
+      "@23blocks/react": ["packages/react/src/index.ts"],
+      "@23blocks/sdk": ["packages/sdk/src/index.ts"]
+    }
   }
 }

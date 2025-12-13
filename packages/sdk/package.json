@@ -1,0 +1,54 @@
+{
+  "name": "@23blocks/sdk",
+  "version": "0.0.1",
+  "description": "23blocks SDK - unified meta-package re-exporting all blocks and utilities",
+  "license": "MIT",
+  "author": "23blocks <hello@23blocks.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/23blocks-OS/frontend-sdk.git",
+    "directory": "packages/sdk"
+  },
+  "homepage": "https://23blocks.com",
+  "bugs": {
+    "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
+  },
+  "keywords": ["23blocks", "sdk", "api", "jsonapi", "typescript", "angular", "react"],
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "nx": {
+    "sourceRoot": "packages/sdk/src",
+    "targets": {
+      "build": {
+        "executor": "@nx/js:swc",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "options": {
+          "outputPath": "packages/sdk/dist",
+          "main": "packages/sdk/src/index.ts",
+          "tsConfig": "packages/sdk/tsconfig.lib.json",
+          "skipTypeCheck": true,
+          "stripLeadingPaths": true
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@swc/helpers": "~0.5.11"
+  }
+}

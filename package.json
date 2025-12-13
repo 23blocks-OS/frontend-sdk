@@ -1,21 +1,80 @@
 {
-  "name": "@blocks-sdk/source",
+  "name": "@23blocks/source",
   "version": "0.0.0",
+  "description": "23blocks SDK - A modular, framework-agnostic SDK for JSON:API backends",
   "license": "MIT",
-  "scripts": {},
+  "author": "23blocks <hello@23blocks.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/23blocks-OS/frontend-sdk.git"
+  },
+  "homepage": "https://23blocks.com",
+  "keywords": [
+    "23blocks",
+    "sdk",
+    "jsonapi",
+    "typescript",
+    "angular",
+    "react"
+  ],
   "private": true,
+  "scripts": {
+    "build": "nx run-many -t build",
+    "build:affected": "nx affected -t build",
+    "test": "nx run-many -t test",
+    "test:affected": "nx affected -t test",
+    "lint": "nx run-many -t lint",
+    "typecheck": "nx run-many -t typecheck",
+    "clean": "nx reset && rm -rf packages/*/dist node_modules/.cache",
+    "graph": "nx graph",
+    "release": "nx release",
+    "release:dry-run": "nx release --dry-run",
+    "release:version": "nx release version",
+    "release:changelog": "nx release changelog",
+    "release:publish": "nx release publish",
+    "local-registry": "nx local-registry",
+    "local:publish": "nx run-many -t build && npm run yalc:push",
+    "yalc:push": "for pkg in packages/*; do (cd $pkg && yalc push); done",
+    "yalc:publish": "for pkg in packages/*; do (cd $pkg && yalc publish); done",
+    "prepare": "nx run-many -t build"
+  },
   "dependencies": {},
   "devDependencies": {
     "@nx/js": "22.2.3",
+    "@nx/vitest": "22.2.3",
     "@swc-node/register": "~1.9.1",
+    "@swc/cli": "~0.6.0",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
+    "@types/node": "20.19.9",
+    "@vitest/coverage-v8": "^2.1.8",
     "nx": "22.2.3",
-    "prettier": "^2.6.2",
+    "prettier": "^3.1.0",
     "tslib": "^2.3.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "verdaccio": "^6.0.5",
+    "vite": "^6.0.0",
+    "vitest": "^2.1.8",
+    "yalc": "^1.0.0-pre.53"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "packageManager": "npm@10.0.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "nx": {
+    "includedScripts": [],
+    "targets": {
+      "local-registry": {
+        "executor": "@nx/js:verdaccio",
+        "options": {
+          "port": 4873,
+          "config": ".verdaccio/config.yml",
+          "storage": "tmp/local-registry/storage"
+        }
+      }
+    }
+  }
 }

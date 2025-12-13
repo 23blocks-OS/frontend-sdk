@@ -40,3 +40,15 @@ Thumbs.db
 
 .nx/cache
 .nx/workspace-data
+
+vitest.config.*.timestamp*
+
+# yalc
+.yalc
+yalc.lock
+
+# Local registry
+tmp/local-registry
+
+# Build artifacts
+*.tsbuildinfo

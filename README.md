@@ -1,109 +1,207 @@
-# BlocksSdk
+# 23blocks SDK
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A modular, framework-agnostic TypeScript SDK for building applications with [23blocks](https://23blocks.com) backends.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+[![CI](https://github.com/23blocks-OS/frontend-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/23blocks-OS/frontend-sdk/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## Features
 
-## Generate a library
+- **Modular architecture** - Install only the blocks you need
+- **Framework agnostic** - Core packages work with any JavaScript framework
+- **First-class TypeScript** - Full type safety with comprehensive type definitions
+- **Angular & React bindings** - Native integrations with RxJS Observables and React hooks
+- **JSON:API compliant** - Built on the [JSON:API v1.0](https://jsonapi.org/) specification
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+## Packages
+
+| Package | Description |
+|---------|-------------|
+| `@23blocks/contracts` | Core types and interfaces |
+| `@23blocks/jsonapi-codec` | JSON:API encoder/decoder |
+| `@23blocks/transport-http` | HTTP transport layer |
+| `@23blocks/block-authentication` | Auth, users, roles, API keys |
+| `@23blocks/block-search` | Full-text search, favorites |
+| `@23blocks/angular` | Angular services (RxJS) |
+| `@23blocks/react` | React hooks & context |
+
+## Quick Start
+
+### Installation
+
+```bash
+# Core packages
+npm install @23blocks/contracts @23blocks/transport-http
+
+# Add blocks you need
+npm install @23blocks/block-authentication
+npm install @23blocks/block-search
+
+# Framework bindings (choose one)
+npm install @23blocks/react
+npm install @23blocks/angular
 ```
 
-## Run tasks
+### Basic Usage (Framework Agnostic)
 
-To build the library use:
+```typescript
+import { createHttpTransport } from '@23blocks/transport-http';
+import { createAuthenticationBlock } from '@23blocks/block-authentication';
 
-```sh
-npx nx build pkg1
+// Create transport
+const transport = createHttpTransport({
+  baseUrl: 'https://api.yourapp.com',
+  headers: () => ({
+    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+  }),
+});
+
+// Create authentication block
+const auth = createAuthenticationBlock(transport, {
+  appId: 'your-app-id',
+});
+
+// Use it
+const { user, accessToken } = await auth.auth.signIn({
+  email: 'user@example.com',
+  password: 'password',
+});
+
+console.log('Welcome', user.email);
 ```
 
-To run any task with Nx use:
+### React
 
-```sh
-npx nx <target> <project-name>
+```tsx
+import { Blocks23Provider, useAuth } from '@23blocks/react';
+import { createHttpTransport } from '@23blocks/transport-http';
+
+const transport = createHttpTransport({
+  baseUrl: 'https://api.yourapp.com',
+});
+
+function App() {
+  return (
+    <Blocks23Provider
+      transport={transport}
+      authentication={{ appId: 'your-app-id' }}
+    >
+      <LoginForm />
+    </Blocks23Provider>
+  );
+}
+
+function LoginForm() {
+  const { signIn, isLoading, error, user } = useAuth();
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    await signIn({ email, password });
+  };
+
+  if (user) {
+    return <p>Welcome, {user.email}!</p>;
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {error && <p className="error">{error.message}</p>}
+      <button disabled={isLoading}>
+        {isLoading ? 'Signing in...' : 'Sign In'}
+      </button>
+    </form>
+  );
+}
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### Angular
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```typescript
+// app.config.ts
+import { ApplicationConfig } from '@angular/core';
+import { provide23Blocks } from '@23blocks/angular';
+import { createHttpTransport } from '@23blocks/transport-http';
 
-## Versioning and releasing
+const transport = createHttpTransport({
+  baseUrl: 'https://api.yourapp.com',
+});
 
-To version and release the library use
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provide23Blocks({
+      transport,
+      authentication: { appId: 'your-app-id' },
+    }),
+  ],
+};
 
-```
-npx nx release
-```
+// login.component.ts
+import { Component } from '@angular/core';
+import { AuthenticationService } from '@23blocks/angular';
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+@Component({
+  selector: 'app-login',
+  template: `<button (click)="login()">Sign In</button>`,
+})
+export class LoginComponent {
+  constructor(private auth: AuthenticationService) {}
 
-[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
-```
-
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
-
-```sh
-npx nx sync:check
-```
-
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
-
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
+  login() {
+    this.auth.signIn({ email: 'user@example.com', password: 'password' })
+      .subscribe({
+        next: (response) => console.log('Welcome', response.user.email),
+        error: (err) => console.error(err),
+      });
+  }
+}
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+## Architecture
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+```
+┌─────────────────────────────────────────────────────────┐
+│  Framework Bindings                                     │
+│  ┌──────────────────┐  ┌──────────────────┐            │
+│  │ @23blocks/angular│  │ @23blocks/react  │            │
+│  │ (RxJS Observables)  │ (hooks, context) │            │
+│  └────────┬─────────┘  └────────┬─────────┘            │
+└───────────┼─────────────────────┼──────────────────────┘
+            │                     │
+┌───────────▼─────────────────────▼──────────────────────┐
+│  Blocks (Promise-based, framework agnostic)            │
+│  ┌──────────────────┐  ┌──────────────────┐            │
+│  │block-authentication│ │  block-search   │  + more    │
+│  └────────┬─────────┘  └────────┬─────────┘            │
+└───────────┼─────────────────────┼──────────────────────┘
+            │                     │
+┌───────────▼─────────────────────▼──────────────────────┐
+│  Core Infrastructure                                   │
+│  ┌────────────┐ ┌──────────────┐ ┌──────────────────┐  │
+│  │ contracts  │ │jsonapi-codec │ │  transport-http  │  │
+│  └────────────┘ └──────────────┘ └──────────────────┘  │
+└────────────────────────────────────────────────────────┘
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Requirements
 
-## Install Nx Console
+- Node.js >= 18.0.0
+- TypeScript >= 5.0 (for TypeScript users)
+- Angular >= 17 (for `@23blocks/angular`)
+- React >= 18 (for `@23blocks/react`)
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+## Documentation
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- [Development Guide](./DEVELOPMENT.md) - Contributing, local testing, releasing
 
-## Useful links
+## Contributing
 
-Learn more:
+We welcome contributions! Please see our [Development Guide](./DEVELOPMENT.md) for details on:
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- Setting up the development environment
+- Running tests locally
+- Testing changes without publishing to npm
+- Submitting pull requests
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## License
+
+[MIT](./LICENSE) - Copyright (c) 2024 23blocks

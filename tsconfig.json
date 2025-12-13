@@ -2,5 +2,39 @@
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
-  "references": []
+  "references": [
+    {
+      "path": "./packages/contracts"
+    },
+    {
+      "path": "./packages/jsonapi-codec"
+    },
+    {
+      "path": "./packages/transport-http"
+    },
+    {
+      "path": "./packages/block-gateway"
+    },
+    {
+      "path": "./packages/block-content"
+    },
+    {
+      "path": "./packages/block-crm"
+    },
+    {
+      "path": "./packages/angular"
+    },
+    {
+      "path": "./packages/react"
+    },
+    {
+      "path": "./packages/sdk"
+    },
+    {
+      "path": "./packages/block-authentication"
+    },
+    {
+      "path": "./packages/block-search"
+    }
+  ]
 }

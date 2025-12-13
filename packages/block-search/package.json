@@ -1,0 +1,56 @@
+{
+  "name": "@23blocks/block-search",
+  "version": "0.0.1",
+  "description": "Search block for 23blocks SDK - full-text search, history, favorites",
+  "license": "MIT",
+  "author": "23blocks <hello@23blocks.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/23blocks-OS/frontend-sdk.git",
+    "directory": "packages/block-search"
+  },
+  "homepage": "https://github.com/23blocks-OS/frontend-sdk/tree/main/packages/block-search",
+  "bugs": {
+    "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
+  },
+  "keywords": ["23blocks", "sdk", "search", "full-text", "favorites", "history"],
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "nx": {
+    "sourceRoot": "packages/block-search/src",
+    "targets": {
+      "build": {
+        "executor": "@nx/js:swc",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "options": {
+          "outputPath": "packages/block-search/dist",
+          "main": "packages/block-search/src/index.ts",
+          "tsConfig": "packages/block-search/tsconfig.lib.json",
+          "skipTypeCheck": true,
+          "stripLeadingPaths": true
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@23blocks/contracts": "^0.0.1",
+    "@23blocks/jsonapi-codec": "^0.0.1",
+    "@swc/helpers": "~0.5.11"
+  }
+}
