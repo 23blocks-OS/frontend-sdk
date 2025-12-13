@@ -1,3 +1,30 @@
-export function sdk(): string {
-  return 'sdk';
-}
+// ─────────────────────────────────────────────────────────────────────────────
+// Core
+// ─────────────────────────────────────────────────────────────────────────────
+
+export * from '@23blocks/contracts';
+export * from '@23blocks/jsonapi-codec';
+export * from '@23blocks/transport-http';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Blocks
+// ─────────────────────────────────────────────────────────────────────────────
+
+export * from '@23blocks/block-authentication';
+export * from '@23blocks/block-search';
+export * from '@23blocks/block-products';
+export * from '@23blocks/block-crm';
+export * from '@23blocks/block-content';
+export * from '@23blocks/block-geolocation';
+export * from '@23blocks/block-conversations';
+export * from '@23blocks/block-files';
+export * from '@23blocks/block-forms';
+export * from '@23blocks/block-assets';
+export * from '@23blocks/block-campaigns';
+export * from '@23blocks/block-company';
+export * from '@23blocks/block-rewards';
+export * from '@23blocks/block-sales';
+export * from '@23blocks/block-wallet';
+export * from '@23blocks/block-jarvis';
+export * from '@23blocks/block-onboarding';
+export * from '@23blocks/block-university';

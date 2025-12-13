@@ -1,0 +1,66 @@
+{
+  "name": "@23blocks/block-jarvis",
+  "version": "0.1.0",
+  "description": "Jarvis AI block for 23blocks SDK - agents, prompts, workflows, executions, conversations",
+  "license": "MIT",
+  "author": "23blocks <hello@23blocks.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/23blocks-OS/frontend-sdk.git",
+    "directory": "packages/block-jarvis"
+  },
+  "homepage": "https://github.com/23blocks-OS/frontend-sdk/tree/main/packages/block-jarvis",
+  "bugs": {
+    "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
+  },
+  "keywords": [
+    "23blocks",
+    "sdk",
+    "jarvis",
+    "ai",
+    "agent",
+    "prompt",
+    "workflow",
+    "llm",
+    "conversation"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "nx": {
+    "sourceRoot": "packages/block-jarvis/src",
+    "targets": {
+      "build": {
+        "executor": "@nx/js:swc",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "options": {
+          "outputPath": "packages/block-jarvis/dist",
+          "main": "packages/block-jarvis/src/index.ts",
+          "tsConfig": "packages/block-jarvis/tsconfig.lib.json",
+          "skipTypeCheck": true,
+          "stripLeadingPaths": true
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@23blocks/contracts": "*",
+    "@23blocks/jsonapi-codec": "*",
+    "@swc/helpers": "~0.5.11"
+  }
+}

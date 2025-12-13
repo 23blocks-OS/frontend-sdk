@@ -1,0 +1,46 @@
+import type { ResourceMapper } from '@23blocks/jsonapi-codec';
+import type { Address } from '../types/address';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils';
+
+export const addressMapper: ResourceMapper<Address> = {
+  type: 'Address',
+  map: (resource) => ({
+    id: resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    createdAt: parseDate(resource.attributes['created_at']) || new Date(),
+    updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
+
+    ownerUniqueId: parseString(resource.attributes['owner_unique_id']),
+    ownerType: parseString(resource.attributes['owner_type']),
+    countryCode: parseString(resource.attributes['country_code']),
+    countryName: parseString(resource.attributes['country_name']),
+    admin1Code: parseString(resource.attributes['admin1_code']),
+    admin1Name: parseString(resource.attributes['admin1_name']),
+    admin2Code: parseString(resource.attributes['admin2_code']),
+    admin2Name: parseString(resource.attributes['admin2_name']),
+    admin3Code: parseString(resource.attributes['admin3_code']),
+    admin3Name: parseString(resource.attributes['admin3_name']),
+    admin4Code: parseString(resource.attributes['admin4_code']),
+    admin4Name: parseString(resource.attributes['admin4_name']),
+    admin5Code: parseString(resource.attributes['admin5_code']),
+    admin5Name: parseString(resource.attributes['admin5_name']),
+    admin6Code: parseString(resource.attributes['admin6_code']),
+    admin6Name: parseString(resource.attributes['admin6_name']),
+    postalCode: parseString(resource.attributes['postal_code']),
+    address: parseString(resource.attributes['address']),
+    premise: parseString(resource.attributes['premise']),
+    code: parseString(resource.attributes['code']),
+    name: parseString(resource.attributes['name']),
+    firstName: parseString(resource.attributes['first_name']),
+    lastName: parseString(resource.attributes['last_name']),
+    organization: parseString(resource.attributes['organization']),
+    latitude: parseOptionalNumber(resource.attributes['latitude']),
+    longitude: parseOptionalNumber(resource.attributes['longitude']),
+    qcode: parseString(resource.attributes['qcode']),
+    payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
+    status: parseStatus(resource.attributes['status']),
+    enabled: parseBoolean(resource.attributes['enabled']),
+    defaultAddress: parseBoolean(resource.attributes['default_address']),
+    tags: parseStringArray(resource.attributes['tags']),
+  }),
+};

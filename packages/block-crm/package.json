@@ -1,6 +1,19 @@
 {
   "name": "@23blocks/block-crm",
   "version": "0.1.0",
+  "description": "CRM block for 23blocks SDK - accounts, contacts, leads, opportunities, meetings",
+  "license": "MIT",
+  "author": "23blocks <hello@23blocks.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/23blocks-OS/frontend-sdk.git",
+    "directory": "packages/block-crm"
+  },
+  "homepage": "https://github.com/23blocks-OS/frontend-sdk/tree/main/packages/block-crm",
+  "bugs": {
+    "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
+  },
+  "keywords": ["23blocks", "sdk", "crm", "accounts", "contacts", "leads", "meetings"],
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -13,18 +26,13 @@
       "default": "./dist/index.js"
     }
   },
-  "files": [
-    "dist",
-    "!**/*.tsbuildinfo"
-  ],
+  "files": ["dist", "!**/*.tsbuildinfo"],
   "nx": {
     "sourceRoot": "packages/block-crm/src",
     "targets": {
       "build": {
         "executor": "@nx/js:swc",
-        "outputs": [
-          "{options.outputPath}"
-        ],
+        "outputs": ["{options.outputPath}"],
         "options": {
           "outputPath": "packages/block-crm/dist",
           "main": "packages/block-crm/src/index.ts",
@@ -36,6 +44,8 @@
     }
   },
   "dependencies": {
+    "@23blocks/contracts": "*",
+    "@23blocks/jsonapi-codec": "*",
     "@swc/helpers": "~0.5.11"
   }
 }

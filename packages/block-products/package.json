@@ -1,0 +1,64 @@
+{
+  "name": "@23blocks/block-products",
+  "version": "0.1.0",
+  "description": "Products block for 23blocks SDK - e-commerce, carts, inventory, catalog management",
+  "license": "MIT",
+  "author": "23blocks <hello@23blocks.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/23blocks-OS/frontend-sdk.git",
+    "directory": "packages/block-products"
+  },
+  "homepage": "https://github.com/23blocks-OS/frontend-sdk/tree/main/packages/block-products",
+  "bugs": {
+    "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
+  },
+  "keywords": [
+    "23blocks",
+    "sdk",
+    "products",
+    "e-commerce",
+    "cart",
+    "inventory",
+    "catalog"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "nx": {
+    "sourceRoot": "packages/block-products/src",
+    "targets": {
+      "build": {
+        "executor": "@nx/js:swc",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "options": {
+          "outputPath": "packages/block-products/dist",
+          "main": "packages/block-products/src/index.ts",
+          "tsConfig": "packages/block-products/tsconfig.lib.json",
+          "skipTypeCheck": true,
+          "stripLeadingPaths": true
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@23blocks/contracts": "*",
+    "@23blocks/jsonapi-codec": "*",
+    "@swc/helpers": "~0.5.11"
+  }
+}

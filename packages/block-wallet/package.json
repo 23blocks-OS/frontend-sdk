@@ -1,0 +1,63 @@
+{
+  "name": "@23blocks/block-wallet",
+  "version": "0.1.0",
+  "description": "Wallet block for 23blocks SDK - digital wallets, transactions, and authorization codes",
+  "license": "MIT",
+  "author": "23blocks <hello@23blocks.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/23blocks-OS/frontend-sdk.git",
+    "directory": "packages/block-wallet"
+  },
+  "homepage": "https://github.com/23blocks-OS/frontend-sdk/tree/main/packages/block-wallet",
+  "bugs": {
+    "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
+  },
+  "keywords": [
+    "23blocks",
+    "sdk",
+    "wallet",
+    "transactions",
+    "payments",
+    "authorization"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "nx": {
+    "sourceRoot": "packages/block-wallet/src",
+    "targets": {
+      "build": {
+        "executor": "@nx/js:swc",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "options": {
+          "outputPath": "packages/block-wallet/dist",
+          "main": "packages/block-wallet/src/index.ts",
+          "tsConfig": "packages/block-wallet/tsconfig.lib.json",
+          "skipTypeCheck": true,
+          "stripLeadingPaths": true
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@23blocks/contracts": "*",
+    "@23blocks/jsonapi-codec": "*",
+    "@swc/helpers": "~0.5.11"
+  }
+}
