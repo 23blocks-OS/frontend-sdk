@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/jsonapi-codec",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "JSON:API v1.0 codec for encoding/decoding API responses",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -13,7 +13,14 @@
   "bugs": {
     "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
   },
-  "keywords": ["23blocks", "sdk", "jsonapi", "json-api", "codec", "parser"],
+  "keywords": [
+    "23blocks",
+    "sdk",
+    "jsonapi",
+    "json-api",
+    "codec",
+    "parser"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -49,7 +56,7 @@
     }
   },
   "dependencies": {
-    "@23blocks/contracts": "^0.0.1",
+    "@23blocks/contracts": "*",
     "@swc/helpers": "~0.5.11"
   }
 }

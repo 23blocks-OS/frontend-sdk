@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-search",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Search block for 23blocks SDK - full-text search, history, favorites",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -13,7 +13,14 @@
   "bugs": {
     "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
   },
-  "keywords": ["23blocks", "sdk", "search", "full-text", "favorites", "history"],
+  "keywords": [
+    "23blocks",
+    "sdk",
+    "search",
+    "full-text",
+    "favorites",
+    "history"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -49,8 +56,8 @@
     }
   },
   "dependencies": {
-    "@23blocks/contracts": "^0.0.1",
-    "@23blocks/jsonapi-codec": "^0.0.1",
+    "@23blocks/contracts": "*",
+    "@23blocks/jsonapi-codec": "*",
     "@swc/helpers": "~0.5.11"
   }
 }

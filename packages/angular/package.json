@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/angular",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Angular bindings for 23blocks SDK - Injectable services with RxJS Observables",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -13,7 +13,14 @@
   "bugs": {
     "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
   },
-  "keywords": ["23blocks", "sdk", "angular", "rxjs", "observable", "injectable"],
+  "keywords": [
+    "23blocks",
+    "sdk",
+    "angular",
+    "rxjs",
+    "observable",
+    "injectable"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -49,9 +56,9 @@
     }
   },
   "dependencies": {
-    "@23blocks/contracts": "^0.0.1",
-    "@23blocks/block-authentication": "^0.0.1",
-    "@23blocks/block-search": "^0.0.1",
+    "@23blocks/contracts": "*",
+    "@23blocks/block-authentication": "*",
+    "@23blocks/block-search": "*",
     "@swc/helpers": "~0.5.11"
   },
   "peerDependencies": {

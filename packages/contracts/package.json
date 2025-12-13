@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/contracts",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Core type definitions and interfaces for the 23blocks SDK",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -13,7 +13,13 @@
   "bugs": {
     "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
   },
-  "keywords": ["23blocks", "sdk", "contracts", "types", "typescript"],
+  "keywords": [
+    "23blocks",
+    "sdk",
+    "contracts",
+    "types",
+    "typescript"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
