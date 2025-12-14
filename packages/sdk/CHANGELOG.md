@@ -1,3 +1,10 @@
+# 2.0.0 (2025-12-14)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 2.0.0
+- Updated @23blocks/block-search to 2.0.0
+
 ## 1.1.3 (2025-12-14)
 
 ### 🧱 Updated Dependencies
