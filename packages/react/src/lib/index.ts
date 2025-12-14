@@ -1,15 +1,23 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Simplified API (Recommended)
+// Main API (Recommended)
 // ─────────────────────────────────────────────────────────────────────────────
 export {
+  // Main exports
+  Provider,
+  useClient,
+  useAuth,
+  type ProviderProps,
+  type ClientContext,
+  type AuthMode,
+  type StorageType,
+  type TokenManager,
+
+  // Backward compatibility (deprecated)
   SimpleBlocks23Provider,
   useSimpleBlocks23,
   useSimpleAuth,
   type SimpleBlocks23ProviderProps,
   type SimpleBlocks23Context,
-  type AuthMode,
-  type StorageType,
-  type TokenManager,
 } from './simple-provider.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -41,10 +49,10 @@ export {
   type Blocks23Context,
 } from './context.js';
 
-// Hooks
+// Hooks (for advanced API with custom transport)
 export {
-  // Auth
-  useAuth,
+  // Auth - renamed to avoid conflict with main useAuth
+  useAuth as useAuthState,
   useUsers,
   type UseAuthReturn,
   type UseAuthState,

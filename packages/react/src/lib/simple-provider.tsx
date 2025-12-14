@@ -50,9 +50,9 @@ export interface TokenManager {
 }
 
 /**
- * Simplified provider props
+ * Provider props
  */
-export interface SimpleBlocks23ProviderProps {
+export interface ProviderProps {
   children: ReactNode;
 
   /**
@@ -97,9 +97,9 @@ export interface SimpleBlocks23ProviderProps {
 }
 
 /**
- * Context value for simplified provider
+ * Context value providing access to all 23blocks services
  */
-export interface SimpleBlocks23Context {
+export interface ClientContext {
   // Blocks
   authentication: AuthenticationBlock;
   search: SearchBlock;
@@ -249,46 +249,46 @@ function createTokenManager(appId: string, storageType: StorageType, tenantId?: 
 // Context
 // ─────────────────────────────────────────────────────────────────────────────
 
-const SimpleBlocks23ContextInternal = createContext<SimpleBlocks23Context | null>(null);
+const Blocks23Context = createContext<ClientContext | null>(null);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Provider Component
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Simplified provider component for 23blocks services.
+ * Provider component for 23blocks services.
  *
- * This is the recommended way to set up 23blocks in new React applications.
- * It automatically handles token storage and authentication headers.
+ * Wrap your app with this provider to access all 23blocks services
+ * with automatic token management.
  *
  * @example Token mode (default)
  * ```tsx
- * import { SimpleBlocks23Provider } from '@23blocks/react';
+ * import { Provider } from '@23blocks/react';
  *
  * function App() {
  *   return (
- *     <SimpleBlocks23Provider
+ *     <Provider
  *       baseUrl="https://api.yourapp.com"
  *       appId="your-app-id"
  *     >
  *       <MyApp />
- *     </SimpleBlocks23Provider>
+ *     </Provider>
  *   );
  * }
  * ```
  *
  * @example Cookie mode (recommended for security)
  * ```tsx
- * <SimpleBlocks23Provider
+ * <Provider
  *   baseUrl="https://api.yourapp.com"
  *   appId="your-app-id"
  *   authMode="cookie"
  * >
  *   <MyApp />
- * </SimpleBlocks23Provider>
+ * </Provider>
  * ```
  */
-export function SimpleBlocks23Provider({
+export function Provider({
   children,
   baseUrl,
   appId,
@@ -297,7 +297,7 @@ export function SimpleBlocks23Provider({
   storage = 'localStorage',
   headers: staticHeaders = {},
   timeout,
-}: SimpleBlocks23ProviderProps) {
+}: ProviderProps) {
   // Create token manager (memoized) with scoped storage keys
   const tokenManager = useMemo(
     () => (authMode === 'token' ? createTokenManager(appId, storage, tenantId) : null),
@@ -393,7 +393,7 @@ export function SimpleBlocks23Provider({
     return tokenManager?.onStorageChange(callback) ?? (() => {});
   }, [tokenManager]);
 
-  const value = useMemo<SimpleBlocks23Context>(() => ({
+  const value = useMemo<ClientContext>(() => ({
     // Blocks
     authentication,
     search,
@@ -437,9 +437,9 @@ export function SimpleBlocks23Provider({
   ]);
 
   return (
-    <SimpleBlocks23ContextInternal.Provider value={value}>
+    <Blocks23Context.Provider value={value}>
       {children}
-    </SimpleBlocks23ContextInternal.Provider>
+    </Blocks23Context.Provider>
   );
 }
 
@@ -448,30 +448,24 @@ export function SimpleBlocks23Provider({
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Hook to access the 23blocks context with simplified API.
+ * Hook to access all 23blocks services.
  *
  * @example
  * ```tsx
- * function LoginButton() {
- *   const { signIn, isAuthenticated, authentication } = useSimpleBlocks23();
+ * function Dashboard() {
+ *   const { products, crm, files } = useClient();
  *
- *   const handleLogin = async () => {
- *     const result = await signIn({ email: 'user@example.com', password: 'password' });
- *     console.log('Logged in:', result.user);
+ *   // Access any service
+ *   const loadProducts = async () => {
+ *     const { data } = await products.products.list({ limit: 10 });
  *   };
- *
- *   return (
- *     <button onClick={handleLogin}>
- *       {isAuthenticated() ? 'Logged In' : 'Log In'}
- *     </button>
- *   );
  * }
  * ```
  */
-export function useSimpleBlocks23(): SimpleBlocks23Context {
-  const context = useContext(SimpleBlocks23ContextInternal);
+export function useClient(): ClientContext {
+  const context = useContext(Blocks23Context);
   if (!context) {
-    throw new Error('useSimpleBlocks23 must be used within a SimpleBlocks23Provider');
+    throw new Error('useClient must be used within a Provider');
   }
   return context;
 }
@@ -481,8 +475,8 @@ export function useSimpleBlocks23(): SimpleBlocks23Context {
  *
  * @example
  * ```tsx
- * function AuthComponent() {
- *   const { signIn, signOut, isAuthenticated, authentication } = useSimpleAuth();
+ * function LoginPage() {
+ *   const { signIn, signOut, isAuthenticated } = useAuth();
  *
  *   const handleLogin = async () => {
  *     await signIn({ email: 'user@example.com', password: 'password' });
@@ -500,8 +494,8 @@ export function useSimpleBlocks23(): SimpleBlocks23Context {
  * }
  * ```
  */
-export function useSimpleAuth() {
-  const context = useSimpleBlocks23();
+export function useAuth() {
+  const context = useClient();
   return {
     signIn: context.signIn,
     signUp: context.signUp,
@@ -515,3 +509,22 @@ export function useSimpleAuth() {
     authentication: context.authentication,
   };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Backward Compatibility Aliases (deprecated)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** @deprecated Use `Provider` instead */
+export const SimpleBlocks23Provider = Provider;
+
+/** @deprecated Use `ProviderProps` instead */
+export type SimpleBlocks23ProviderProps = ProviderProps;
+
+/** @deprecated Use `ClientContext` instead */
+export type SimpleBlocks23Context = ClientContext;
+
+/** @deprecated Use `useClient` instead */
+export const useSimpleBlocks23 = useClient;
+
+/** @deprecated Use `useAuth` instead */
+export const useSimpleAuth = useAuth;

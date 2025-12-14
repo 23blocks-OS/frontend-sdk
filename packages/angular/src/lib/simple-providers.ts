@@ -25,7 +25,7 @@ import {
 } from './tokens.js';
 
 /**
- * Authentication mode for the simplified API
+ * Authentication mode
  */
 export type AuthMode = 'token' | 'cookie';
 
@@ -35,9 +35,9 @@ export type AuthMode = 'token' | 'cookie';
 export type StorageType = 'localStorage' | 'sessionStorage' | 'memory';
 
 /**
- * Simplified configuration for providing 23blocks services
+ * Configuration for providing 23blocks services
  */
-export interface Simple23BlocksConfig {
+export interface ProviderConfig {
   /**
    * Base URL for the 23blocks API
    * @example 'https://api.yourapp.com'
@@ -85,9 +85,12 @@ export interface Simple23BlocksConfig {
 export const TOKEN_MANAGER = new InjectionToken<TokenManagerService>('23blocks.token-manager');
 
 /**
- * Injection token for simple config
+ * Injection token for provider config
  */
-export const SIMPLE_CONFIG = new InjectionToken<Simple23BlocksConfig>('23blocks.simple-config');
+export const PROVIDER_CONFIG = new InjectionToken<ProviderConfig>('23blocks.provider-config');
+
+/** @deprecated Use PROVIDER_CONFIG instead */
+export const SIMPLE_CONFIG = PROVIDER_CONFIG;
 
 /**
  * Token manager interface
@@ -217,7 +220,7 @@ function createTokenManager(
 /**
  * Create transport with automatic token handling
  */
-function createTransportWithAuth(config: Simple23BlocksConfig, tokenManager: TokenManagerService): Transport {
+function createTransportWithAuth(config: ProviderConfig, tokenManager: TokenManagerService): Transport {
   return createHttpTransport({
     baseUrl: config.baseUrl,
     timeout: config.timeout,
@@ -280,13 +283,13 @@ function createTransportWithAuth(config: Simple23BlocksConfig, tokenManager: Tok
  * };
  * ```
  */
-export function provideBlocks23(config: Simple23BlocksConfig): EnvironmentProviders {
+export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
   // Block config for all services
   const blockConfig = { appId: config.appId, tenantId: config.tenantId };
 
   const providers: Provider[] = [
     // Store config for injection
-    { provide: SIMPLE_CONFIG, useValue: config },
+    { provide: PROVIDER_CONFIG, useValue: config },
 
     // Token manager factory - creates singleton within the injector
     {
@@ -350,13 +353,13 @@ export function provideBlocks23(config: Simple23BlocksConfig): EnvironmentProvid
  * export class AppModule {}
  * ```
  */
-export function getBlocks23Providers(config: Simple23BlocksConfig): Provider[] {
+export function getBlocks23Providers(config: ProviderConfig): Provider[] {
   // Block config for all services
   const blockConfig = { appId: config.appId, tenantId: config.tenantId };
 
   return [
     // Store config for injection
-    { provide: SIMPLE_CONFIG, useValue: config },
+    { provide: PROVIDER_CONFIG, useValue: config },
 
     // Token manager factory - creates singleton within the injector
     {
@@ -397,3 +400,10 @@ export function getBlocks23Providers(config: Simple23BlocksConfig): Provider[] {
     { provide: UNIVERSITY_CONFIG, useValue: blockConfig },
   ];
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Backward Compatibility Aliases (deprecated)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** @deprecated Use `ProviderConfig` instead */
+export type Simple23BlocksConfig = ProviderConfig;

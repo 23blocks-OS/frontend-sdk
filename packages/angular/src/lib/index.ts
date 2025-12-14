@@ -1,14 +1,19 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Simplified API (Recommended)
+// Main API (Recommended)
 // ─────────────────────────────────────────────────────────────────────────────
 export {
+  // Main exports
   provideBlocks23,
   getBlocks23Providers,
-  type Simple23BlocksConfig,
+  type ProviderConfig,
   type AuthMode,
   type StorageType,
   type TokenManagerService,
   TOKEN_MANAGER,
+  PROVIDER_CONFIG,
+
+  // Backward compatibility (deprecated)
+  type Simple23BlocksConfig,
   SIMPLE_CONFIG,
 } from './simple-providers.js';
 
