@@ -3,12 +3,18 @@
     "target": "es2017",
     "parser": {
       "syntax": "typescript",
+      "tsx": true,
       "decorators": true,
       "dynamicImport": true
     },
     "transform": {
       "decoratorMetadata": true,
-      "legacyDecorator": true
+      "legacyDecorator": true,
+      "react": {
+        "runtime": "automatic",
+        "throwIfNamespace": true,
+        "useBuiltins": true
+      }
     },
     "keepClassNames": true,
     "externalHelpers": true,
