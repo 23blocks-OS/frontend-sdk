@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useMemo, useCallback, useEffect, useState, useRef, type ReactNode } from 'react';
 import { createHttpTransport } from '@23blocks/transport-http';
 import type { Transport } from '@23blocks/contracts';
 import { createAuthenticationBlock, type AuthenticationBlock, type SignInRequest, type SignInResponse, type SignUpRequest, type SignUpResponse } from '@23blocks/block-authentication';
@@ -33,6 +33,16 @@ export type AuthMode = 'token' | 'cookie';
  * Storage type for token mode
  */
 export type StorageType = 'localStorage' | 'sessionStorage' | 'memory';
+
+/**
+ * Async storage interface for React Native compatibility.
+ * Compatible with @react-native-async-storage/async-storage and expo-secure-store.
+ */
+export interface AsyncStorageInterface {
+  getItem(key: string): Promise<string | null>;
+  setItem(key: string, value: string): Promise<void>;
+  removeItem(key: string): Promise<void>;
+}
 
 /**
  * Token manager interface
@@ -137,10 +147,49 @@ export interface ProviderProps {
   authMode?: AuthMode;
 
   /**
-   * Storage type for token mode
+   * Storage type for token mode (ignored if customStorage is provided)
    * @default 'localStorage'
    */
   storage?: StorageType;
+
+  /**
+   * Custom async storage for React Native.
+   * When provided, this takes precedence over the `storage` prop.
+   * Compatible with @react-native-async-storage/async-storage and expo-secure-store.
+   *
+   * @example React Native with AsyncStorage
+   * ```tsx
+   * import AsyncStorage from '@react-native-async-storage/async-storage';
+   *
+   * <Provider
+   *   appId="your-app-id"
+   *   customStorage={AsyncStorage}
+   *   urls={{ authentication: 'https://api.example.com' }}
+   * >
+   *   <App />
+   * </Provider>
+   * ```
+   *
+   * @example React Native with Expo SecureStore
+   * ```tsx
+   * import * as SecureStore from 'expo-secure-store';
+   *
+   * const secureStorage = {
+   *   getItem: SecureStore.getItemAsync,
+   *   setItem: SecureStore.setItemAsync,
+   *   removeItem: SecureStore.deleteItemAsync,
+   * };
+   *
+   * <Provider
+   *   appId="your-app-id"
+   *   customStorage={secureStorage}
+   *   urls={{ authentication: 'https://api.example.com' }}
+   * >
+   *   <App />
+   * </Provider>
+   * ```
+   */
+  customStorage?: AsyncStorageInterface;
 
   /**
    * Additional headers to include with every request
@@ -197,6 +246,13 @@ export interface ClientContext {
 
   // Config info
   authMode: AuthMode;
+
+  /**
+   * Whether the provider has finished loading tokens from async storage.
+   * Always true for sync storage (localStorage, sessionStorage, memory).
+   * For React Native with customStorage, this is false until tokens are loaded.
+   */
+  isReady: boolean;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -224,7 +280,10 @@ class MemoryStorage {
   }
 }
 
-function createTokenManager(appId: string, storageType: StorageType, tenantId?: string): TokenManager {
+/**
+ * Create a sync token manager for web (localStorage, sessionStorage, memory)
+ */
+function createSyncTokenManager(appId: string, storageType: StorageType, tenantId?: string): TokenManager {
   const isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
 
   const accessTokenKey = getStorageKey('access', appId, tenantId);
@@ -303,6 +362,78 @@ function createTokenManager(appId: string, storageType: StorageType, tenantId?: 
   };
 }
 
+/**
+ * Create an async token manager for React Native with a sync cache.
+ * Uses a sync in-memory cache for immediate access while persisting to async storage.
+ */
+function createAsyncTokenManager(
+  appId: string,
+  asyncStorage: AsyncStorageInterface,
+  tenantId?: string,
+  onReady?: () => void
+): TokenManager {
+  const accessTokenKey = getStorageKey('access', appId, tenantId);
+  const refreshTokenKey = getStorageKey('refresh', appId, tenantId);
+
+  // In-memory cache for sync access
+  let accessTokenCache: string | null = null;
+  let refreshTokenCache: string | null = null;
+
+  // Load tokens from async storage on initialization
+  Promise.all([
+    asyncStorage.getItem(accessTokenKey),
+    asyncStorage.getItem(refreshTokenKey),
+  ]).then(([accessToken, refreshToken]) => {
+    accessTokenCache = accessToken;
+    refreshTokenCache = refreshToken;
+    onReady?.();
+  }).catch((error) => {
+    console.warn('[23blocks] Failed to load tokens from storage:', error);
+    onReady?.();
+  });
+
+  return {
+    getAccessToken(): string | null {
+      return accessTokenCache;
+    },
+    getRefreshToken(): string | null {
+      return refreshTokenCache;
+    },
+    setTokens(accessToken: string, refreshToken?: string): void {
+      // Update cache immediately for sync access
+      accessTokenCache = accessToken;
+      if (refreshToken !== undefined) {
+        refreshTokenCache = refreshToken;
+      }
+
+      // Persist to async storage (fire and forget with error logging)
+      asyncStorage.setItem(accessTokenKey, accessToken).catch((error) => {
+        console.warn('[23blocks] Failed to persist access token:', error);
+      });
+
+      if (refreshToken) {
+        asyncStorage.setItem(refreshTokenKey, refreshToken).catch((error) => {
+          console.warn('[23blocks] Failed to persist refresh token:', error);
+        });
+      }
+    },
+    clearTokens(): void {
+      // Clear cache immediately
+      accessTokenCache = null;
+      refreshTokenCache = null;
+
+      // Clear from async storage (fire and forget)
+      asyncStorage.removeItem(accessTokenKey).catch(() => {});
+      asyncStorage.removeItem(refreshTokenKey).catch(() => {});
+    },
+    onStorageChange(_callback: () => void): () => void {
+      // Async storage doesn't support cross-tab events
+      // For React Native, this is typically not needed anyway
+      return () => {};
+    },
+  };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Context
 // ─────────────────────────────────────────────────────────────────────────────
@@ -370,6 +501,42 @@ function createUnconfiguredServiceProxy<T>(serviceName: string, urlKey: string):
  *   <MyApp />
  * </Provider>
  * ```
+ *
+ * @example React Native with AsyncStorage
+ * ```tsx
+ * import AsyncStorage from '@react-native-async-storage/async-storage';
+ *
+ * <Provider
+ *   appId="your-app-id"
+ *   customStorage={AsyncStorage}
+ *   urls={{
+ *     authentication: 'https://gateway.23blocks.com',
+ *   }}
+ * >
+ *   <App />
+ * </Provider>
+ * ```
+ *
+ * @example React Native with Expo SecureStore (recommended for sensitive data)
+ * ```tsx
+ * import * as SecureStore from 'expo-secure-store';
+ *
+ * const secureStorage = {
+ *   getItem: SecureStore.getItemAsync,
+ *   setItem: SecureStore.setItemAsync,
+ *   removeItem: SecureStore.deleteItemAsync,
+ * };
+ *
+ * <Provider
+ *   appId="your-app-id"
+ *   customStorage={secureStorage}
+ *   urls={{
+ *     authentication: 'https://gateway.23blocks.com',
+ *   }}
+ * >
+ *   <App />
+ * </Provider>
+ * ```
  */
 export function Provider({
   children,
@@ -378,14 +545,34 @@ export function Provider({
   tenantId,
   authMode = 'token',
   storage = 'localStorage',
+  customStorage,
   headers: staticHeaders = {},
   timeout,
 }: ProviderProps) {
+  // Track if async storage has loaded tokens
+  const [isReady, setIsReady] = useState(!customStorage);
+  const tokenManagerRef = useRef<TokenManager | null>(null);
+
   // Create token manager (memoized) with scoped storage keys
-  const tokenManager = useMemo(
-    () => (authMode === 'token' ? createTokenManager(appId, storage, tenantId) : null),
-    [authMode, appId, storage, tenantId]
-  );
+  const tokenManager = useMemo(() => {
+    if (authMode !== 'token') {
+      return null;
+    }
+
+    if (customStorage) {
+      // Use async storage for React Native
+      const manager = createAsyncTokenManager(appId, customStorage, tenantId, () => {
+        setIsReady(true);
+      });
+      tokenManagerRef.current = manager;
+      return manager;
+    } else {
+      // Use sync storage for web
+      const manager = createSyncTokenManager(appId, storage, tenantId);
+      tokenManagerRef.current = manager;
+      return manager;
+    }
+  }, [authMode, appId, storage, tenantId, customStorage]);
 
   // Factory to create transport for a specific service URL
   const createServiceTransport = useCallback((baseUrl: string) => {
@@ -403,8 +590,8 @@ export function Provider({
           headers['tenant-id'] = tenantId;
         }
 
-        if (authMode === 'token' && tokenManager) {
-          const token = tokenManager.getAccessToken();
+        if (authMode === 'token' && tokenManagerRef.current) {
+          const token = tokenManagerRef.current.getAccessToken();
           if (token) {
             headers['Authorization'] = `Bearer ${token}`;
           }
@@ -413,7 +600,7 @@ export function Provider({
         return headers;
       },
     });
-  }, [appId, tenantId, authMode, staticHeaders, timeout, tokenManager]);
+  }, [appId, tenantId, authMode, staticHeaders, timeout]);
 
   // Create blocks (memoized) - each with its own transport (no fallback)
   const blockConfig = useMemo(() => ({ appId, tenantId }), [appId, tenantId]);
@@ -641,11 +828,12 @@ export function Provider({
 
     // Config
     authMode,
+    isReady,
   }), [
     authentication, search, products, crm, content, geolocation, conversations,
     files, forms, assets, campaigns, company, rewards, sales, wallet, jarvis,
     onboarding, university, signIn, signUp, signOut, getAccessToken, getRefreshToken,
-    setTokens, clearTokens, isAuthenticated, onStorageChange, authMode,
+    setTokens, clearTokens, isAuthenticated, onStorageChange, authMode, isReady,
   ]);
 
   return (
@@ -705,6 +893,19 @@ export function useClient(): ClientContext {
  *   );
  * }
  * ```
+ *
+ * @example React Native - wait for tokens to load
+ * ```tsx
+ * function App() {
+ *   const { isReady, isAuthenticated } = useAuth();
+ *
+ *   if (!isReady) {
+ *     return <LoadingScreen />;
+ *   }
+ *
+ *   return isAuthenticated() ? <HomeScreen /> : <LoginScreen />;
+ * }
+ * ```
  */
 export function useAuth() {
   const context = useClient();
@@ -719,6 +920,7 @@ export function useAuth() {
     isAuthenticated: context.isAuthenticated,
     onStorageChange: context.onStorageChange,
     authentication: context.authentication,
+    isReady: context.isReady,
   };
 }
 
