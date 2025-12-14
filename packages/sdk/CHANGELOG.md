@@ -1,3 +1,9 @@
+## 1.1.1 (2025-12-14)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-content to 1.0.3
+
 ## 1.1.0 (2025-12-14)
 
 ### 🚀 Features
