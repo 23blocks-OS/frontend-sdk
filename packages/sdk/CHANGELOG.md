@@ -1,3 +1,29 @@
+## 1.0.2 (2025-12-14)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 1.0.2
+- Updated @23blocks/block-conversations to 1.0.1
+- Updated @23blocks/block-geolocation to 1.0.1
+- Updated @23blocks/block-onboarding to 1.0.1
+- Updated @23blocks/block-university to 1.0.1
+- Updated @23blocks/block-campaigns to 1.0.1
+- Updated @23blocks/block-products to 1.0.1
+- Updated @23blocks/transport-http to 1.0.1
+- Updated @23blocks/block-company to 1.0.1
+- Updated @23blocks/block-content to 1.0.1
+- Updated @23blocks/block-rewards to 1.0.1
+- Updated @23blocks/jsonapi-codec to 1.0.1
+- Updated @23blocks/block-assets to 1.0.1
+- Updated @23blocks/block-jarvis to 1.0.1
+- Updated @23blocks/block-search to 1.0.1
+- Updated @23blocks/block-wallet to 1.0.1
+- Updated @23blocks/block-files to 1.0.1
+- Updated @23blocks/block-forms to 1.0.1
+- Updated @23blocks/block-sales to 1.0.1
+- Updated @23blocks/block-crm to 1.0.1
+- Updated @23blocks/contracts to 1.0.1
+
 ## 1.0.1 (2025-12-13)
 
 ### 🧱 Updated Dependencies

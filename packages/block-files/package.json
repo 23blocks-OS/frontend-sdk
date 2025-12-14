@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-files",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Files block for 23blocks SDK - storage, upload, download, file management",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
