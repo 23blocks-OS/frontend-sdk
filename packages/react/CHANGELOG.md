@@ -1,3 +1,14 @@
+## 2.0.1 (2025-12-14)
+
+### 🚀 Features
+
+- **react:** add React Native support with custom async storage ([072b04d](https://github.com/23blocks-OS/frontend-sdk/commit/072b04d))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 # 2.0.0 (2025-12-14)
 
 ### 🚀 Features
