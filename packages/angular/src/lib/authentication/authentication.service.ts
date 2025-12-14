@@ -23,7 +23,7 @@ import {
   type CreateRoleRequest,
   type UpdateRoleRequest,
 } from '@23blocks/block-authentication';
-import { TRANSPORT, AUTHENTICATION_CONFIG } from '../tokens.js';
+import { TRANSPORT, AUTHENTICATION_TRANSPORT, AUTHENTICATION_CONFIG } from '../tokens.js';
 import { TOKEN_MANAGER, SIMPLE_CONFIG, type TokenManagerService, type Simple23BlocksConfig } from '../simple-providers.js';
 
 /**
@@ -47,19 +47,35 @@ import { TOKEN_MANAGER, SIMPLE_CONFIG, type TokenManagerService, type Simple23Bl
  */
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  private readonly block: AuthenticationBlock;
+  private readonly block: AuthenticationBlock | null;
   private readonly tokenManager: TokenManagerService | null;
   private readonly simpleConfig: Simple23BlocksConfig | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(AUTHENTICATION_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(AUTHENTICATION_CONFIG) config: AuthenticationBlockConfig,
     @Optional() @Inject(TOKEN_MANAGER) tokenManager: TokenManagerService | null,
     @Optional() @Inject(SIMPLE_CONFIG) simpleConfig: Simple23BlocksConfig | null
   ) {
-    this.block = createAuthenticationBlock(transport, config);
+    // Prefer per-service transport, fall back to legacy TRANSPORT for backward compatibility
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createAuthenticationBlock(transport, config) : null;
     this.tokenManager = tokenManager;
     this.simpleConfig = simpleConfig;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): AuthenticationBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] AuthenticationService is not configured. ' +
+        "Add 'urls.authentication' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   /**
@@ -78,7 +94,8 @@ export class AuthenticationService {
    * When using simplified API (provideBlocks23), tokens are stored automatically.
    */
   signIn(request: SignInRequest): Observable<SignInResponse> {
-    return from(this.block.auth.signIn(request)).pipe(
+    const block = this.ensureConfigured();
+    return from(block.auth.signIn(request)).pipe(
       tap((response) => {
         if (this.isTokenMode && this.tokenManager && response.accessToken) {
           this.tokenManager.setTokens(response.accessToken, response.refreshToken);
@@ -92,7 +109,8 @@ export class AuthenticationService {
    * When using simplified API, tokens are stored automatically if returned.
    */
   signUp(request: SignUpRequest): Observable<SignUpResponse> {
-    return from(this.block.auth.signUp(request)).pipe(
+    const block = this.ensureConfigured();
+    return from(block.auth.signUp(request)).pipe(
       tap((response) => {
         if (this.isTokenMode && this.tokenManager && response.accessToken) {
           this.tokenManager.setTokens(response.accessToken);
@@ -106,7 +124,8 @@ export class AuthenticationService {
    * When using simplified API, tokens are cleared automatically.
    */
   signOut(): Observable<void> {
-    return from(this.block.auth.signOut()).pipe(
+    const block = this.ensureConfigured();
+    return from(block.auth.signOut()).pipe(
       tap(() => {
         if (this.isTokenMode && this.tokenManager) {
           this.tokenManager.clearTokens();
@@ -116,19 +135,19 @@ export class AuthenticationService {
   }
 
   requestPasswordReset(request: PasswordResetRequest): Observable<void> {
-    return from(this.block.auth.requestPasswordReset(request));
+    return from(this.ensureConfigured().auth.requestPasswordReset(request));
   }
 
   updatePassword(request: PasswordUpdateRequest): Observable<void> {
-    return from(this.block.auth.updatePassword(request));
+    return from(this.ensureConfigured().auth.updatePassword(request));
   }
 
   validateToken(token: string): Observable<TokenValidationResponse> {
-    return from(this.block.auth.validateToken(token));
+    return from(this.ensureConfigured().auth.validateToken(token));
   }
 
   getCurrentUser(): Observable<User | null> {
-    return from(this.block.auth.getCurrentUser());
+    return from(this.ensureConfigured().auth.getCurrentUser());
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -136,19 +155,19 @@ export class AuthenticationService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listUsers(params?: { page?: number; perPage?: number }): Observable<User[]> {
-    return from(this.block.users.list(params));
+    return from(this.ensureConfigured().users.list(params));
   }
 
   getUser(id: string): Observable<User> {
-    return from(this.block.users.get(id));
+    return from(this.ensureConfigured().users.get(id));
   }
 
   updateUser(id: string, request: UpdateUserRequest): Observable<User> {
-    return from(this.block.users.update(id, request));
+    return from(this.ensureConfigured().users.update(id, request));
   }
 
   deleteUser(id: string): Observable<void> {
-    return from(this.block.users.delete(id));
+    return from(this.ensureConfigured().users.delete(id));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -156,27 +175,27 @@ export class AuthenticationService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listRoles(): Observable<Role[]> {
-    return from(this.block.roles.list());
+    return from(this.ensureConfigured().roles.list());
   }
 
   getRole(id: string): Observable<Role> {
-    return from(this.block.roles.get(id));
+    return from(this.ensureConfigured().roles.get(id));
   }
 
   createRole(request: CreateRoleRequest): Observable<Role> {
-    return from(this.block.roles.create(request));
+    return from(this.ensureConfigured().roles.create(request));
   }
 
   updateRole(id: string, request: UpdateRoleRequest): Observable<Role> {
-    return from(this.block.roles.update(id, request));
+    return from(this.ensureConfigured().roles.update(id, request));
   }
 
   deleteRole(id: string): Observable<void> {
-    return from(this.block.roles.delete(id));
+    return from(this.ensureConfigured().roles.delete(id));
   }
 
   listPermissions(): Observable<Permission[]> {
-    return from(this.block.roles.listPermissions());
+    return from(this.ensureConfigured().roles.listPermissions());
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -184,23 +203,23 @@ export class AuthenticationService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listApiKeys(): Observable<ApiKey[]> {
-    return from(this.block.apiKeys.list());
+    return from(this.ensureConfigured().apiKeys.list());
   }
 
   getApiKey(id: string): Observable<ApiKey> {
-    return from(this.block.apiKeys.get(id));
+    return from(this.ensureConfigured().apiKeys.get(id));
   }
 
   createApiKey(request: CreateApiKeyRequest): Observable<ApiKeyWithSecret> {
-    return from(this.block.apiKeys.create(request));
+    return from(this.ensureConfigured().apiKeys.create(request));
   }
 
   updateApiKey(id: string, request: UpdateApiKeyRequest): Observable<ApiKey> {
-    return from(this.block.apiKeys.update(id, request));
+    return from(this.ensureConfigured().apiKeys.update(id, request));
   }
 
   revokeApiKey(id: string): Observable<void> {
-    return from(this.block.apiKeys.revoke(id));
+    return from(this.ensureConfigured().apiKeys.revoke(id));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -259,6 +278,6 @@ export class AuthenticationService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): AuthenticationBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

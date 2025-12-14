@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -20,7 +20,7 @@ import {
   type UpdateFileSchemaRequest,
   type ListFileSchemasParams,
 } from '@23blocks/block-files';
-import { TRANSPORT, FILES_CONFIG } from '../tokens.js';
+import { TRANSPORT, FILES_TRANSPORT, FILES_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the Files block.
@@ -48,13 +48,28 @@ import { TRANSPORT, FILES_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class FilesService {
-  private readonly block: FilesBlock;
+  private readonly block: FilesBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(FILES_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(FILES_CONFIG) config: FilesBlockConfig
   ) {
-    this.block = createFilesBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createFilesBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): FilesBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] FilesService is not configured. ' +
+        "Add 'urls.files' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -62,31 +77,31 @@ export class FilesService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listStorageFiles(params?: ListStorageFilesParams): Observable<PageResult<StorageFile>> {
-    return from(this.block.storageFiles.list(params));
+    return from(this.ensureConfigured().storageFiles.list(params));
   }
 
   getStorageFile(uniqueId: string): Observable<StorageFile> {
-    return from(this.block.storageFiles.get(uniqueId));
+    return from(this.ensureConfigured().storageFiles.get(uniqueId));
   }
 
   uploadStorageFile(data: UploadFileRequest): Observable<StorageFile> {
-    return from(this.block.storageFiles.upload(data));
+    return from(this.ensureConfigured().storageFiles.upload(data));
   }
 
   createStorageFile(data: CreateStorageFileRequest): Observable<StorageFile> {
-    return from(this.block.storageFiles.create(data));
+    return from(this.ensureConfigured().storageFiles.create(data));
   }
 
   updateStorageFile(uniqueId: string, data: UpdateStorageFileRequest): Observable<StorageFile> {
-    return from(this.block.storageFiles.update(uniqueId, data));
+    return from(this.ensureConfigured().storageFiles.update(uniqueId, data));
   }
 
   deleteStorageFile(uniqueId: string): Observable<void> {
-    return from(this.block.storageFiles.delete(uniqueId));
+    return from(this.ensureConfigured().storageFiles.delete(uniqueId));
   }
 
   downloadStorageFile(uniqueId: string): Observable<Blob> {
-    return from(this.block.storageFiles.download(uniqueId));
+    return from(this.ensureConfigured().storageFiles.download(uniqueId));
   }
 
   listStorageFilesByOwner(
@@ -94,7 +109,7 @@ export class FilesService {
     ownerType: string,
     params?: ListStorageFilesParams
   ): Observable<PageResult<StorageFile>> {
-    return from(this.block.storageFiles.listByOwner(ownerUniqueId, ownerType, params));
+    return from(this.ensureConfigured().storageFiles.listByOwner(ownerUniqueId, ownerType, params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -102,23 +117,23 @@ export class FilesService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listEntityFiles(params?: ListEntityFilesParams): Observable<PageResult<EntityFile>> {
-    return from(this.block.entityFiles.list(params));
+    return from(this.ensureConfigured().entityFiles.list(params));
   }
 
   getEntityFile(uniqueId: string): Observable<EntityFile> {
-    return from(this.block.entityFiles.get(uniqueId));
+    return from(this.ensureConfigured().entityFiles.get(uniqueId));
   }
 
   attachFile(data: AttachFileRequest): Observable<EntityFile> {
-    return from(this.block.entityFiles.attach(data));
+    return from(this.ensureConfigured().entityFiles.attach(data));
   }
 
   detachFile(uniqueId: string): Observable<void> {
-    return from(this.block.entityFiles.detach(uniqueId));
+    return from(this.ensureConfigured().entityFiles.detach(uniqueId));
   }
 
   updateEntityFile(uniqueId: string, data: UpdateEntityFileRequest): Observable<EntityFile> {
-    return from(this.block.entityFiles.update(uniqueId, data));
+    return from(this.ensureConfigured().entityFiles.update(uniqueId, data));
   }
 
   reorderEntityFiles(
@@ -126,7 +141,7 @@ export class FilesService {
     entityType: string,
     data: ReorderFilesRequest
   ): Observable<EntityFile[]> {
-    return from(this.block.entityFiles.reorder(entityUniqueId, entityType, data));
+    return from(this.ensureConfigured().entityFiles.reorder(entityUniqueId, entityType, data));
   }
 
   listEntityFilesByEntity(
@@ -134,7 +149,7 @@ export class FilesService {
     entityType: string,
     params?: ListEntityFilesParams
   ): Observable<PageResult<EntityFile>> {
-    return from(this.block.entityFiles.listByEntity(entityUniqueId, entityType, params));
+    return from(this.ensureConfigured().entityFiles.listByEntity(entityUniqueId, entityType, params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -142,27 +157,27 @@ export class FilesService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listFileSchemas(params?: ListFileSchemasParams): Observable<PageResult<FileSchema>> {
-    return from(this.block.fileSchemas.list(params));
+    return from(this.ensureConfigured().fileSchemas.list(params));
   }
 
   getFileSchema(uniqueId: string): Observable<FileSchema> {
-    return from(this.block.fileSchemas.get(uniqueId));
+    return from(this.ensureConfigured().fileSchemas.get(uniqueId));
   }
 
   getFileSchemaByCode(code: string): Observable<FileSchema> {
-    return from(this.block.fileSchemas.getByCode(code));
+    return from(this.ensureConfigured().fileSchemas.getByCode(code));
   }
 
   createFileSchema(data: CreateFileSchemaRequest): Observable<FileSchema> {
-    return from(this.block.fileSchemas.create(data));
+    return from(this.ensureConfigured().fileSchemas.create(data));
   }
 
   updateFileSchema(uniqueId: string, data: UpdateFileSchemaRequest): Observable<FileSchema> {
-    return from(this.block.fileSchemas.update(uniqueId, data));
+    return from(this.ensureConfigured().fileSchemas.update(uniqueId, data));
   }
 
   deleteFileSchema(uniqueId: string): Observable<void> {
-    return from(this.block.fileSchemas.delete(uniqueId));
+    return from(this.ensureConfigured().fileSchemas.delete(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -174,6 +189,6 @@ export class FilesService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): FilesBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

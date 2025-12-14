@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -35,7 +35,7 @@ import {
   type SendMessageResponse,
   type ListConversationsParams,
 } from '@23blocks/block-jarvis';
-import { TRANSPORT, JARVIS_CONFIG } from '../tokens.js';
+import { TRANSPORT, JARVIS_TRANSPORT, JARVIS_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the Jarvis block.
@@ -58,13 +58,28 @@ import { TRANSPORT, JARVIS_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class JarvisService {
-  private readonly block: JarvisBlock;
+  private readonly block: JarvisBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(JARVIS_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(JARVIS_CONFIG) config: JarvisBlockConfig
   ) {
-    this.block = createJarvisBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createJarvisBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): JarvisBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] JarvisService is not configured. ' +
+        "Add 'urls.jarvis' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -72,31 +87,31 @@ export class JarvisService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listAgents(params?: ListAgentsParams): Observable<PageResult<Agent>> {
-    return from(this.block.agents.list(params));
+    return from(this.ensureConfigured().agents.list(params));
   }
 
   getAgent(uniqueId: string): Observable<Agent> {
-    return from(this.block.agents.get(uniqueId));
+    return from(this.ensureConfigured().agents.get(uniqueId));
   }
 
   createAgent(data: CreateAgentRequest): Observable<Agent> {
-    return from(this.block.agents.create(data));
+    return from(this.ensureConfigured().agents.create(data));
   }
 
   updateAgent(uniqueId: string, data: UpdateAgentRequest): Observable<Agent> {
-    return from(this.block.agents.update(uniqueId, data));
+    return from(this.ensureConfigured().agents.update(uniqueId, data));
   }
 
   deleteAgent(uniqueId: string): Observable<void> {
-    return from(this.block.agents.delete(uniqueId));
+    return from(this.ensureConfigured().agents.delete(uniqueId));
   }
 
   chat(uniqueId: string, data: ChatRequest): Observable<ChatResponse> {
-    return from(this.block.agents.chat(uniqueId, data));
+    return from(this.ensureConfigured().agents.chat(uniqueId, data));
   }
 
   complete(uniqueId: string, data: CompleteRequest): Observable<CompleteResponse> {
-    return from(this.block.agents.complete(uniqueId, data));
+    return from(this.ensureConfigured().agents.complete(uniqueId, data));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -104,31 +119,31 @@ export class JarvisService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listPrompts(params?: ListPromptsParams): Observable<PageResult<Prompt>> {
-    return from(this.block.prompts.list(params));
+    return from(this.ensureConfigured().prompts.list(params));
   }
 
   getPrompt(uniqueId: string): Observable<Prompt> {
-    return from(this.block.prompts.get(uniqueId));
+    return from(this.ensureConfigured().prompts.get(uniqueId));
   }
 
   createPrompt(data: CreatePromptRequest): Observable<Prompt> {
-    return from(this.block.prompts.create(data));
+    return from(this.ensureConfigured().prompts.create(data));
   }
 
   updatePrompt(uniqueId: string, data: UpdatePromptRequest): Observable<Prompt> {
-    return from(this.block.prompts.update(uniqueId, data));
+    return from(this.ensureConfigured().prompts.update(uniqueId, data));
   }
 
   deletePrompt(uniqueId: string): Observable<void> {
-    return from(this.block.prompts.delete(uniqueId));
+    return from(this.ensureConfigured().prompts.delete(uniqueId));
   }
 
   executePrompt(uniqueId: string, data: ExecutePromptRequest): Observable<ExecutePromptResponse> {
-    return from(this.block.prompts.execute(uniqueId, data));
+    return from(this.ensureConfigured().prompts.execute(uniqueId, data));
   }
 
   testPrompt(data: TestPromptRequest): Observable<TestPromptResponse> {
-    return from(this.block.prompts.test(data));
+    return from(this.ensureConfigured().prompts.test(data));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -136,35 +151,35 @@ export class JarvisService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listWorkflows(params?: ListWorkflowsParams): Observable<PageResult<Workflow>> {
-    return from(this.block.workflows.list(params));
+    return from(this.ensureConfigured().workflows.list(params));
   }
 
   getWorkflow(uniqueId: string): Observable<Workflow> {
-    return from(this.block.workflows.get(uniqueId));
+    return from(this.ensureConfigured().workflows.get(uniqueId));
   }
 
   createWorkflow(data: CreateWorkflowRequest): Observable<Workflow> {
-    return from(this.block.workflows.create(data));
+    return from(this.ensureConfigured().workflows.create(data));
   }
 
   updateWorkflow(uniqueId: string, data: UpdateWorkflowRequest): Observable<Workflow> {
-    return from(this.block.workflows.update(uniqueId, data));
+    return from(this.ensureConfigured().workflows.update(uniqueId, data));
   }
 
   deleteWorkflow(uniqueId: string): Observable<void> {
-    return from(this.block.workflows.delete(uniqueId));
+    return from(this.ensureConfigured().workflows.delete(uniqueId));
   }
 
   runWorkflow(uniqueId: string, data: RunWorkflowRequest): Observable<RunWorkflowResponse> {
-    return from(this.block.workflows.run(uniqueId, data));
+    return from(this.ensureConfigured().workflows.run(uniqueId, data));
   }
 
   pauseWorkflow(uniqueId: string): Observable<Workflow> {
-    return from(this.block.workflows.pause(uniqueId));
+    return from(this.ensureConfigured().workflows.pause(uniqueId));
   }
 
   resumeWorkflow(uniqueId: string): Observable<Workflow> {
-    return from(this.block.workflows.resume(uniqueId));
+    return from(this.ensureConfigured().workflows.resume(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -172,23 +187,23 @@ export class JarvisService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listExecutions(params?: ListExecutionsParams): Observable<PageResult<Execution>> {
-    return from(this.block.executions.list(params));
+    return from(this.ensureConfigured().executions.list(params));
   }
 
   getExecution(uniqueId: string): Observable<Execution> {
-    return from(this.block.executions.get(uniqueId));
+    return from(this.ensureConfigured().executions.get(uniqueId));
   }
 
   listExecutionsByAgent(agentUniqueId: string, params?: ListExecutionsParams): Observable<PageResult<Execution>> {
-    return from(this.block.executions.listByAgent(agentUniqueId, params));
+    return from(this.ensureConfigured().executions.listByAgent(agentUniqueId, params));
   }
 
   listExecutionsByPrompt(promptUniqueId: string, params?: ListExecutionsParams): Observable<PageResult<Execution>> {
-    return from(this.block.executions.listByPrompt(promptUniqueId, params));
+    return from(this.ensureConfigured().executions.listByPrompt(promptUniqueId, params));
   }
 
   cancelExecution(uniqueId: string): Observable<Execution> {
-    return from(this.block.executions.cancel(uniqueId));
+    return from(this.ensureConfigured().executions.cancel(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -196,27 +211,27 @@ export class JarvisService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listConversations(params?: ListConversationsParams): Observable<PageResult<Conversation>> {
-    return from(this.block.conversations.list(params));
+    return from(this.ensureConfigured().conversations.list(params));
   }
 
   getConversation(uniqueId: string): Observable<Conversation> {
-    return from(this.block.conversations.get(uniqueId));
+    return from(this.ensureConfigured().conversations.get(uniqueId));
   }
 
   createConversation(data: CreateConversationRequest): Observable<Conversation> {
-    return from(this.block.conversations.create(data));
+    return from(this.ensureConfigured().conversations.create(data));
   }
 
   sendMessage(uniqueId: string, data: SendMessageRequest): Observable<SendMessageResponse> {
-    return from(this.block.conversations.sendMessage(uniqueId, data));
+    return from(this.ensureConfigured().conversations.sendMessage(uniqueId, data));
   }
 
   listConversationsByUser(userUniqueId: string, params?: ListConversationsParams): Observable<PageResult<Conversation>> {
-    return from(this.block.conversations.listByUser(userUniqueId, params));
+    return from(this.ensureConfigured().conversations.listByUser(userUniqueId, params));
   }
 
   clearConversation(uniqueId: string): Observable<Conversation> {
-    return from(this.block.conversations.clear(uniqueId));
+    return from(this.ensureConfigured().conversations.clear(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -228,6 +243,6 @@ export class JarvisService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): JarvisBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

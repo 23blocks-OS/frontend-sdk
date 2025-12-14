@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -34,7 +34,7 @@ import {
   type UpdatePremiseRequest,
   type ListPremisesParams,
 } from '@23blocks/block-geolocation';
-import { TRANSPORT, GEOLOCATION_CONFIG } from '../tokens.js';
+import { TRANSPORT, GEOLOCATION_TRANSPORT, GEOLOCATION_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the Geolocation block.
@@ -57,13 +57,28 @@ import { TRANSPORT, GEOLOCATION_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class GeolocationService {
-  private readonly block: GeolocationBlock;
+  private readonly block: GeolocationBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(GEOLOCATION_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(GEOLOCATION_CONFIG) config: GeolocationBlockConfig
   ) {
-    this.block = createGeolocationBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createGeolocationBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): GeolocationBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] GeolocationService is not configured. ' +
+        "Add 'urls.geolocation' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -71,35 +86,35 @@ export class GeolocationService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listLocations(params?: ListLocationsParams): Observable<PageResult<Location>> {
-    return from(this.block.locations.list(params));
+    return from(this.ensureConfigured().locations.list(params));
   }
 
   getLocation(uniqueId: string): Observable<Location> {
-    return from(this.block.locations.get(uniqueId));
+    return from(this.ensureConfigured().locations.get(uniqueId));
   }
 
   createLocation(data: CreateLocationRequest): Observable<Location> {
-    return from(this.block.locations.create(data));
+    return from(this.ensureConfigured().locations.create(data));
   }
 
   updateLocation(uniqueId: string, data: UpdateLocationRequest): Observable<Location> {
-    return from(this.block.locations.update(uniqueId, data));
+    return from(this.ensureConfigured().locations.update(uniqueId, data));
   }
 
   deleteLocation(uniqueId: string): Observable<void> {
-    return from(this.block.locations.delete(uniqueId));
+    return from(this.ensureConfigured().locations.delete(uniqueId));
   }
 
   recoverLocation(uniqueId: string): Observable<Location> {
-    return from(this.block.locations.recover(uniqueId));
+    return from(this.ensureConfigured().locations.recover(uniqueId));
   }
 
   searchLocations(query: string, params?: ListLocationsParams): Observable<PageResult<Location>> {
-    return from(this.block.locations.search(query, params));
+    return from(this.ensureConfigured().locations.search(query, params));
   }
 
   listDeletedLocations(params?: ListLocationsParams): Observable<PageResult<Location>> {
-    return from(this.block.locations.listDeleted(params));
+    return from(this.ensureConfigured().locations.listDeleted(params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -107,39 +122,39 @@ export class GeolocationService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listAddresses(params?: ListAddressesParams): Observable<PageResult<Address>> {
-    return from(this.block.addresses.list(params));
+    return from(this.ensureConfigured().addresses.list(params));
   }
 
   getAddress(uniqueId: string): Observable<Address> {
-    return from(this.block.addresses.get(uniqueId));
+    return from(this.ensureConfigured().addresses.get(uniqueId));
   }
 
   createAddress(data: CreateAddressRequest): Observable<Address> {
-    return from(this.block.addresses.create(data));
+    return from(this.ensureConfigured().addresses.create(data));
   }
 
   updateAddress(uniqueId: string, data: UpdateAddressRequest): Observable<Address> {
-    return from(this.block.addresses.update(uniqueId, data));
+    return from(this.ensureConfigured().addresses.update(uniqueId, data));
   }
 
   deleteAddress(uniqueId: string): Observable<void> {
-    return from(this.block.addresses.delete(uniqueId));
+    return from(this.ensureConfigured().addresses.delete(uniqueId));
   }
 
   recoverAddress(uniqueId: string): Observable<Address> {
-    return from(this.block.addresses.recover(uniqueId));
+    return from(this.ensureConfigured().addresses.recover(uniqueId));
   }
 
   searchAddresses(query: string, params?: ListAddressesParams): Observable<PageResult<Address>> {
-    return from(this.block.addresses.search(query, params));
+    return from(this.ensureConfigured().addresses.search(query, params));
   }
 
   listDeletedAddresses(params?: ListAddressesParams): Observable<PageResult<Address>> {
-    return from(this.block.addresses.listDeleted(params));
+    return from(this.ensureConfigured().addresses.listDeleted(params));
   }
 
   setDefaultAddress(uniqueId: string): Observable<Address> {
-    return from(this.block.addresses.setDefault(uniqueId));
+    return from(this.ensureConfigured().addresses.setDefault(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -147,35 +162,35 @@ export class GeolocationService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listAreas(params?: ListAreasParams): Observable<PageResult<Area>> {
-    return from(this.block.areas.list(params));
+    return from(this.ensureConfigured().areas.list(params));
   }
 
   getArea(uniqueId: string): Observable<Area> {
-    return from(this.block.areas.get(uniqueId));
+    return from(this.ensureConfigured().areas.get(uniqueId));
   }
 
   createArea(data: CreateAreaRequest): Observable<Area> {
-    return from(this.block.areas.create(data));
+    return from(this.ensureConfigured().areas.create(data));
   }
 
   updateArea(uniqueId: string, data: UpdateAreaRequest): Observable<Area> {
-    return from(this.block.areas.update(uniqueId, data));
+    return from(this.ensureConfigured().areas.update(uniqueId, data));
   }
 
   deleteArea(uniqueId: string): Observable<void> {
-    return from(this.block.areas.delete(uniqueId));
+    return from(this.ensureConfigured().areas.delete(uniqueId));
   }
 
   recoverArea(uniqueId: string): Observable<Area> {
-    return from(this.block.areas.recover(uniqueId));
+    return from(this.ensureConfigured().areas.recover(uniqueId));
   }
 
   searchAreas(query: string, params?: ListAreasParams): Observable<PageResult<Area>> {
-    return from(this.block.areas.search(query, params));
+    return from(this.ensureConfigured().areas.search(query, params));
   }
 
   listDeletedAreas(params?: ListAreasParams): Observable<PageResult<Area>> {
-    return from(this.block.areas.listDeleted(params));
+    return from(this.ensureConfigured().areas.listDeleted(params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -183,35 +198,35 @@ export class GeolocationService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listRegions(params?: ListRegionsParams): Observable<PageResult<Region>> {
-    return from(this.block.regions.list(params));
+    return from(this.ensureConfigured().regions.list(params));
   }
 
   getRegion(uniqueId: string): Observable<Region> {
-    return from(this.block.regions.get(uniqueId));
+    return from(this.ensureConfigured().regions.get(uniqueId));
   }
 
   createRegion(data: CreateRegionRequest): Observable<Region> {
-    return from(this.block.regions.create(data));
+    return from(this.ensureConfigured().regions.create(data));
   }
 
   updateRegion(uniqueId: string, data: UpdateRegionRequest): Observable<Region> {
-    return from(this.block.regions.update(uniqueId, data));
+    return from(this.ensureConfigured().regions.update(uniqueId, data));
   }
 
   deleteRegion(uniqueId: string): Observable<void> {
-    return from(this.block.regions.delete(uniqueId));
+    return from(this.ensureConfigured().regions.delete(uniqueId));
   }
 
   recoverRegion(uniqueId: string): Observable<Region> {
-    return from(this.block.regions.recover(uniqueId));
+    return from(this.ensureConfigured().regions.recover(uniqueId));
   }
 
   searchRegions(query: string, params?: ListRegionsParams): Observable<PageResult<Region>> {
-    return from(this.block.regions.search(query, params));
+    return from(this.ensureConfigured().regions.search(query, params));
   }
 
   listDeletedRegions(params?: ListRegionsParams): Observable<PageResult<Region>> {
-    return from(this.block.regions.listDeleted(params));
+    return from(this.ensureConfigured().regions.listDeleted(params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -219,35 +234,35 @@ export class GeolocationService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listRoutes(params?: ListTravelRoutesParams): Observable<PageResult<TravelRoute>> {
-    return from(this.block.routes.list(params));
+    return from(this.ensureConfigured().routes.list(params));
   }
 
   getRoute(uniqueId: string): Observable<TravelRoute> {
-    return from(this.block.routes.get(uniqueId));
+    return from(this.ensureConfigured().routes.get(uniqueId));
   }
 
   createRoute(data: CreateTravelRouteRequest): Observable<TravelRoute> {
-    return from(this.block.routes.create(data));
+    return from(this.ensureConfigured().routes.create(data));
   }
 
   updateRoute(uniqueId: string, data: UpdateTravelRouteRequest): Observable<TravelRoute> {
-    return from(this.block.routes.update(uniqueId, data));
+    return from(this.ensureConfigured().routes.update(uniqueId, data));
   }
 
   deleteRoute(uniqueId: string): Observable<void> {
-    return from(this.block.routes.delete(uniqueId));
+    return from(this.ensureConfigured().routes.delete(uniqueId));
   }
 
   recoverRoute(uniqueId: string): Observable<TravelRoute> {
-    return from(this.block.routes.recover(uniqueId));
+    return from(this.ensureConfigured().routes.recover(uniqueId));
   }
 
   searchRoutes(query: string, params?: ListTravelRoutesParams): Observable<PageResult<TravelRoute>> {
-    return from(this.block.routes.search(query, params));
+    return from(this.ensureConfigured().routes.search(query, params));
   }
 
   listDeletedRoutes(params?: ListTravelRoutesParams): Observable<PageResult<TravelRoute>> {
-    return from(this.block.routes.listDeleted(params));
+    return from(this.ensureConfigured().routes.listDeleted(params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -255,35 +270,35 @@ export class GeolocationService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listBookings(params?: ListPremiseBookingsParams): Observable<PageResult<PremiseBooking>> {
-    return from(this.block.bookings.list(params));
+    return from(this.ensureConfigured().bookings.list(params));
   }
 
   getBooking(uniqueId: string): Observable<PremiseBooking> {
-    return from(this.block.bookings.get(uniqueId));
+    return from(this.ensureConfigured().bookings.get(uniqueId));
   }
 
   createBooking(data: CreatePremiseBookingRequest): Observable<PremiseBooking> {
-    return from(this.block.bookings.create(data));
+    return from(this.ensureConfigured().bookings.create(data));
   }
 
   updateBooking(uniqueId: string, data: UpdatePremiseBookingRequest): Observable<PremiseBooking> {
-    return from(this.block.bookings.update(uniqueId, data));
+    return from(this.ensureConfigured().bookings.update(uniqueId, data));
   }
 
   deleteBooking(uniqueId: string): Observable<void> {
-    return from(this.block.bookings.delete(uniqueId));
+    return from(this.ensureConfigured().bookings.delete(uniqueId));
   }
 
   recoverBooking(uniqueId: string): Observable<PremiseBooking> {
-    return from(this.block.bookings.recover(uniqueId));
+    return from(this.ensureConfigured().bookings.recover(uniqueId));
   }
 
   searchBookings(query: string, params?: ListPremiseBookingsParams): Observable<PageResult<PremiseBooking>> {
-    return from(this.block.bookings.search(query, params));
+    return from(this.ensureConfigured().bookings.search(query, params));
   }
 
   listDeletedBookings(params?: ListPremiseBookingsParams): Observable<PageResult<PremiseBooking>> {
-    return from(this.block.bookings.listDeleted(params));
+    return from(this.ensureConfigured().bookings.listDeleted(params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -291,35 +306,35 @@ export class GeolocationService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listPremises(params?: ListPremisesParams): Observable<PageResult<Premise>> {
-    return from(this.block.premises.list(params));
+    return from(this.ensureConfigured().premises.list(params));
   }
 
   getPremise(uniqueId: string): Observable<Premise> {
-    return from(this.block.premises.get(uniqueId));
+    return from(this.ensureConfigured().premises.get(uniqueId));
   }
 
   createPremise(data: CreatePremiseRequest): Observable<Premise> {
-    return from(this.block.premises.create(data));
+    return from(this.ensureConfigured().premises.create(data));
   }
 
   updatePremise(uniqueId: string, data: UpdatePremiseRequest): Observable<Premise> {
-    return from(this.block.premises.update(uniqueId, data));
+    return from(this.ensureConfigured().premises.update(uniqueId, data));
   }
 
   deletePremise(uniqueId: string): Observable<void> {
-    return from(this.block.premises.delete(uniqueId));
+    return from(this.ensureConfigured().premises.delete(uniqueId));
   }
 
   recoverPremise(uniqueId: string): Observable<Premise> {
-    return from(this.block.premises.recover(uniqueId));
+    return from(this.ensureConfigured().premises.recover(uniqueId));
   }
 
   searchPremises(query: string, params?: ListPremisesParams): Observable<PageResult<Premise>> {
-    return from(this.block.premises.search(query, params));
+    return from(this.ensureConfigured().premises.search(query, params));
   }
 
   listDeletedPremises(params?: ListPremisesParams): Observable<PageResult<Premise>> {
-    return from(this.block.premises.listDeleted(params));
+    return from(this.ensureConfigured().premises.listDeleted(params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -331,6 +346,6 @@ export class GeolocationService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): GeolocationBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

@@ -19,10 +19,73 @@ import type { OnboardingBlockConfig } from '@23blocks/block-onboarding';
 import type { UniversityBlockConfig } from '@23blocks/block-university';
 import type { WalletBlockConfig } from '@23blocks/block-wallet';
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Transport Tokens (per-service)
+// ─────────────────────────────────────────────────────────────────────────────
+
 /**
- * Injection token for the Transport instance
+ * @deprecated Use per-service transport tokens (AUTHENTICATION_TRANSPORT, etc.)
+ * Shared transport token - only for backward compatibility with advanced API
  */
 export const TRANSPORT = new InjectionToken<Transport>('23blocks.transport');
+
+/** Transport for Authentication service */
+export const AUTHENTICATION_TRANSPORT = new InjectionToken<Transport | null>('23blocks.authentication.transport');
+
+/** Transport for Search service */
+export const SEARCH_TRANSPORT = new InjectionToken<Transport | null>('23blocks.search.transport');
+
+/** Transport for Products service */
+export const PRODUCTS_TRANSPORT = new InjectionToken<Transport | null>('23blocks.products.transport');
+
+/** Transport for CRM service */
+export const CRM_TRANSPORT = new InjectionToken<Transport | null>('23blocks.crm.transport');
+
+/** Transport for Content service */
+export const CONTENT_TRANSPORT = new InjectionToken<Transport | null>('23blocks.content.transport');
+
+/** Transport for Geolocation service */
+export const GEOLOCATION_TRANSPORT = new InjectionToken<Transport | null>('23blocks.geolocation.transport');
+
+/** Transport for Conversations service */
+export const CONVERSATIONS_TRANSPORT = new InjectionToken<Transport | null>('23blocks.conversations.transport');
+
+/** Transport for Files service */
+export const FILES_TRANSPORT = new InjectionToken<Transport | null>('23blocks.files.transport');
+
+/** Transport for Forms service */
+export const FORMS_TRANSPORT = new InjectionToken<Transport | null>('23blocks.forms.transport');
+
+/** Transport for Assets service */
+export const ASSETS_TRANSPORT = new InjectionToken<Transport | null>('23blocks.assets.transport');
+
+/** Transport for Campaigns service */
+export const CAMPAIGNS_TRANSPORT = new InjectionToken<Transport | null>('23blocks.campaigns.transport');
+
+/** Transport for Company service */
+export const COMPANY_TRANSPORT = new InjectionToken<Transport | null>('23blocks.company.transport');
+
+/** Transport for Rewards service */
+export const REWARDS_TRANSPORT = new InjectionToken<Transport | null>('23blocks.rewards.transport');
+
+/** Transport for Sales service */
+export const SALES_TRANSPORT = new InjectionToken<Transport | null>('23blocks.sales.transport');
+
+/** Transport for Wallet service */
+export const WALLET_TRANSPORT = new InjectionToken<Transport | null>('23blocks.wallet.transport');
+
+/** Transport for Jarvis service */
+export const JARVIS_TRANSPORT = new InjectionToken<Transport | null>('23blocks.jarvis.transport');
+
+/** Transport for Onboarding service */
+export const ONBOARDING_TRANSPORT = new InjectionToken<Transport | null>('23blocks.onboarding.transport');
+
+/** Transport for University service */
+export const UNIVERSITY_TRANSPORT = new InjectionToken<Transport | null>('23blocks.university.transport');
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Config Tokens (per-service)
+// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Injection token for Authentication block configuration

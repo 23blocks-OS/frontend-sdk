@@ -37,115 +37,45 @@ import { createTokenManager, type StorageType, type TokenManager, type TokenMana
 export type AuthMode = 'token' | 'cookie';
 
 /**
- * Service URL configuration - each microservice has its own URL
+ * Service URL configuration - each microservice has its own URL.
+ * All URLs are optional - only configure the services you need.
  */
 export interface ServiceUrls {
-  /**
-   * Authentication service URL (auth, users, roles, api-keys)
-   * @example 'https://gateway.23blocks.com'
-   */
-  authentication: string;
-
-  /**
-   * Search service URL
-   * @example 'https://search.23blocks.com'
-   */
+  /** Authentication service URL */
+  authentication?: string;
+  /** Search service URL */
   search?: string;
-
-  /**
-   * Products service URL
-   * @example 'https://products.23blocks.com'
-   */
+  /** Products service URL */
   products?: string;
-
-  /**
-   * CRM service URL
-   * @example 'https://crm.23blocks.com'
-   */
+  /** CRM service URL */
   crm?: string;
-
-  /**
-   * Content service URL
-   * @example 'https://content.23blocks.com'
-   */
+  /** Content service URL */
   content?: string;
-
-  /**
-   * Geolocation service URL
-   * @example 'https://geolocation.23blocks.com'
-   */
+  /** Geolocation service URL */
   geolocation?: string;
-
-  /**
-   * Conversations service URL
-   * @example 'https://conversations.23blocks.com'
-   */
+  /** Conversations service URL */
   conversations?: string;
-
-  /**
-   * Files service URL
-   * @example 'https://files.23blocks.com'
-   */
+  /** Files service URL */
   files?: string;
-
-  /**
-   * Forms service URL
-   * @example 'https://forms.23blocks.com'
-   */
+  /** Forms service URL */
   forms?: string;
-
-  /**
-   * Assets service URL
-   * @example 'https://assets.23blocks.com'
-   */
+  /** Assets service URL */
   assets?: string;
-
-  /**
-   * Campaigns service URL
-   * @example 'https://campaigns.23blocks.com'
-   */
+  /** Campaigns service URL */
   campaigns?: string;
-
-  /**
-   * Company service URL
-   * @example 'https://company.23blocks.com'
-   */
+  /** Company service URL */
   company?: string;
-
-  /**
-   * Rewards service URL
-   * @example 'https://rewards.23blocks.com'
-   */
+  /** Rewards service URL */
   rewards?: string;
-
-  /**
-   * Sales service URL
-   * @example 'https://sales.23blocks.com'
-   */
+  /** Sales service URL */
   sales?: string;
-
-  /**
-   * Wallet service URL
-   * @example 'https://wallet.23blocks.com'
-   */
+  /** Wallet service URL */
   wallet?: string;
-
-  /**
-   * Jarvis (AI) service URL
-   * @example 'https://jarvis.23blocks.com'
-   */
+  /** Jarvis (AI) service URL */
   jarvis?: string;
-
-  /**
-   * Onboarding service URL
-   * @example 'https://onboarding.23blocks.com'
-   */
+  /** Onboarding service URL */
   onboarding?: string;
-
-  /**
-   * University (LMS) service URL
-   * @example 'https://university.23blocks.com'
-   */
+  /** University (LMS) service URL */
   university?: string;
 }
 
@@ -155,8 +85,8 @@ export interface ServiceUrls {
 export interface ClientConfig {
   /**
    * Service URLs for each microservice.
-   * At minimum, `authentication` URL is required.
-   * Other services are optional and will be disabled if not provided.
+   * Only configure the services you need - accessing a service without
+   * a configured URL will throw an error.
    *
    * @example
    * ```typescript
@@ -237,120 +167,145 @@ export interface ManagedAuthService extends Omit<AuthenticationBlock['auth'], 's
 }
 
 /**
- * 23blocks client interface
+ * 23blocks client interface.
+ *
+ * Services are only available if their URL was configured.
+ * Accessing a service without a configured URL will throw an error.
  */
 export interface Blocks23Client {
   // ─────────────────────────────────────────────────────────────────────────────
-  // Blocks
+  // Blocks (available only if URL configured)
   // ─────────────────────────────────────────────────────────────────────────────
 
   /**
-   * Authentication operations with automatic token management
+   * Authentication operations with automatic token management.
+   * Requires `urls.authentication` to be configured.
    */
   auth: ManagedAuthService;
 
   /**
-   * User management operations
+   * User management operations.
+   * Requires `urls.authentication` to be configured.
    */
   users: AuthenticationBlock['users'];
 
   /**
-   * Role and permission management
+   * Role and permission management.
+   * Requires `urls.authentication` to be configured.
    */
   roles: AuthenticationBlock['roles'];
 
   /**
-   * API key management
+   * API key management.
+   * Requires `urls.authentication` to be configured.
    */
   apiKeys: AuthenticationBlock['apiKeys'];
 
   /**
-   * Full authentication block (advanced access)
+   * Full authentication block (advanced access).
+   * Requires `urls.authentication` to be configured.
    */
   authentication: AuthenticationBlock;
 
   /**
-   * Search and favorites
+   * Search and favorites.
+   * Requires `urls.search` to be configured.
    */
   search: SearchBlock;
 
   /**
-   * Products, cart, and catalog
+   * Products, cart, and catalog.
+   * Requires `urls.products` to be configured.
    */
   products: ProductsBlock;
 
   /**
-   * CRM - contacts, organizations, deals
+   * CRM - contacts, organizations, deals.
+   * Requires `urls.crm` to be configured.
    */
   crm: CrmBlock;
 
   /**
-   * Content management
+   * Content management.
+   * Requires `urls.content` to be configured.
    */
   content: ContentBlock;
 
   /**
-   * Geolocation - addresses, places
+   * Geolocation - addresses, places.
+   * Requires `urls.geolocation` to be configured.
    */
   geolocation: GeolocationBlock;
 
   /**
-   * Messaging and conversations
+   * Messaging and conversations.
+   * Requires `urls.conversations` to be configured.
    */
   conversations: ConversationsBlock;
 
   /**
-   * File uploads and storage
+   * File uploads and storage.
+   * Requires `urls.files` to be configured.
    */
   files: FilesBlock;
 
   /**
-   * Form builder and submissions
+   * Form builder and submissions.
+   * Requires `urls.forms` to be configured.
    */
   forms: FormsBlock;
 
   /**
-   * Asset management
+   * Asset management.
+   * Requires `urls.assets` to be configured.
    */
   assets: AssetsBlock;
 
   /**
-   * Marketing campaigns
+   * Marketing campaigns.
+   * Requires `urls.campaigns` to be configured.
    */
   campaigns: CampaignsBlock;
 
   /**
-   * Company settings
+   * Company settings.
+   * Requires `urls.company` to be configured.
    */
   company: CompanyBlock;
 
   /**
-   * Rewards and loyalty
+   * Rewards and loyalty.
+   * Requires `urls.rewards` to be configured.
    */
   rewards: RewardsBlock;
 
   /**
-   * Sales, orders, invoices
+   * Sales, orders, invoices.
+   * Requires `urls.sales` to be configured.
    */
   sales: SalesBlock;
 
   /**
-   * Digital wallet
+   * Digital wallet.
+   * Requires `urls.wallet` to be configured.
    */
   wallet: WalletBlock;
 
   /**
-   * AI assistant
+   * AI assistant.
+   * Requires `urls.jarvis` to be configured.
    */
   jarvis: JarvisBlock;
 
   /**
-   * User onboarding
+   * User onboarding.
+   * Requires `urls.onboarding` to be configured.
    */
   onboarding: OnboardingBlock;
 
   /**
-   * Learning management
+   * Learning management.
+   * Requires `urls.university` to be configured.
    */
   university: UniversityBlock;
 
@@ -499,176 +454,175 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
     });
   }
 
+  // Helper to create a proxy that throws when accessing unconfigured service
+  function createUnconfiguredServiceProxy<T>(serviceName: string, urlKey: string): T {
+    return new Proxy({} as T, {
+      get(_target, prop) {
+        throw new Error(
+          `[23blocks] Cannot access '${serviceName}.${String(prop)}': ` +
+          `The ${serviceName} service URL is not configured. ` +
+          `Add 'urls.${urlKey}' to your client configuration.`
+        );
+      },
+    });
+  }
+
   // Create block config
   const blockConfig = { appId, tenantId };
 
-  // Create transports for each service (only if URL is provided)
-  const authTransport = createServiceTransport(urls.authentication);
+  // Create blocks only if their URL is provided
+  const authenticationBlock = urls.authentication
+    ? createAuthenticationBlock(createServiceTransport(urls.authentication), blockConfig)
+    : null;
 
-  // Create all blocks with their respective transports
-  const authenticationBlock = createAuthenticationBlock(authTransport, blockConfig);
-
-  // Optional blocks - only create if URL is provided
   const searchBlock = urls.search
     ? createSearchBlock(createServiceTransport(urls.search), blockConfig)
-    : createSearchBlock(authTransport, blockConfig); // fallback to auth URL
+    : null;
 
   const productsBlock = urls.products
     ? createProductsBlock(createServiceTransport(urls.products), blockConfig)
-    : createProductsBlock(authTransport, blockConfig);
+    : null;
 
   const crmBlock = urls.crm
     ? createCrmBlock(createServiceTransport(urls.crm), blockConfig)
-    : createCrmBlock(authTransport, blockConfig);
+    : null;
 
   const contentBlock = urls.content
     ? createContentBlock(createServiceTransport(urls.content), blockConfig)
-    : createContentBlock(authTransport, blockConfig);
+    : null;
 
   const geolocationBlock = urls.geolocation
     ? createGeolocationBlock(createServiceTransport(urls.geolocation), blockConfig)
-    : createGeolocationBlock(authTransport, blockConfig);
+    : null;
 
   const conversationsBlock = urls.conversations
     ? createConversationsBlock(createServiceTransport(urls.conversations), blockConfig)
-    : createConversationsBlock(authTransport, blockConfig);
+    : null;
 
   const filesBlock = urls.files
     ? createFilesBlock(createServiceTransport(urls.files), blockConfig)
-    : createFilesBlock(authTransport, blockConfig);
+    : null;
 
   const formsBlock = urls.forms
     ? createFormsBlock(createServiceTransport(urls.forms), blockConfig)
-    : createFormsBlock(authTransport, blockConfig);
+    : null;
 
   const assetsBlock = urls.assets
     ? createAssetsBlock(createServiceTransport(urls.assets), blockConfig)
-    : createAssetsBlock(authTransport, blockConfig);
+    : null;
 
   const campaignsBlock = urls.campaigns
     ? createCampaignsBlock(createServiceTransport(urls.campaigns), blockConfig)
-    : createCampaignsBlock(authTransport, blockConfig);
+    : null;
 
   const companyBlock = urls.company
     ? createCompanyBlock(createServiceTransport(urls.company), blockConfig)
-    : createCompanyBlock(authTransport, blockConfig);
+    : null;
 
   const rewardsBlock = urls.rewards
     ? createRewardsBlock(createServiceTransport(urls.rewards), blockConfig)
-    : createRewardsBlock(authTransport, blockConfig);
+    : null;
 
   const salesBlock = urls.sales
     ? createSalesBlock(createServiceTransport(urls.sales), blockConfig)
-    : createSalesBlock(authTransport, blockConfig);
+    : null;
 
   const walletBlock = urls.wallet
     ? createWalletBlock(createServiceTransport(urls.wallet), blockConfig)
-    : createWalletBlock(authTransport, blockConfig);
+    : null;
 
   const jarvisBlock = urls.jarvis
     ? createJarvisBlock(createServiceTransport(urls.jarvis), blockConfig)
-    : createJarvisBlock(authTransport, blockConfig);
+    : null;
 
   const onboardingBlock = urls.onboarding
     ? createOnboardingBlock(createServiceTransport(urls.onboarding), blockConfig)
-    : createOnboardingBlock(authTransport, blockConfig);
+    : null;
 
   const universityBlock = urls.university
     ? createUniversityBlock(createServiceTransport(urls.university), blockConfig)
-    : createUniversityBlock(authTransport, blockConfig);
+    : null;
 
-  // Create managed auth service with automatic token handling
-  const managedAuth: ManagedAuthService = {
-    // Wrapped methods that handle tokens
-    async signIn(request: SignInRequest): Promise<SignInResponse> {
-      const response = await authenticationBlock.auth.signIn(request);
+  // Create managed auth service with automatic token handling (only if auth URL configured)
+  const managedAuth: ManagedAuthService = authenticationBlock
+    ? {
+        async signIn(request: SignInRequest): Promise<SignInResponse> {
+          const response = await authenticationBlock.auth.signIn(request);
+          if (authMode === 'token' && tokenManager && response.accessToken) {
+            tokenManager.setTokens(response.accessToken, response.refreshToken);
+          }
+          return response;
+        },
 
-      // In token mode, store the tokens
-      if (authMode === 'token' && tokenManager && response.accessToken) {
-        tokenManager.setTokens(response.accessToken, response.refreshToken);
+        async signUp(request: SignUpRequest): Promise<SignUpResponse> {
+          const response = await authenticationBlock.auth.signUp(request);
+          if (authMode === 'token' && tokenManager && response.accessToken) {
+            tokenManager.setTokens(response.accessToken);
+          }
+          return response;
+        },
+
+        async signOut(): Promise<void> {
+          await authenticationBlock.auth.signOut();
+          if (authMode === 'token' && tokenManager) {
+            tokenManager.clearTokens();
+          }
+        },
+
+        async verifyMagicLink(request: MagicLinkVerifyRequest): Promise<SignInResponse> {
+          const response = await authenticationBlock.auth.verifyMagicLink(request);
+          if (authMode === 'token' && tokenManager && response.accessToken) {
+            tokenManager.setTokens(response.accessToken, response.refreshToken);
+          }
+          return response;
+        },
+
+        async acceptInvitation(request: AcceptInvitationRequest): Promise<SignInResponse> {
+          const response = await authenticationBlock.auth.acceptInvitation(request);
+          if (authMode === 'token' && tokenManager && response.accessToken) {
+            tokenManager.setTokens(response.accessToken, response.refreshToken);
+          }
+          return response;
+        },
+
+        validateToken: authenticationBlock.auth.validateToken.bind(authenticationBlock.auth),
+        getCurrentUser: authenticationBlock.auth.getCurrentUser.bind(authenticationBlock.auth),
+        requestPasswordReset: authenticationBlock.auth.requestPasswordReset.bind(authenticationBlock.auth),
+        updatePassword: authenticationBlock.auth.updatePassword.bind(authenticationBlock.auth),
+        refreshToken: authenticationBlock.auth.refreshToken.bind(authenticationBlock.auth),
+        requestMagicLink: authenticationBlock.auth.requestMagicLink.bind(authenticationBlock.auth),
+        sendInvitation: authenticationBlock.auth.sendInvitation.bind(authenticationBlock.auth),
+        confirmEmail: authenticationBlock.auth.confirmEmail.bind(authenticationBlock.auth),
+        resendConfirmation: authenticationBlock.auth.resendConfirmation.bind(authenticationBlock.auth),
       }
-
-      return response;
-    },
-
-    async signUp(request: SignUpRequest): Promise<SignUpResponse> {
-      const response = await authenticationBlock.auth.signUp(request);
-
-      // Store token if returned (some flows auto-confirm)
-      if (authMode === 'token' && tokenManager && response.accessToken) {
-        tokenManager.setTokens(response.accessToken);
-      }
-
-      return response;
-    },
-
-    async signOut(): Promise<void> {
-      await authenticationBlock.auth.signOut();
-
-      // Clear tokens in token mode
-      if (authMode === 'token' && tokenManager) {
-        tokenManager.clearTokens();
-      }
-    },
-
-    async verifyMagicLink(request: MagicLinkVerifyRequest): Promise<SignInResponse> {
-      const response = await authenticationBlock.auth.verifyMagicLink(request);
-
-      if (authMode === 'token' && tokenManager && response.accessToken) {
-        tokenManager.setTokens(response.accessToken, response.refreshToken);
-      }
-
-      return response;
-    },
-
-    async acceptInvitation(request: AcceptInvitationRequest): Promise<SignInResponse> {
-      const response = await authenticationBlock.auth.acceptInvitation(request);
-
-      if (authMode === 'token' && tokenManager && response.accessToken) {
-        tokenManager.setTokens(response.accessToken, response.refreshToken);
-      }
-
-      return response;
-    },
-
-    // Pass-through methods
-    validateToken: authenticationBlock.auth.validateToken.bind(authenticationBlock.auth),
-    getCurrentUser: authenticationBlock.auth.getCurrentUser.bind(authenticationBlock.auth),
-    requestPasswordReset: authenticationBlock.auth.requestPasswordReset.bind(authenticationBlock.auth),
-    updatePassword: authenticationBlock.auth.updatePassword.bind(authenticationBlock.auth),
-    refreshToken: authenticationBlock.auth.refreshToken.bind(authenticationBlock.auth),
-    requestMagicLink: authenticationBlock.auth.requestMagicLink.bind(authenticationBlock.auth),
-    sendInvitation: authenticationBlock.auth.sendInvitation.bind(authenticationBlock.auth),
-    confirmEmail: authenticationBlock.auth.confirmEmail.bind(authenticationBlock.auth),
-    resendConfirmation: authenticationBlock.auth.resendConfirmation.bind(authenticationBlock.auth),
-  };
+    : createUnconfiguredServiceProxy<ManagedAuthService>('auth', 'authentication');
 
   return {
     // Authentication with managed tokens
     auth: managedAuth,
-    users: authenticationBlock.users,
-    roles: authenticationBlock.roles,
-    apiKeys: authenticationBlock.apiKeys,
-    authentication: authenticationBlock,
+    users: authenticationBlock?.users ?? createUnconfiguredServiceProxy('users', 'authentication'),
+    roles: authenticationBlock?.roles ?? createUnconfiguredServiceProxy('roles', 'authentication'),
+    apiKeys: authenticationBlock?.apiKeys ?? createUnconfiguredServiceProxy('apiKeys', 'authentication'),
+    authentication: authenticationBlock ?? createUnconfiguredServiceProxy('authentication', 'authentication'),
 
-    // All other blocks
-    search: searchBlock,
-    products: productsBlock,
-    crm: crmBlock,
-    content: contentBlock,
-    geolocation: geolocationBlock,
-    conversations: conversationsBlock,
-    files: filesBlock,
-    forms: formsBlock,
-    assets: assetsBlock,
-    campaigns: campaignsBlock,
-    company: companyBlock,
-    rewards: rewardsBlock,
-    sales: salesBlock,
-    wallet: walletBlock,
-    jarvis: jarvisBlock,
-    onboarding: onboardingBlock,
-    university: universityBlock,
+    // All blocks - use proxy if not configured
+    search: searchBlock ?? createUnconfiguredServiceProxy('search', 'search'),
+    products: productsBlock ?? createUnconfiguredServiceProxy('products', 'products'),
+    crm: crmBlock ?? createUnconfiguredServiceProxy('crm', 'crm'),
+    content: contentBlock ?? createUnconfiguredServiceProxy('content', 'content'),
+    geolocation: geolocationBlock ?? createUnconfiguredServiceProxy('geolocation', 'geolocation'),
+    conversations: conversationsBlock ?? createUnconfiguredServiceProxy('conversations', 'conversations'),
+    files: filesBlock ?? createUnconfiguredServiceProxy('files', 'files'),
+    forms: formsBlock ?? createUnconfiguredServiceProxy('forms', 'forms'),
+    assets: assetsBlock ?? createUnconfiguredServiceProxy('assets', 'assets'),
+    campaigns: campaignsBlock ?? createUnconfiguredServiceProxy('campaigns', 'campaigns'),
+    company: companyBlock ?? createUnconfiguredServiceProxy('company', 'company'),
+    rewards: rewardsBlock ?? createUnconfiguredServiceProxy('rewards', 'rewards'),
+    sales: salesBlock ?? createUnconfiguredServiceProxy('sales', 'sales'),
+    wallet: walletBlock ?? createUnconfiguredServiceProxy('wallet', 'wallet'),
+    jarvis: jarvisBlock ?? createUnconfiguredServiceProxy('jarvis', 'jarvis'),
+    onboarding: onboardingBlock ?? createUnconfiguredServiceProxy('onboarding', 'onboarding'),
+    university: universityBlock ?? createUnconfiguredServiceProxy('university', 'university'),
 
     // Utilities
     getAccessToken(): string | null {

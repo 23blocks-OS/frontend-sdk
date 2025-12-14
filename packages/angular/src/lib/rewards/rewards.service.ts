@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -32,7 +32,7 @@ import {
   type AwardBadgeRequest,
   type ListUserBadgesParams,
 } from '@23blocks/block-rewards';
-import { TRANSPORT, REWARDS_CONFIG } from '../tokens.js';
+import { TRANSPORT, REWARDS_TRANSPORT, REWARDS_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the Rewards block.
@@ -55,13 +55,28 @@ import { TRANSPORT, REWARDS_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class RewardsService {
-  private readonly block: RewardsBlock;
+  private readonly block: RewardsBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(REWARDS_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(REWARDS_CONFIG) config: RewardsBlockConfig
   ) {
-    this.block = createRewardsBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createRewardsBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): RewardsBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] RewardsService is not configured. ' +
+        "Add 'urls.rewards' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -69,27 +84,27 @@ export class RewardsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listRewards(params?: ListRewardsParams): Observable<PageResult<Reward>> {
-    return from(this.block.rewards.list(params));
+    return from(this.ensureConfigured().rewards.list(params));
   }
 
   getReward(uniqueId: string): Observable<Reward> {
-    return from(this.block.rewards.get(uniqueId));
+    return from(this.ensureConfigured().rewards.get(uniqueId));
   }
 
   createReward(data: CreateRewardRequest): Observable<Reward> {
-    return from(this.block.rewards.create(data));
+    return from(this.ensureConfigured().rewards.create(data));
   }
 
   updateReward(uniqueId: string, data: UpdateRewardRequest): Observable<Reward> {
-    return from(this.block.rewards.update(uniqueId, data));
+    return from(this.ensureConfigured().rewards.update(uniqueId, data));
   }
 
   deleteReward(uniqueId: string): Observable<void> {
-    return from(this.block.rewards.delete(uniqueId));
+    return from(this.ensureConfigured().rewards.delete(uniqueId));
   }
 
   redeemReward(data: RedeemRewardRequest): Observable<RewardRedemption> {
-    return from(this.block.rewards.redeem(data));
+    return from(this.ensureConfigured().rewards.redeem(data));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -97,35 +112,35 @@ export class RewardsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listCoupons(params?: ListCouponsParams): Observable<PageResult<Coupon>> {
-    return from(this.block.coupons.list(params));
+    return from(this.ensureConfigured().coupons.list(params));
   }
 
   getCoupon(uniqueId: string): Observable<Coupon> {
-    return from(this.block.coupons.get(uniqueId));
+    return from(this.ensureConfigured().coupons.get(uniqueId));
   }
 
   getCouponByCode(code: string): Observable<Coupon> {
-    return from(this.block.coupons.getByCode(code));
+    return from(this.ensureConfigured().coupons.getByCode(code));
   }
 
   createCoupon(data: CreateCouponRequest): Observable<Coupon> {
-    return from(this.block.coupons.create(data));
+    return from(this.ensureConfigured().coupons.create(data));
   }
 
   updateCoupon(uniqueId: string, data: UpdateCouponRequest): Observable<Coupon> {
-    return from(this.block.coupons.update(uniqueId, data));
+    return from(this.ensureConfigured().coupons.update(uniqueId, data));
   }
 
   deleteCoupon(uniqueId: string): Observable<void> {
-    return from(this.block.coupons.delete(uniqueId));
+    return from(this.ensureConfigured().coupons.delete(uniqueId));
   }
 
   validateCoupon(data: ValidateCouponRequest): Observable<CouponValidationResult> {
-    return from(this.block.coupons.validate(data));
+    return from(this.ensureConfigured().coupons.validate(data));
   }
 
   applyCoupon(data: ApplyCouponRequest): Observable<CouponApplication> {
-    return from(this.block.coupons.apply(data));
+    return from(this.ensureConfigured().coupons.apply(data));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -133,23 +148,23 @@ export class RewardsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   getLoyalty(uniqueId: string): Observable<Loyalty> {
-    return from(this.block.loyalty.get(uniqueId));
+    return from(this.ensureConfigured().loyalty.get(uniqueId));
   }
 
   getLoyaltyByUser(userUniqueId: string): Observable<Loyalty> {
-    return from(this.block.loyalty.getByUser(userUniqueId));
+    return from(this.ensureConfigured().loyalty.getByUser(userUniqueId));
   }
 
   addPoints(data: AddPointsRequest): Observable<LoyaltyTransaction> {
-    return from(this.block.loyalty.addPoints(data));
+    return from(this.ensureConfigured().loyalty.addPoints(data));
   }
 
   redeemPoints(data: RedeemPointsRequest): Observable<LoyaltyTransaction> {
-    return from(this.block.loyalty.redeemPoints(data));
+    return from(this.ensureConfigured().loyalty.redeemPoints(data));
   }
 
   getLoyaltyHistory(userUniqueId: string, params?: ListTransactionsParams): Observable<PageResult<LoyaltyTransaction>> {
-    return from(this.block.loyalty.getHistory(userUniqueId, params));
+    return from(this.ensureConfigured().loyalty.getHistory(userUniqueId, params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -157,31 +172,31 @@ export class RewardsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listBadges(params?: ListBadgesParams): Observable<PageResult<Badge>> {
-    return from(this.block.badges.list(params));
+    return from(this.ensureConfigured().badges.list(params));
   }
 
   getBadge(uniqueId: string): Observable<Badge> {
-    return from(this.block.badges.get(uniqueId));
+    return from(this.ensureConfigured().badges.get(uniqueId));
   }
 
   createBadge(data: CreateBadgeRequest): Observable<Badge> {
-    return from(this.block.badges.create(data));
+    return from(this.ensureConfigured().badges.create(data));
   }
 
   updateBadge(uniqueId: string, data: UpdateBadgeRequest): Observable<Badge> {
-    return from(this.block.badges.update(uniqueId, data));
+    return from(this.ensureConfigured().badges.update(uniqueId, data));
   }
 
   deleteBadge(uniqueId: string): Observable<void> {
-    return from(this.block.badges.delete(uniqueId));
+    return from(this.ensureConfigured().badges.delete(uniqueId));
   }
 
   awardBadge(data: AwardBadgeRequest): Observable<UserBadge> {
-    return from(this.block.badges.award(data));
+    return from(this.ensureConfigured().badges.award(data));
   }
 
   listUserBadges(userUniqueId: string, params?: ListUserBadgesParams): Observable<PageResult<UserBadge>> {
-    return from(this.block.badges.listByUser(userUniqueId, params));
+    return from(this.ensureConfigured().badges.listByUser(userUniqueId, params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -193,6 +208,6 @@ export class RewardsService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): RewardsBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

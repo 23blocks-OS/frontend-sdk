@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -32,7 +32,7 @@ import {
   type UpdateQuoteRequest,
   type ListQuotesParams,
 } from '@23blocks/block-crm';
-import { TRANSPORT, CRM_CONFIG } from '../tokens.js';
+import { TRANSPORT, CRM_TRANSPORT, CRM_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the CRM block.
@@ -55,13 +55,28 @@ import { TRANSPORT, CRM_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class CrmService {
-  private readonly block: CrmBlock;
+  private readonly block: CrmBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(CRM_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(CRM_CONFIG) config: CrmBlockConfig
   ) {
-    this.block = createCrmBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createCrmBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): CrmBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] CrmService is not configured. ' +
+        "Add 'urls.crm' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -69,35 +84,35 @@ export class CrmService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listAccounts(params?: ListAccountsParams): Observable<PageResult<Account>> {
-    return from(this.block.accounts.list(params));
+    return from(this.ensureConfigured().accounts.list(params));
   }
 
   getAccount(uniqueId: string): Observable<Account> {
-    return from(this.block.accounts.get(uniqueId));
+    return from(this.ensureConfigured().accounts.get(uniqueId));
   }
 
   createAccount(data: CreateAccountRequest): Observable<Account> {
-    return from(this.block.accounts.create(data));
+    return from(this.ensureConfigured().accounts.create(data));
   }
 
   updateAccount(uniqueId: string, data: UpdateAccountRequest): Observable<Account> {
-    return from(this.block.accounts.update(uniqueId, data));
+    return from(this.ensureConfigured().accounts.update(uniqueId, data));
   }
 
   deleteAccount(uniqueId: string): Observable<void> {
-    return from(this.block.accounts.delete(uniqueId));
+    return from(this.ensureConfigured().accounts.delete(uniqueId));
   }
 
   recoverAccount(uniqueId: string): Observable<Account> {
-    return from(this.block.accounts.recover(uniqueId));
+    return from(this.ensureConfigured().accounts.recover(uniqueId));
   }
 
   searchAccounts(query: string, params?: ListAccountsParams): Observable<PageResult<Account>> {
-    return from(this.block.accounts.search(query, params));
+    return from(this.ensureConfigured().accounts.search(query, params));
   }
 
   listDeletedAccounts(params?: ListAccountsParams): Observable<PageResult<Account>> {
-    return from(this.block.accounts.listDeleted(params));
+    return from(this.ensureConfigured().accounts.listDeleted(params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -105,35 +120,35 @@ export class CrmService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listContacts(params?: ListContactsParams): Observable<PageResult<Contact>> {
-    return from(this.block.contacts.list(params));
+    return from(this.ensureConfigured().contacts.list(params));
   }
 
   getContact(uniqueId: string): Observable<Contact> {
-    return from(this.block.contacts.get(uniqueId));
+    return from(this.ensureConfigured().contacts.get(uniqueId));
   }
 
   createContact(data: CreateContactRequest): Observable<Contact> {
-    return from(this.block.contacts.create(data));
+    return from(this.ensureConfigured().contacts.create(data));
   }
 
   updateContact(uniqueId: string, data: UpdateContactRequest): Observable<Contact> {
-    return from(this.block.contacts.update(uniqueId, data));
+    return from(this.ensureConfigured().contacts.update(uniqueId, data));
   }
 
   deleteContact(uniqueId: string): Observable<void> {
-    return from(this.block.contacts.delete(uniqueId));
+    return from(this.ensureConfigured().contacts.delete(uniqueId));
   }
 
   recoverContact(uniqueId: string): Observable<Contact> {
-    return from(this.block.contacts.recover(uniqueId));
+    return from(this.ensureConfigured().contacts.recover(uniqueId));
   }
 
   searchContacts(query: string, params?: ListContactsParams): Observable<PageResult<Contact>> {
-    return from(this.block.contacts.search(query, params));
+    return from(this.ensureConfigured().contacts.search(query, params));
   }
 
   listDeletedContacts(params?: ListContactsParams): Observable<PageResult<Contact>> {
-    return from(this.block.contacts.listDeleted(params));
+    return from(this.ensureConfigured().contacts.listDeleted(params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -141,35 +156,35 @@ export class CrmService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listLeads(params?: ListLeadsParams): Observable<PageResult<Lead>> {
-    return from(this.block.leads.list(params));
+    return from(this.ensureConfigured().leads.list(params));
   }
 
   getLead(uniqueId: string): Observable<Lead> {
-    return from(this.block.leads.get(uniqueId));
+    return from(this.ensureConfigured().leads.get(uniqueId));
   }
 
   createLead(data: CreateLeadRequest): Observable<Lead> {
-    return from(this.block.leads.create(data));
+    return from(this.ensureConfigured().leads.create(data));
   }
 
   updateLead(uniqueId: string, data: UpdateLeadRequest): Observable<Lead> {
-    return from(this.block.leads.update(uniqueId, data));
+    return from(this.ensureConfigured().leads.update(uniqueId, data));
   }
 
   deleteLead(uniqueId: string): Observable<void> {
-    return from(this.block.leads.delete(uniqueId));
+    return from(this.ensureConfigured().leads.delete(uniqueId));
   }
 
   recoverLead(uniqueId: string): Observable<Lead> {
-    return from(this.block.leads.recover(uniqueId));
+    return from(this.ensureConfigured().leads.recover(uniqueId));
   }
 
   searchLeads(query: string, params?: ListLeadsParams): Observable<PageResult<Lead>> {
-    return from(this.block.leads.search(query, params));
+    return from(this.ensureConfigured().leads.search(query, params));
   }
 
   listDeletedLeads(params?: ListLeadsParams): Observable<PageResult<Lead>> {
-    return from(this.block.leads.listDeleted(params));
+    return from(this.ensureConfigured().leads.listDeleted(params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -177,35 +192,35 @@ export class CrmService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listOpportunities(params?: ListOpportunitiesParams): Observable<PageResult<Opportunity>> {
-    return from(this.block.opportunities.list(params));
+    return from(this.ensureConfigured().opportunities.list(params));
   }
 
   getOpportunity(uniqueId: string): Observable<Opportunity> {
-    return from(this.block.opportunities.get(uniqueId));
+    return from(this.ensureConfigured().opportunities.get(uniqueId));
   }
 
   createOpportunity(data: CreateOpportunityRequest): Observable<Opportunity> {
-    return from(this.block.opportunities.create(data));
+    return from(this.ensureConfigured().opportunities.create(data));
   }
 
   updateOpportunity(uniqueId: string, data: UpdateOpportunityRequest): Observable<Opportunity> {
-    return from(this.block.opportunities.update(uniqueId, data));
+    return from(this.ensureConfigured().opportunities.update(uniqueId, data));
   }
 
   deleteOpportunity(uniqueId: string): Observable<void> {
-    return from(this.block.opportunities.delete(uniqueId));
+    return from(this.ensureConfigured().opportunities.delete(uniqueId));
   }
 
   recoverOpportunity(uniqueId: string): Observable<Opportunity> {
-    return from(this.block.opportunities.recover(uniqueId));
+    return from(this.ensureConfigured().opportunities.recover(uniqueId));
   }
 
   searchOpportunities(query: string, params?: ListOpportunitiesParams): Observable<PageResult<Opportunity>> {
-    return from(this.block.opportunities.search(query, params));
+    return from(this.ensureConfigured().opportunities.search(query, params));
   }
 
   listDeletedOpportunities(params?: ListOpportunitiesParams): Observable<PageResult<Opportunity>> {
-    return from(this.block.opportunities.listDeleted(params));
+    return from(this.ensureConfigured().opportunities.listDeleted(params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -213,35 +228,35 @@ export class CrmService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listMeetings(params?: ListMeetingsParams): Observable<PageResult<Meeting>> {
-    return from(this.block.meetings.list(params));
+    return from(this.ensureConfigured().meetings.list(params));
   }
 
   getMeeting(uniqueId: string): Observable<Meeting> {
-    return from(this.block.meetings.get(uniqueId));
+    return from(this.ensureConfigured().meetings.get(uniqueId));
   }
 
   createMeeting(data: CreateMeetingRequest): Observable<Meeting> {
-    return from(this.block.meetings.create(data));
+    return from(this.ensureConfigured().meetings.create(data));
   }
 
   updateMeeting(uniqueId: string, data: UpdateMeetingRequest): Observable<Meeting> {
-    return from(this.block.meetings.update(uniqueId, data));
+    return from(this.ensureConfigured().meetings.update(uniqueId, data));
   }
 
   deleteMeeting(uniqueId: string): Observable<void> {
-    return from(this.block.meetings.delete(uniqueId));
+    return from(this.ensureConfigured().meetings.delete(uniqueId));
   }
 
   recoverMeeting(uniqueId: string): Observable<Meeting> {
-    return from(this.block.meetings.recover(uniqueId));
+    return from(this.ensureConfigured().meetings.recover(uniqueId));
   }
 
   searchMeetings(query: string, params?: ListMeetingsParams): Observable<PageResult<Meeting>> {
-    return from(this.block.meetings.search(query, params));
+    return from(this.ensureConfigured().meetings.search(query, params));
   }
 
   listDeletedMeetings(params?: ListMeetingsParams): Observable<PageResult<Meeting>> {
-    return from(this.block.meetings.listDeleted(params));
+    return from(this.ensureConfigured().meetings.listDeleted(params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -249,35 +264,35 @@ export class CrmService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listQuotes(params?: ListQuotesParams): Observable<PageResult<Quote>> {
-    return from(this.block.quotes.list(params));
+    return from(this.ensureConfigured().quotes.list(params));
   }
 
   getQuote(uniqueId: string): Observable<Quote> {
-    return from(this.block.quotes.get(uniqueId));
+    return from(this.ensureConfigured().quotes.get(uniqueId));
   }
 
   createQuote(data: CreateQuoteRequest): Observable<Quote> {
-    return from(this.block.quotes.create(data));
+    return from(this.ensureConfigured().quotes.create(data));
   }
 
   updateQuote(uniqueId: string, data: UpdateQuoteRequest): Observable<Quote> {
-    return from(this.block.quotes.update(uniqueId, data));
+    return from(this.ensureConfigured().quotes.update(uniqueId, data));
   }
 
   deleteQuote(uniqueId: string): Observable<void> {
-    return from(this.block.quotes.delete(uniqueId));
+    return from(this.ensureConfigured().quotes.delete(uniqueId));
   }
 
   recoverQuote(uniqueId: string): Observable<Quote> {
-    return from(this.block.quotes.recover(uniqueId));
+    return from(this.ensureConfigured().quotes.recover(uniqueId));
   }
 
   searchQuotes(query: string, params?: ListQuotesParams): Observable<PageResult<Quote>> {
-    return from(this.block.quotes.search(query, params));
+    return from(this.ensureConfigured().quotes.search(query, params));
   }
 
   listDeletedQuotes(params?: ListQuotesParams): Observable<PageResult<Quote>> {
-    return from(this.block.quotes.listDeleted(params));
+    return from(this.ensureConfigured().quotes.listDeleted(params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -289,6 +304,6 @@ export class CrmService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): CrmBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

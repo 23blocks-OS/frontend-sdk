@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -22,7 +22,7 @@ import {
   type VerifyUserIdentityRequest,
   type ListUserIdentitiesParams,
 } from '@23blocks/block-onboarding';
-import { TRANSPORT, ONBOARDING_CONFIG } from '../tokens.js';
+import { TRANSPORT, ONBOARDING_TRANSPORT, ONBOARDING_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the Onboarding block.
@@ -49,13 +49,28 @@ import { TRANSPORT, ONBOARDING_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class OnboardingService {
-  private readonly block: OnboardingBlock;
+  private readonly block: OnboardingBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(ONBOARDING_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(ONBOARDING_CONFIG) config: OnboardingBlockConfig
   ) {
-    this.block = createOnboardingBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createOnboardingBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): OnboardingBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] OnboardingService is not configured. ' +
+        "Add 'urls.onboarding' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -63,23 +78,23 @@ export class OnboardingService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listOnboardings(params?: ListOnboardingsParams): Observable<PageResult<Onboarding>> {
-    return from(this.block.onboardings.list(params));
+    return from(this.ensureConfigured().onboardings.list(params));
   }
 
   getOnboarding(uniqueId: string): Observable<Onboarding> {
-    return from(this.block.onboardings.get(uniqueId));
+    return from(this.ensureConfigured().onboardings.get(uniqueId));
   }
 
   createOnboarding(request: CreateOnboardingRequest): Observable<Onboarding> {
-    return from(this.block.onboardings.create(request));
+    return from(this.ensureConfigured().onboardings.create(request));
   }
 
   updateOnboarding(uniqueId: string, request: UpdateOnboardingRequest): Observable<Onboarding> {
-    return from(this.block.onboardings.update(uniqueId, request));
+    return from(this.ensureConfigured().onboardings.update(uniqueId, request));
   }
 
   deleteOnboarding(uniqueId: string): Observable<void> {
-    return from(this.block.onboardings.delete(uniqueId));
+    return from(this.ensureConfigured().onboardings.delete(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -87,27 +102,27 @@ export class OnboardingService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listFlows(params?: ListFlowsParams): Observable<PageResult<Flow>> {
-    return from(this.block.flows.list(params));
+    return from(this.ensureConfigured().flows.list(params));
   }
 
   getFlow(uniqueId: string): Observable<Flow> {
-    return from(this.block.flows.get(uniqueId));
+    return from(this.ensureConfigured().flows.get(uniqueId));
   }
 
   createFlow(request: CreateFlowRequest): Observable<Flow> {
-    return from(this.block.flows.create(request));
+    return from(this.ensureConfigured().flows.create(request));
   }
 
   updateFlow(uniqueId: string, request: UpdateFlowRequest): Observable<Flow> {
-    return from(this.block.flows.update(uniqueId, request));
+    return from(this.ensureConfigured().flows.update(uniqueId, request));
   }
 
   deleteFlow(uniqueId: string): Observable<void> {
-    return from(this.block.flows.delete(uniqueId));
+    return from(this.ensureConfigured().flows.delete(uniqueId));
   }
 
   listFlowsByOnboarding(onboardingUniqueId: string): Observable<Flow[]> {
-    return from(this.block.flows.listByOnboarding(onboardingUniqueId));
+    return from(this.ensureConfigured().flows.listByOnboarding(onboardingUniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -115,31 +130,31 @@ export class OnboardingService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listUserJourneys(params?: ListUserJourneysParams): Observable<PageResult<UserJourney>> {
-    return from(this.block.userJourneys.list(params));
+    return from(this.ensureConfigured().userJourneys.list(params));
   }
 
   getUserJourney(uniqueId: string): Observable<UserJourney> {
-    return from(this.block.userJourneys.get(uniqueId));
+    return from(this.ensureConfigured().userJourneys.get(uniqueId));
   }
 
   startJourney(request: StartJourneyRequest): Observable<UserJourney> {
-    return from(this.block.userJourneys.start(request));
+    return from(this.ensureConfigured().userJourneys.start(request));
   }
 
   completeStep(uniqueId: string, request: CompleteStepRequest): Observable<UserJourney> {
-    return from(this.block.userJourneys.completeStep(uniqueId, request));
+    return from(this.ensureConfigured().userJourneys.completeStep(uniqueId, request));
   }
 
   abandonJourney(uniqueId: string): Observable<UserJourney> {
-    return from(this.block.userJourneys.abandon(uniqueId));
+    return from(this.ensureConfigured().userJourneys.abandon(uniqueId));
   }
 
   getJourneysByUser(userUniqueId: string): Observable<UserJourney[]> {
-    return from(this.block.userJourneys.getByUser(userUniqueId));
+    return from(this.ensureConfigured().userJourneys.getByUser(userUniqueId));
   }
 
   getJourneyProgress(uniqueId: string): Observable<{ progress: number; currentStep?: number; completedSteps?: number[] }> {
-    return from(this.block.userJourneys.getProgress(uniqueId));
+    return from(this.ensureConfigured().userJourneys.getProgress(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -147,27 +162,27 @@ export class OnboardingService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listUserIdentities(params?: ListUserIdentitiesParams): Observable<PageResult<UserIdentity>> {
-    return from(this.block.userIdentities.list(params));
+    return from(this.ensureConfigured().userIdentities.list(params));
   }
 
   getUserIdentity(uniqueId: string): Observable<UserIdentity> {
-    return from(this.block.userIdentities.get(uniqueId));
+    return from(this.ensureConfigured().userIdentities.get(uniqueId));
   }
 
   createUserIdentity(request: CreateUserIdentityRequest): Observable<UserIdentity> {
-    return from(this.block.userIdentities.create(request));
+    return from(this.ensureConfigured().userIdentities.create(request));
   }
 
   verifyUserIdentity(uniqueId: string, request: VerifyUserIdentityRequest): Observable<UserIdentity> {
-    return from(this.block.userIdentities.verify(uniqueId, request));
+    return from(this.ensureConfigured().userIdentities.verify(uniqueId, request));
   }
 
   deleteUserIdentity(uniqueId: string): Observable<void> {
-    return from(this.block.userIdentities.delete(uniqueId));
+    return from(this.ensureConfigured().userIdentities.delete(uniqueId));
   }
 
   listIdentitiesByUser(userUniqueId: string): Observable<UserIdentity[]> {
-    return from(this.block.userIdentities.listByUser(userUniqueId));
+    return from(this.ensureConfigured().userIdentities.listByUser(userUniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -179,6 +194,6 @@ export class OnboardingService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): OnboardingBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

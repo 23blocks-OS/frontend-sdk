@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -23,7 +23,7 @@ import {
   type UpdateFormSetRequest,
   type ListFormSetsParams,
 } from '@23blocks/block-forms';
-import { TRANSPORT, FORMS_CONFIG } from '../tokens.js';
+import { TRANSPORT, FORMS_TRANSPORT, FORMS_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the Forms block.
@@ -46,13 +46,28 @@ import { TRANSPORT, FORMS_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class FormsService {
-  private readonly block: FormsBlock;
+  private readonly block: FormsBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(FORMS_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(FORMS_CONFIG) config: FormsBlockConfig
   ) {
-    this.block = createFormsBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createFormsBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): FormsBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] FormsService is not configured. ' +
+        "Add 'urls.forms' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -60,23 +75,23 @@ export class FormsService {
   // ───────────────────────────────────────────────────────────────────────────
 
   listForms(params?: ListFormsParams): Observable<PageResult<Form>> {
-    return from(this.block.forms.list(params));
+    return from(this.ensureConfigured().forms.list(params));
   }
 
   getForm(uniqueId: string): Observable<Form> {
-    return from(this.block.forms.get(uniqueId));
+    return from(this.ensureConfigured().forms.get(uniqueId));
   }
 
   createForm(data: CreateFormRequest): Observable<Form> {
-    return from(this.block.forms.create(data));
+    return from(this.ensureConfigured().forms.create(data));
   }
 
   updateForm(uniqueId: string, data: UpdateFormRequest): Observable<Form> {
-    return from(this.block.forms.update(uniqueId, data));
+    return from(this.ensureConfigured().forms.update(uniqueId, data));
   }
 
   deleteForm(uniqueId: string): Observable<void> {
-    return from(this.block.forms.delete(uniqueId));
+    return from(this.ensureConfigured().forms.delete(uniqueId));
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -84,27 +99,27 @@ export class FormsService {
   // ───────────────────────────────────────────────────────────────────────────
 
   listFormSchemas(params?: ListFormSchemasParams): Observable<PageResult<FormSchema>> {
-    return from(this.block.schemas.list(params));
+    return from(this.ensureConfigured().schemas.list(params));
   }
 
   getFormSchema(uniqueId: string): Observable<FormSchema> {
-    return from(this.block.schemas.get(uniqueId));
+    return from(this.ensureConfigured().schemas.get(uniqueId));
   }
 
   createFormSchema(data: CreateFormSchemaRequest): Observable<FormSchema> {
-    return from(this.block.schemas.create(data));
+    return from(this.ensureConfigured().schemas.create(data));
   }
 
   updateFormSchema(uniqueId: string, data: UpdateFormSchemaRequest): Observable<FormSchema> {
-    return from(this.block.schemas.update(uniqueId, data));
+    return from(this.ensureConfigured().schemas.update(uniqueId, data));
   }
 
   deleteFormSchema(uniqueId: string): Observable<void> {
-    return from(this.block.schemas.delete(uniqueId));
+    return from(this.ensureConfigured().schemas.delete(uniqueId));
   }
 
   getLatestFormSchemaVersion(formUniqueId: string): Observable<FormSchema> {
-    return from(this.block.schemas.getLatestVersion(formUniqueId));
+    return from(this.ensureConfigured().schemas.getLatestVersion(formUniqueId));
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -112,35 +127,35 @@ export class FormsService {
   // ───────────────────────────────────────────────────────────────────────────
 
   listFormInstances(params?: ListFormInstancesParams): Observable<PageResult<FormInstance>> {
-    return from(this.block.instances.list(params));
+    return from(this.ensureConfigured().instances.list(params));
   }
 
   getFormInstance(uniqueId: string): Observable<FormInstance> {
-    return from(this.block.instances.get(uniqueId));
+    return from(this.ensureConfigured().instances.get(uniqueId));
   }
 
   createFormInstance(data: CreateFormInstanceRequest): Observable<FormInstance> {
-    return from(this.block.instances.create(data));
+    return from(this.ensureConfigured().instances.create(data));
   }
 
   updateFormInstance(uniqueId: string, data: UpdateFormInstanceRequest): Observable<FormInstance> {
-    return from(this.block.instances.update(uniqueId, data));
+    return from(this.ensureConfigured().instances.update(uniqueId, data));
   }
 
   deleteFormInstance(uniqueId: string): Observable<void> {
-    return from(this.block.instances.delete(uniqueId));
+    return from(this.ensureConfigured().instances.delete(uniqueId));
   }
 
   submitFormInstance(data: SubmitFormInstanceRequest): Observable<FormInstance> {
-    return from(this.block.instances.submit(data));
+    return from(this.ensureConfigured().instances.submit(data));
   }
 
   listFormInstancesByUser(userUniqueId: string, params?: ListFormInstancesParams): Observable<PageResult<FormInstance>> {
-    return from(this.block.instances.listByUser(userUniqueId, params));
+    return from(this.ensureConfigured().instances.listByUser(userUniqueId, params));
   }
 
   listFormInstancesBySchema(formSchemaUniqueId: string, params?: ListFormInstancesParams): Observable<PageResult<FormInstance>> {
-    return from(this.block.instances.listBySchema(formSchemaUniqueId, params));
+    return from(this.ensureConfigured().instances.listBySchema(formSchemaUniqueId, params));
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -148,23 +163,23 @@ export class FormsService {
   // ───────────────────────────────────────────────────────────────────────────
 
   listFormSets(params?: ListFormSetsParams): Observable<PageResult<FormSet>> {
-    return from(this.block.sets.list(params));
+    return from(this.ensureConfigured().sets.list(params));
   }
 
   getFormSet(uniqueId: string): Observable<FormSet> {
-    return from(this.block.sets.get(uniqueId));
+    return from(this.ensureConfigured().sets.get(uniqueId));
   }
 
   createFormSet(data: CreateFormSetRequest): Observable<FormSet> {
-    return from(this.block.sets.create(data));
+    return from(this.ensureConfigured().sets.create(data));
   }
 
   updateFormSet(uniqueId: string, data: UpdateFormSetRequest): Observable<FormSet> {
-    return from(this.block.sets.update(uniqueId, data));
+    return from(this.ensureConfigured().sets.update(uniqueId, data));
   }
 
   deleteFormSet(uniqueId: string): Observable<void> {
-    return from(this.block.sets.delete(uniqueId));
+    return from(this.ensureConfigured().sets.delete(uniqueId));
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -176,6 +191,6 @@ export class FormsService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): FormsBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

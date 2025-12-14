@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -19,7 +19,7 @@ import {
   type UseAuthorizationCodeRequest,
   type ListAuthorizationCodesParams,
 } from '@23blocks/block-wallet';
-import { TRANSPORT, WALLET_CONFIG } from '../tokens.js';
+import { TRANSPORT, WALLET_TRANSPORT, WALLET_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the Wallet block.
@@ -42,13 +42,28 @@ import { TRANSPORT, WALLET_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class WalletService {
-  private readonly block: WalletBlock;
+  private readonly block: WalletBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(WALLET_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(WALLET_CONFIG) config: WalletBlockConfig
   ) {
-    this.block = createWalletBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createWalletBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): WalletBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] WalletService is not configured. ' +
+        "Add 'urls.wallet' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -56,35 +71,35 @@ export class WalletService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listWallets(params?: ListWalletsParams): Observable<PageResult<Wallet>> {
-    return from(this.block.wallets.list(params));
+    return from(this.ensureConfigured().wallets.list(params));
   }
 
   getWallet(uniqueId: string): Observable<Wallet> {
-    return from(this.block.wallets.get(uniqueId));
+    return from(this.ensureConfigured().wallets.get(uniqueId));
   }
 
   getWalletByUser(userUniqueId: string): Observable<Wallet> {
-    return from(this.block.wallets.getByUser(userUniqueId));
+    return from(this.ensureConfigured().wallets.getByUser(userUniqueId));
   }
 
   createWallet(data: CreateWalletRequest): Observable<Wallet> {
-    return from(this.block.wallets.create(data));
+    return from(this.ensureConfigured().wallets.create(data));
   }
 
   updateWallet(uniqueId: string, data: UpdateWalletRequest): Observable<Wallet> {
-    return from(this.block.wallets.update(uniqueId, data));
+    return from(this.ensureConfigured().wallets.update(uniqueId, data));
   }
 
   creditWallet(uniqueId: string, data: CreditWalletRequest): Observable<Transaction> {
-    return from(this.block.wallets.credit(uniqueId, data));
+    return from(this.ensureConfigured().wallets.credit(uniqueId, data));
   }
 
   debitWallet(uniqueId: string, data: DebitWalletRequest): Observable<Transaction> {
-    return from(this.block.wallets.debit(uniqueId, data));
+    return from(this.ensureConfigured().wallets.debit(uniqueId, data));
   }
 
   getWalletBalance(uniqueId: string): Observable<{ balance: number; currency: string }> {
-    return from(this.block.wallets.getBalance(uniqueId));
+    return from(this.ensureConfigured().wallets.getBalance(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -92,18 +107,18 @@ export class WalletService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listTransactions(params?: ListTransactionsParams): Observable<PageResult<Transaction>> {
-    return from(this.block.transactions.list(params));
+    return from(this.ensureConfigured().transactions.list(params));
   }
 
   getTransaction(uniqueId: string): Observable<Transaction> {
-    return from(this.block.transactions.get(uniqueId));
+    return from(this.ensureConfigured().transactions.get(uniqueId));
   }
 
   listTransactionsByWallet(
     walletUniqueId: string,
     params?: ListTransactionsParams
   ): Observable<PageResult<Transaction>> {
-    return from(this.block.transactions.listByWallet(walletUniqueId, params));
+    return from(this.ensureConfigured().transactions.listByWallet(walletUniqueId, params));
   }
 
   listTransactionsByReference(
@@ -111,7 +126,7 @@ export class WalletService {
     referenceUniqueId: string,
     params?: ListTransactionsParams
   ): Observable<PageResult<Transaction>> {
-    return from(this.block.transactions.listByReference(referenceType, referenceUniqueId, params));
+    return from(this.ensureConfigured().transactions.listByReference(referenceType, referenceUniqueId, params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -119,29 +134,29 @@ export class WalletService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listAuthorizationCodes(params?: ListAuthorizationCodesParams): Observable<PageResult<AuthorizationCode>> {
-    return from(this.block.authorizationCodes.list(params));
+    return from(this.ensureConfigured().authorizationCodes.list(params));
   }
 
   getAuthorizationCode(uniqueId: string): Observable<AuthorizationCode> {
-    return from(this.block.authorizationCodes.get(uniqueId));
+    return from(this.ensureConfigured().authorizationCodes.get(uniqueId));
   }
 
   createAuthorizationCode(data: CreateAuthorizationCodeRequest): Observable<AuthorizationCode> {
-    return from(this.block.authorizationCodes.create(data));
+    return from(this.ensureConfigured().authorizationCodes.create(data));
   }
 
   validateAuthorizationCode(
     data: ValidateAuthorizationCodeRequest
   ): Observable<{ valid: boolean; authorizationCode?: AuthorizationCode }> {
-    return from(this.block.authorizationCodes.validate(data));
+    return from(this.ensureConfigured().authorizationCodes.validate(data));
   }
 
   useAuthorizationCode(data: UseAuthorizationCodeRequest): Observable<Transaction> {
-    return from(this.block.authorizationCodes.use(data));
+    return from(this.ensureConfigured().authorizationCodes.use(data));
   }
 
   invalidateAuthorizationCode(uniqueId: string): Observable<AuthorizationCode> {
-    return from(this.block.authorizationCodes.invalidate(uniqueId));
+    return from(this.ensureConfigured().authorizationCodes.invalidate(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -153,6 +168,6 @@ export class WalletService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): WalletBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

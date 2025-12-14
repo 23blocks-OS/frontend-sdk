@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -25,7 +25,7 @@ import {
   type UpdateAudienceRequest,
   type ListAudiencesParams,
 } from '@23blocks/block-campaigns';
-import { TRANSPORT, CAMPAIGNS_CONFIG } from '../tokens.js';
+import { TRANSPORT, CAMPAIGNS_TRANSPORT, CAMPAIGNS_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the Campaigns block.
@@ -48,13 +48,28 @@ import { TRANSPORT, CAMPAIGNS_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class CampaignsService {
-  private readonly block: CampaignsBlock;
+  private readonly block: CampaignsBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(CAMPAIGNS_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(CAMPAIGNS_CONFIG) config: CampaignsBlockConfig
   ) {
-    this.block = createCampaignsBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createCampaignsBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): CampaignsBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] CampaignsService is not configured. ' +
+        "Add 'urls.campaigns' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -62,39 +77,39 @@ export class CampaignsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listCampaigns(params?: ListCampaignsParams): Observable<PageResult<Campaign>> {
-    return from(this.block.campaigns.list(params));
+    return from(this.ensureConfigured().campaigns.list(params));
   }
 
   getCampaign(uniqueId: string): Observable<Campaign> {
-    return from(this.block.campaigns.get(uniqueId));
+    return from(this.ensureConfigured().campaigns.get(uniqueId));
   }
 
   createCampaign(data: CreateCampaignRequest): Observable<Campaign> {
-    return from(this.block.campaigns.create(data));
+    return from(this.ensureConfigured().campaigns.create(data));
   }
 
   updateCampaign(uniqueId: string, data: UpdateCampaignRequest): Observable<Campaign> {
-    return from(this.block.campaigns.update(uniqueId, data));
+    return from(this.ensureConfigured().campaigns.update(uniqueId, data));
   }
 
   deleteCampaign(uniqueId: string): Observable<void> {
-    return from(this.block.campaigns.delete(uniqueId));
+    return from(this.ensureConfigured().campaigns.delete(uniqueId));
   }
 
   startCampaign(uniqueId: string): Observable<Campaign> {
-    return from(this.block.campaigns.start(uniqueId));
+    return from(this.ensureConfigured().campaigns.start(uniqueId));
   }
 
   pauseCampaign(uniqueId: string): Observable<Campaign> {
-    return from(this.block.campaigns.pause(uniqueId));
+    return from(this.ensureConfigured().campaigns.pause(uniqueId));
   }
 
   stopCampaign(uniqueId: string): Observable<Campaign> {
-    return from(this.block.campaigns.stop(uniqueId));
+    return from(this.ensureConfigured().campaigns.stop(uniqueId));
   }
 
   getCampaignResults(uniqueId: string): Observable<CampaignResults> {
-    return from(this.block.campaigns.getResults(uniqueId));
+    return from(this.ensureConfigured().campaigns.getResults(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -102,31 +117,31 @@ export class CampaignsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listMedia(params?: ListCampaignMediaParams): Observable<PageResult<CampaignMedia>> {
-    return from(this.block.media.list(params));
+    return from(this.ensureConfigured().media.list(params));
   }
 
   getMedia(uniqueId: string): Observable<CampaignMedia> {
-    return from(this.block.media.get(uniqueId));
+    return from(this.ensureConfigured().media.get(uniqueId));
   }
 
   createMedia(data: CreateCampaignMediaRequest): Observable<CampaignMedia> {
-    return from(this.block.media.create(data));
+    return from(this.ensureConfigured().media.create(data));
   }
 
   updateMedia(uniqueId: string, data: UpdateCampaignMediaRequest): Observable<CampaignMedia> {
-    return from(this.block.media.update(uniqueId, data));
+    return from(this.ensureConfigured().media.update(uniqueId, data));
   }
 
   deleteMedia(uniqueId: string): Observable<void> {
-    return from(this.block.media.delete(uniqueId));
+    return from(this.ensureConfigured().media.delete(uniqueId));
   }
 
   listMediaByCampaign(campaignUniqueId: string): Observable<CampaignMedia[]> {
-    return from(this.block.media.listByCampaign(campaignUniqueId));
+    return from(this.ensureConfigured().media.listByCampaign(campaignUniqueId));
   }
 
   getMediaResults(uniqueId: string): Observable<CampaignMediaResults> {
-    return from(this.block.media.getResults(uniqueId));
+    return from(this.ensureConfigured().media.getResults(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -134,35 +149,35 @@ export class CampaignsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listLandingPages(params?: ListLandingPagesParams): Observable<PageResult<LandingPage>> {
-    return from(this.block.landingPages.list(params));
+    return from(this.ensureConfigured().landingPages.list(params));
   }
 
   getLandingPage(uniqueId: string): Observable<LandingPage> {
-    return from(this.block.landingPages.get(uniqueId));
+    return from(this.ensureConfigured().landingPages.get(uniqueId));
   }
 
   createLandingPage(data: CreateLandingPageRequest): Observable<LandingPage> {
-    return from(this.block.landingPages.create(data));
+    return from(this.ensureConfigured().landingPages.create(data));
   }
 
   updateLandingPage(uniqueId: string, data: UpdateLandingPageRequest): Observable<LandingPage> {
-    return from(this.block.landingPages.update(uniqueId, data));
+    return from(this.ensureConfigured().landingPages.update(uniqueId, data));
   }
 
   deleteLandingPage(uniqueId: string): Observable<void> {
-    return from(this.block.landingPages.delete(uniqueId));
+    return from(this.ensureConfigured().landingPages.delete(uniqueId));
   }
 
   publishLandingPage(uniqueId: string): Observable<LandingPage> {
-    return from(this.block.landingPages.publish(uniqueId));
+    return from(this.ensureConfigured().landingPages.publish(uniqueId));
   }
 
   unpublishLandingPage(uniqueId: string): Observable<LandingPage> {
-    return from(this.block.landingPages.unpublish(uniqueId));
+    return from(this.ensureConfigured().landingPages.unpublish(uniqueId));
   }
 
   getLandingPageBySlug(slug: string): Observable<LandingPage> {
-    return from(this.block.landingPages.getBySlug(slug));
+    return from(this.ensureConfigured().landingPages.getBySlug(slug));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -170,27 +185,27 @@ export class CampaignsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listAudiences(params?: ListAudiencesParams): Observable<PageResult<Audience>> {
-    return from(this.block.audiences.list(params));
+    return from(this.ensureConfigured().audiences.list(params));
   }
 
   getAudience(uniqueId: string): Observable<Audience> {
-    return from(this.block.audiences.get(uniqueId));
+    return from(this.ensureConfigured().audiences.get(uniqueId));
   }
 
   createAudience(data: CreateAudienceRequest): Observable<Audience> {
-    return from(this.block.audiences.create(data));
+    return from(this.ensureConfigured().audiences.create(data));
   }
 
   updateAudience(uniqueId: string, data: UpdateAudienceRequest): Observable<Audience> {
-    return from(this.block.audiences.update(uniqueId, data));
+    return from(this.ensureConfigured().audiences.update(uniqueId, data));
   }
 
   deleteAudience(uniqueId: string): Observable<void> {
-    return from(this.block.audiences.delete(uniqueId));
+    return from(this.ensureConfigured().audiences.delete(uniqueId));
   }
 
   getAudienceMembers(uniqueId: string): Observable<AudienceMember[]> {
-    return from(this.block.audiences.getMembers(uniqueId));
+    return from(this.ensureConfigured().audiences.getMembers(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -202,6 +217,6 @@ export class CampaignsService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): CampaignsBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

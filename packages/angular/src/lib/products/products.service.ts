@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -39,7 +39,7 @@ import {
   type ListVendorsParams,
   type ListWarehousesParams,
 } from '@23blocks/block-products';
-import { TRANSPORT, PRODUCTS_CONFIG } from '../tokens.js';
+import { TRANSPORT, PRODUCTS_TRANSPORT, PRODUCTS_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the Products block.
@@ -62,13 +62,28 @@ import { TRANSPORT, PRODUCTS_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  private readonly block: ProductsBlock;
+  private readonly block: ProductsBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(PRODUCTS_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(PRODUCTS_CONFIG) config: ProductsBlockConfig
   ) {
-    this.block = createProductsBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createProductsBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): ProductsBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] ProductsService is not configured. ' +
+        "Add 'urls.products' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -76,74 +91,74 @@ export class ProductsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listProducts(params?: ListProductsParams): Observable<PageResult<Product>> {
-    return from(this.block.products.list(params));
+    return from(this.ensureConfigured().products.list(params));
   }
 
   getProduct(uniqueId: string): Observable<Product> {
-    return from(this.block.products.get(uniqueId));
+    return from(this.ensureConfigured().products.get(uniqueId));
   }
 
   createProduct(data: CreateProductRequest): Observable<Product> {
-    return from(this.block.products.create(data));
+    return from(this.ensureConfigured().products.create(data));
   }
 
   updateProduct(uniqueId: string, data: UpdateProductRequest): Observable<Product> {
-    return from(this.block.products.update(uniqueId, data));
+    return from(this.ensureConfigured().products.update(uniqueId, data));
   }
 
   deleteProduct(uniqueId: string): Observable<void> {
-    return from(this.block.products.delete(uniqueId));
+    return from(this.ensureConfigured().products.delete(uniqueId));
   }
 
   recoverProduct(uniqueId: string): Observable<Product> {
-    return from(this.block.products.recover(uniqueId));
+    return from(this.ensureConfigured().products.recover(uniqueId));
   }
 
   searchProducts(query: string, params?: ListProductsParams): Observable<PageResult<Product>> {
-    return from(this.block.products.search(query, params));
+    return from(this.ensureConfigured().products.search(query, params));
   }
 
   listDeletedProducts(params?: ListProductsParams): Observable<PageResult<Product>> {
-    return from(this.block.products.listDeleted(params));
+    return from(this.ensureConfigured().products.listDeleted(params));
   }
 
   // Variations
   listVariations(productUniqueId: string): Observable<ProductVariation[]> {
-    return from(this.block.products.listVariations(productUniqueId));
+    return from(this.ensureConfigured().products.listVariations(productUniqueId));
   }
 
   getVariation(uniqueId: string): Observable<ProductVariation> {
-    return from(this.block.products.getVariation(uniqueId));
+    return from(this.ensureConfigured().products.getVariation(uniqueId));
   }
 
   createVariation(data: CreateVariationRequest): Observable<ProductVariation> {
-    return from(this.block.products.createVariation(data));
+    return from(this.ensureConfigured().products.createVariation(data));
   }
 
   updateVariation(uniqueId: string, data: UpdateVariationRequest): Observable<ProductVariation> {
-    return from(this.block.products.updateVariation(uniqueId, data));
+    return from(this.ensureConfigured().products.updateVariation(uniqueId, data));
   }
 
   deleteVariation(uniqueId: string): Observable<void> {
-    return from(this.block.products.deleteVariation(uniqueId));
+    return from(this.ensureConfigured().products.deleteVariation(uniqueId));
   }
 
   // Images
   listImages(productUniqueId: string): Observable<ProductImage[]> {
-    return from(this.block.products.listImages(productUniqueId));
+    return from(this.ensureConfigured().products.listImages(productUniqueId));
   }
 
   addImage(productUniqueId: string, imageUrl: string, isPrimary?: boolean): Observable<ProductImage> {
-    return from(this.block.products.addImage(productUniqueId, imageUrl, isPrimary));
+    return from(this.ensureConfigured().products.addImage(productUniqueId, imageUrl, isPrimary));
   }
 
   deleteImage(uniqueId: string): Observable<void> {
-    return from(this.block.products.deleteImage(uniqueId));
+    return from(this.ensureConfigured().products.deleteImage(uniqueId));
   }
 
   // Stock
   getStock(productUniqueId: string, vendorUniqueId?: string): Observable<ProductStock[]> {
-    return from(this.block.products.getStock(productUniqueId, vendorUniqueId));
+    return from(this.ensureConfigured().products.getStock(productUniqueId, vendorUniqueId));
   }
 
   updateStock(
@@ -152,12 +167,12 @@ export class ProductsService {
     warehouseUniqueId: string,
     quantity: number
   ): Observable<ProductStock> {
-    return from(this.block.products.updateStock(productUniqueId, vendorUniqueId, warehouseUniqueId, quantity));
+    return from(this.ensureConfigured().products.updateStock(productUniqueId, vendorUniqueId, warehouseUniqueId, quantity));
   }
 
   // Reviews
   listReviews(productUniqueId: string): Observable<PageResult<ProductReview>> {
-    return from(this.block.products.listReviews(productUniqueId));
+    return from(this.ensureConfigured().products.listReviews(productUniqueId));
   }
 
   addReview(
@@ -166,7 +181,7 @@ export class ProductsService {
     title?: string,
     content?: string
   ): Observable<ProductReview> {
-    return from(this.block.products.addReview(productUniqueId, rating, title, content));
+    return from(this.ensureConfigured().products.addReview(productUniqueId, rating, title, content));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -174,57 +189,57 @@ export class ProductsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   getCart(userUniqueId: string): Observable<Cart> {
-    return from(this.block.cart.get(userUniqueId));
+    return from(this.ensureConfigured().cart.get(userUniqueId));
   }
 
   getOrCreateCart(userUniqueId: string): Observable<Cart> {
-    return from(this.block.cart.getOrCreate(userUniqueId));
+    return from(this.ensureConfigured().cart.getOrCreate(userUniqueId));
   }
 
   updateCart(userUniqueId: string, data: UpdateCartRequest): Observable<Cart> {
-    return from(this.block.cart.update(userUniqueId, data));
+    return from(this.ensureConfigured().cart.update(userUniqueId, data));
   }
 
   deleteCart(userUniqueId: string): Observable<void> {
-    return from(this.block.cart.delete(userUniqueId));
+    return from(this.ensureConfigured().cart.delete(userUniqueId));
   }
 
   // Cart Items
   addCartItem(userUniqueId: string, item: AddToCartRequest): Observable<Cart> {
-    return from(this.block.cart.addItem(userUniqueId, item));
+    return from(this.ensureConfigured().cart.addItem(userUniqueId, item));
   }
 
   updateCartItem(userUniqueId: string, productUniqueId: string, data: UpdateCartItemRequest): Observable<Cart> {
-    return from(this.block.cart.updateItem(userUniqueId, productUniqueId, data));
+    return from(this.ensureConfigured().cart.updateItem(userUniqueId, productUniqueId, data));
   }
 
   removeCartItem(userUniqueId: string, productUniqueId: string): Observable<Cart> {
-    return from(this.block.cart.removeItem(userUniqueId, productUniqueId));
+    return from(this.ensureConfigured().cart.removeItem(userUniqueId, productUniqueId));
   }
 
   getCartItems(userUniqueId: string): Observable<CartDetail[]> {
-    return from(this.block.cart.getItems(userUniqueId));
+    return from(this.ensureConfigured().cart.getItems(userUniqueId));
   }
 
   // Checkout
   checkout(userUniqueId: string, data?: CheckoutRequest): Observable<Cart> {
-    return from(this.block.cart.checkout(userUniqueId, data));
+    return from(this.ensureConfigured().cart.checkout(userUniqueId, data));
   }
 
   orderCart(userUniqueId: string): Observable<{ cart: Cart; orderUniqueId: string }> {
-    return from(this.block.cart.order(userUniqueId));
+    return from(this.ensureConfigured().cart.order(userUniqueId));
   }
 
   orderCartItem(userUniqueId: string, productUniqueId: string): Observable<{ cart: Cart; orderUniqueId: string }> {
-    return from(this.block.cart.orderItem(userUniqueId, productUniqueId));
+    return from(this.ensureConfigured().cart.orderItem(userUniqueId, productUniqueId));
   }
 
   cancelCart(userUniqueId: string): Observable<Cart> {
-    return from(this.block.cart.cancel(userUniqueId));
+    return from(this.ensureConfigured().cart.cancel(userUniqueId));
   }
 
   cancelCartItem(userUniqueId: string, productUniqueId: string): Observable<Cart> {
-    return from(this.block.cart.cancelItem(userUniqueId, productUniqueId));
+    return from(this.ensureConfigured().cart.cancelItem(userUniqueId, productUniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -232,31 +247,31 @@ export class ProductsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listCategories(params?: ListCategoriesParams): Observable<PageResult<Category>> {
-    return from(this.block.categories.list(params));
+    return from(this.ensureConfigured().categories.list(params));
   }
 
   getCategory(uniqueId: string): Observable<Category> {
-    return from(this.block.categories.get(uniqueId));
+    return from(this.ensureConfigured().categories.get(uniqueId));
   }
 
   createCategory(data: CreateCategoryRequest): Observable<Category> {
-    return from(this.block.categories.create(data));
+    return from(this.ensureConfigured().categories.create(data));
   }
 
   updateCategory(uniqueId: string, data: UpdateCategoryRequest): Observable<Category> {
-    return from(this.block.categories.update(uniqueId, data));
+    return from(this.ensureConfigured().categories.update(uniqueId, data));
   }
 
   deleteCategory(uniqueId: string): Observable<void> {
-    return from(this.block.categories.delete(uniqueId));
+    return from(this.ensureConfigured().categories.delete(uniqueId));
   }
 
   recoverCategory(uniqueId: string): Observable<Category> {
-    return from(this.block.categories.recover(uniqueId));
+    return from(this.ensureConfigured().categories.recover(uniqueId));
   }
 
   getCategoryChildren(uniqueId: string): Observable<Category[]> {
-    return from(this.block.categories.getChildren(uniqueId));
+    return from(this.ensureConfigured().categories.getChildren(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -264,23 +279,23 @@ export class ProductsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listBrands(page?: number, perPage?: number): Observable<PageResult<Brand>> {
-    return from(this.block.brands.list(page, perPage));
+    return from(this.ensureConfigured().brands.list(page, perPage));
   }
 
   getBrand(uniqueId: string): Observable<Brand> {
-    return from(this.block.brands.get(uniqueId));
+    return from(this.ensureConfigured().brands.get(uniqueId));
   }
 
   createBrand(data: CreateBrandRequest): Observable<Brand> {
-    return from(this.block.brands.create(data));
+    return from(this.ensureConfigured().brands.create(data));
   }
 
   updateBrand(uniqueId: string, data: UpdateBrandRequest): Observable<Brand> {
-    return from(this.block.brands.update(uniqueId, data));
+    return from(this.ensureConfigured().brands.update(uniqueId, data));
   }
 
   deleteBrand(uniqueId: string): Observable<void> {
-    return from(this.block.brands.delete(uniqueId));
+    return from(this.ensureConfigured().brands.delete(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -288,23 +303,23 @@ export class ProductsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listVendors(params?: ListVendorsParams): Observable<PageResult<Vendor>> {
-    return from(this.block.vendors.list(params));
+    return from(this.ensureConfigured().vendors.list(params));
   }
 
   getVendor(uniqueId: string): Observable<Vendor> {
-    return from(this.block.vendors.get(uniqueId));
+    return from(this.ensureConfigured().vendors.get(uniqueId));
   }
 
   createVendor(data: CreateVendorRequest): Observable<Vendor> {
-    return from(this.block.vendors.create(data));
+    return from(this.ensureConfigured().vendors.create(data));
   }
 
   updateVendor(uniqueId: string, data: UpdateVendorRequest): Observable<Vendor> {
-    return from(this.block.vendors.update(uniqueId, data));
+    return from(this.ensureConfigured().vendors.update(uniqueId, data));
   }
 
   deleteVendor(uniqueId: string): Observable<void> {
-    return from(this.block.vendors.delete(uniqueId));
+    return from(this.ensureConfigured().vendors.delete(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -312,23 +327,23 @@ export class ProductsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listWarehouses(params?: ListWarehousesParams): Observable<PageResult<Warehouse>> {
-    return from(this.block.warehouses.list(params));
+    return from(this.ensureConfigured().warehouses.list(params));
   }
 
   getWarehouse(uniqueId: string): Observable<Warehouse> {
-    return from(this.block.warehouses.get(uniqueId));
+    return from(this.ensureConfigured().warehouses.get(uniqueId));
   }
 
   createWarehouse(data: CreateWarehouseRequest): Observable<Warehouse> {
-    return from(this.block.warehouses.create(data));
+    return from(this.ensureConfigured().warehouses.create(data));
   }
 
   updateWarehouse(uniqueId: string, data: UpdateWarehouseRequest): Observable<Warehouse> {
-    return from(this.block.warehouses.update(uniqueId, data));
+    return from(this.ensureConfigured().warehouses.update(uniqueId, data));
   }
 
   deleteWarehouse(uniqueId: string): Observable<void> {
-    return from(this.block.warehouses.delete(uniqueId));
+    return from(this.ensureConfigured().warehouses.delete(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -336,11 +351,11 @@ export class ProductsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listChannels(): Observable<Channel[]> {
-    return from(this.block.channels.list());
+    return from(this.ensureConfigured().channels.list());
   }
 
   getChannel(uniqueId: string): Observable<Channel> {
-    return from(this.block.channels.get(uniqueId));
+    return from(this.ensureConfigured().channels.get(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -348,11 +363,11 @@ export class ProductsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listCollections(): Observable<Collection[]> {
-    return from(this.block.collections.list());
+    return from(this.ensureConfigured().collections.list());
   }
 
   getCollection(uniqueId: string): Observable<Collection> {
-    return from(this.block.collections.get(uniqueId));
+    return from(this.ensureConfigured().collections.get(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -364,6 +379,6 @@ export class ProductsService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): ProductsBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -22,7 +22,7 @@ import {
   type UpdateTagRequest,
   type ListTagsParams,
 } from '@23blocks/block-content';
-import { TRANSPORT, CONTENT_CONFIG } from '../tokens.js';
+import { TRANSPORT, CONTENT_TRANSPORT, CONTENT_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the Content block.
@@ -45,13 +45,28 @@ import { TRANSPORT, CONTENT_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class ContentService {
-  private readonly block: ContentBlock;
+  private readonly block: ContentBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(CONTENT_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(CONTENT_CONFIG) config: ContentBlockConfig
   ) {
-    this.block = createContentBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createContentBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): ContentBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] ContentService is not configured. ' +
+        "Add 'urls.content' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -59,51 +74,51 @@ export class ContentService {
   // ───────────────────────────────────────────────────────────────────────────
 
   listPosts(params?: ListPostsParams): Observable<PageResult<Post>> {
-    return from(this.block.posts.list(params));
+    return from(this.ensureConfigured().posts.list(params));
   }
 
   getPost(uniqueId: string): Observable<Post> {
-    return from(this.block.posts.get(uniqueId));
+    return from(this.ensureConfigured().posts.get(uniqueId));
   }
 
   createPost(data: CreatePostRequest): Observable<Post> {
-    return from(this.block.posts.create(data));
+    return from(this.ensureConfigured().posts.create(data));
   }
 
   updatePost(uniqueId: string, data: UpdatePostRequest): Observable<Post> {
-    return from(this.block.posts.update(uniqueId, data));
+    return from(this.ensureConfigured().posts.update(uniqueId, data));
   }
 
   deletePost(uniqueId: string): Observable<void> {
-    return from(this.block.posts.delete(uniqueId));
+    return from(this.ensureConfigured().posts.delete(uniqueId));
   }
 
   recoverPost(uniqueId: string): Observable<Post> {
-    return from(this.block.posts.recover(uniqueId));
+    return from(this.ensureConfigured().posts.recover(uniqueId));
   }
 
   searchPosts(query: string, params?: ListPostsParams): Observable<PageResult<Post>> {
-    return from(this.block.posts.search(query, params));
+    return from(this.ensureConfigured().posts.search(query, params));
   }
 
   listDeletedPosts(params?: ListPostsParams): Observable<PageResult<Post>> {
-    return from(this.block.posts.listDeleted(params));
+    return from(this.ensureConfigured().posts.listDeleted(params));
   }
 
   likePost(uniqueId: string): Observable<Post> {
-    return from(this.block.posts.like(uniqueId));
+    return from(this.ensureConfigured().posts.like(uniqueId));
   }
 
   dislikePost(uniqueId: string): Observable<Post> {
-    return from(this.block.posts.dislike(uniqueId));
+    return from(this.ensureConfigured().posts.dislike(uniqueId));
   }
 
   savePost(uniqueId: string): Observable<Post> {
-    return from(this.block.posts.save(uniqueId));
+    return from(this.ensureConfigured().posts.save(uniqueId));
   }
 
   followPost(uniqueId: string): Observable<Post> {
-    return from(this.block.posts.follow(uniqueId));
+    return from(this.ensureConfigured().posts.follow(uniqueId));
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -111,31 +126,31 @@ export class ContentService {
   // ───────────────────────────────────────────────────────────────────────────
 
   listComments(params?: ListCommentsParams): Observable<PageResult<Comment>> {
-    return from(this.block.comments.list(params));
+    return from(this.ensureConfigured().comments.list(params));
   }
 
   getComment(uniqueId: string): Observable<Comment> {
-    return from(this.block.comments.get(uniqueId));
+    return from(this.ensureConfigured().comments.get(uniqueId));
   }
 
   createComment(data: CreateCommentRequest): Observable<Comment> {
-    return from(this.block.comments.create(data));
+    return from(this.ensureConfigured().comments.create(data));
   }
 
   updateComment(uniqueId: string, data: UpdateCommentRequest): Observable<Comment> {
-    return from(this.block.comments.update(uniqueId, data));
+    return from(this.ensureConfigured().comments.update(uniqueId, data));
   }
 
   deleteComment(uniqueId: string): Observable<void> {
-    return from(this.block.comments.delete(uniqueId));
+    return from(this.ensureConfigured().comments.delete(uniqueId));
   }
 
   likeComment(uniqueId: string): Observable<Comment> {
-    return from(this.block.comments.like(uniqueId));
+    return from(this.ensureConfigured().comments.like(uniqueId));
   }
 
   dislikeComment(uniqueId: string): Observable<Comment> {
-    return from(this.block.comments.dislike(uniqueId));
+    return from(this.ensureConfigured().comments.dislike(uniqueId));
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -143,31 +158,31 @@ export class ContentService {
   // ───────────────────────────────────────────────────────────────────────────
 
   listCategories(params?: ListCategoriesParams): Observable<PageResult<Category>> {
-    return from(this.block.categories.list(params));
+    return from(this.ensureConfigured().categories.list(params));
   }
 
   getCategory(uniqueId: string): Observable<Category> {
-    return from(this.block.categories.get(uniqueId));
+    return from(this.ensureConfigured().categories.get(uniqueId));
   }
 
   createCategory(data: CreateCategoryRequest): Observable<Category> {
-    return from(this.block.categories.create(data));
+    return from(this.ensureConfigured().categories.create(data));
   }
 
   updateCategory(uniqueId: string, data: UpdateCategoryRequest): Observable<Category> {
-    return from(this.block.categories.update(uniqueId, data));
+    return from(this.ensureConfigured().categories.update(uniqueId, data));
   }
 
   deleteCategory(uniqueId: string): Observable<void> {
-    return from(this.block.categories.delete(uniqueId));
+    return from(this.ensureConfigured().categories.delete(uniqueId));
   }
 
   recoverCategory(uniqueId: string): Observable<Category> {
-    return from(this.block.categories.recover(uniqueId));
+    return from(this.ensureConfigured().categories.recover(uniqueId));
   }
 
   getCategoryChildren(uniqueId: string): Observable<Category[]> {
-    return from(this.block.categories.getChildren(uniqueId));
+    return from(this.ensureConfigured().categories.getChildren(uniqueId));
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -175,23 +190,23 @@ export class ContentService {
   // ───────────────────────────────────────────────────────────────────────────
 
   listTags(params?: ListTagsParams): Observable<PageResult<Tag>> {
-    return from(this.block.tags.list(params));
+    return from(this.ensureConfigured().tags.list(params));
   }
 
   getTag(uniqueId: string): Observable<Tag> {
-    return from(this.block.tags.get(uniqueId));
+    return from(this.ensureConfigured().tags.get(uniqueId));
   }
 
   createTag(data: CreateTagRequest): Observable<Tag> {
-    return from(this.block.tags.create(data));
+    return from(this.ensureConfigured().tags.create(data));
   }
 
   updateTag(uniqueId: string, data: UpdateTagRequest): Observable<Tag> {
-    return from(this.block.tags.update(uniqueId, data));
+    return from(this.ensureConfigured().tags.update(uniqueId, data));
   }
 
   deleteTag(uniqueId: string): Observable<void> {
-    return from(this.block.tags.delete(uniqueId));
+    return from(this.ensureConfigured().tags.delete(uniqueId));
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -203,6 +218,6 @@ export class ContentService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): ContentBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

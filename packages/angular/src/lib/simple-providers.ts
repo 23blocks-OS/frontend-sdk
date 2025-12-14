@@ -4,6 +4,26 @@ import { createHttpTransport } from '@23blocks/transport-http';
 import type { Transport } from '@23blocks/contracts';
 import {
   TRANSPORT,
+  // Per-service transport tokens
+  AUTHENTICATION_TRANSPORT,
+  SEARCH_TRANSPORT,
+  PRODUCTS_TRANSPORT,
+  CRM_TRANSPORT,
+  CONTENT_TRANSPORT,
+  GEOLOCATION_TRANSPORT,
+  CONVERSATIONS_TRANSPORT,
+  FILES_TRANSPORT,
+  FORMS_TRANSPORT,
+  ASSETS_TRANSPORT,
+  CAMPAIGNS_TRANSPORT,
+  COMPANY_TRANSPORT,
+  REWARDS_TRANSPORT,
+  SALES_TRANSPORT,
+  WALLET_TRANSPORT,
+  JARVIS_TRANSPORT,
+  ONBOARDING_TRANSPORT,
+  UNIVERSITY_TRANSPORT,
+  // Config tokens
   AUTHENTICATION_CONFIG,
   SEARCH_CONFIG,
   PRODUCTS_CONFIG,
@@ -35,11 +55,12 @@ export type AuthMode = 'token' | 'cookie';
 export type StorageType = 'localStorage' | 'sessionStorage' | 'memory';
 
 /**
- * Service URL configuration - each microservice has its own URL
+ * Service URL configuration - each microservice has its own URL.
+ * All URLs are optional - only configure the services you need.
  */
 export interface ServiceUrls {
-  /** Authentication service URL (required) */
-  authentication: string;
+  /** Authentication service URL */
+  authentication?: string;
   /** Search service URL */
   search?: string;
   /** Products service URL */
@@ -82,7 +103,8 @@ export interface ServiceUrls {
 export interface ProviderConfig {
   /**
    * Service URLs for each microservice.
-   * At minimum, `authentication` URL is required.
+   * Only configure the services you need - accessing a service without
+   * a configured URL will throw an error.
    *
    * @example
    * ```typescript
@@ -312,11 +334,10 @@ function createTransportWithAuth(
  * This is the recommended way to set up 23blocks in new Angular applications.
  * It automatically handles token storage and authentication headers.
  *
- * **Note:** Currently, Angular uses a single shared transport for all services.
- * The `authentication` URL is used as the base URL. For full multi-URL support
- * with different URLs per service, use the advanced API with custom transports.
+ * Services are only available if their URL is configured. Accessing a service
+ * without a configured URL will throw an error.
  *
- * @example Basic usage
+ * @example Basic usage with multiple services
  * ```typescript
  * // app.config.ts
  * import { ApplicationConfig } from '@angular/core';
@@ -328,7 +349,8 @@ function createTransportWithAuth(
  *       appId: 'your-app-id',
  *       urls: {
  *         authentication: 'https://gateway.23blocks.com',
- *         // Additional URLs available for future per-service support
+ *         crm: 'https://crm.23blocks.com',
+ *         products: 'https://products.23blocks.com',
  *       },
  *     }),
  *   ],
@@ -344,6 +366,7 @@ function createTransportWithAuth(
  *       authMode: 'cookie',
  *       urls: {
  *         authentication: 'https://gateway.23blocks.com',
+ *         crm: 'https://crm.23blocks.com',
  *       },
  *     }),
  *   ],
@@ -354,8 +377,18 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
   // Block config for all services
   const blockConfig = { appId: config.appId, tenantId: config.tenantId };
 
-  // Use authentication URL as the base (currently single transport for all services)
-  const baseUrl = config.urls.authentication;
+  // Helper to create transport provider for a service URL
+  const createTransportProvider = (
+    token: InjectionToken<Transport | null>,
+    url: string | undefined
+  ): Provider => ({
+    provide: token,
+    useFactory: (tokenManager: TokenManagerService) => {
+      if (!url) return null;
+      return createTransportWithAuth(url, config, tokenManager);
+    },
+    deps: [TOKEN_MANAGER],
+  });
 
   const providers: Provider[] = [
     // Store config for injection
@@ -370,12 +403,45 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
       },
     },
 
-    // Transport factory - depends on token manager
-    // Note: Currently uses single transport (authentication URL) for all services
+    // Per-service transport factories (null if URL not configured)
+    createTransportProvider(AUTHENTICATION_TRANSPORT, config.urls.authentication),
+    createTransportProvider(SEARCH_TRANSPORT, config.urls.search),
+    createTransportProvider(PRODUCTS_TRANSPORT, config.urls.products),
+    createTransportProvider(CRM_TRANSPORT, config.urls.crm),
+    createTransportProvider(CONTENT_TRANSPORT, config.urls.content),
+    createTransportProvider(GEOLOCATION_TRANSPORT, config.urls.geolocation),
+    createTransportProvider(CONVERSATIONS_TRANSPORT, config.urls.conversations),
+    createTransportProvider(FILES_TRANSPORT, config.urls.files),
+    createTransportProvider(FORMS_TRANSPORT, config.urls.forms),
+    createTransportProvider(ASSETS_TRANSPORT, config.urls.assets),
+    createTransportProvider(CAMPAIGNS_TRANSPORT, config.urls.campaigns),
+    createTransportProvider(COMPANY_TRANSPORT, config.urls.company),
+    createTransportProvider(REWARDS_TRANSPORT, config.urls.rewards),
+    createTransportProvider(SALES_TRANSPORT, config.urls.sales),
+    createTransportProvider(WALLET_TRANSPORT, config.urls.wallet),
+    createTransportProvider(JARVIS_TRANSPORT, config.urls.jarvis),
+    createTransportProvider(ONBOARDING_TRANSPORT, config.urls.onboarding),
+    createTransportProvider(UNIVERSITY_TRANSPORT, config.urls.university),
+
+    // Backward compatibility: provide TRANSPORT token using auth URL if available
+    // (for advanced API users who still inject TRANSPORT directly)
     {
       provide: TRANSPORT,
       useFactory: (tokenManager: TokenManagerService) => {
-        return createTransportWithAuth(baseUrl, config, tokenManager);
+        // Use auth URL if available, otherwise create a dummy transport that throws
+        const url = config.urls.authentication;
+        if (url) {
+          return createTransportWithAuth(url, config, tokenManager);
+        }
+        // Return a transport that throws helpful errors
+        return {
+          request: () => {
+            throw new Error(
+              '[23blocks] TRANSPORT is not configured. ' +
+              'Use per-service transport tokens or configure urls.authentication.'
+            );
+          },
+        };
       },
       deps: [TOKEN_MANAGER],
     },
@@ -407,6 +473,9 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
 /**
  * Get providers array for NgModule-based applications with simplified config.
  *
+ * Services are only available if their URL is configured. Accessing a service
+ * without a configured URL will throw an error.
+ *
  * @example
  * ```typescript
  * // app.module.ts
@@ -419,6 +488,7 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
  *       appId: 'your-app-id',
  *       urls: {
  *         authentication: 'https://gateway.23blocks.com',
+ *         crm: 'https://crm.23blocks.com',
  *       },
  *     }),
  *   ],
@@ -430,8 +500,18 @@ export function getBlocks23Providers(config: ProviderConfig): Provider[] {
   // Block config for all services
   const blockConfig = { appId: config.appId, tenantId: config.tenantId };
 
-  // Use authentication URL as the base
-  const baseUrl = config.urls.authentication;
+  // Helper to create transport provider for a service URL
+  const createTransportProvider = (
+    token: InjectionToken<Transport | null>,
+    url: string | undefined
+  ): Provider => ({
+    provide: token,
+    useFactory: (tokenManager: TokenManagerService) => {
+      if (!url) return null;
+      return createTransportWithAuth(url, config, tokenManager);
+    },
+    deps: [TOKEN_MANAGER],
+  });
 
   return [
     // Store config for injection
@@ -446,11 +526,42 @@ export function getBlocks23Providers(config: ProviderConfig): Provider[] {
       },
     },
 
-    // Transport factory - depends on token manager
+    // Per-service transport factories (null if URL not configured)
+    createTransportProvider(AUTHENTICATION_TRANSPORT, config.urls.authentication),
+    createTransportProvider(SEARCH_TRANSPORT, config.urls.search),
+    createTransportProvider(PRODUCTS_TRANSPORT, config.urls.products),
+    createTransportProvider(CRM_TRANSPORT, config.urls.crm),
+    createTransportProvider(CONTENT_TRANSPORT, config.urls.content),
+    createTransportProvider(GEOLOCATION_TRANSPORT, config.urls.geolocation),
+    createTransportProvider(CONVERSATIONS_TRANSPORT, config.urls.conversations),
+    createTransportProvider(FILES_TRANSPORT, config.urls.files),
+    createTransportProvider(FORMS_TRANSPORT, config.urls.forms),
+    createTransportProvider(ASSETS_TRANSPORT, config.urls.assets),
+    createTransportProvider(CAMPAIGNS_TRANSPORT, config.urls.campaigns),
+    createTransportProvider(COMPANY_TRANSPORT, config.urls.company),
+    createTransportProvider(REWARDS_TRANSPORT, config.urls.rewards),
+    createTransportProvider(SALES_TRANSPORT, config.urls.sales),
+    createTransportProvider(WALLET_TRANSPORT, config.urls.wallet),
+    createTransportProvider(JARVIS_TRANSPORT, config.urls.jarvis),
+    createTransportProvider(ONBOARDING_TRANSPORT, config.urls.onboarding),
+    createTransportProvider(UNIVERSITY_TRANSPORT, config.urls.university),
+
+    // Backward compatibility: provide TRANSPORT token using auth URL if available
     {
       provide: TRANSPORT,
       useFactory: (tokenManager: TokenManagerService) => {
-        return createTransportWithAuth(baseUrl, config, tokenManager);
+        const url = config.urls.authentication;
+        if (url) {
+          return createTransportWithAuth(url, config, tokenManager);
+        }
+        return {
+          request: () => {
+            throw new Error(
+              '[23blocks] TRANSPORT is not configured. ' +
+              'Use per-service transport tokens or configure urls.authentication.'
+            );
+          },
+        };
       },
       deps: [TOKEN_MANAGER],
     },

@@ -50,11 +50,12 @@ export interface TokenManager {
 }
 
 /**
- * Service URL configuration - each microservice has its own URL
+ * Service URL configuration - each microservice has its own URL.
+ * All URLs are optional - only configure the services you need.
  */
 export interface ServiceUrls {
-  /** Authentication service URL (required) */
-  authentication: string;
+  /** Authentication service URL */
+  authentication?: string;
   /** Search service URL */
   search?: string;
   /** Products service URL */
@@ -99,7 +100,8 @@ export interface ProviderProps {
 
   /**
    * Service URLs for each microservice.
-   * At minimum, `authentication` URL is required.
+   * Only configure the services you need - accessing a service without
+   * a configured URL will throw an error.
    *
    * @example
    * ```tsx
@@ -312,10 +314,28 @@ const Blocks23Context = createContext<ClientContext | null>(null);
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
+ * Helper to create a proxy that throws when accessing unconfigured service
+ */
+function createUnconfiguredServiceProxy<T>(serviceName: string, urlKey: string): T {
+  return new Proxy({} as T, {
+    get(_target, prop) {
+      throw new Error(
+        `[23blocks] Cannot access '${serviceName}.${String(prop)}': ` +
+        `The ${serviceName} service URL is not configured. ` +
+        `Add 'urls.${urlKey}' to your Provider configuration.`
+      );
+    },
+  });
+}
+
+/**
  * Provider component for 23blocks services.
  *
  * Wrap your app with this provider to access all 23blocks services
  * with automatic token management.
+ *
+ * Services are only available if their URL is configured. Accessing
+ * a service without a configured URL will throw an error.
  *
  * @example Basic usage with multiple services
  * ```tsx
@@ -395,126 +415,180 @@ export function Provider({
     });
   }, [appId, tenantId, authMode, staticHeaders, timeout, tokenManager]);
 
-  // Create blocks (memoized) - each with its own transport
+  // Create blocks (memoized) - each with its own transport (no fallback)
   const blockConfig = useMemo(() => ({ appId, tenantId }), [appId, tenantId]);
 
-  // Auth transport is required
-  const authTransport = useMemo(
-    () => createServiceTransport(urls.authentication),
-    [createServiceTransport, urls.authentication]
-  );
+  // Create blocks only if URL is configured, otherwise use proxy that throws helpful error
+  const authentication = useMemo(() => {
+    if (!urls.authentication) {
+      return createUnconfiguredServiceProxy<AuthenticationBlock>('authentication', 'authentication');
+    }
+    return createAuthenticationBlock(createServiceTransport(urls.authentication), blockConfig);
+  }, [createServiceTransport, urls.authentication, blockConfig]);
 
-  const authentication = useMemo(() => createAuthenticationBlock(authTransport, blockConfig), [authTransport, blockConfig]);
-
-  // Other blocks use their own URL or fall back to auth URL
   const search = useMemo(() => {
-    const transport = urls.search ? createServiceTransport(urls.search) : authTransport;
-    return createSearchBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.search, authTransport, blockConfig]);
+    if (!urls.search) {
+      return createUnconfiguredServiceProxy<SearchBlock>('search', 'search');
+    }
+    return createSearchBlock(createServiceTransport(urls.search), blockConfig);
+  }, [createServiceTransport, urls.search, blockConfig]);
 
   const products = useMemo(() => {
-    const transport = urls.products ? createServiceTransport(urls.products) : authTransport;
-    return createProductsBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.products, authTransport, blockConfig]);
+    if (!urls.products) {
+      return createUnconfiguredServiceProxy<ProductsBlock>('products', 'products');
+    }
+    return createProductsBlock(createServiceTransport(urls.products), blockConfig);
+  }, [createServiceTransport, urls.products, blockConfig]);
 
   const crm = useMemo(() => {
-    const transport = urls.crm ? createServiceTransport(urls.crm) : authTransport;
-    return createCrmBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.crm, authTransport, blockConfig]);
+    if (!urls.crm) {
+      return createUnconfiguredServiceProxy<CrmBlock>('crm', 'crm');
+    }
+    return createCrmBlock(createServiceTransport(urls.crm), blockConfig);
+  }, [createServiceTransport, urls.crm, blockConfig]);
 
   const content = useMemo(() => {
-    const transport = urls.content ? createServiceTransport(urls.content) : authTransport;
-    return createContentBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.content, authTransport, blockConfig]);
+    if (!urls.content) {
+      return createUnconfiguredServiceProxy<ContentBlock>('content', 'content');
+    }
+    return createContentBlock(createServiceTransport(urls.content), blockConfig);
+  }, [createServiceTransport, urls.content, blockConfig]);
 
   const geolocation = useMemo(() => {
-    const transport = urls.geolocation ? createServiceTransport(urls.geolocation) : authTransport;
-    return createGeolocationBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.geolocation, authTransport, blockConfig]);
+    if (!urls.geolocation) {
+      return createUnconfiguredServiceProxy<GeolocationBlock>('geolocation', 'geolocation');
+    }
+    return createGeolocationBlock(createServiceTransport(urls.geolocation), blockConfig);
+  }, [createServiceTransport, urls.geolocation, blockConfig]);
 
   const conversations = useMemo(() => {
-    const transport = urls.conversations ? createServiceTransport(urls.conversations) : authTransport;
-    return createConversationsBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.conversations, authTransport, blockConfig]);
+    if (!urls.conversations) {
+      return createUnconfiguredServiceProxy<ConversationsBlock>('conversations', 'conversations');
+    }
+    return createConversationsBlock(createServiceTransport(urls.conversations), blockConfig);
+  }, [createServiceTransport, urls.conversations, blockConfig]);
 
   const files = useMemo(() => {
-    const transport = urls.files ? createServiceTransport(urls.files) : authTransport;
-    return createFilesBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.files, authTransport, blockConfig]);
+    if (!urls.files) {
+      return createUnconfiguredServiceProxy<FilesBlock>('files', 'files');
+    }
+    return createFilesBlock(createServiceTransport(urls.files), blockConfig);
+  }, [createServiceTransport, urls.files, blockConfig]);
 
   const forms = useMemo(() => {
-    const transport = urls.forms ? createServiceTransport(urls.forms) : authTransport;
-    return createFormsBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.forms, authTransport, blockConfig]);
+    if (!urls.forms) {
+      return createUnconfiguredServiceProxy<FormsBlock>('forms', 'forms');
+    }
+    return createFormsBlock(createServiceTransport(urls.forms), blockConfig);
+  }, [createServiceTransport, urls.forms, blockConfig]);
 
   const assets = useMemo(() => {
-    const transport = urls.assets ? createServiceTransport(urls.assets) : authTransport;
-    return createAssetsBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.assets, authTransport, blockConfig]);
+    if (!urls.assets) {
+      return createUnconfiguredServiceProxy<AssetsBlock>('assets', 'assets');
+    }
+    return createAssetsBlock(createServiceTransport(urls.assets), blockConfig);
+  }, [createServiceTransport, urls.assets, blockConfig]);
 
   const campaigns = useMemo(() => {
-    const transport = urls.campaigns ? createServiceTransport(urls.campaigns) : authTransport;
-    return createCampaignsBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.campaigns, authTransport, blockConfig]);
+    if (!urls.campaigns) {
+      return createUnconfiguredServiceProxy<CampaignsBlock>('campaigns', 'campaigns');
+    }
+    return createCampaignsBlock(createServiceTransport(urls.campaigns), blockConfig);
+  }, [createServiceTransport, urls.campaigns, blockConfig]);
 
   const company = useMemo(() => {
-    const transport = urls.company ? createServiceTransport(urls.company) : authTransport;
-    return createCompanyBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.company, authTransport, blockConfig]);
+    if (!urls.company) {
+      return createUnconfiguredServiceProxy<CompanyBlock>('company', 'company');
+    }
+    return createCompanyBlock(createServiceTransport(urls.company), blockConfig);
+  }, [createServiceTransport, urls.company, blockConfig]);
 
   const rewards = useMemo(() => {
-    const transport = urls.rewards ? createServiceTransport(urls.rewards) : authTransport;
-    return createRewardsBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.rewards, authTransport, blockConfig]);
+    if (!urls.rewards) {
+      return createUnconfiguredServiceProxy<RewardsBlock>('rewards', 'rewards');
+    }
+    return createRewardsBlock(createServiceTransport(urls.rewards), blockConfig);
+  }, [createServiceTransport, urls.rewards, blockConfig]);
 
   const sales = useMemo(() => {
-    const transport = urls.sales ? createServiceTransport(urls.sales) : authTransport;
-    return createSalesBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.sales, authTransport, blockConfig]);
+    if (!urls.sales) {
+      return createUnconfiguredServiceProxy<SalesBlock>('sales', 'sales');
+    }
+    return createSalesBlock(createServiceTransport(urls.sales), blockConfig);
+  }, [createServiceTransport, urls.sales, blockConfig]);
 
   const wallet = useMemo(() => {
-    const transport = urls.wallet ? createServiceTransport(urls.wallet) : authTransport;
-    return createWalletBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.wallet, authTransport, blockConfig]);
+    if (!urls.wallet) {
+      return createUnconfiguredServiceProxy<WalletBlock>('wallet', 'wallet');
+    }
+    return createWalletBlock(createServiceTransport(urls.wallet), blockConfig);
+  }, [createServiceTransport, urls.wallet, blockConfig]);
 
   const jarvis = useMemo(() => {
-    const transport = urls.jarvis ? createServiceTransport(urls.jarvis) : authTransport;
-    return createJarvisBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.jarvis, authTransport, blockConfig]);
+    if (!urls.jarvis) {
+      return createUnconfiguredServiceProxy<JarvisBlock>('jarvis', 'jarvis');
+    }
+    return createJarvisBlock(createServiceTransport(urls.jarvis), blockConfig);
+  }, [createServiceTransport, urls.jarvis, blockConfig]);
 
   const onboarding = useMemo(() => {
-    const transport = urls.onboarding ? createServiceTransport(urls.onboarding) : authTransport;
-    return createOnboardingBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.onboarding, authTransport, blockConfig]);
+    if (!urls.onboarding) {
+      return createUnconfiguredServiceProxy<OnboardingBlock>('onboarding', 'onboarding');
+    }
+    return createOnboardingBlock(createServiceTransport(urls.onboarding), blockConfig);
+  }, [createServiceTransport, urls.onboarding, blockConfig]);
 
   const university = useMemo(() => {
-    const transport = urls.university ? createServiceTransport(urls.university) : authTransport;
-    return createUniversityBlock(transport, blockConfig);
-  }, [createServiceTransport, urls.university, authTransport, blockConfig]);
+    if (!urls.university) {
+      return createUnconfiguredServiceProxy<UniversityBlock>('university', 'university');
+    }
+    return createUniversityBlock(createServiceTransport(urls.university), blockConfig);
+  }, [createServiceTransport, urls.university, blockConfig]);
+
+  // Check if authentication is configured for auth methods
+  const isAuthConfigured = !!urls.authentication;
 
   // Auth methods with automatic token management
   const signIn = useCallback(async (request: SignInRequest): Promise<SignInResponse> => {
-    const response = await authentication.auth.signIn(request);
+    if (!isAuthConfigured) {
+      throw new Error(
+        '[23blocks] Cannot call signIn: The authentication service URL is not configured. ' +
+        "Add 'urls.authentication' to your Provider configuration."
+      );
+    }
+    const response = await (authentication as AuthenticationBlock).auth.signIn(request);
     if (authMode === 'token' && tokenManager && response.accessToken) {
       tokenManager.setTokens(response.accessToken, response.refreshToken);
     }
     return response;
-  }, [authentication, authMode, tokenManager]);
+  }, [authentication, authMode, tokenManager, isAuthConfigured]);
 
   const signUp = useCallback(async (request: SignUpRequest): Promise<SignUpResponse> => {
-    const response = await authentication.auth.signUp(request);
+    if (!isAuthConfigured) {
+      throw new Error(
+        '[23blocks] Cannot call signUp: The authentication service URL is not configured. ' +
+        "Add 'urls.authentication' to your Provider configuration."
+      );
+    }
+    const response = await (authentication as AuthenticationBlock).auth.signUp(request);
     if (authMode === 'token' && tokenManager && response.accessToken) {
       tokenManager.setTokens(response.accessToken);
     }
     return response;
-  }, [authentication, authMode, tokenManager]);
+  }, [authentication, authMode, tokenManager, isAuthConfigured]);
 
   const signOut = useCallback(async (): Promise<void> => {
-    await authentication.auth.signOut();
+    if (!isAuthConfigured) {
+      throw new Error(
+        '[23blocks] Cannot call signOut: The authentication service URL is not configured. ' +
+        "Add 'urls.authentication' to your Provider configuration."
+      );
+    }
+    await (authentication as AuthenticationBlock).auth.signOut();
     if (authMode === 'token' && tokenManager) {
       tokenManager.clearTokens();
     }
-  }, [authentication, authMode, tokenManager]);
+  }, [authentication, authMode, tokenManager, isAuthConfigured]);
 
   // Token utilities
   const getAccessToken = useCallback(() => tokenManager?.getAccessToken() ?? null, [tokenManager]);

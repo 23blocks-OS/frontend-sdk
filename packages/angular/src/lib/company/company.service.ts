@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -27,7 +27,7 @@ import {
   type UpdateQuarterRequest,
   type ListQuartersParams,
 } from '@23blocks/block-company';
-import { TRANSPORT, COMPANY_CONFIG } from '../tokens.js';
+import { TRANSPORT, COMPANY_TRANSPORT, COMPANY_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the Company block.
@@ -50,13 +50,28 @@ import { TRANSPORT, COMPANY_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class CompanyService {
-  private readonly block: CompanyBlock;
+  private readonly block: CompanyBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(COMPANY_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(COMPANY_CONFIG) config: CompanyBlockConfig
   ) {
-    this.block = createCompanyBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createCompanyBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): CompanyBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] CompanyService is not configured. ' +
+        "Add 'urls.company' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -64,23 +79,23 @@ export class CompanyService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listCompanies(params?: ListCompaniesParams): Observable<PageResult<Company>> {
-    return from(this.block.companies.list(params));
+    return from(this.ensureConfigured().companies.list(params));
   }
 
   getCompany(uniqueId: string): Observable<Company> {
-    return from(this.block.companies.get(uniqueId));
+    return from(this.ensureConfigured().companies.get(uniqueId));
   }
 
   createCompany(request: CreateCompanyRequest): Observable<Company> {
-    return from(this.block.companies.create(request));
+    return from(this.ensureConfigured().companies.create(request));
   }
 
   updateCompany(uniqueId: string, request: UpdateCompanyRequest): Observable<Company> {
-    return from(this.block.companies.update(uniqueId, request));
+    return from(this.ensureConfigured().companies.update(uniqueId, request));
   }
 
   deleteCompany(uniqueId: string): Observable<void> {
-    return from(this.block.companies.delete(uniqueId));
+    return from(this.ensureConfigured().companies.delete(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -88,31 +103,31 @@ export class CompanyService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listDepartments(params?: ListDepartmentsParams): Observable<PageResult<Department>> {
-    return from(this.block.departments.list(params));
+    return from(this.ensureConfigured().departments.list(params));
   }
 
   getDepartment(uniqueId: string): Observable<Department> {
-    return from(this.block.departments.get(uniqueId));
+    return from(this.ensureConfigured().departments.get(uniqueId));
   }
 
   createDepartment(request: CreateDepartmentRequest): Observable<Department> {
-    return from(this.block.departments.create(request));
+    return from(this.ensureConfigured().departments.create(request));
   }
 
   updateDepartment(uniqueId: string, request: UpdateDepartmentRequest): Observable<Department> {
-    return from(this.block.departments.update(uniqueId, request));
+    return from(this.ensureConfigured().departments.update(uniqueId, request));
   }
 
   deleteDepartment(uniqueId: string): Observable<void> {
-    return from(this.block.departments.delete(uniqueId));
+    return from(this.ensureConfigured().departments.delete(uniqueId));
   }
 
   listDepartmentsByCompany(companyUniqueId: string): Observable<Department[]> {
-    return from(this.block.departments.listByCompany(companyUniqueId));
+    return from(this.ensureConfigured().departments.listByCompany(companyUniqueId));
   }
 
   getDepartmentHierarchy(companyUniqueId: string): Observable<DepartmentHierarchy[]> {
-    return from(this.block.departments.getHierarchy(companyUniqueId));
+    return from(this.ensureConfigured().departments.getHierarchy(companyUniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -120,27 +135,27 @@ export class CompanyService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listTeams(params?: ListTeamsParams): Observable<PageResult<Team>> {
-    return from(this.block.teams.list(params));
+    return from(this.ensureConfigured().teams.list(params));
   }
 
   getTeam(uniqueId: string): Observable<Team> {
-    return from(this.block.teams.get(uniqueId));
+    return from(this.ensureConfigured().teams.get(uniqueId));
   }
 
   createTeam(request: CreateTeamRequest): Observable<Team> {
-    return from(this.block.teams.create(request));
+    return from(this.ensureConfigured().teams.create(request));
   }
 
   updateTeam(uniqueId: string, request: UpdateTeamRequest): Observable<Team> {
-    return from(this.block.teams.update(uniqueId, request));
+    return from(this.ensureConfigured().teams.update(uniqueId, request));
   }
 
   deleteTeam(uniqueId: string): Observable<void> {
-    return from(this.block.teams.delete(uniqueId));
+    return from(this.ensureConfigured().teams.delete(uniqueId));
   }
 
   listTeamsByDepartment(departmentUniqueId: string): Observable<Team[]> {
-    return from(this.block.teams.listByDepartment(departmentUniqueId));
+    return from(this.ensureConfigured().teams.listByDepartment(departmentUniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -148,27 +163,27 @@ export class CompanyService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listTeamMembers(params?: ListTeamMembersParams): Observable<PageResult<TeamMember>> {
-    return from(this.block.teamMembers.list(params));
+    return from(this.ensureConfigured().teamMembers.list(params));
   }
 
   getTeamMember(uniqueId: string): Observable<TeamMember> {
-    return from(this.block.teamMembers.get(uniqueId));
+    return from(this.ensureConfigured().teamMembers.get(uniqueId));
   }
 
   addTeamMember(request: AddTeamMemberRequest): Observable<TeamMember> {
-    return from(this.block.teamMembers.add(request));
+    return from(this.ensureConfigured().teamMembers.add(request));
   }
 
   updateTeamMember(uniqueId: string, request: UpdateTeamMemberRequest): Observable<TeamMember> {
-    return from(this.block.teamMembers.update(uniqueId, request));
+    return from(this.ensureConfigured().teamMembers.update(uniqueId, request));
   }
 
   removeTeamMember(uniqueId: string): Observable<void> {
-    return from(this.block.teamMembers.remove(uniqueId));
+    return from(this.ensureConfigured().teamMembers.remove(uniqueId));
   }
 
   listTeamMembersByTeam(teamUniqueId: string): Observable<TeamMember[]> {
-    return from(this.block.teamMembers.listByTeam(teamUniqueId));
+    return from(this.ensureConfigured().teamMembers.listByTeam(teamUniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -176,23 +191,23 @@ export class CompanyService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listQuarters(params?: ListQuartersParams): Observable<PageResult<Quarter>> {
-    return from(this.block.quarters.list(params));
+    return from(this.ensureConfigured().quarters.list(params));
   }
 
   getQuarter(uniqueId: string): Observable<Quarter> {
-    return from(this.block.quarters.get(uniqueId));
+    return from(this.ensureConfigured().quarters.get(uniqueId));
   }
 
   createQuarter(request: CreateQuarterRequest): Observable<Quarter> {
-    return from(this.block.quarters.create(request));
+    return from(this.ensureConfigured().quarters.create(request));
   }
 
   updateQuarter(uniqueId: string, request: UpdateQuarterRequest): Observable<Quarter> {
-    return from(this.block.quarters.update(uniqueId, request));
+    return from(this.ensureConfigured().quarters.update(uniqueId, request));
   }
 
   deleteQuarter(uniqueId: string): Observable<void> {
-    return from(this.block.quarters.delete(uniqueId));
+    return from(this.ensureConfigured().quarters.delete(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -204,6 +219,6 @@ export class CompanyService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): CompanyBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

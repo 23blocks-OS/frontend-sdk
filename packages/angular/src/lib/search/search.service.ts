@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport } from '@23blocks/contracts';
 import {
@@ -14,7 +14,7 @@ import {
   type SearchResponse,
   type AddFavoriteRequest,
 } from '@23blocks/block-search';
-import { TRANSPORT, SEARCH_CONFIG } from '../tokens.js';
+import { TRANSPORT, SEARCH_TRANSPORT, SEARCH_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the Search block.
@@ -39,13 +39,28 @@ import { TRANSPORT, SEARCH_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class SearchService {
-  private readonly block: SearchBlock;
+  private readonly block: SearchBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(SEARCH_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(SEARCH_CONFIG) config: SearchBlockConfig
   ) {
-    this.block = createSearchBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createSearchBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): SearchBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] SearchService is not configured. ' +
+        "Add 'urls.search' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -56,21 +71,21 @@ export class SearchService {
    * Perform a search query
    */
   search(request: SearchRequest): Observable<SearchResponse> {
-    return from(this.block.search.search(request));
+    return from(this.ensureConfigured().search.search(request));
   }
 
   /**
    * Get search suggestions for autocomplete
    */
   suggest(query: string, limit?: number): Observable<SearchResult[]> {
-    return from(this.block.search.suggest(query, limit));
+    return from(this.ensureConfigured().search.suggest(query, limit));
   }
 
   /**
    * Get available entity types for filtering
    */
   getEntityTypes(): Observable<EntityType[]> {
-    return from(this.block.search.entityTypes());
+    return from(this.ensureConfigured().search.entityTypes());
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -81,21 +96,21 @@ export class SearchService {
    * Get recent search queries
    */
   getLastQueries(limit?: number): Observable<LastQuery[]> {
-    return from(this.block.history.getLastQueries(limit));
+    return from(this.ensureConfigured().history.getLastQueries(limit));
   }
 
   /**
    * Get the full history of search queries
    */
   getQueryHistory(params?: { page?: number; perPage?: number }): Observable<SearchQuery[]> {
-    return from(this.block.history.getHistory(params));
+    return from(this.ensureConfigured().history.getHistory(params));
   }
 
   /**
    * Clear search history
    */
   clearHistory(): Observable<void> {
-    return from(this.block.history.clear());
+    return from(this.ensureConfigured().history.clear());
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -106,28 +121,28 @@ export class SearchService {
    * List user's favorite entities
    */
   listFavorites(): Observable<FavoriteEntity[]> {
-    return from(this.block.favorites.list());
+    return from(this.ensureConfigured().favorites.list());
   }
 
   /**
    * Add an entity to favorites
    */
   addFavorite(request: AddFavoriteRequest): Observable<FavoriteEntity> {
-    return from(this.block.favorites.add(request));
+    return from(this.ensureConfigured().favorites.add(request));
   }
 
   /**
    * Remove an entity from favorites
    */
   removeFavorite(id: string): Observable<void> {
-    return from(this.block.favorites.remove(id));
+    return from(this.ensureConfigured().favorites.remove(id));
   }
 
   /**
    * Check if an entity is favorited
    */
   isFavorite(entityUniqueId: string): Observable<boolean> {
-    return from(this.block.favorites.isFavorite(entityUniqueId));
+    return from(this.ensureConfigured().favorites.isFavorite(entityUniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -138,6 +153,6 @@ export class SearchService {
    * Access the underlying block for advanced operations
    */
   get rawBlock(): SearchBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }

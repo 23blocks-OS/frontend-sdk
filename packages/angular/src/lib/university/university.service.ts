@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
 import {
@@ -27,7 +27,7 @@ import {
   type GradeSubmissionRequest,
   type ListSubmissionsParams,
 } from '@23blocks/block-university';
-import { TRANSPORT, UNIVERSITY_CONFIG } from '../tokens.js';
+import { TRANSPORT, UNIVERSITY_TRANSPORT, UNIVERSITY_CONFIG } from '../tokens.js';
 
 /**
  * Angular service wrapping the University block.
@@ -50,13 +50,28 @@ import { TRANSPORT, UNIVERSITY_CONFIG } from '../tokens.js';
  */
 @Injectable({ providedIn: 'root' })
 export class UniversityService {
-  private readonly block: UniversityBlock;
+  private readonly block: UniversityBlock | null;
 
   constructor(
-    @Inject(TRANSPORT) transport: Transport,
+    @Optional() @Inject(UNIVERSITY_TRANSPORT) serviceTransport: Transport | null,
+    @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(UNIVERSITY_CONFIG) config: UniversityBlockConfig
   ) {
-    this.block = createUniversityBlock(transport, config);
+    const transport = serviceTransport ?? legacyTransport;
+    this.block = transport ? createUniversityBlock(transport, config) : null;
+  }
+
+  /**
+   * Ensure the service is configured, throw helpful error if not
+   */
+  private ensureConfigured(): UniversityBlock {
+    if (!this.block) {
+      throw new Error(
+        '[23blocks] UniversityService is not configured. ' +
+        "Add 'urls.university' to your provideBlocks23() configuration."
+      );
+    }
+    return this.block;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -64,39 +79,39 @@ export class UniversityService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listCourses(params?: ListCoursesParams): Observable<PageResult<Course>> {
-    return from(this.block.courses.list(params));
+    return from(this.ensureConfigured().courses.list(params));
   }
 
   getCourse(uniqueId: string): Observable<Course> {
-    return from(this.block.courses.get(uniqueId));
+    return from(this.ensureConfigured().courses.get(uniqueId));
   }
 
   createCourse(data: CreateCourseRequest): Observable<Course> {
-    return from(this.block.courses.create(data));
+    return from(this.ensureConfigured().courses.create(data));
   }
 
   updateCourse(uniqueId: string, data: UpdateCourseRequest): Observable<Course> {
-    return from(this.block.courses.update(uniqueId, data));
+    return from(this.ensureConfigured().courses.update(uniqueId, data));
   }
 
   deleteCourse(uniqueId: string): Observable<void> {
-    return from(this.block.courses.delete(uniqueId));
+    return from(this.ensureConfigured().courses.delete(uniqueId));
   }
 
   publishCourse(uniqueId: string): Observable<Course> {
-    return from(this.block.courses.publish(uniqueId));
+    return from(this.ensureConfigured().courses.publish(uniqueId));
   }
 
   unpublishCourse(uniqueId: string): Observable<Course> {
-    return from(this.block.courses.unpublish(uniqueId));
+    return from(this.ensureConfigured().courses.unpublish(uniqueId));
   }
 
   listCoursesByInstructor(instructorUniqueId: string, params?: ListCoursesParams): Observable<PageResult<Course>> {
-    return from(this.block.courses.listByInstructor(instructorUniqueId, params));
+    return from(this.ensureConfigured().courses.listByInstructor(instructorUniqueId, params));
   }
 
   listCoursesByCategory(categoryUniqueId: string, params?: ListCoursesParams): Observable<PageResult<Course>> {
-    return from(this.block.courses.listByCategory(categoryUniqueId, params));
+    return from(this.ensureConfigured().courses.listByCategory(categoryUniqueId, params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -104,31 +119,31 @@ export class UniversityService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listLessons(params?: ListLessonsParams): Observable<PageResult<Lesson>> {
-    return from(this.block.lessons.list(params));
+    return from(this.ensureConfigured().lessons.list(params));
   }
 
   getLesson(uniqueId: string): Observable<Lesson> {
-    return from(this.block.lessons.get(uniqueId));
+    return from(this.ensureConfigured().lessons.get(uniqueId));
   }
 
   createLesson(data: CreateLessonRequest): Observable<Lesson> {
-    return from(this.block.lessons.create(data));
+    return from(this.ensureConfigured().lessons.create(data));
   }
 
   updateLesson(uniqueId: string, data: UpdateLessonRequest): Observable<Lesson> {
-    return from(this.block.lessons.update(uniqueId, data));
+    return from(this.ensureConfigured().lessons.update(uniqueId, data));
   }
 
   deleteLesson(uniqueId: string): Observable<void> {
-    return from(this.block.lessons.delete(uniqueId));
+    return from(this.ensureConfigured().lessons.delete(uniqueId));
   }
 
   reorderLessons(courseUniqueId: string, data: ReorderLessonsRequest): Observable<Lesson[]> {
-    return from(this.block.lessons.reorder(courseUniqueId, data));
+    return from(this.ensureConfigured().lessons.reorder(courseUniqueId, data));
   }
 
   listLessonsByCourse(courseUniqueId: string, params?: ListLessonsParams): Observable<PageResult<Lesson>> {
-    return from(this.block.lessons.listByCourse(courseUniqueId, params));
+    return from(this.ensureConfigured().lessons.listByCourse(courseUniqueId, params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -136,39 +151,39 @@ export class UniversityService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listEnrollments(params?: ListEnrollmentsParams): Observable<PageResult<Enrollment>> {
-    return from(this.block.enrollments.list(params));
+    return from(this.ensureConfigured().enrollments.list(params));
   }
 
   getEnrollment(uniqueId: string): Observable<Enrollment> {
-    return from(this.block.enrollments.get(uniqueId));
+    return from(this.ensureConfigured().enrollments.get(uniqueId));
   }
 
   enroll(data: EnrollRequest): Observable<Enrollment> {
-    return from(this.block.enrollments.enroll(data));
+    return from(this.ensureConfigured().enrollments.enroll(data));
   }
 
   updateEnrollmentProgress(uniqueId: string, data: UpdateEnrollmentProgressRequest): Observable<Enrollment> {
-    return from(this.block.enrollments.updateProgress(uniqueId, data));
+    return from(this.ensureConfigured().enrollments.updateProgress(uniqueId, data));
   }
 
   completeEnrollment(uniqueId: string): Observable<Enrollment> {
-    return from(this.block.enrollments.complete(uniqueId));
+    return from(this.ensureConfigured().enrollments.complete(uniqueId));
   }
 
   dropEnrollment(uniqueId: string): Observable<Enrollment> {
-    return from(this.block.enrollments.drop(uniqueId));
+    return from(this.ensureConfigured().enrollments.drop(uniqueId));
   }
 
   listEnrollmentsByCourse(courseUniqueId: string, params?: ListEnrollmentsParams): Observable<PageResult<Enrollment>> {
-    return from(this.block.enrollments.listByCourse(courseUniqueId, params));
+    return from(this.ensureConfigured().enrollments.listByCourse(courseUniqueId, params));
   }
 
   listEnrollmentsByUser(userUniqueId: string, params?: ListEnrollmentsParams): Observable<PageResult<Enrollment>> {
-    return from(this.block.enrollments.listByUser(userUniqueId, params));
+    return from(this.ensureConfigured().enrollments.listByUser(userUniqueId, params));
   }
 
   getCertificate(uniqueId: string): Observable<{ certificateUrl: string }> {
-    return from(this.block.enrollments.getCertificate(uniqueId));
+    return from(this.ensureConfigured().enrollments.getCertificate(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -176,27 +191,27 @@ export class UniversityService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listAssignments(params?: ListAssignmentsParams): Observable<PageResult<Assignment>> {
-    return from(this.block.assignments.list(params));
+    return from(this.ensureConfigured().assignments.list(params));
   }
 
   getAssignment(uniqueId: string): Observable<Assignment> {
-    return from(this.block.assignments.get(uniqueId));
+    return from(this.ensureConfigured().assignments.get(uniqueId));
   }
 
   createAssignment(data: CreateAssignmentRequest): Observable<Assignment> {
-    return from(this.block.assignments.create(data));
+    return from(this.ensureConfigured().assignments.create(data));
   }
 
   updateAssignment(uniqueId: string, data: UpdateAssignmentRequest): Observable<Assignment> {
-    return from(this.block.assignments.update(uniqueId, data));
+    return from(this.ensureConfigured().assignments.update(uniqueId, data));
   }
 
   deleteAssignment(uniqueId: string): Observable<void> {
-    return from(this.block.assignments.delete(uniqueId));
+    return from(this.ensureConfigured().assignments.delete(uniqueId));
   }
 
   listAssignmentsByLesson(lessonUniqueId: string, params?: ListAssignmentsParams): Observable<PageResult<Assignment>> {
-    return from(this.block.assignments.listByLesson(lessonUniqueId, params));
+    return from(this.ensureConfigured().assignments.listByLesson(lessonUniqueId, params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -204,27 +219,27 @@ export class UniversityService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   listSubmissions(params?: ListSubmissionsParams): Observable<PageResult<Submission>> {
-    return from(this.block.submissions.list(params));
+    return from(this.ensureConfigured().submissions.list(params));
   }
 
   getSubmission(uniqueId: string): Observable<Submission> {
-    return from(this.block.submissions.get(uniqueId));
+    return from(this.ensureConfigured().submissions.get(uniqueId));
   }
 
   submitAssignment(data: SubmitAssignmentRequest): Observable<Submission> {
-    return from(this.block.submissions.submit(data));
+    return from(this.ensureConfigured().submissions.submit(data));
   }
 
   gradeSubmission(uniqueId: string, data: GradeSubmissionRequest): Observable<Submission> {
-    return from(this.block.submissions.grade(uniqueId, data));
+    return from(this.ensureConfigured().submissions.grade(uniqueId, data));
   }
 
   listSubmissionsByAssignment(assignmentUniqueId: string, params?: ListSubmissionsParams): Observable<PageResult<Submission>> {
-    return from(this.block.submissions.listByAssignment(assignmentUniqueId, params));
+    return from(this.ensureConfigured().submissions.listByAssignment(assignmentUniqueId, params));
   }
 
   listSubmissionsByUser(userUniqueId: string, params?: ListSubmissionsParams): Observable<PageResult<Submission>> {
-    return from(this.block.submissions.listByUser(userUniqueId, params));
+    return from(this.ensureConfigured().submissions.listByUser(userUniqueId, params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -236,6 +251,6 @@ export class UniversityService {
    * Use this when you need access to services not wrapped by this Angular service
    */
   get rawBlock(): UniversityBlock {
-    return this.block;
+    return this.ensureConfigured();
   }
 }
