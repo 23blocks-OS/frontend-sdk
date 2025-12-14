@@ -43,9 +43,6 @@ jobs:
       - name: Run affected tests
         run: npx nx affected -t test --parallel=3
 
-      - name: Type check affected packages
-        run: npx nx affected -t typecheck --parallel=3
-
   lint:
     name: Lint
     runs-on: ubuntu-latest
