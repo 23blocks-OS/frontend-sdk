@@ -6,6 +6,7 @@ export {
   create23BlocksClient,
   type AuthMode,
   type ClientConfig,
+  type ServiceUrls,
   type Blocks23Client,
   type ManagedAuthService,
   type StorageType,

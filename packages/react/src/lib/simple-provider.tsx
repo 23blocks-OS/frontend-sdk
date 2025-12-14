@@ -50,16 +50,72 @@ export interface TokenManager {
 }
 
 /**
+ * Service URL configuration - each microservice has its own URL
+ */
+export interface ServiceUrls {
+  /** Authentication service URL (required) */
+  authentication: string;
+  /** Search service URL */
+  search?: string;
+  /** Products service URL */
+  products?: string;
+  /** CRM service URL */
+  crm?: string;
+  /** Content service URL */
+  content?: string;
+  /** Geolocation service URL */
+  geolocation?: string;
+  /** Conversations service URL */
+  conversations?: string;
+  /** Files service URL */
+  files?: string;
+  /** Forms service URL */
+  forms?: string;
+  /** Assets service URL */
+  assets?: string;
+  /** Campaigns service URL */
+  campaigns?: string;
+  /** Company service URL */
+  company?: string;
+  /** Rewards service URL */
+  rewards?: string;
+  /** Sales service URL */
+  sales?: string;
+  /** Wallet service URL */
+  wallet?: string;
+  /** Jarvis (AI) service URL */
+  jarvis?: string;
+  /** Onboarding service URL */
+  onboarding?: string;
+  /** University (LMS) service URL */
+  university?: string;
+}
+
+/**
  * Provider props
  */
 export interface ProviderProps {
   children: ReactNode;
 
   /**
-   * Base URL for the 23blocks API
-   * @example 'https://api.yourapp.com'
+   * Service URLs for each microservice.
+   * At minimum, `authentication` URL is required.
+   *
+   * @example
+   * ```tsx
+   * <Provider
+   *   appId="your-app-id"
+   *   urls={{
+   *     authentication: 'https://gateway.23blocks.com',
+   *     crm: 'https://crm.23blocks.com',
+   *     products: 'https://products.23blocks.com',
+   *   }}
+   * >
+   *   <App />
+   * </Provider>
+   * ```
    */
-  baseUrl: string;
+  urls: ServiceUrls;
 
   /**
    * Application ID
@@ -261,15 +317,19 @@ const Blocks23Context = createContext<ClientContext | null>(null);
  * Wrap your app with this provider to access all 23blocks services
  * with automatic token management.
  *
- * @example Token mode (default)
+ * @example Basic usage with multiple services
  * ```tsx
  * import { Provider } from '@23blocks/react';
  *
  * function App() {
  *   return (
  *     <Provider
- *       baseUrl="https://api.yourapp.com"
  *       appId="your-app-id"
+ *       urls={{
+ *         authentication: 'https://gateway.23blocks.com',
+ *         crm: 'https://crm.23blocks.com',
+ *         products: 'https://products.23blocks.com',
+ *       }}
  *     >
  *       <MyApp />
  *     </Provider>
@@ -280,9 +340,12 @@ const Blocks23Context = createContext<ClientContext | null>(null);
  * @example Cookie mode (recommended for security)
  * ```tsx
  * <Provider
- *   baseUrl="https://api.yourapp.com"
  *   appId="your-app-id"
  *   authMode="cookie"
+ *   urls={{
+ *     authentication: 'https://gateway.23blocks.com',
+ *     crm: 'https://crm.23blocks.com',
+ *   }}
  * >
  *   <MyApp />
  * </Provider>
@@ -290,7 +353,7 @@ const Blocks23Context = createContext<ClientContext | null>(null);
  */
 export function Provider({
   children,
-  baseUrl,
+  urls,
   appId,
   tenantId,
   authMode = 'token',
@@ -304,8 +367,8 @@ export function Provider({
     [authMode, appId, storage, tenantId]
   );
 
-  // Create transport (memoized)
-  const transport = useMemo(() => {
+  // Factory to create transport for a specific service URL
+  const createServiceTransport = useCallback((baseUrl: string) => {
     return createHttpTransport({
       baseUrl,
       timeout,
@@ -330,29 +393,104 @@ export function Provider({
         return headers;
       },
     });
-  }, [baseUrl, appId, tenantId, authMode, storage, staticHeaders, timeout, tokenManager]);
+  }, [appId, tenantId, authMode, staticHeaders, timeout, tokenManager]);
 
-  // Create blocks (memoized)
+  // Create blocks (memoized) - each with its own transport
   const blockConfig = useMemo(() => ({ appId, tenantId }), [appId, tenantId]);
 
-  const authentication = useMemo(() => createAuthenticationBlock(transport, blockConfig), [transport, blockConfig]);
-  const search = useMemo(() => createSearchBlock(transport, blockConfig), [transport, blockConfig]);
-  const products = useMemo(() => createProductsBlock(transport, blockConfig), [transport, blockConfig]);
-  const crm = useMemo(() => createCrmBlock(transport, blockConfig), [transport, blockConfig]);
-  const content = useMemo(() => createContentBlock(transport, blockConfig), [transport, blockConfig]);
-  const geolocation = useMemo(() => createGeolocationBlock(transport, blockConfig), [transport, blockConfig]);
-  const conversations = useMemo(() => createConversationsBlock(transport, blockConfig), [transport, blockConfig]);
-  const files = useMemo(() => createFilesBlock(transport, blockConfig), [transport, blockConfig]);
-  const forms = useMemo(() => createFormsBlock(transport, blockConfig), [transport, blockConfig]);
-  const assets = useMemo(() => createAssetsBlock(transport, blockConfig), [transport, blockConfig]);
-  const campaigns = useMemo(() => createCampaignsBlock(transport, blockConfig), [transport, blockConfig]);
-  const company = useMemo(() => createCompanyBlock(transport, blockConfig), [transport, blockConfig]);
-  const rewards = useMemo(() => createRewardsBlock(transport, blockConfig), [transport, blockConfig]);
-  const sales = useMemo(() => createSalesBlock(transport, blockConfig), [transport, blockConfig]);
-  const wallet = useMemo(() => createWalletBlock(transport, blockConfig), [transport, blockConfig]);
-  const jarvis = useMemo(() => createJarvisBlock(transport, blockConfig), [transport, blockConfig]);
-  const onboarding = useMemo(() => createOnboardingBlock(transport, blockConfig), [transport, blockConfig]);
-  const university = useMemo(() => createUniversityBlock(transport, blockConfig), [transport, blockConfig]);
+  // Auth transport is required
+  const authTransport = useMemo(
+    () => createServiceTransport(urls.authentication),
+    [createServiceTransport, urls.authentication]
+  );
+
+  const authentication = useMemo(() => createAuthenticationBlock(authTransport, blockConfig), [authTransport, blockConfig]);
+
+  // Other blocks use their own URL or fall back to auth URL
+  const search = useMemo(() => {
+    const transport = urls.search ? createServiceTransport(urls.search) : authTransport;
+    return createSearchBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.search, authTransport, blockConfig]);
+
+  const products = useMemo(() => {
+    const transport = urls.products ? createServiceTransport(urls.products) : authTransport;
+    return createProductsBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.products, authTransport, blockConfig]);
+
+  const crm = useMemo(() => {
+    const transport = urls.crm ? createServiceTransport(urls.crm) : authTransport;
+    return createCrmBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.crm, authTransport, blockConfig]);
+
+  const content = useMemo(() => {
+    const transport = urls.content ? createServiceTransport(urls.content) : authTransport;
+    return createContentBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.content, authTransport, blockConfig]);
+
+  const geolocation = useMemo(() => {
+    const transport = urls.geolocation ? createServiceTransport(urls.geolocation) : authTransport;
+    return createGeolocationBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.geolocation, authTransport, blockConfig]);
+
+  const conversations = useMemo(() => {
+    const transport = urls.conversations ? createServiceTransport(urls.conversations) : authTransport;
+    return createConversationsBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.conversations, authTransport, blockConfig]);
+
+  const files = useMemo(() => {
+    const transport = urls.files ? createServiceTransport(urls.files) : authTransport;
+    return createFilesBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.files, authTransport, blockConfig]);
+
+  const forms = useMemo(() => {
+    const transport = urls.forms ? createServiceTransport(urls.forms) : authTransport;
+    return createFormsBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.forms, authTransport, blockConfig]);
+
+  const assets = useMemo(() => {
+    const transport = urls.assets ? createServiceTransport(urls.assets) : authTransport;
+    return createAssetsBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.assets, authTransport, blockConfig]);
+
+  const campaigns = useMemo(() => {
+    const transport = urls.campaigns ? createServiceTransport(urls.campaigns) : authTransport;
+    return createCampaignsBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.campaigns, authTransport, blockConfig]);
+
+  const company = useMemo(() => {
+    const transport = urls.company ? createServiceTransport(urls.company) : authTransport;
+    return createCompanyBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.company, authTransport, blockConfig]);
+
+  const rewards = useMemo(() => {
+    const transport = urls.rewards ? createServiceTransport(urls.rewards) : authTransport;
+    return createRewardsBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.rewards, authTransport, blockConfig]);
+
+  const sales = useMemo(() => {
+    const transport = urls.sales ? createServiceTransport(urls.sales) : authTransport;
+    return createSalesBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.sales, authTransport, blockConfig]);
+
+  const wallet = useMemo(() => {
+    const transport = urls.wallet ? createServiceTransport(urls.wallet) : authTransport;
+    return createWalletBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.wallet, authTransport, blockConfig]);
+
+  const jarvis = useMemo(() => {
+    const transport = urls.jarvis ? createServiceTransport(urls.jarvis) : authTransport;
+    return createJarvisBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.jarvis, authTransport, blockConfig]);
+
+  const onboarding = useMemo(() => {
+    const transport = urls.onboarding ? createServiceTransport(urls.onboarding) : authTransport;
+    return createOnboardingBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.onboarding, authTransport, blockConfig]);
+
+  const university = useMemo(() => {
+    const transport = urls.university ? createServiceTransport(urls.university) : authTransport;
+    return createUniversityBlock(transport, blockConfig);
+  }, [createServiceTransport, urls.university, authTransport, blockConfig]);
 
   // Auth methods with automatic token management
   const signIn = useCallback(async (request: SignInRequest): Promise<SignInResponse> => {

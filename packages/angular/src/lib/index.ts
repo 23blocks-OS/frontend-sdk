@@ -6,6 +6,7 @@ export {
   provideBlocks23,
   getBlocks23Providers,
   type ProviderConfig,
+  type ServiceUrls,
   type AuthMode,
   type StorageType,
   type TokenManagerService,

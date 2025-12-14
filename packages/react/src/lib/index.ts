@@ -8,6 +8,7 @@ export {
   useAuth,
   type ProviderProps,
   type ClientContext,
+  type ServiceUrls,
   type AuthMode,
   type StorageType,
   type TokenManager,

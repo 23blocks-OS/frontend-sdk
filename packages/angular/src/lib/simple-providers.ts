@@ -35,14 +35,68 @@ export type AuthMode = 'token' | 'cookie';
 export type StorageType = 'localStorage' | 'sessionStorage' | 'memory';
 
 /**
+ * Service URL configuration - each microservice has its own URL
+ */
+export interface ServiceUrls {
+  /** Authentication service URL (required) */
+  authentication: string;
+  /** Search service URL */
+  search?: string;
+  /** Products service URL */
+  products?: string;
+  /** CRM service URL */
+  crm?: string;
+  /** Content service URL */
+  content?: string;
+  /** Geolocation service URL */
+  geolocation?: string;
+  /** Conversations service URL */
+  conversations?: string;
+  /** Files service URL */
+  files?: string;
+  /** Forms service URL */
+  forms?: string;
+  /** Assets service URL */
+  assets?: string;
+  /** Campaigns service URL */
+  campaigns?: string;
+  /** Company service URL */
+  company?: string;
+  /** Rewards service URL */
+  rewards?: string;
+  /** Sales service URL */
+  sales?: string;
+  /** Wallet service URL */
+  wallet?: string;
+  /** Jarvis (AI) service URL */
+  jarvis?: string;
+  /** Onboarding service URL */
+  onboarding?: string;
+  /** University (LMS) service URL */
+  university?: string;
+}
+
+/**
  * Configuration for providing 23blocks services
  */
 export interface ProviderConfig {
   /**
-   * Base URL for the 23blocks API
-   * @example 'https://api.yourapp.com'
+   * Service URLs for each microservice.
+   * At minimum, `authentication` URL is required.
+   *
+   * @example
+   * ```typescript
+   * provideBlocks23({
+   *   appId: 'your-app-id',
+   *   urls: {
+   *     authentication: 'https://gateway.23blocks.com',
+   *     crm: 'https://crm.23blocks.com',
+   *     products: 'https://products.23blocks.com',
+   *   },
+   * })
+   * ```
    */
-  baseUrl: string;
+  urls: ServiceUrls;
 
   /**
    * Application ID
@@ -218,11 +272,15 @@ function createTokenManager(
 }
 
 /**
- * Create transport with automatic token handling
+ * Create transport with automatic token handling for a specific URL
  */
-function createTransportWithAuth(config: ProviderConfig, tokenManager: TokenManagerService): Transport {
+function createTransportWithAuth(
+  baseUrl: string,
+  config: ProviderConfig,
+  tokenManager: TokenManagerService
+): Transport {
   return createHttpTransport({
-    baseUrl: config.baseUrl,
+    baseUrl,
     timeout: config.timeout,
     credentials: config.authMode === 'cookie' ? 'include' : undefined,
     headers: () => {
@@ -254,7 +312,11 @@ function createTransportWithAuth(config: ProviderConfig, tokenManager: TokenMana
  * This is the recommended way to set up 23blocks in new Angular applications.
  * It automatically handles token storage and authentication headers.
  *
- * @example Token mode (default)
+ * **Note:** Currently, Angular uses a single shared transport for all services.
+ * The `authentication` URL is used as the base URL. For full multi-URL support
+ * with different URLs per service, use the advanced API with custom transports.
+ *
+ * @example Basic usage
  * ```typescript
  * // app.config.ts
  * import { ApplicationConfig } from '@angular/core';
@@ -263,8 +325,11 @@ function createTransportWithAuth(config: ProviderConfig, tokenManager: TokenMana
  * export const appConfig: ApplicationConfig = {
  *   providers: [
  *     provideBlocks23({
- *       baseUrl: 'https://api.yourapp.com',
  *       appId: 'your-app-id',
+ *       urls: {
+ *         authentication: 'https://gateway.23blocks.com',
+ *         // Additional URLs available for future per-service support
+ *       },
  *     }),
  *   ],
  * };
@@ -275,9 +340,11 @@ function createTransportWithAuth(config: ProviderConfig, tokenManager: TokenMana
  * export const appConfig: ApplicationConfig = {
  *   providers: [
  *     provideBlocks23({
- *       baseUrl: 'https://api.yourapp.com',
  *       appId: 'your-app-id',
  *       authMode: 'cookie',
+ *       urls: {
+ *         authentication: 'https://gateway.23blocks.com',
+ *       },
  *     }),
  *   ],
  * };
@@ -286,6 +353,9 @@ function createTransportWithAuth(config: ProviderConfig, tokenManager: TokenMana
 export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
   // Block config for all services
   const blockConfig = { appId: config.appId, tenantId: config.tenantId };
+
+  // Use authentication URL as the base (currently single transport for all services)
+  const baseUrl = config.urls.authentication;
 
   const providers: Provider[] = [
     // Store config for injection
@@ -301,10 +371,11 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
     },
 
     // Transport factory - depends on token manager
+    // Note: Currently uses single transport (authentication URL) for all services
     {
       provide: TRANSPORT,
       useFactory: (tokenManager: TokenManagerService) => {
-        return createTransportWithAuth(config, tokenManager);
+        return createTransportWithAuth(baseUrl, config, tokenManager);
       },
       deps: [TOKEN_MANAGER],
     },
@@ -345,8 +416,10 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
  * @NgModule({
  *   providers: [
  *     ...getBlocks23Providers({
- *       baseUrl: 'https://api.yourapp.com',
  *       appId: 'your-app-id',
+ *       urls: {
+ *         authentication: 'https://gateway.23blocks.com',
+ *       },
  *     }),
  *   ],
  * })
@@ -356,6 +429,9 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
 export function getBlocks23Providers(config: ProviderConfig): Provider[] {
   // Block config for all services
   const blockConfig = { appId: config.appId, tenantId: config.tenantId };
+
+  // Use authentication URL as the base
+  const baseUrl = config.urls.authentication;
 
   return [
     // Store config for injection
@@ -374,7 +450,7 @@ export function getBlocks23Providers(config: ProviderConfig): Provider[] {
     {
       provide: TRANSPORT,
       useFactory: (tokenManager: TokenManagerService) => {
-        return createTransportWithAuth(config, tokenManager);
+        return createTransportWithAuth(baseUrl, config, tokenManager);
       },
       deps: [TOKEN_MANAGER],
     },

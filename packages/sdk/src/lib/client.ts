@@ -37,14 +37,137 @@ import { createTokenManager, type StorageType, type TokenManager, type TokenMana
 export type AuthMode = 'token' | 'cookie';
 
 /**
+ * Service URL configuration - each microservice has its own URL
+ */
+export interface ServiceUrls {
+  /**
+   * Authentication service URL (auth, users, roles, api-keys)
+   * @example 'https://gateway.23blocks.com'
+   */
+  authentication: string;
+
+  /**
+   * Search service URL
+   * @example 'https://search.23blocks.com'
+   */
+  search?: string;
+
+  /**
+   * Products service URL
+   * @example 'https://products.23blocks.com'
+   */
+  products?: string;
+
+  /**
+   * CRM service URL
+   * @example 'https://crm.23blocks.com'
+   */
+  crm?: string;
+
+  /**
+   * Content service URL
+   * @example 'https://content.23blocks.com'
+   */
+  content?: string;
+
+  /**
+   * Geolocation service URL
+   * @example 'https://geolocation.23blocks.com'
+   */
+  geolocation?: string;
+
+  /**
+   * Conversations service URL
+   * @example 'https://conversations.23blocks.com'
+   */
+  conversations?: string;
+
+  /**
+   * Files service URL
+   * @example 'https://files.23blocks.com'
+   */
+  files?: string;
+
+  /**
+   * Forms service URL
+   * @example 'https://forms.23blocks.com'
+   */
+  forms?: string;
+
+  /**
+   * Assets service URL
+   * @example 'https://assets.23blocks.com'
+   */
+  assets?: string;
+
+  /**
+   * Campaigns service URL
+   * @example 'https://campaigns.23blocks.com'
+   */
+  campaigns?: string;
+
+  /**
+   * Company service URL
+   * @example 'https://company.23blocks.com'
+   */
+  company?: string;
+
+  /**
+   * Rewards service URL
+   * @example 'https://rewards.23blocks.com'
+   */
+  rewards?: string;
+
+  /**
+   * Sales service URL
+   * @example 'https://sales.23blocks.com'
+   */
+  sales?: string;
+
+  /**
+   * Wallet service URL
+   * @example 'https://wallet.23blocks.com'
+   */
+  wallet?: string;
+
+  /**
+   * Jarvis (AI) service URL
+   * @example 'https://jarvis.23blocks.com'
+   */
+  jarvis?: string;
+
+  /**
+   * Onboarding service URL
+   * @example 'https://onboarding.23blocks.com'
+   */
+  onboarding?: string;
+
+  /**
+   * University (LMS) service URL
+   * @example 'https://university.23blocks.com'
+   */
+  university?: string;
+}
+
+/**
  * Client configuration
  */
 export interface ClientConfig {
   /**
-   * Base URL for the 23blocks API
-   * @example 'https://api.yourapp.com'
+   * Service URLs for each microservice.
+   * At minimum, `authentication` URL is required.
+   * Other services are optional and will be disabled if not provided.
+   *
+   * @example
+   * ```typescript
+   * urls: {
+   *   authentication: 'https://gateway.23blocks.com',
+   *   crm: 'https://crm.23blocks.com',
+   *   products: 'https://products.23blocks.com',
+   * }
+   * ```
    */
-  baseUrl: string;
+  urls: ServiceUrls;
 
   /**
    * Application ID
@@ -279,55 +402,56 @@ function isBrowser(): boolean {
  * @param config - Client configuration
  * @returns A configured client with all blocks and automatic auth management
  *
- * @example Token mode (default)
+ * @example Basic usage with multiple services
  * ```typescript
  * const client = create23BlocksClient({
- *   baseUrl: 'https://api.yourapp.com',
  *   appId: 'your-app-id',
+ *   urls: {
+ *     authentication: 'https://gateway.23blocks.com',
+ *     crm: 'https://crm.23blocks.com',
+ *     products: 'https://products.23blocks.com',
+ *   },
  * });
  *
  * // Sign in - tokens are stored automatically
  * await client.auth.signIn({ email: 'user@example.com', password: 'password' });
  *
- * // All subsequent requests include the token automatically
+ * // Each service uses its own URL
  * const products = await client.products.products.list();
- * const user = await client.auth.getCurrentUser();
+ * const contacts = await client.crm.contacts.list();
  *
  * // Sign out - tokens are cleared automatically
  * await client.auth.signOut();
  * ```
  *
- * @example Cookie mode (recommended for new projects)
+ * @example Cookie mode (recommended for security)
  * ```typescript
  * const client = create23BlocksClient({
- *   baseUrl: 'https://api.yourapp.com',
  *   appId: 'your-app-id',
  *   authMode: 'cookie',
+ *   urls: {
+ *     authentication: 'https://gateway.23blocks.com',
+ *     crm: 'https://crm.23blocks.com',
+ *   },
  * });
- *
- * // Sign in - backend sets httpOnly cookie
- * await client.auth.signIn({ email: 'user@example.com', password: 'password' });
- *
- * // Requests automatically include cookies
- * const products = await client.products.products.list();
  * ```
  *
  * @example SSR with token forwarding
  * ```typescript
- * // On the server
  * const client = create23BlocksClient({
- *   baseUrl: 'https://api.yourapp.com',
  *   appId: 'your-app-id',
  *   storage: 'memory',
- *   headers: {
- *     Authorization: `Bearer ${tokenFromRequest}`,
+ *   headers: { Authorization: `Bearer ${tokenFromRequest}` },
+ *   urls: {
+ *     authentication: 'https://gateway.23blocks.com',
+ *     crm: 'https://crm.23blocks.com',
  *   },
  * });
  * ```
  */
 export function create23BlocksClient(config: ClientConfig): Blocks23Client {
   const {
-    baseUrl,
+    urls,
     appId,
     tenantId,
     authMode = 'token',
@@ -346,54 +470,112 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
     });
   }
 
-  // Create transport with appropriate auth strategy
-  const transport = createHttpTransport({
-    baseUrl,
-    timeout,
-    credentials: authMode === 'cookie' ? 'include' : undefined,
-    headers: () => {
-      const headers: Record<string, string> = {
-        ...staticHeaders,
-        appid: appId,
-      };
+  // Factory to create transport for a specific service URL
+  function createServiceTransport(baseUrl: string) {
+    return createHttpTransport({
+      baseUrl,
+      timeout,
+      credentials: authMode === 'cookie' ? 'include' : undefined,
+      headers: () => {
+        const headers: Record<string, string> = {
+          ...staticHeaders,
+          appid: appId,
+        };
 
-      if (tenantId) {
-        headers['tenant-id'] = tenantId;
-      }
-
-      // In token mode, add Authorization header if we have a token
-      if (authMode === 'token' && tokenManager) {
-        const token = tokenManager.getAccessToken();
-        if (token) {
-          headers['Authorization'] = `Bearer ${token}`;
+        if (tenantId) {
+          headers['tenant-id'] = tenantId;
         }
-      }
 
-      return headers;
-    },
-  });
+        // In token mode, add Authorization header if we have a token
+        if (authMode === 'token' && tokenManager) {
+          const token = tokenManager.getAccessToken();
+          if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+          }
+        }
 
-  // Create all blocks
+        return headers;
+      },
+    });
+  }
+
+  // Create block config
   const blockConfig = { appId, tenantId };
 
-  const authenticationBlock = createAuthenticationBlock(transport, blockConfig);
-  const searchBlock = createSearchBlock(transport, blockConfig);
-  const productsBlock = createProductsBlock(transport, blockConfig);
-  const crmBlock = createCrmBlock(transport, blockConfig);
-  const contentBlock = createContentBlock(transport, blockConfig);
-  const geolocationBlock = createGeolocationBlock(transport, blockConfig);
-  const conversationsBlock = createConversationsBlock(transport, blockConfig);
-  const filesBlock = createFilesBlock(transport, blockConfig);
-  const formsBlock = createFormsBlock(transport, blockConfig);
-  const assetsBlock = createAssetsBlock(transport, blockConfig);
-  const campaignsBlock = createCampaignsBlock(transport, blockConfig);
-  const companyBlock = createCompanyBlock(transport, blockConfig);
-  const rewardsBlock = createRewardsBlock(transport, blockConfig);
-  const salesBlock = createSalesBlock(transport, blockConfig);
-  const walletBlock = createWalletBlock(transport, blockConfig);
-  const jarvisBlock = createJarvisBlock(transport, blockConfig);
-  const onboardingBlock = createOnboardingBlock(transport, blockConfig);
-  const universityBlock = createUniversityBlock(transport, blockConfig);
+  // Create transports for each service (only if URL is provided)
+  const authTransport = createServiceTransport(urls.authentication);
+
+  // Create all blocks with their respective transports
+  const authenticationBlock = createAuthenticationBlock(authTransport, blockConfig);
+
+  // Optional blocks - only create if URL is provided
+  const searchBlock = urls.search
+    ? createSearchBlock(createServiceTransport(urls.search), blockConfig)
+    : createSearchBlock(authTransport, blockConfig); // fallback to auth URL
+
+  const productsBlock = urls.products
+    ? createProductsBlock(createServiceTransport(urls.products), blockConfig)
+    : createProductsBlock(authTransport, blockConfig);
+
+  const crmBlock = urls.crm
+    ? createCrmBlock(createServiceTransport(urls.crm), blockConfig)
+    : createCrmBlock(authTransport, blockConfig);
+
+  const contentBlock = urls.content
+    ? createContentBlock(createServiceTransport(urls.content), blockConfig)
+    : createContentBlock(authTransport, blockConfig);
+
+  const geolocationBlock = urls.geolocation
+    ? createGeolocationBlock(createServiceTransport(urls.geolocation), blockConfig)
+    : createGeolocationBlock(authTransport, blockConfig);
+
+  const conversationsBlock = urls.conversations
+    ? createConversationsBlock(createServiceTransport(urls.conversations), blockConfig)
+    : createConversationsBlock(authTransport, blockConfig);
+
+  const filesBlock = urls.files
+    ? createFilesBlock(createServiceTransport(urls.files), blockConfig)
+    : createFilesBlock(authTransport, blockConfig);
+
+  const formsBlock = urls.forms
+    ? createFormsBlock(createServiceTransport(urls.forms), blockConfig)
+    : createFormsBlock(authTransport, blockConfig);
+
+  const assetsBlock = urls.assets
+    ? createAssetsBlock(createServiceTransport(urls.assets), blockConfig)
+    : createAssetsBlock(authTransport, blockConfig);
+
+  const campaignsBlock = urls.campaigns
+    ? createCampaignsBlock(createServiceTransport(urls.campaigns), blockConfig)
+    : createCampaignsBlock(authTransport, blockConfig);
+
+  const companyBlock = urls.company
+    ? createCompanyBlock(createServiceTransport(urls.company), blockConfig)
+    : createCompanyBlock(authTransport, blockConfig);
+
+  const rewardsBlock = urls.rewards
+    ? createRewardsBlock(createServiceTransport(urls.rewards), blockConfig)
+    : createRewardsBlock(authTransport, blockConfig);
+
+  const salesBlock = urls.sales
+    ? createSalesBlock(createServiceTransport(urls.sales), blockConfig)
+    : createSalesBlock(authTransport, blockConfig);
+
+  const walletBlock = urls.wallet
+    ? createWalletBlock(createServiceTransport(urls.wallet), blockConfig)
+    : createWalletBlock(authTransport, blockConfig);
+
+  const jarvisBlock = urls.jarvis
+    ? createJarvisBlock(createServiceTransport(urls.jarvis), blockConfig)
+    : createJarvisBlock(authTransport, blockConfig);
+
+  const onboardingBlock = urls.onboarding
+    ? createOnboardingBlock(createServiceTransport(urls.onboarding), blockConfig)
+    : createOnboardingBlock(authTransport, blockConfig);
+
+  const universityBlock = urls.university
+    ? createUniversityBlock(createServiceTransport(urls.university), blockConfig)
+    : createUniversityBlock(authTransport, blockConfig);
 
   // Create managed auth service with automatic token handling
   const managedAuth: ManagedAuthService = {
