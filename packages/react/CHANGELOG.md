@@ -1,3 +1,21 @@
+## 1.0.3 (2025-12-14)
+
+### 🚀 Features
+
+- ⚠️  **sdk,react,angular:** add per-service URL support for microservices ([a0cb4f2](https://github.com/23blocks-OS/frontend-sdk/commit/a0cb4f2))
+
+### ⚠️  Breaking Changes
+
+- **sdk,react,angular:** add per-service URL support for microservices  ([a0cb4f2](https://github.com/23blocks-OS/frontend-sdk/commit/a0cb4f2))
+  `baseUrl` replaced with `urls: { authentication: '...' }`
+  🤖 Generated with [Claude Code](https://claude.com/claude-code)
+  Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 1.0.2 (2025-12-14)
 
 ### 🧱 Updated Dependencies
