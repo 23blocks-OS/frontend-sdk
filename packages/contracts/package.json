@@ -21,15 +21,15 @@
     "typescript"
   ],
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
+  "main": "./dist/index.esm.js",
+  "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "import": "./dist/index.esm.js",
+      "default": "./dist/index.esm.js"
     }
   },
   "files": [
@@ -40,16 +40,14 @@
     "sourceRoot": "packages/contracts/src",
     "targets": {
       "build": {
-        "executor": "@nx/js:swc",
-        "outputs": [
-          "{options.outputPath}"
-        ],
+        "executor": "@nx/rollup:rollup",
+        "outputs": ["{options.outputPath}"],
         "options": {
           "outputPath": "packages/contracts/dist",
           "main": "packages/contracts/src/index.ts",
           "tsConfig": "packages/contracts/tsconfig.lib.json",
-          "skipTypeCheck": true,
-          "stripLeadingPaths": true
+          "compiler": "swc",
+          "format": ["esm"]
         }
       }
     }

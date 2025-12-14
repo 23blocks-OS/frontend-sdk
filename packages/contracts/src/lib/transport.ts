@@ -86,7 +86,7 @@ export interface TransportConfig {
    * - 'omit': Never send cookies
    * Use 'include' for cookie-based authentication
    */
-  credentials?: RequestCredentials;
+  credentials?: 'include' | 'same-origin' | 'omit';
 }
 
 /**

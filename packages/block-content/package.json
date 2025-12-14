@@ -7,15 +7,15 @@
     "url": "https://github.com/23blocks-OS/frontend-sdk.git",
     "directory": "packages/block-content"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
+  "main": "./dist/index.esm.js",
+  "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "import": "./dist/index.esm.js",
+      "default": "./dist/index.esm.js"
     }
   },
   "files": [
@@ -26,7 +26,7 @@
     "sourceRoot": "packages/block-content/src",
     "targets": {
       "build": {
-        "executor": "@nx/js:swc",
+        "executor": "@nx/rollup:rollup",
         "outputs": [
           "{options.outputPath}"
         ],
@@ -34,8 +34,8 @@
           "outputPath": "packages/block-content/dist",
           "main": "packages/block-content/src/index.ts",
           "tsConfig": "packages/block-content/tsconfig.lib.json",
-          "skipTypeCheck": true,
-          "stripLeadingPaths": true
+          "compiler": "swc",
+          "format": ["esm"]
         }
       }
     }
