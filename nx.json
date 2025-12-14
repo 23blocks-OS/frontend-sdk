@@ -45,12 +45,12 @@
       "fallbackCurrentVersionResolver": "disk",
       "generatorOptions": {
         "updateDependents": "auto"
-      },
-      "git": {
-        "commit": true,
-        "tag": true,
-        "commitMessage": "chore(release): publish"
       }
+    },
+    "git": {
+      "commit": true,
+      "tag": true,
+      "commitMessage": "chore(release): publish"
     },
     "publish": {
       "registry": "https://registry.npmjs.org",
