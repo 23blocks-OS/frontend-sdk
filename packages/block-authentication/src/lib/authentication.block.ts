@@ -178,7 +178,7 @@ export interface AuthenticationBlock {
  *   baseUrl: 'https://api.example.com',
  *   headers: () => ({
  *     'Authorization': `Bearer ${getToken()}`,
- *     'appid': 'your-app-id',
+ *     'x-api-key': 'your-app-id',
  *   }),
  * });
  *

@@ -396,7 +396,7 @@ export function Provider({
       headers: () => {
         const headers: Record<string, string> = {
           ...staticHeaders,
-          appid: appId,
+          'x-api-key': appId,
         };
 
         if (tenantId) {

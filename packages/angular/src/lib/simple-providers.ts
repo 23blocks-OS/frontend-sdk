@@ -308,7 +308,7 @@ function createTransportWithAuth(
     headers: () => {
       const headers: Record<string, string> = {
         ...config.headers,
-        appid: config.appId,
+        'x-api-key': config.appId,
       };
 
       if (config.tenantId) {
