@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-search",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Search block for 23blocks SDK - full-text search, history, favorites",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -50,7 +50,9 @@
           "main": "packages/block-search/src/index.ts",
           "tsConfig": "packages/block-search/tsconfig.lib.json",
           "compiler": "swc",
-          "format": ["esm"]
+          "format": [
+            "esm"
+          ]
         }
       }
     }

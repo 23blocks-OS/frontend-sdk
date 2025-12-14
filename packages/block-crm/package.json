@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-crm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "CRM block for 23blocks SDK - accounts, contacts, leads, opportunities, meetings",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -51,7 +51,9 @@
           "main": "packages/block-crm/src/index.ts",
           "tsConfig": "packages/block-crm/tsconfig.lib.json",
           "compiler": "swc",
-          "format": ["esm"]
+          "format": [
+            "esm"
+          ]
         }
       }
     }

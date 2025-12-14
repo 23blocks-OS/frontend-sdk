@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/jsonapi-codec",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "JSON:API v1.0 codec for encoding/decoding API responses",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -50,7 +50,9 @@
           "main": "packages/jsonapi-codec/src/index.ts",
           "tsConfig": "packages/jsonapi-codec/tsconfig.lib.json",
           "compiler": "swc",
-          "format": ["esm"]
+          "format": [
+            "esm"
+          ]
         }
       }
     }

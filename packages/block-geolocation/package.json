@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-geolocation",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Geolocation block for 23blocks SDK - locations, addresses, areas, regions, routes, premises, and bookings management",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -54,7 +54,9 @@
           "main": "packages/block-geolocation/src/index.ts",
           "tsConfig": "packages/block-geolocation/tsconfig.lib.json",
           "compiler": "swc",
-          "format": ["esm"]
+          "format": [
+            "esm"
+          ]
         }
       }
     }

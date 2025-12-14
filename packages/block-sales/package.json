@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-sales",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Sales block for 23blocks SDK - orders, payments, subscriptions, transactions",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -51,7 +51,9 @@
           "main": "packages/block-sales/src/index.ts",
           "tsConfig": "packages/block-sales/tsconfig.lib.json",
           "compiler": "swc",
-          "format": ["esm"]
+          "format": [
+            "esm"
+          ]
         }
       }
     }

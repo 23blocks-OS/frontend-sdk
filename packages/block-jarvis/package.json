@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-jarvis",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Jarvis AI block for 23blocks SDK - agents, prompts, workflows, executions, conversations",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -53,7 +53,9 @@
           "main": "packages/block-jarvis/src/index.ts",
           "tsConfig": "packages/block-jarvis/tsconfig.lib.json",
           "compiler": "swc",
-          "format": ["esm"]
+          "format": [
+            "esm"
+          ]
         }
       }
     }

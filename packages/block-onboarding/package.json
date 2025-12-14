@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-onboarding",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Onboarding block for 23blocks SDK - user journeys, flows, and identity verification",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -50,7 +50,9 @@
           "main": "packages/block-onboarding/src/index.ts",
           "tsConfig": "packages/block-onboarding/tsconfig.lib.json",
           "compiler": "swc",
-          "format": ["esm"]
+          "format": [
+            "esm"
+          ]
         }
       }
     }

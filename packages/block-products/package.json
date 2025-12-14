@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-products",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Products block for 23blocks SDK - e-commerce, carts, inventory, catalog management",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -51,7 +51,9 @@
           "main": "packages/block-products/src/index.ts",
           "tsConfig": "packages/block-products/tsconfig.lib.json",
           "compiler": "swc",
-          "format": ["esm"]
+          "format": [
+            "esm"
+          ]
         }
       }
     }

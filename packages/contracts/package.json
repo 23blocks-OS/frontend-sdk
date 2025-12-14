@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/contracts",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Core type definitions and interfaces for the 23blocks SDK",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -41,13 +41,17 @@
     "targets": {
       "build": {
         "executor": "@nx/rollup:rollup",
-        "outputs": ["{options.outputPath}"],
+        "outputs": [
+          "{options.outputPath}"
+        ],
         "options": {
           "outputPath": "packages/contracts/dist",
           "main": "packages/contracts/src/index.ts",
           "tsConfig": "packages/contracts/tsconfig.lib.json",
           "compiler": "swc",
-          "format": ["esm"]
+          "format": [
+            "esm"
+          ]
         }
       }
     }

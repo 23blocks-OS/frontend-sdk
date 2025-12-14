@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/transport-http",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "HTTP transport layer for 23blocks SDK with fetch-based implementation",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -50,7 +50,9 @@
           "main": "packages/transport-http/src/index.ts",
           "tsConfig": "packages/transport-http/tsconfig.lib.json",
           "compiler": "swc",
-          "format": ["esm"]
+          "format": [
+            "esm"
+          ]
         }
       }
     }

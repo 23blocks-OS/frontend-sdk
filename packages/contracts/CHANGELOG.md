@@ -1,3 +1,7 @@
+## 1.0.4 (2025-12-14)
+
+This was a version bump only for @23blocks/contracts to align it with other projects, there were no code changes.
+
 ## 1.0.3 (2025-12-14)
 
 This was a version bump only for @23blocks/contracts to align it with other projects, there were no code changes.

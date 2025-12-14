@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-wallet",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Wallet block for 23blocks SDK - digital wallets, transactions, and authorization codes",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -50,7 +50,9 @@
           "main": "packages/block-wallet/src/index.ts",
           "tsConfig": "packages/block-wallet/tsconfig.lib.json",
           "compiler": "swc",
-          "format": ["esm"]
+          "format": [
+            "esm"
+          ]
         }
       }
     }

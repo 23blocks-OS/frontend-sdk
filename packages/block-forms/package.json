@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-forms",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Forms block for 23blocks SDK - dynamic forms, schemas, submissions, and form management",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
@@ -51,7 +51,9 @@
           "main": "packages/block-forms/src/index.ts",
           "tsConfig": "packages/block-forms/tsconfig.lib.json",
           "compiler": "swc",
-          "format": ["esm"]
+          "format": [
+            "esm"
+          ]
         }
       }
     }
