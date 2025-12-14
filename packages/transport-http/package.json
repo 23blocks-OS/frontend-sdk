@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/transport-http",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "HTTP transport layer for 23blocks SDK with fetch-based implementation",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
