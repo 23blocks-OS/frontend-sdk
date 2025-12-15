@@ -1,3 +1,10 @@
+## 3.0.2 (2025-12-15)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 3.0.1
+- Updated @23blocks/transport-http to 2.0.2
+
 ## 3.0.1 (2025-12-15)
 
 ### 🧱 Updated Dependencies

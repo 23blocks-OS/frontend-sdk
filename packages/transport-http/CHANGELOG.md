@@ -1,3 +1,14 @@
+## 2.0.2 (2025-12-15)
+
+### 🩹 Fixes
+
+- add confirmSuccessUrl to SignUpRequest and improve error handling ([bf1ad46](https://github.com/23blocks-OS/frontend-sdk/commit/bf1ad46))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 2.0.1 (2025-12-15)
 
 ### 🩹 Fixes
