@@ -85,6 +85,26 @@ export interface AuthenticationBlock {
   apiKeys: ApiKeysService;
 
   /**
+   * Multi-factor authentication
+   */
+  mfa: MfaService;
+
+  /**
+   * OAuth and social login
+   */
+  oauth: OAuthService;
+
+  /**
+   * User avatar management
+   */
+  avatars: AvatarsService;
+
+  /**
+   * Tenant management
+   */
+  tenants: TenantsService;
+
+  /**
    * Application management
    */
   apps: AppsService;
@@ -210,6 +230,10 @@ export function createAuthenticationBlock(
     users: createUsersService(transport, config),
     roles: createRolesService(transport, config),
     apiKeys: createApiKeysService(transport, config),
+    mfa: createMfaService(transport, config),
+    oauth: createOAuthService(transport, config),
+    avatars: createAvatarsService(transport, config),
+    tenants: createTenantsService(transport, config),
     apps: createAppsService(transport, config),
     blocks: createBlocksService(transport, config),
     services: createServicesRegistryService(transport, config),
