@@ -1,3 +1,30 @@
+# 4.0.0 (2025-12-15)
+
+### 🩹 Fixes
+
+- ⚠️  remove confusing useAuthState alias ([ec42716](https://github.com/23blocks-OS/frontend-sdk/commit/ec42716))
+- add all auth methods to useAuth hook ([6a7bcc6](https://github.com/23blocks-OS/frontend-sdk/commit/6a7bcc6))
+
+### ⚠️  Breaking Changes
+
+- remove confusing useAuthState alias  ([ec42716](https://github.com/23blocks-OS/frontend-sdk/commit/ec42716))
+  useAuthState has been removed. Use useAuth instead.
+  The useAuth hook now includes all authentication methods, so useAuthState
+  is no longer needed. This simplifies the API:
+  - useAuth: All auth operations (signIn, signUp, validateEmail, etc.)
+  - useUsers: Admin user management operations
+  - useMfa: Multi-factor authentication
+  - useOAuth: Social login and token management
+  - useAvatars: User avatar management
+  - useTenants: Tenant management
+  🤖 Generated with [Claude Code](https://claude.com/claude-code)
+  Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.1.0 (2025-12-15)
 
 ### 🚀 Features
