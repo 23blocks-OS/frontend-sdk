@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-rewards",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "Rewards block for 23blocks SDK - loyalty, coupons, badges, and gamification",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

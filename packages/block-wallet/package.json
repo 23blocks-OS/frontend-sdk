@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-wallet",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "Wallet block for 23blocks SDK - digital wallets, transactions, and authorization codes",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
