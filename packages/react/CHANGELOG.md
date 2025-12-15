@@ -1,3 +1,9 @@
+# 5.0.0 (2025-12-15)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 4.0.0
+
 ## 4.0.1 (2025-12-15)
 
 ### 🧱 Updated Dependencies

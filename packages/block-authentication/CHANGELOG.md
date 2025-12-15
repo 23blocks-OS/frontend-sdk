@@ -1,3 +1,23 @@
+# 4.0.0 (2025-12-15)
+
+### 🩹 Fixes
+
+- ⚠️  make confirmSuccessUrl required in SignUpRequest and ResendConfirmationRequest ([1b5fb44](https://github.com/23blocks-OS/frontend-sdk/commit/1b5fb44))
+
+### ⚠️  Breaking Changes
+
+- make confirmSuccessUrl required in SignUpRequest and ResendConfirmationRequest  ([1b5fb44](https://github.com/23blocks-OS/frontend-sdk/commit/1b5fb44))
+  confirmSuccessUrl is now a required field.
+  This field is needed for the email confirmation flow to work correctly.
+  Applications must provide a redirect URL for users after they confirm their email.
+  🤖 Generated with [Claude Code](https://claude.com/claude-code)
+  Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.1.1 (2025-12-15)
 
 ### 🩹 Fixes
