@@ -1,3 +1,12 @@
+## 4.3.0 (2025-12-15)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-university to 2.1.0
+- Updated @23blocks/block-products to 2.1.0
+- Updated @23blocks/block-rewards to 2.1.0
+- Updated @23blocks/block-search to 3.1.0
+
 ## 4.2.0 (2025-12-15)
 
 ### 🧱 Updated Dependencies

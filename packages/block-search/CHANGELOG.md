@@ -1,3 +1,14 @@
+## 3.1.0 (2025-12-15)
+
+### 🚀 Features
+
+- expand Products, Rewards, Search, University blocks with missing services ([47b250e](https://github.com/23blocks-OS/frontend-sdk/commit/47b250e))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 # 3.0.0 (2025-12-15)
 
 ### 🩹 Fixes
