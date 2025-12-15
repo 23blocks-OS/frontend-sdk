@@ -26,6 +26,34 @@ import {
   type SubmitAssignmentRequest,
   type GradeSubmissionRequest,
   type ListSubmissionsParams,
+  type Subject,
+  type CreateSubjectRequest,
+  type UpdateSubjectRequest,
+  type ListSubjectsParams,
+  type Teacher,
+  type ListTeachersParams,
+  type TeacherAvailability,
+  type CreateAvailabilityRequest,
+  type UpdateAvailabilityRequest,
+  type Student,
+  type ListStudentsParams,
+  type RegisterStudentRequest,
+  type UpdateStudentRequest,
+  type StudentAvailability,
+  type CourseGroup,
+  type CreateCourseGroupRequest,
+  type CoachingSession,
+  type CreateCoachingSessionRequest,
+  type UpdateCoachingSessionRequest,
+  type ListCoachingSessionsParams,
+  type ContentTest,
+  type TestQuestion,
+  type TestOption,
+  type CreateContentTestRequest,
+  type UpdateContentTestRequest,
+  type CreateQuestionRequest,
+  type CreateOptionRequest,
+  type ListContentTestsParams,
 } from '@23blocks/block-university';
 import { TRANSPORT, UNIVERSITY_TRANSPORT, UNIVERSITY_CONFIG } from '../tokens.js';
 
@@ -240,6 +268,326 @@ export class UniversityService {
 
   listSubmissionsByUser(userUniqueId: string, params?: ListSubmissionsParams): Observable<PageResult<Submission>> {
     return from(this.ensureConfigured().submissions.listByUser(userUniqueId, params));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Subjects Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listSubjects(params?: ListSubjectsParams): Observable<PageResult<Subject>> {
+    return from(this.ensureConfigured().subjects.list(params));
+  }
+
+  getSubject(uniqueId: string): Observable<Subject> {
+    return from(this.ensureConfigured().subjects.get(uniqueId));
+  }
+
+  createSubject(data: CreateSubjectRequest): Observable<Subject> {
+    return from(this.ensureConfigured().subjects.create(data));
+  }
+
+  updateSubject(uniqueId: string, data: UpdateSubjectRequest): Observable<Subject> {
+    return from(this.ensureConfigured().subjects.update(uniqueId, data));
+  }
+
+  getSubjectResources(uniqueId: string): Observable<unknown[]> {
+    return from(this.ensureConfigured().subjects.getResources(uniqueId));
+  }
+
+  getSubjectTeacherResources(uniqueId: string, teacherUniqueId: string): Observable<unknown[]> {
+    return from(this.ensureConfigured().subjects.getTeacherResources(uniqueId, teacherUniqueId));
+  }
+
+  getSubjectTests(uniqueId: string): Observable<unknown[]> {
+    return from(this.ensureConfigured().subjects.getTests(uniqueId));
+  }
+
+  addSubjectLesson(uniqueId: string, lessonData: { name: string; description?: string }): Observable<unknown> {
+    return from(this.ensureConfigured().subjects.addLesson(uniqueId, lessonData));
+  }
+
+  addSubjectResource(uniqueId: string, resourceData: unknown): Observable<unknown> {
+    return from(this.ensureConfigured().subjects.addResource(uniqueId, resourceData));
+  }
+
+  updateSubjectResource(uniqueId: string, resourceUniqueId: string, resourceData: unknown): Observable<unknown> {
+    return from(this.ensureConfigured().subjects.updateResource(uniqueId, resourceUniqueId, resourceData));
+  }
+
+  deleteSubjectResource(uniqueId: string, resourceUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().subjects.deleteResource(uniqueId, resourceUniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Teachers Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listTeachers(params?: ListTeachersParams): Observable<PageResult<Teacher>> {
+    return from(this.ensureConfigured().teachers.list(params));
+  }
+
+  listArchivedTeachers(params?: ListTeachersParams): Observable<PageResult<Teacher>> {
+    return from(this.ensureConfigured().teachers.listArchived(params));
+  }
+
+  getTeacher(uniqueId: string): Observable<Teacher> {
+    return from(this.ensureConfigured().teachers.get(uniqueId));
+  }
+
+  getTeacherCourses(uniqueId: string): Observable<Course[]> {
+    return from(this.ensureConfigured().teachers.getCourses(uniqueId));
+  }
+
+  getTeacherGroups(uniqueId: string): Observable<CourseGroup[]> {
+    return from(this.ensureConfigured().teachers.getGroups(uniqueId));
+  }
+
+  getTeacherAvailability(uniqueId: string): Observable<TeacherAvailability[]> {
+    return from(this.ensureConfigured().teachers.getAvailability(uniqueId));
+  }
+
+  addTeacherAvailability(uniqueId: string, data: CreateAvailabilityRequest): Observable<TeacherAvailability> {
+    return from(this.ensureConfigured().teachers.addAvailability(uniqueId, data));
+  }
+
+  updateTeacherAvailability(uniqueId: string, availabilityUniqueId: string, data: UpdateAvailabilityRequest): Observable<TeacherAvailability> {
+    return from(this.ensureConfigured().teachers.updateAvailability(uniqueId, availabilityUniqueId, data));
+  }
+
+  deleteTeacherAvailability(uniqueId: string, availabilityUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().teachers.deleteAvailability(uniqueId, availabilityUniqueId));
+  }
+
+  deleteAllTeacherAvailability(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().teachers.deleteAllAvailability(uniqueId));
+  }
+
+  getTeacherContentTree(uniqueId: string, courseGroupUniqueId: string): Observable<unknown> {
+    return from(this.ensureConfigured().teachers.getContentTree(uniqueId, courseGroupUniqueId));
+  }
+
+  getTeacherStudentContentTree(uniqueId: string, userUniqueId: string, courseGroupUniqueId: string): Observable<unknown> {
+    return from(this.ensureConfigured().teachers.getStudentContentTree(uniqueId, userUniqueId, courseGroupUniqueId));
+  }
+
+  promoteStudent(teacherUniqueId: string, userUniqueId: string): Observable<unknown> {
+    return from(this.ensureConfigured().teachers.promoteStudent(teacherUniqueId, userUniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Students Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listStudents(params?: ListStudentsParams): Observable<PageResult<Student>> {
+    return from(this.ensureConfigured().students.list(params));
+  }
+
+  listArchivedStudents(params?: ListStudentsParams): Observable<PageResult<Student>> {
+    return from(this.ensureConfigured().students.listArchived(params));
+  }
+
+  getStudent(uniqueId: string): Observable<Student> {
+    return from(this.ensureConfigured().students.get(uniqueId));
+  }
+
+  registerStudent(uniqueId: string, data: RegisterStudentRequest): Observable<Student> {
+    return from(this.ensureConfigured().students.register(uniqueId, data));
+  }
+
+  updateStudent(uniqueId: string, data: UpdateStudentRequest): Observable<Student> {
+    return from(this.ensureConfigured().students.update(uniqueId, data));
+  }
+
+  archiveStudent(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().students.archive(uniqueId));
+  }
+
+  restoreStudent(uniqueId: string): Observable<Student> {
+    return from(this.ensureConfigured().students.restore(uniqueId));
+  }
+
+  getStudentCourses(uniqueId: string): Observable<Course[]> {
+    return from(this.ensureConfigured().students.getCourses(uniqueId));
+  }
+
+  getStudentAvailableCourses(uniqueId: string): Observable<Course[]> {
+    return from(this.ensureConfigured().students.getAvailableCourses(uniqueId));
+  }
+
+  getStudentGroups(uniqueId: string): Observable<CourseGroup[]> {
+    return from(this.ensureConfigured().students.getGroups(uniqueId));
+  }
+
+  getStudentContentTree(uniqueId: string, courseGroupUniqueId: string): Observable<unknown> {
+    return from(this.ensureConfigured().students.getContentTree(uniqueId, courseGroupUniqueId));
+  }
+
+  getStudentAvailability(uniqueId: string): Observable<StudentAvailability[]> {
+    return from(this.ensureConfigured().students.getAvailability(uniqueId));
+  }
+
+  addStudentAvailability(uniqueId: string, data: { dayOfWeek: number; startTime: string; endTime: string; timezone?: string }): Observable<StudentAvailability> {
+    return from(this.ensureConfigured().students.addAvailability(uniqueId, data));
+  }
+
+  updateStudentAvailability(uniqueId: string, availabilityUniqueId: string, data: { dayOfWeek?: number; startTime?: string; endTime?: string; timezone?: string }): Observable<StudentAvailability> {
+    return from(this.ensureConfigured().students.updateAvailability(uniqueId, availabilityUniqueId, data));
+  }
+
+  updateStudentAvailabilitySlots(uniqueId: string, slots: { dayOfWeek: number; startTime: string; endTime: string }[]): Observable<StudentAvailability[]> {
+    return from(this.ensureConfigured().students.updateAvailabilitySlots(uniqueId, slots));
+  }
+
+  deleteStudentAvailability(uniqueId: string, availabilityUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().students.deleteAvailability(uniqueId, availabilityUniqueId));
+  }
+
+  deleteAllStudentAvailability(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().students.deleteAllAvailability(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Course Groups Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  getCourseGroup(uniqueId: string): Observable<CourseGroup> {
+    return from(this.ensureConfigured().courseGroups.get(uniqueId));
+  }
+
+  createCourseGroup(data: CreateCourseGroupRequest): Observable<CourseGroup> {
+    return from(this.ensureConfigured().courseGroups.create(data));
+  }
+
+  addStudentToCourseGroup(uniqueId: string, studentUniqueId: string): Observable<CourseGroup> {
+    return from(this.ensureConfigured().courseGroups.addStudent(uniqueId, studentUniqueId));
+  }
+
+  addTeacherToCourseGroup(uniqueId: string, teacherUniqueId: string): Observable<CourseGroup> {
+    return from(this.ensureConfigured().courseGroups.addTeacher(uniqueId, teacherUniqueId));
+  }
+
+  getCourseGroupTests(uniqueId: string): Observable<unknown[]> {
+    return from(this.ensureConfigured().courseGroups.getTests(uniqueId));
+  }
+
+  getCourseGroupTestResponses(uniqueId: string, testUniqueId: string): Observable<unknown[]> {
+    return from(this.ensureConfigured().courseGroups.getTestResponses(uniqueId, testUniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Coaching Sessions Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listCoachingSessions(params?: ListCoachingSessionsParams): Observable<PageResult<CoachingSession>> {
+    return from(this.ensureConfigured().coachingSessions.list(params));
+  }
+
+  createCoachingSession(data: CreateCoachingSessionRequest): Observable<CoachingSession> {
+    return from(this.ensureConfigured().coachingSessions.create(data));
+  }
+
+  updateCoachingSession(uniqueId: string, data: UpdateCoachingSessionRequest): Observable<CoachingSession> {
+    return from(this.ensureConfigured().coachingSessions.update(uniqueId, data));
+  }
+
+  deleteCoachingSession(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().coachingSessions.delete(uniqueId));
+  }
+
+  getCoachingSessionsByStudent(studentUniqueId: string): Observable<CoachingSession[]> {
+    return from(this.ensureConfigured().coachingSessions.getByStudent(studentUniqueId));
+  }
+
+  getCoachingSessionsByTeacher(teacherUniqueId: string): Observable<CoachingSession[]> {
+    return from(this.ensureConfigured().coachingSessions.getByTeacher(teacherUniqueId));
+  }
+
+  studentConfirmCoachingSession(uniqueId: string): Observable<CoachingSession> {
+    return from(this.ensureConfigured().coachingSessions.studentConfirm(uniqueId));
+  }
+
+  studentCheckInCoachingSession(uniqueId: string): Observable<CoachingSession> {
+    return from(this.ensureConfigured().coachingSessions.studentCheckIn(uniqueId));
+  }
+
+  studentCheckOutCoachingSession(uniqueId: string): Observable<CoachingSession> {
+    return from(this.ensureConfigured().coachingSessions.studentCheckOut(uniqueId));
+  }
+
+  addStudentNotesToCoachingSession(uniqueId: string, notes: string): Observable<CoachingSession> {
+    return from(this.ensureConfigured().coachingSessions.studentNotes(uniqueId, notes));
+  }
+
+  teacherConfirmCoachingSession(uniqueId: string): Observable<CoachingSession> {
+    return from(this.ensureConfigured().coachingSessions.teacherConfirm(uniqueId));
+  }
+
+  teacherCheckInCoachingSession(uniqueId: string): Observable<CoachingSession> {
+    return from(this.ensureConfigured().coachingSessions.teacherCheckIn(uniqueId));
+  }
+
+  teacherCheckOutCoachingSession(uniqueId: string): Observable<CoachingSession> {
+    return from(this.ensureConfigured().coachingSessions.teacherCheckOut(uniqueId));
+  }
+
+  addAdminNotesToCoachingSession(uniqueId: string, notes: string): Observable<CoachingSession> {
+    return from(this.ensureConfigured().coachingSessions.adminNotes(uniqueId, notes));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Content Tests Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listContentTests(params?: ListContentTestsParams): Observable<PageResult<ContentTest>> {
+    return from(this.ensureConfigured().tests.list(params));
+  }
+
+  getContentTest(uniqueId: string): Observable<ContentTest> {
+    return from(this.ensureConfigured().tests.get(uniqueId));
+  }
+
+  createContentTest(data: CreateContentTestRequest): Observable<ContentTest> {
+    return from(this.ensureConfigured().tests.create(data));
+  }
+
+  updateContentTest(uniqueId: string, data: UpdateContentTestRequest): Observable<ContentTest> {
+    return from(this.ensureConfigured().tests.update(uniqueId, data));
+  }
+
+  getContentTestResults(uniqueId: string): Observable<unknown[]> {
+    return from(this.ensureConfigured().tests.getResults(uniqueId));
+  }
+
+  getContentTestSolution(uniqueId: string): Observable<unknown> {
+    return from(this.ensureConfigured().tests.getSolution(uniqueId));
+  }
+
+  createTestQuestion(uniqueId: string, data: CreateQuestionRequest): Observable<TestQuestion> {
+    return from(this.ensureConfigured().tests.createQuestion(uniqueId, data));
+  }
+
+  updateTestQuestion(uniqueId: string, questionUniqueId: string, data: Partial<CreateQuestionRequest>): Observable<TestQuestion> {
+    return from(this.ensureConfigured().tests.updateQuestion(uniqueId, questionUniqueId, data));
+  }
+
+  getTestQuestion(uniqueId: string, questionId: string): Observable<TestQuestion> {
+    return from(this.ensureConfigured().tests.getQuestion(uniqueId, questionId));
+  }
+
+  listTestOptions(): Observable<TestOption[]> {
+    return from(this.ensureConfigured().tests.listOptions());
+  }
+
+  createTestOption(data: CreateOptionRequest): Observable<TestOption> {
+    return from(this.ensureConfigured().tests.createOption(data));
+  }
+
+  updateTestOption(uniqueId: string, optionUniqueId: string, data: Partial<CreateOptionRequest>): Observable<TestOption> {
+    return from(this.ensureConfigured().tests.updateOption(uniqueId, optionUniqueId, data));
+  }
+
+  addOptionToQuestion(uniqueId: string, questionId: string, optionId: string): Observable<TestQuestion> {
+    return from(this.ensureConfigured().tests.addOptionToQuestion(uniqueId, questionId, optionId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

@@ -1,6 +1,6 @@
 import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
-import type { Transport } from '@23blocks/contracts';
+import type { Transport, PageResult } from '@23blocks/contracts';
 import {
   createSearchBlock,
   type SearchBlock,
@@ -13,6 +13,16 @@ import {
   type SearchRequest,
   type SearchResponse,
   type AddFavoriteRequest,
+  type SearchEntity,
+  type EntityTypeSchema,
+  type RegisterEntityRequest,
+  type UpdateEntityRequest,
+  type ListEntitiesParams,
+  type CopilotSearchRequest,
+  type SearchIdentity,
+  type RegisterIdentityRequest,
+  type UpdateIdentityRequest,
+  type ListIdentitiesParams,
 } from '@23blocks/block-search';
 import { TRANSPORT, SEARCH_TRANSPORT, SEARCH_CONFIG } from '../tokens.js';
 
@@ -143,6 +153,62 @@ export class SearchService {
    */
   isFavorite(entityUniqueId: string): Observable<boolean> {
     return from(this.ensureConfigured().favorites.isFavorite(entityUniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Entities Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listEntities(params?: ListEntitiesParams): Observable<PageResult<SearchEntity>> {
+    return from(this.ensureConfigured().entities.list(params));
+  }
+
+  getEntity(uniqueId: string): Observable<SearchEntity> {
+    return from(this.ensureConfigured().entities.get(uniqueId));
+  }
+
+  registerEntity(uniqueId: string, data: RegisterEntityRequest): Observable<SearchEntity> {
+    return from(this.ensureConfigured().entities.register(uniqueId, data));
+  }
+
+  updateEntity(uniqueId: string, data: UpdateEntityRequest): Observable<SearchEntity> {
+    return from(this.ensureConfigured().entities.update(uniqueId, data));
+  }
+
+  deleteEntity(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().entities.delete(uniqueId));
+  }
+
+  listRegisteredEntityTypes(): Observable<{ entityType: string }[]> {
+    return from(this.ensureConfigured().entities.listEntityTypes());
+  }
+
+  getEntityTypeSchema(entityType: string): Observable<EntityTypeSchema> {
+    return from(this.ensureConfigured().entities.getEntityTypeSchema(entityType));
+  }
+
+  searchByCopilot(data: CopilotSearchRequest): Observable<SearchEntity[]> {
+    return from(this.ensureConfigured().entities.searchByCopilot(data));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Identities Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listIdentities(params?: ListIdentitiesParams): Observable<PageResult<SearchIdentity>> {
+    return from(this.ensureConfigured().identities.list(params));
+  }
+
+  getIdentity(uniqueId: string): Observable<SearchIdentity> {
+    return from(this.ensureConfigured().identities.get(uniqueId));
+  }
+
+  registerIdentity(uniqueId: string, data: RegisterIdentityRequest): Observable<SearchIdentity> {
+    return from(this.ensureConfigured().identities.register(uniqueId, data));
+  }
+
+  updateIdentity(uniqueId: string, data: UpdateIdentityRequest): Observable<SearchIdentity> {
+    return from(this.ensureConfigured().identities.update(uniqueId, data));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

@@ -4,10 +4,26 @@ import {
   createCampaignMediaService,
   createLandingPagesService,
   createAudiencesService,
+  createLandingTemplatesService,
+  createCampaignTargetsService,
+  createCampaignResultsService,
+  createCampaignMarketsService,
+  createCampaignLocationsService,
+  createCampaignTemplatesService,
+  createCampaignMediaResultsService,
+  createMediaService,
   type CampaignsService,
   type CampaignMediaService,
   type LandingPagesService,
   type AudiencesService,
+  type LandingTemplatesService,
+  type CampaignTargetsService,
+  type CampaignResultsService,
+  type CampaignMarketsService,
+  type CampaignLocationsService,
+  type CampaignTemplatesService,
+  type CampaignMediaResultsService,
+  type MediaService,
 } from './services';
 
 export interface CampaignsBlockConfig extends BlockConfig {
@@ -17,9 +33,17 @@ export interface CampaignsBlockConfig extends BlockConfig {
 
 export interface CampaignsBlock {
   campaigns: CampaignsService;
-  media: CampaignMediaService;
+  campaignMedia: CampaignMediaService;
   landingPages: LandingPagesService;
   audiences: AudiencesService;
+  landingTemplates: LandingTemplatesService;
+  targets: CampaignTargetsService;
+  results: CampaignResultsService;
+  markets: CampaignMarketsService;
+  locations: CampaignLocationsService;
+  templates: CampaignTemplatesService;
+  mediaResults: CampaignMediaResultsService;
+  media: MediaService;
 }
 
 export function createCampaignsBlock(
@@ -28,9 +52,17 @@ export function createCampaignsBlock(
 ): CampaignsBlock {
   return {
     campaigns: createCampaignsService(transport, config),
-    media: createCampaignMediaService(transport, config),
+    campaignMedia: createCampaignMediaService(transport, config),
     landingPages: createLandingPagesService(transport, config),
     audiences: createAudiencesService(transport, config),
+    landingTemplates: createLandingTemplatesService(transport, config),
+    targets: createCampaignTargetsService(transport, config),
+    results: createCampaignResultsService(transport, config),
+    markets: createCampaignMarketsService(transport, config),
+    locations: createCampaignLocationsService(transport, config),
+    templates: createCampaignTemplatesService(transport, config),
+    mediaResults: createCampaignMediaResultsService(transport, config),
+    media: createMediaService(transport, config),
   };
 }
 
@@ -44,5 +76,14 @@ export const campaignsBlockMetadata: BlockMetadata = {
     'LandingPage',
     'Audience',
     'AudienceMember',
+    'LandingTemplate',
+    'CampaignTarget',
+    'CampaignResult',
+    'CampaignMarket',
+    'CampaignLocation',
+    'CampaignTemplate',
+    'TemplateDetail',
+    'CampaignMediaResult',
+    'Medium',
   ],
 };

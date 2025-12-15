@@ -19,6 +19,47 @@ import {
   type CreateAssetAuditRequest,
   type UpdateAssetAuditRequest,
   type ListAssetAuditsParams,
+  type Category,
+  type CreateCategoryRequest,
+  type UpdateCategoryRequest,
+  type ListCategoriesParams,
+  type CategoryPresignResponse,
+  type CreateCategoryImageRequest,
+  type CategoryImage,
+  type Tag,
+  type CreateTagRequest,
+  type UpdateTagRequest,
+  type ListTagsParams,
+  type Vendor,
+  type CreateVendorRequest,
+  type UpdateVendorRequest,
+  type ListVendorsParams,
+  type Warehouse,
+  type CreateWarehouseRequest,
+  type UpdateWarehouseRequest,
+  type ListWarehousesParams,
+  type AssetsEntity,
+  type CreateAssetsEntityRequest,
+  type UpdateAssetsEntityRequest,
+  type ListAssetsEntitiesParams,
+  type EntityAccess,
+  type AccessRequest,
+  type CreateAccessRequestRequest,
+  type AssetOperation,
+  type CreateAssetOperationRequest,
+  type ListAssetOperationsParams,
+  type OperationReportParams,
+  type OperationReportSummary,
+  type AssetAlert,
+  type CreateAssetAlertRequest,
+  type AssetsUser,
+  type RegisterAssetsUserRequest,
+  type UpdateAssetsUserRequest,
+  type ListAssetsUsersParams,
+  type UserOwnership,
+  type AssetPresignResponse,
+  type CreateAssetImageRequest,
+  type AssetImage,
 } from '@23blocks/block-assets';
 import { TRANSPORT, ASSETS_TRANSPORT, ASSETS_CONFIG } from '../tokens.js';
 
@@ -165,6 +206,266 @@ export class AssetsService {
 
   listAssetAuditsByAsset(assetUniqueId: string, params?: ListAssetAuditsParams): Observable<PageResult<AssetAudit>> {
     return from(this.ensureConfigured().audits.listByAsset(assetUniqueId, params));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Categories Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listCategories(params?: ListCategoriesParams): Observable<PageResult<Category>> {
+    return from(this.ensureConfigured().categories.list(params));
+  }
+
+  getCategory(uniqueId: string): Observable<Category> {
+    return from(this.ensureConfigured().categories.get(uniqueId));
+  }
+
+  createCategory(data: CreateCategoryRequest): Observable<Category> {
+    return from(this.ensureConfigured().categories.create(data));
+  }
+
+  updateCategory(uniqueId: string, data: UpdateCategoryRequest): Observable<Category> {
+    return from(this.ensureConfigured().categories.update(uniqueId, data));
+  }
+
+  deleteCategory(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().categories.delete(uniqueId));
+  }
+
+  deleteCategoryCascade(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().categories.deleteCascade(uniqueId));
+  }
+
+  presignCategoryImage(uniqueId: string): Observable<CategoryPresignResponse> {
+    return from(this.ensureConfigured().categories.presignImage(uniqueId));
+  }
+
+  createCategoryImage(uniqueId: string, data: CreateCategoryImageRequest): Observable<CategoryImage> {
+    return from(this.ensureConfigured().categories.createImage(uniqueId, data));
+  }
+
+  deleteCategoryImage(uniqueId: string, imageUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().categories.deleteImage(uniqueId, imageUniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Tags Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listTags(params?: ListTagsParams): Observable<PageResult<Tag>> {
+    return from(this.ensureConfigured().tags.list(params));
+  }
+
+  getTag(uniqueId: string): Observable<Tag> {
+    return from(this.ensureConfigured().tags.get(uniqueId));
+  }
+
+  createTag(data: CreateTagRequest): Observable<Tag> {
+    return from(this.ensureConfigured().tags.create(data));
+  }
+
+  updateTag(uniqueId: string, data: UpdateTagRequest): Observable<Tag> {
+    return from(this.ensureConfigured().tags.update(uniqueId, data));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Vendors Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listVendors(params?: ListVendorsParams): Observable<PageResult<Vendor>> {
+    return from(this.ensureConfigured().vendors.list(params));
+  }
+
+  getVendor(uniqueId: string): Observable<Vendor> {
+    return from(this.ensureConfigured().vendors.get(uniqueId));
+  }
+
+  createVendor(data: CreateVendorRequest): Observable<Vendor> {
+    return from(this.ensureConfigured().vendors.create(data));
+  }
+
+  updateVendor(uniqueId: string, data: UpdateVendorRequest): Observable<Vendor> {
+    return from(this.ensureConfigured().vendors.update(uniqueId, data));
+  }
+
+  deleteVendor(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().vendors.delete(uniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Warehouses Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listWarehouses(params?: ListWarehousesParams): Observable<PageResult<Warehouse>> {
+    return from(this.ensureConfigured().warehouses.list(params));
+  }
+
+  getWarehouse(uniqueId: string): Observable<Warehouse> {
+    return from(this.ensureConfigured().warehouses.get(uniqueId));
+  }
+
+  createWarehouse(data: CreateWarehouseRequest): Observable<Warehouse> {
+    return from(this.ensureConfigured().warehouses.create(data));
+  }
+
+  updateWarehouse(uniqueId: string, data: UpdateWarehouseRequest): Observable<Warehouse> {
+    return from(this.ensureConfigured().warehouses.update(uniqueId, data));
+  }
+
+  deleteWarehouse(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().warehouses.delete(uniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Entities Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listEntities(params?: ListAssetsEntitiesParams): Observable<PageResult<AssetsEntity>> {
+    return from(this.ensureConfigured().entities.list(params));
+  }
+
+  getEntity(uniqueId: string): Observable<AssetsEntity> {
+    return from(this.ensureConfigured().entities.get(uniqueId));
+  }
+
+  createEntity(data: CreateAssetsEntityRequest): Observable<AssetsEntity> {
+    return from(this.ensureConfigured().entities.create(data));
+  }
+
+  updateEntity(uniqueId: string, data: UpdateAssetsEntityRequest): Observable<AssetsEntity> {
+    return from(this.ensureConfigured().entities.update(uniqueId, data));
+  }
+
+  deleteEntity(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().entities.delete(uniqueId));
+  }
+
+  listEntityAccesses(uniqueId: string): Observable<EntityAccess[]> {
+    return from(this.ensureConfigured().entities.listAccesses(uniqueId));
+  }
+
+  getEntityAccess(uniqueId: string): Observable<EntityAccess> {
+    return from(this.ensureConfigured().entities.getAccess(uniqueId));
+  }
+
+  makeEntityPublic(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().entities.makePublic(uniqueId));
+  }
+
+  revokeEntityAccess(uniqueId: string, accessUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().entities.revokeAccess(uniqueId, accessUniqueId));
+  }
+
+  requestEntityAccess(uniqueId: string, data: CreateAccessRequestRequest): Observable<AccessRequest> {
+    return from(this.ensureConfigured().entities.requestAccess(uniqueId, data));
+  }
+
+  listEntityAccessRequests(uniqueId: string): Observable<AccessRequest[]> {
+    return from(this.ensureConfigured().entities.listAccessRequests(uniqueId));
+  }
+
+  approveEntityAccessRequest(uniqueId: string, requestUniqueId: string): Observable<AccessRequest> {
+    return from(this.ensureConfigured().entities.approveAccessRequest(uniqueId, requestUniqueId));
+  }
+
+  denyEntityAccessRequest(uniqueId: string, requestUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().entities.denyAccessRequest(uniqueId, requestUniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Operations Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listAssetOperations(assetUniqueId: string, params?: ListAssetOperationsParams): Observable<PageResult<AssetOperation>> {
+    return from(this.ensureConfigured().operations.list(assetUniqueId, params));
+  }
+
+  getAssetOperation(assetUniqueId: string, operationUniqueId: string): Observable<AssetOperation> {
+    return from(this.ensureConfigured().operations.get(assetUniqueId, operationUniqueId));
+  }
+
+  createAssetOperation(assetUniqueId: string, data: CreateAssetOperationRequest): Observable<AssetOperation> {
+    return from(this.ensureConfigured().operations.create(assetUniqueId, data));
+  }
+
+  getOperationReportSummary(params: OperationReportParams): Observable<OperationReportSummary> {
+    return from(this.ensureConfigured().operations.reportSummary(params));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Alerts Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  getAlert(uniqueId: string): Observable<AssetAlert> {
+    return from(this.ensureConfigured().alerts.get(uniqueId));
+  }
+
+  createAlert(data: CreateAssetAlertRequest): Observable<AssetAlert> {
+    return from(this.ensureConfigured().alerts.create(data));
+  }
+
+  deleteAlert(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().alerts.delete(uniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Users Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listAssetsUsers(params?: ListAssetsUsersParams): Observable<PageResult<AssetsUser>> {
+    return from(this.ensureConfigured().users.list(params));
+  }
+
+  getAssetsUser(uniqueId: string): Observable<AssetsUser> {
+    return from(this.ensureConfigured().users.get(uniqueId));
+  }
+
+  registerAssetsUser(uniqueId: string, data: RegisterAssetsUserRequest): Observable<AssetsUser> {
+    return from(this.ensureConfigured().users.register(uniqueId, data));
+  }
+
+  updateAssetsUser(uniqueId: string, data: UpdateAssetsUserRequest): Observable<AssetsUser> {
+    return from(this.ensureConfigured().users.update(uniqueId, data));
+  }
+
+  listUserEntities(uniqueId: string): Observable<AssetsEntity[]> {
+    return from(this.ensureConfigured().users.listEntities(uniqueId));
+  }
+
+  listUserAssets(uniqueId: string): Observable<Asset[]> {
+    return from(this.ensureConfigured().users.listAssets(uniqueId));
+  }
+
+  listUserOwnership(uniqueId: string): Observable<UserOwnership[]> {
+    return from(this.ensureConfigured().users.listOwnership(uniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Images Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  presignAssetImage(assetUniqueId: string): Observable<AssetPresignResponse> {
+    return from(this.ensureConfigured().images.presign(assetUniqueId));
+  }
+
+  createAssetImage(assetUniqueId: string, data: CreateAssetImageRequest): Observable<AssetImage> {
+    return from(this.ensureConfigured().images.create(assetUniqueId, data));
+  }
+
+  deleteAssetImage(assetUniqueId: string, imageUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().images.delete(assetUniqueId, imageUniqueId));
+  }
+
+  presignAssetEventImage(assetUniqueId: string, eventUniqueId: string): Observable<AssetPresignResponse> {
+    return from(this.ensureConfigured().images.presignEvent(assetUniqueId, eventUniqueId));
+  }
+
+  createAssetEventImage(assetUniqueId: string, eventUniqueId: string, data: CreateAssetImageRequest): Observable<AssetImage> {
+    return from(this.ensureConfigured().images.createEventImage(assetUniqueId, eventUniqueId, data));
+  }
+
+  deleteAssetEventImage(assetUniqueId: string, eventUniqueId: string, imageUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().images.deleteEventImage(assetUniqueId, eventUniqueId, imageUniqueId));
   }
 
   // ───────────────────────────────────────────────────────────────────────────

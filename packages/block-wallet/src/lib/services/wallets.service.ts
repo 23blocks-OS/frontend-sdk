@@ -7,6 +7,11 @@ import type {
   ListWalletsParams,
   CreditWalletRequest,
   DebitWalletRequest,
+  TransferWalletRequest,
+  ValidateWalletRequest,
+  ValidateWalletResponse,
+  WalletContent,
+  StoreWalletContentRequest,
 } from '../types/wallet';
 import type { Transaction } from '../types/transaction';
 import { walletMapper } from '../mappers/wallet.mapper';
@@ -16,11 +21,17 @@ export interface WalletsService {
   list(params?: ListWalletsParams): Promise<PageResult<Wallet>>;
   get(uniqueId: string): Promise<Wallet>;
   getByUser(userUniqueId: string): Promise<Wallet>;
+  getUserWallet(userUniqueId: string, walletCode: string): Promise<Wallet>;
   create(data: CreateWalletRequest): Promise<Wallet>;
   update(uniqueId: string, data: UpdateWalletRequest): Promise<Wallet>;
   credit(uniqueId: string, data: CreditWalletRequest): Promise<Transaction>;
   debit(uniqueId: string, data: DebitWalletRequest): Promise<Transaction>;
   getBalance(uniqueId: string): Promise<{ balance: number; currency: string }>;
+  validate(data: ValidateWalletRequest): Promise<ValidateWalletResponse>;
+  transfer(userUniqueId: string, walletCode: string, data: TransferWalletRequest): Promise<Transaction>;
+  getContent(userUniqueId: string, walletCode: string): Promise<WalletContent[]>;
+  storeContent(userUniqueId: string, walletCode: string, data: StoreWalletContentRequest): Promise<WalletContent>;
+  listTransactions(userUniqueId: string, walletCode: string): Promise<PageResult<Transaction>>;
 }
 
 export function createWalletsService(transport: Transport, _config: { appId: string }): WalletsService {
@@ -106,6 +117,58 @@ export function createWalletsService(transport: Transport, _config: { appId: str
         balance: data.balance || 0,
         currency: data.currency || 'USD',
       };
+    },
+
+    async getUserWallet(userUniqueId: string, walletCode: string): Promise<Wallet> {
+      const response = await transport.get<unknown>(`/users/${userUniqueId}/wallets/${walletCode}`);
+      return decodeOne(response, walletMapper);
+    },
+
+    async validate(data: ValidateWalletRequest): Promise<ValidateWalletResponse> {
+      const response = await transport.post<unknown>('/wallets/validate/', {
+        wallet_code: data.walletCode,
+        amount: data.amount,
+      });
+      const result = response as ValidateWalletResponse;
+      return {
+        valid: result.valid ?? false,
+        message: result.message,
+        balance: result.balance,
+        currency: result.currency,
+      };
+    },
+
+    async transfer(userUniqueId: string, walletCode: string, data: TransferWalletRequest): Promise<Transaction> {
+      const response = await transport.post<unknown>(`/users/${userUniqueId}/wallets/${walletCode}/transfer`, {
+        transfer: {
+          destination_wallet_code: data.destinationWalletCode,
+          amount: data.amount,
+          description: data.description,
+          payload: data.payload,
+        },
+      });
+      return decodeOne(response, transactionMapper);
+    },
+
+    async getContent(userUniqueId: string, walletCode: string): Promise<WalletContent[]> {
+      const response = await transport.get<unknown>(`/users/${userUniqueId}/wallets/${walletCode}/content`);
+      const data = response as { data?: WalletContent[] };
+      return data.data || [];
+    },
+
+    async storeContent(userUniqueId: string, walletCode: string, data: StoreWalletContentRequest): Promise<WalletContent> {
+      const response = await transport.put<unknown>(`/users/${userUniqueId}/wallets/${walletCode}/content`, {
+        content: {
+          content_type: data.contentType,
+          content_data: data.contentData,
+        },
+      });
+      return response as WalletContent;
+    },
+
+    async listTransactions(userUniqueId: string, walletCode: string): Promise<PageResult<Transaction>> {
+      const response = await transport.get<unknown>(`/users/${userUniqueId}/wallets/${walletCode}/transactions`);
+      return decodePageResult(response, transactionMapper);
     },
   };
 }

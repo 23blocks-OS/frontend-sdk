@@ -5,6 +5,9 @@ import type {
   CreateAssetEventRequest,
   UpdateAssetEventRequest,
   ListAssetEventsParams,
+  EventImagePresignResponse,
+  CreateEventImageRequest,
+  EventImage,
 } from '../types/asset-event';
 import type {
   EventReportParams,
@@ -20,6 +23,10 @@ export interface AssetEventsService {
   update(assetUniqueId: string, eventUniqueId: string, data: UpdateAssetEventRequest): Promise<AssetEvent>;
   reportList(params: EventReportParams): Promise<EventReportList>;
   reportSummary(params: EventReportParams): Promise<EventReportSummary>;
+  // Event Images
+  presignImage(assetUniqueId: string, eventUniqueId: string): Promise<EventImagePresignResponse>;
+  createImage(assetUniqueId: string, eventUniqueId: string, data: CreateEventImageRequest): Promise<EventImage>;
+  deleteImage(assetUniqueId: string, eventUniqueId: string, imageUniqueId: string): Promise<void>;
 }
 
 export function createAssetEventsService(transport: Transport, _config: { appId: string }): AssetEventsService {
@@ -124,6 +131,36 @@ export function createAssetEventsService(transport: Transport, _config: { appId:
           endDate: new Date(response.period.end_date),
         },
       };
+    },
+
+    async presignImage(assetUniqueId: string, eventUniqueId: string): Promise<EventImagePresignResponse> {
+      const response = await transport.put<any>(`/assets/${assetUniqueId}/events/${eventUniqueId}/presign`, {});
+      return {
+        url: response.url,
+        fields: response.fields,
+        key: response.key,
+      };
+    },
+
+    async createImage(assetUniqueId: string, eventUniqueId: string, data: CreateEventImageRequest): Promise<EventImage> {
+      const response = await transport.post<any>(`/assets/${assetUniqueId}/events/${eventUniqueId}/images`, {
+        image: {
+          key: data.key,
+          filename: data.filename,
+          content_type: data.contentType,
+        },
+      });
+      return {
+        uniqueId: response.unique_id,
+        url: response.url,
+        filename: response.filename,
+        contentType: response.content_type,
+        createdAt: new Date(response.created_at),
+      };
+    },
+
+    async deleteImage(assetUniqueId: string, eventUniqueId: string, imageUniqueId: string): Promise<void> {
+      await transport.delete(`/assets/${assetUniqueId}/events/${eventUniqueId}/images/${imageUniqueId}`);
     },
   };
 }

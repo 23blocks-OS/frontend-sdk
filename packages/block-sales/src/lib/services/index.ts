@@ -1,5 +1,6 @@
 export * from './orders.service';
 export * from './order-details.service';
+export * from './order-taxes.service';
 export * from './payments.service';
 export * from './subscriptions.service';
 export * from './subscription-models.service';

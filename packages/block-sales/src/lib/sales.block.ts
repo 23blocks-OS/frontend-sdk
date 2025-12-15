@@ -2,6 +2,7 @@ import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts'
 import {
   createOrdersService,
   createOrderDetailsService,
+  createOrderTaxesService,
   createPaymentsService,
   createSubscriptionsService,
   createSubscriptionModelsService,
@@ -14,6 +15,7 @@ import {
   createVendorPaymentsService,
   type OrdersService,
   type OrderDetailsService,
+  type OrderTaxesService,
   type PaymentsService,
   type SubscriptionsService,
   type SubscriptionModelsService,
@@ -34,6 +36,7 @@ export interface SalesBlockConfig extends BlockConfig {
 export interface SalesBlock {
   orders: OrdersService;
   orderDetails: OrderDetailsService;
+  orderTaxes: OrderTaxesService;
   payments: PaymentsService;
   subscriptions: SubscriptionsService;
   subscriptionModels: SubscriptionModelsService;
@@ -53,6 +56,7 @@ export function createSalesBlock(
   return {
     orders: createOrdersService(transport, config),
     orderDetails: createOrderDetailsService(transport, config),
+    orderTaxes: createOrderTaxesService(transport, config),
     payments: createPaymentsService(transport, config),
     subscriptions: createSubscriptionsService(transport, config),
     subscriptionModels: createSubscriptionModelsService(transport, config),

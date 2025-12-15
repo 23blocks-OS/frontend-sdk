@@ -24,6 +24,38 @@ import {
   type CreateAudienceRequest,
   type UpdateAudienceRequest,
   type ListAudiencesParams,
+  type LandingTemplate,
+  type CreateLandingTemplateRequest,
+  type UpdateLandingTemplateRequest,
+  type ListLandingTemplatesParams,
+  type CampaignTarget,
+  type CreateCampaignTargetRequest,
+  type UpdateCampaignTargetRequest,
+  type ListCampaignTargetsParams,
+  type CampaignResult,
+  type CreateCampaignResultRequest,
+  type UpdateCampaignResultRequest,
+  type ListCampaignResultsParams,
+  type CampaignMarket,
+  type CreateCampaignMarketRequest,
+  type UpdateCampaignMarketRequest,
+  type ListCampaignMarketsParams,
+  type CampaignLocation,
+  type CreateCampaignLocationRequest,
+  type UpdateCampaignLocationRequest,
+  type ListCampaignLocationsParams,
+  type CampaignTemplate,
+  type CreateCampaignTemplateRequest,
+  type UpdateCampaignTemplateRequest,
+  type ListCampaignTemplatesParams,
+  type TemplateDetail,
+  type CreateTemplateDetailRequest,
+  type UpdateTemplateDetailRequest,
+  type ListTemplateDetailsParams,
+  type CampaignMediaResult,
+  type CreateCampaignMediaResultRequest,
+  type UpdateCampaignMediaResultRequest,
+  type ListCampaignMediaResultsParams,
 } from '@23blocks/block-campaigns';
 import { TRANSPORT, CAMPAIGNS_TRANSPORT, CAMPAIGNS_CONFIG } from '../tokens.js';
 
@@ -206,6 +238,194 @@ export class CampaignsService {
 
   getAudienceMembers(uniqueId: string): Observable<AudienceMember[]> {
     return from(this.ensureConfigured().audiences.getMembers(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Landing Templates Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listLandingTemplates(params?: ListLandingTemplatesParams): Observable<PageResult<LandingTemplate>> {
+    return from(this.ensureConfigured().landingTemplates.list(params));
+  }
+
+  getLandingTemplate(uniqueId: string): Observable<LandingTemplate> {
+    return from(this.ensureConfigured().landingTemplates.get(uniqueId));
+  }
+
+  createLandingTemplate(data: CreateLandingTemplateRequest): Observable<LandingTemplate> {
+    return from(this.ensureConfigured().landingTemplates.create(data));
+  }
+
+  updateLandingTemplate(uniqueId: string, data: UpdateLandingTemplateRequest): Observable<LandingTemplate> {
+    return from(this.ensureConfigured().landingTemplates.update(uniqueId, data));
+  }
+
+  deleteLandingTemplate(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().landingTemplates.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Campaign Targets Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listCampaignTargets(params?: ListCampaignTargetsParams): Observable<PageResult<CampaignTarget>> {
+    return from(this.ensureConfigured().targets.list(params));
+  }
+
+  getCampaignTarget(uniqueId: string): Observable<CampaignTarget> {
+    return from(this.ensureConfigured().targets.get(uniqueId));
+  }
+
+  createCampaignTarget(data: CreateCampaignTargetRequest): Observable<CampaignTarget> {
+    return from(this.ensureConfigured().targets.create(data));
+  }
+
+  updateCampaignTarget(uniqueId: string, data: UpdateCampaignTargetRequest): Observable<CampaignTarget> {
+    return from(this.ensureConfigured().targets.update(uniqueId, data));
+  }
+
+  deleteCampaignTarget(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().targets.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Campaign Results Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listCampaignResults(params?: ListCampaignResultsParams): Observable<PageResult<CampaignResult>> {
+    return from(this.ensureConfigured().results.list(params));
+  }
+
+  getCampaignResult(uniqueId: string): Observable<CampaignResult> {
+    return from(this.ensureConfigured().results.get(uniqueId));
+  }
+
+  createCampaignResult(data: CreateCampaignResultRequest): Observable<CampaignResult> {
+    return from(this.ensureConfigured().results.create(data));
+  }
+
+  updateCampaignResult(uniqueId: string, data: UpdateCampaignResultRequest): Observable<CampaignResult> {
+    return from(this.ensureConfigured().results.update(uniqueId, data));
+  }
+
+  deleteCampaignResult(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().results.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Campaign Markets Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listCampaignMarkets(params?: ListCampaignMarketsParams): Observable<PageResult<CampaignMarket>> {
+    return from(this.ensureConfigured().markets.list(params));
+  }
+
+  getCampaignMarket(uniqueId: string): Observable<CampaignMarket> {
+    return from(this.ensureConfigured().markets.get(uniqueId));
+  }
+
+  createCampaignMarket(data: CreateCampaignMarketRequest): Observable<CampaignMarket> {
+    return from(this.ensureConfigured().markets.create(data));
+  }
+
+  updateCampaignMarket(uniqueId: string, data: UpdateCampaignMarketRequest): Observable<CampaignMarket> {
+    return from(this.ensureConfigured().markets.update(uniqueId, data));
+  }
+
+  deleteCampaignMarket(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().markets.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Campaign Locations Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listCampaignLocations(params?: ListCampaignLocationsParams): Observable<PageResult<CampaignLocation>> {
+    return from(this.ensureConfigured().locations.list(params));
+  }
+
+  getCampaignLocation(uniqueId: string): Observable<CampaignLocation> {
+    return from(this.ensureConfigured().locations.get(uniqueId));
+  }
+
+  createCampaignLocation(data: CreateCampaignLocationRequest): Observable<CampaignLocation> {
+    return from(this.ensureConfigured().locations.create(data));
+  }
+
+  updateCampaignLocation(uniqueId: string, data: UpdateCampaignLocationRequest): Observable<CampaignLocation> {
+    return from(this.ensureConfigured().locations.update(uniqueId, data));
+  }
+
+  deleteCampaignLocation(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().locations.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Campaign Templates Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listCampaignTemplates(params?: ListCampaignTemplatesParams): Observable<PageResult<CampaignTemplate>> {
+    return from(this.ensureConfigured().templates.list(params));
+  }
+
+  getCampaignTemplate(uniqueId: string): Observable<CampaignTemplate> {
+    return from(this.ensureConfigured().templates.get(uniqueId));
+  }
+
+  createCampaignTemplate(data: CreateCampaignTemplateRequest): Observable<CampaignTemplate> {
+    return from(this.ensureConfigured().templates.create(data));
+  }
+
+  updateCampaignTemplate(uniqueId: string, data: UpdateCampaignTemplateRequest): Observable<CampaignTemplate> {
+    return from(this.ensureConfigured().templates.update(uniqueId, data));
+  }
+
+  deleteCampaignTemplate(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().templates.delete(uniqueId));
+  }
+
+  listTemplateDetails(params?: ListTemplateDetailsParams): Observable<PageResult<TemplateDetail>> {
+    return from(this.ensureConfigured().templates.listDetails(params));
+  }
+
+  getTemplateDetail(uniqueId: string): Observable<TemplateDetail> {
+    return from(this.ensureConfigured().templates.getDetail(uniqueId));
+  }
+
+  createTemplateDetail(data: CreateTemplateDetailRequest): Observable<TemplateDetail> {
+    return from(this.ensureConfigured().templates.createDetail(data));
+  }
+
+  updateTemplateDetail(uniqueId: string, data: UpdateTemplateDetailRequest): Observable<TemplateDetail> {
+    return from(this.ensureConfigured().templates.updateDetail(uniqueId, data));
+  }
+
+  deleteTemplateDetail(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().templates.deleteDetail(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Campaign Media Results Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listCampaignMediaResults(params?: ListCampaignMediaResultsParams): Observable<PageResult<CampaignMediaResult>> {
+    return from(this.ensureConfigured().mediaResults.list(params));
+  }
+
+  getCampaignMediaResult(uniqueId: string): Observable<CampaignMediaResult> {
+    return from(this.ensureConfigured().mediaResults.get(uniqueId));
+  }
+
+  createCampaignMediaResult(data: CreateCampaignMediaResultRequest): Observable<CampaignMediaResult> {
+    return from(this.ensureConfigured().mediaResults.create(data));
+  }
+
+  updateCampaignMediaResult(uniqueId: string, data: UpdateCampaignMediaResultRequest): Observable<CampaignMediaResult> {
+    return from(this.ensureConfigured().mediaResults.update(uniqueId, data));
+  }
+
+  deleteCampaignMediaResult(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().mediaResults.delete(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

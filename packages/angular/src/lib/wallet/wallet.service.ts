@@ -18,6 +18,13 @@ import {
   type ValidateAuthorizationCodeRequest,
   type UseAuthorizationCodeRequest,
   type ListAuthorizationCodesParams,
+  type TransactionWebhookRequest,
+  type TransactionWebhookResponse,
+  type TransferWalletRequest,
+  type ValidateWalletRequest,
+  type ValidateWalletResponse,
+  type WalletContent,
+  type StoreWalletContentRequest,
 } from '@23blocks/block-wallet';
 import { TRANSPORT, WALLET_TRANSPORT, WALLET_CONFIG } from '../tokens.js';
 
@@ -102,6 +109,30 @@ export class WalletService {
     return from(this.ensureConfigured().wallets.getBalance(uniqueId));
   }
 
+  getUserWallet(userUniqueId: string, walletCode: string): Observable<Wallet> {
+    return from(this.ensureConfigured().wallets.getUserWallet(userUniqueId, walletCode));
+  }
+
+  validateWallet(data: ValidateWalletRequest): Observable<ValidateWalletResponse> {
+    return from(this.ensureConfigured().wallets.validate(data));
+  }
+
+  transferWallet(userUniqueId: string, walletCode: string, data: TransferWalletRequest): Observable<Transaction> {
+    return from(this.ensureConfigured().wallets.transfer(userUniqueId, walletCode, data));
+  }
+
+  getWalletContent(userUniqueId: string, walletCode: string): Observable<WalletContent[]> {
+    return from(this.ensureConfigured().wallets.getContent(userUniqueId, walletCode));
+  }
+
+  storeWalletContent(userUniqueId: string, walletCode: string, data: StoreWalletContentRequest): Observable<WalletContent> {
+    return from(this.ensureConfigured().wallets.storeContent(userUniqueId, walletCode, data));
+  }
+
+  listWalletTransactions(userUniqueId: string, walletCode: string): Observable<PageResult<Transaction>> {
+    return from(this.ensureConfigured().wallets.listTransactions(userUniqueId, walletCode));
+  }
+
   // ─────────────────────────────────────────────────────────────────────────────
   // Transactions Service
   // ─────────────────────────────────────────────────────────────────────────────
@@ -157,6 +188,22 @@ export class WalletService {
 
   invalidateAuthorizationCode(uniqueId: string): Observable<AuthorizationCode> {
     return from(this.ensureConfigured().authorizationCodes.invalidate(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Webhooks Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Process an incoming transaction webhook from an external payment provider.
+   * This endpoint is used to record transactions initiated by external systems.
+   */
+  processTransactionWebhook(
+    companyUrlId: string,
+    walletCode: string,
+    data: TransactionWebhookRequest
+  ): Observable<TransactionWebhookResponse> {
+    return from(this.ensureConfigured().webhooks.processTransaction(companyUrlId, walletCode, data));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

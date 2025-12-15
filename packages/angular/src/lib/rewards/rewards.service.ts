@@ -31,6 +31,22 @@ import {
   type ListBadgesParams,
   type AwardBadgeRequest,
   type ListUserBadgesParams,
+  type CouponConfiguration,
+  type CreateCouponConfigurationRequest,
+  type UpdateCouponConfigurationRequest,
+  type ListCouponConfigurationsParams,
+  type OfferCode,
+  type CreateOfferCodeRequest,
+  type SendOfferCodeRequest,
+  type RedeemOfferCodeRequest,
+  type ExpirationRule,
+  type CreateExpirationRuleRequest,
+  type UpdateExpirationRuleRequest,
+  type ListExpirationRulesParams,
+  type RewardsCustomer,
+  type CustomerRewardExpiration,
+  type CustomerRewardHistory,
+  type ListRewardsCustomersParams,
 } from '@23blocks/block-rewards';
 import { TRANSPORT, REWARDS_TRANSPORT, REWARDS_CONFIG } from '../tokens.js';
 
@@ -197,6 +213,142 @@ export class RewardsService {
 
   listUserBadges(userUniqueId: string, params?: ListUserBadgesParams): Observable<PageResult<UserBadge>> {
     return from(this.ensureConfigured().badges.listByUser(userUniqueId, params));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Coupon Configurations Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listCouponConfigurations(params?: ListCouponConfigurationsParams): Observable<PageResult<CouponConfiguration>> {
+    return from(this.ensureConfigured().couponConfigurations.list(params));
+  }
+
+  getCouponConfiguration(uniqueId: string): Observable<CouponConfiguration> {
+    return from(this.ensureConfigured().couponConfigurations.get(uniqueId));
+  }
+
+  createCouponConfiguration(data: CreateCouponConfigurationRequest): Observable<CouponConfiguration> {
+    return from(this.ensureConfigured().couponConfigurations.create(data));
+  }
+
+  updateCouponConfiguration(data: UpdateCouponConfigurationRequest): Observable<CouponConfiguration> {
+    return from(this.ensureConfigured().couponConfigurations.update(data));
+  }
+
+  deleteCouponConfiguration(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().couponConfigurations.delete(uniqueId));
+  }
+
+  listConfigurationCoupons(uniqueId: string): Observable<Coupon[]> {
+    return from(this.ensureConfigured().couponConfigurations.listCoupons(uniqueId));
+  }
+
+  generateOneCoupon(uniqueId: string): Observable<Coupon> {
+    return from(this.ensureConfigured().couponConfigurations.generateOne(uniqueId));
+  }
+
+  generateBatchCoupons(uniqueId: string, count: number): Observable<Coupon[]> {
+    return from(this.ensureConfigured().couponConfigurations.generateBatch(uniqueId, count));
+  }
+
+  voidBatchCoupons(uniqueId: string, batchId: string): Observable<void> {
+    return from(this.ensureConfigured().couponConfigurations.voidBatch(uniqueId, batchId));
+  }
+
+  loadCoupons(uniqueId: string, codes: string[]): Observable<Coupon[]> {
+    return from(this.ensureConfigured().couponConfigurations.loadCoupons(uniqueId, codes));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Offer Codes Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  getOfferCode(code: string): Observable<OfferCode> {
+    return from(this.ensureConfigured().offerCodes.get(code));
+  }
+
+  createOfferCode(data: CreateOfferCodeRequest): Observable<OfferCode> {
+    return from(this.ensureConfigured().offerCodes.create(data));
+  }
+
+  sendOfferCode(data: SendOfferCodeRequest): Observable<OfferCode> {
+    return from(this.ensureConfigured().offerCodes.send(data));
+  }
+
+  redeemOfferCode(data: RedeemOfferCodeRequest): Observable<OfferCode> {
+    return from(this.ensureConfigured().offerCodes.redeem(data));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Expiration Rules Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listExpirationRules(params?: ListExpirationRulesParams): Observable<PageResult<ExpirationRule>> {
+    return from(this.ensureConfigured().expirationRules.list(params));
+  }
+
+  getExpirationRule(uniqueId: string): Observable<ExpirationRule> {
+    return from(this.ensureConfigured().expirationRules.get(uniqueId));
+  }
+
+  createExpirationRule(data: CreateExpirationRuleRequest): Observable<ExpirationRule> {
+    return from(this.ensureConfigured().expirationRules.create(data));
+  }
+
+  updateExpirationRule(uniqueId: string, data: UpdateExpirationRuleRequest): Observable<ExpirationRule> {
+    return from(this.ensureConfigured().expirationRules.update(uniqueId, data));
+  }
+
+  deleteExpirationRule(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().expirationRules.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Rewards Customers Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listRewardsCustomers(params?: ListRewardsCustomersParams): Observable<PageResult<RewardsCustomer>> {
+    return from(this.ensureConfigured().customers.list(params));
+  }
+
+  getRewardsCustomer(uniqueId: string): Observable<RewardsCustomer> {
+    return from(this.ensureConfigured().customers.get(uniqueId));
+  }
+
+  getCustomerLoyaltyTier(uniqueId: string): Observable<Loyalty> {
+    return from(this.ensureConfigured().customers.getLoyaltyTier(uniqueId));
+  }
+
+  getCustomerRewards(uniqueId: string): Observable<unknown> {
+    return from(this.ensureConfigured().customers.getRewards(uniqueId));
+  }
+
+  getCustomerRewardExpirations(uniqueId: string): Observable<CustomerRewardExpiration[]> {
+    return from(this.ensureConfigured().customers.getRewardExpirations(uniqueId));
+  }
+
+  getCustomerRewardHistory(uniqueId: string): Observable<CustomerRewardHistory[]> {
+    return from(this.ensureConfigured().customers.getRewardHistory(uniqueId));
+  }
+
+  getCustomerBadges(uniqueId: string): Observable<Badge[]> {
+    return from(this.ensureConfigured().customers.getBadges(uniqueId));
+  }
+
+  getCustomerCoupons(uniqueId: string): Observable<Coupon[]> {
+    return from(this.ensureConfigured().customers.getCoupons(uniqueId));
+  }
+
+  getCustomerOfferCodes(uniqueId: string): Observable<OfferCode[]> {
+    return from(this.ensureConfigured().customers.getOfferCodes(uniqueId));
+  }
+
+  grantCustomerReward(uniqueId: string, points: number, reason?: string): Observable<RewardsCustomer> {
+    return from(this.ensureConfigured().customers.grantReward(uniqueId, points, reason));
+  }
+
+  updateCustomerExpiration(uniqueId: string, expirationDate: Date): Observable<RewardsCustomer> {
+    return from(this.ensureConfigured().customers.updateExpiration(uniqueId, expirationDate));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

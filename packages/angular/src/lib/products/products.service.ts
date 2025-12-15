@@ -38,6 +38,32 @@ import {
   type ListCategoriesParams,
   type ListVendorsParams,
   type ListWarehousesParams,
+  type ProductSet,
+  type CreateProductSetRequest,
+  type UpdateProductSetRequest,
+  type ListProductSetsParams,
+  type ShoppingList,
+  type CreateShoppingListRequest,
+  type UpdateShoppingListRequest,
+  type ListShoppingListsParams,
+  type ProductPromotion,
+  type CreateProductPromotionRequest,
+  type UpdateProductPromotionRequest,
+  type ListProductPromotionsParams,
+  type ProductPrice,
+  type CreateProductPriceRequest,
+  type UpdateProductPriceRequest,
+  type ListProductPricesParams,
+  type ProductFilter,
+  type CreateProductFilterRequest,
+  type UpdateProductFilterRequest,
+  type ListProductFiltersParams,
+  type AddToMyCartRequest,
+  type UpdateMyCartRequest,
+  type AbandonedCart,
+  type AbandonedCartsParams,
+  type CreateVisitorRequest,
+  type Visitor,
 } from '@23blocks/block-products';
 import { TRANSPORT, PRODUCTS_TRANSPORT, PRODUCTS_CONFIG } from '../tokens.js';
 
@@ -368,6 +394,194 @@ export class ProductsService {
 
   getCollection(uniqueId: string): Observable<Collection> {
     return from(this.ensureConfigured().collections.get(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Product Sets Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listProductSets(params?: ListProductSetsParams): Observable<PageResult<ProductSet>> {
+    return from(this.ensureConfigured().productSets.list(params));
+  }
+
+  getProductSet(uniqueId: string): Observable<ProductSet> {
+    return from(this.ensureConfigured().productSets.get(uniqueId));
+  }
+
+  createProductSet(data: CreateProductSetRequest): Observable<ProductSet> {
+    return from(this.ensureConfigured().productSets.create(data));
+  }
+
+  updateProductSet(uniqueId: string, data: UpdateProductSetRequest): Observable<ProductSet> {
+    return from(this.ensureConfigured().productSets.update(uniqueId, data));
+  }
+
+  deleteProductSet(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().productSets.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Shopping Lists Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listShoppingLists(params?: ListShoppingListsParams): Observable<PageResult<ShoppingList>> {
+    return from(this.ensureConfigured().shoppingLists.list(params));
+  }
+
+  getShoppingList(uniqueId: string): Observable<ShoppingList> {
+    return from(this.ensureConfigured().shoppingLists.get(uniqueId));
+  }
+
+  createShoppingList(data: CreateShoppingListRequest): Observable<ShoppingList> {
+    return from(this.ensureConfigured().shoppingLists.create(data));
+  }
+
+  updateShoppingList(uniqueId: string, data: UpdateShoppingListRequest): Observable<ShoppingList> {
+    return from(this.ensureConfigured().shoppingLists.update(uniqueId, data));
+  }
+
+  deleteShoppingList(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().shoppingLists.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Promotions Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listProductPromotions(params?: ListProductPromotionsParams): Observable<PageResult<ProductPromotion>> {
+    return from(this.ensureConfigured().promotions.list(params));
+  }
+
+  getProductPromotion(uniqueId: string): Observable<ProductPromotion> {
+    return from(this.ensureConfigured().promotions.get(uniqueId));
+  }
+
+  createProductPromotion(data: CreateProductPromotionRequest): Observable<ProductPromotion> {
+    return from(this.ensureConfigured().promotions.create(data));
+  }
+
+  updateProductPromotion(uniqueId: string, data: UpdateProductPromotionRequest): Observable<ProductPromotion> {
+    return from(this.ensureConfigured().promotions.update(uniqueId, data));
+  }
+
+  deleteProductPromotion(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().promotions.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Prices Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listProductPrices(params?: ListProductPricesParams): Observable<PageResult<ProductPrice>> {
+    return from(this.ensureConfigured().prices.list(params));
+  }
+
+  getProductPrice(uniqueId: string): Observable<ProductPrice> {
+    return from(this.ensureConfigured().prices.get(uniqueId));
+  }
+
+  createProductPrice(data: CreateProductPriceRequest): Observable<ProductPrice> {
+    return from(this.ensureConfigured().prices.create(data));
+  }
+
+  updateProductPrice(uniqueId: string, data: UpdateProductPriceRequest): Observable<ProductPrice> {
+    return from(this.ensureConfigured().prices.update(uniqueId, data));
+  }
+
+  deleteProductPrice(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().prices.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Filters Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listProductFilters(params?: ListProductFiltersParams): Observable<PageResult<ProductFilter>> {
+    return from(this.ensureConfigured().filters.list(params));
+  }
+
+  getProductFilter(uniqueId: string): Observable<ProductFilter> {
+    return from(this.ensureConfigured().filters.get(uniqueId));
+  }
+
+  createProductFilter(data: CreateProductFilterRequest): Observable<ProductFilter> {
+    return from(this.ensureConfigured().filters.create(data));
+  }
+
+  updateProductFilter(uniqueId: string, data: UpdateProductFilterRequest): Observable<ProductFilter> {
+    return from(this.ensureConfigured().filters.update(uniqueId, data));
+  }
+
+  deleteProductFilter(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().filters.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Addons Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listAddons(productUniqueId: string): Observable<Product[]> {
+    return from(this.ensureConfigured().addons.list(productUniqueId));
+  }
+
+  addAddon(productUniqueId: string, addonProductUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().addons.add(productUniqueId, addonProductUniqueId));
+  }
+
+  removeAddon(productUniqueId: string, addonUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().addons.remove(productUniqueId, addonUniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // My Carts Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  getMyCart(uniqueId: string): Observable<Cart> {
+    return from(this.ensureConfigured().myCarts.get(uniqueId));
+  }
+
+  createMyCart(): Observable<Cart> {
+    return from(this.ensureConfigured().myCarts.create());
+  }
+
+  updateMyCart(uniqueId: string, data: UpdateMyCartRequest): Observable<Cart> {
+    return from(this.ensureConfigured().myCarts.update(uniqueId, data));
+  }
+
+  addToMyCart(data: AddToMyCartRequest): Observable<Cart> {
+    return from(this.ensureConfigured().myCarts.addToCart(data));
+  }
+
+  checkoutMyCart(uniqueId: string): Observable<Cart> {
+    return from(this.ensureConfigured().myCarts.checkout(uniqueId));
+  }
+
+  orderAllMyCart(uniqueId: string): Observable<Cart> {
+    return from(this.ensureConfigured().myCarts.orderAll(uniqueId));
+  }
+
+  cancelAllMyCart(uniqueId: string): Observable<Cart> {
+    return from(this.ensureConfigured().myCarts.cancelAll(uniqueId));
+  }
+
+  deleteMyCart(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().myCarts.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Remarketing Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  getAbandonedCarts(params?: AbandonedCartsParams): Observable<{ carts: AbandonedCart[]; total: number }> {
+    return from(this.ensureConfigured().remarketing.getAbandonedCarts(params));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Visitors Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  createVisitor(data: CreateVisitorRequest): Observable<Visitor> {
+    return from(this.ensureConfigured().visitors.create(data));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

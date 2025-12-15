@@ -13,6 +13,15 @@ import {
   createProductPromotionsService,
   createProductPricesService,
   createProductFiltersService,
+  createProductImagesService,
+  createProductVariationsService,
+  createProductReviewsService,
+  createStockService,
+  createProductSuggestionsService,
+  createAddonsService,
+  createMyCartsService,
+  createRemarketingService,
+  createVisitorsService,
   type ProductsService,
   type CartService,
   type CategoriesService,
@@ -26,6 +35,15 @@ import {
   type ProductPromotionsService,
   type ProductPricesService,
   type ProductFiltersService,
+  type ProductImagesService,
+  type ProductVariationsService,
+  type ProductReviewsService,
+  type StockService,
+  type ProductSuggestionsService,
+  type AddonsService,
+  type MyCartsService,
+  type RemarketingService,
+  type VisitorsService,
 } from './services';
 
 export interface ProductsBlockConfig extends BlockConfig {
@@ -47,6 +65,15 @@ export interface ProductsBlock {
   promotions: ProductPromotionsService;
   prices: ProductPricesService;
   filters: ProductFiltersService;
+  images: ProductImagesService;
+  variations: ProductVariationsService;
+  reviews: ProductReviewsService;
+  stock: StockService;
+  suggestions: ProductSuggestionsService;
+  addons: AddonsService;
+  myCarts: MyCartsService;
+  remarketing: RemarketingService;
+  visitors: VisitorsService;
 }
 
 export function createProductsBlock(
@@ -67,6 +94,15 @@ export function createProductsBlock(
     promotions: createProductPromotionsService(transport, config),
     prices: createProductPricesService(transport, config),
     filters: createProductFiltersService(transport, config),
+    images: createProductImagesService(transport, config),
+    variations: createProductVariationsService(transport, config),
+    reviews: createProductReviewsService(transport, config),
+    stock: createStockService(transport, config),
+    suggestions: createProductSuggestionsService(transport, config),
+    addons: createAddonsService(transport, config),
+    myCarts: createMyCartsService(transport, config),
+    remarketing: createRemarketingService(transport, config),
+    visitors: createVisitorsService(transport, config),
   };
 }
 

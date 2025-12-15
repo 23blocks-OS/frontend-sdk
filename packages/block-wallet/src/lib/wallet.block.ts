@@ -3,9 +3,11 @@ import {
   createWalletsService,
   createTransactionsService,
   createAuthorizationCodesService,
+  createWebhooksService,
   type WalletsService,
   type TransactionsService,
   type AuthorizationCodesService,
+  type WebhooksService,
 } from './services';
 
 export interface WalletBlockConfig extends BlockConfig {
@@ -17,6 +19,7 @@ export interface WalletBlock {
   wallets: WalletsService;
   transactions: TransactionsService;
   authorizationCodes: AuthorizationCodesService;
+  webhooks: WebhooksService;
 }
 
 export function createWalletBlock(
@@ -27,6 +30,7 @@ export function createWalletBlock(
     wallets: createWalletsService(transport, config),
     transactions: createTransactionsService(transport, config),
     authorizationCodes: createAuthorizationCodesService(transport, config),
+    webhooks: createWebhooksService(transport, config),
   };
 }
 

@@ -22,6 +22,39 @@ import {
   type CreateSubscriptionRequest,
   type UpdateSubscriptionRequest,
   type ListSubscriptionsParams,
+  type OrderTax,
+  type CreateOrderTaxRequest,
+  type UpdateOrderTaxRequest,
+  type SubscriptionModel,
+  type CreateSubscriptionModelRequest,
+  type UpdateSubscriptionModelRequest,
+  type ListSubscriptionModelsParams,
+  type SalesEntity,
+  type RegisterSalesEntityRequest,
+  type UpdateSalesEntityRequest,
+  type ListSalesEntitiesParams,
+  type EntitySubscription,
+  type CreateEntitySubscriptionRequest,
+  type UpdateEntitySubscriptionRequest,
+  type SalesUser,
+  type RegisterSalesUserRequest,
+  type UpdateSalesUserRequest,
+  type ListSalesUsersParams,
+  type UserSubscription,
+  type CreateUserSubscriptionRequest,
+  type UpdateUserSubscriptionRequest,
+  type SalesCustomer,
+  type CreateSalesCustomerRequest,
+  type UpdateSalesCustomerRequest,
+  type ListSalesCustomersParams,
+  type FlexibleOrder,
+  type CreateFlexibleOrderRequest,
+  type UpdateFlexibleOrderRequest,
+  type ListFlexibleOrdersParams,
+  type VendorPayment,
+  type CreateVendorPaymentRequest,
+  type UpdateVendorPaymentRequest,
+  type ListVendorPaymentsParams,
 } from '@23blocks/block-sales';
 import { TRANSPORT, SALES_TRANSPORT, SALES_CONFIG } from '../tokens.js';
 
@@ -188,6 +221,166 @@ export class SalesService {
 
   listSubscriptionsByUser(userUniqueId: string, params?: ListSubscriptionsParams): Observable<PageResult<Subscription>> {
     return from(this.ensureConfigured().subscriptions.listByUser(userUniqueId, params));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Order Taxes Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listOrderTaxes(orderUniqueId: string): Observable<OrderTax[]> {
+    return from(this.ensureConfigured().orderTaxes.list(orderUniqueId));
+  }
+
+  getOrderTax(orderUniqueId: string, uniqueId: string): Observable<OrderTax> {
+    return from(this.ensureConfigured().orderTaxes.get(orderUniqueId, uniqueId));
+  }
+
+  createOrderTax(orderUniqueId: string, data: CreateOrderTaxRequest): Observable<OrderTax> {
+    return from(this.ensureConfigured().orderTaxes.create(orderUniqueId, data));
+  }
+
+  updateOrderTax(orderUniqueId: string, uniqueId: string, data: UpdateOrderTaxRequest): Observable<OrderTax> {
+    return from(this.ensureConfigured().orderTaxes.update(orderUniqueId, uniqueId, data));
+  }
+
+  deleteOrderTax(orderUniqueId: string, uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().orderTaxes.delete(orderUniqueId, uniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Subscription Models Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listSubscriptionModels(params?: ListSubscriptionModelsParams): Observable<PageResult<SubscriptionModel>> {
+    return from(this.ensureConfigured().subscriptionModels.list(params));
+  }
+
+  getSubscriptionModel(uniqueId: string): Observable<SubscriptionModel> {
+    return from(this.ensureConfigured().subscriptionModels.get(uniqueId));
+  }
+
+  createSubscriptionModel(data: CreateSubscriptionModelRequest): Observable<SubscriptionModel> {
+    return from(this.ensureConfigured().subscriptionModels.create(data));
+  }
+
+  updateSubscriptionModel(uniqueId: string, data: UpdateSubscriptionModelRequest): Observable<SubscriptionModel> {
+    return from(this.ensureConfigured().subscriptionModels.update(uniqueId, data));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Entities Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listSalesEntities(params?: ListSalesEntitiesParams): Observable<PageResult<SalesEntity>> {
+    return from(this.ensureConfigured().entities.list(params));
+  }
+
+  getSalesEntity(uniqueId: string): Observable<SalesEntity> {
+    return from(this.ensureConfigured().entities.get(uniqueId));
+  }
+
+  registerSalesEntity(uniqueId: string, data?: RegisterSalesEntityRequest): Observable<SalesEntity> {
+    return from(this.ensureConfigured().entities.register(uniqueId, data));
+  }
+
+  updateSalesEntity(uniqueId: string, data: UpdateSalesEntityRequest): Observable<SalesEntity> {
+    return from(this.ensureConfigured().entities.update(uniqueId, data));
+  }
+
+  createEntitySubscription(uniqueId: string, data: CreateEntitySubscriptionRequest): Observable<EntitySubscription> {
+    return from(this.ensureConfigured().entities.createSubscription(uniqueId, data));
+  }
+
+  updateEntitySubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateEntitySubscriptionRequest): Observable<EntitySubscription> {
+    return from(this.ensureConfigured().entities.updateSubscription(uniqueId, subscriptionUniqueId, data));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Users Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listSalesUsers(params?: ListSalesUsersParams): Observable<PageResult<SalesUser>> {
+    return from(this.ensureConfigured().users.list(params));
+  }
+
+  getSalesUser(uniqueId: string): Observable<SalesUser> {
+    return from(this.ensureConfigured().users.get(uniqueId));
+  }
+
+  registerSalesUser(uniqueId: string, data?: RegisterSalesUserRequest): Observable<SalesUser> {
+    return from(this.ensureConfigured().users.register(uniqueId, data));
+  }
+
+  updateSalesUser(uniqueId: string, data: UpdateSalesUserRequest): Observable<SalesUser> {
+    return from(this.ensureConfigured().users.update(uniqueId, data));
+  }
+
+  createSalesUserSubscription(uniqueId: string, data: CreateUserSubscriptionRequest): Observable<UserSubscription> {
+    return from(this.ensureConfigured().users.createSubscription(uniqueId, data));
+  }
+
+  updateSalesUserSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateUserSubscriptionRequest): Observable<UserSubscription> {
+    return from(this.ensureConfigured().users.updateSubscription(uniqueId, subscriptionUniqueId, data));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Customers Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listSalesCustomers(params?: ListSalesCustomersParams): Observable<PageResult<SalesCustomer>> {
+    return from(this.ensureConfigured().customers.list(params));
+  }
+
+  getSalesCustomer(uniqueId: string): Observable<SalesCustomer> {
+    return from(this.ensureConfigured().customers.get(uniqueId));
+  }
+
+  createSalesCustomer(data: CreateSalesCustomerRequest): Observable<SalesCustomer> {
+    return from(this.ensureConfigured().customers.create(data));
+  }
+
+  updateSalesCustomer(uniqueId: string, data: UpdateSalesCustomerRequest): Observable<SalesCustomer> {
+    return from(this.ensureConfigured().customers.update(uniqueId, data));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Flexible Orders Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listFlexibleOrders(params?: ListFlexibleOrdersParams): Observable<PageResult<FlexibleOrder>> {
+    return from(this.ensureConfigured().flexibleOrders.list(params));
+  }
+
+  getFlexibleOrder(uniqueId: string): Observable<FlexibleOrder> {
+    return from(this.ensureConfigured().flexibleOrders.get(uniqueId));
+  }
+
+  createFlexibleOrder(data: CreateFlexibleOrderRequest): Observable<FlexibleOrder> {
+    return from(this.ensureConfigured().flexibleOrders.create(data));
+  }
+
+  updateFlexibleOrder(uniqueId: string, data: UpdateFlexibleOrderRequest): Observable<FlexibleOrder> {
+    return from(this.ensureConfigured().flexibleOrders.update(uniqueId, data));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Vendor Payments Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listVendorPayments(params?: ListVendorPaymentsParams): Observable<PageResult<VendorPayment>> {
+    return from(this.ensureConfigured().vendorPayments.list(params));
+  }
+
+  getVendorPayment(uniqueId: string): Observable<VendorPayment> {
+    return from(this.ensureConfigured().vendorPayments.get(uniqueId));
+  }
+
+  createVendorPayment(data: CreateVendorPaymentRequest): Observable<VendorPayment> {
+    return from(this.ensureConfigured().vendorPayments.create(data));
+  }
+
+  updateVendorPayment(uniqueId: string, data: UpdateVendorPaymentRequest): Observable<VendorPayment> {
+    return from(this.ensureConfigured().vendorPayments.update(uniqueId, data));
   }
 
   // ───────────────────────────────────────────────────────────────────────────

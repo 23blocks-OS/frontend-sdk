@@ -21,6 +21,11 @@ import {
   type CreateTagRequest,
   type UpdateTagRequest,
   type ListTagsParams,
+  type ContentUser,
+  type RegisterContentUserRequest,
+  type UpdateContentUserRequest,
+  type ListContentUsersParams,
+  type UserActivity,
 } from '@23blocks/block-content';
 import { TRANSPORT, CONTENT_TRANSPORT, CONTENT_CONFIG } from '../tokens.js';
 
@@ -207,6 +212,66 @@ export class ContentService {
 
   deleteTag(uniqueId: string): Observable<void> {
     return from(this.ensureConfigured().tags.delete(uniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Users Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listContentUsers(params?: ListContentUsersParams): Observable<PageResult<ContentUser>> {
+    return from(this.ensureConfigured().users.list(params));
+  }
+
+  getContentUser(uniqueId: string): Observable<ContentUser> {
+    return from(this.ensureConfigured().users.get(uniqueId));
+  }
+
+  registerContentUser(uniqueId: string, data: RegisterContentUserRequest): Observable<ContentUser> {
+    return from(this.ensureConfigured().users.register(uniqueId, data));
+  }
+
+  updateContentUser(uniqueId: string, data: UpdateContentUserRequest): Observable<ContentUser> {
+    return from(this.ensureConfigured().users.update(uniqueId, data));
+  }
+
+  getUserDrafts(uniqueId: string): Observable<Post[]> {
+    return from(this.ensureConfigured().users.getDrafts(uniqueId));
+  }
+
+  getUserPosts(uniqueId: string): Observable<Post[]> {
+    return from(this.ensureConfigured().users.getPosts(uniqueId));
+  }
+
+  getUserComments(uniqueId: string): Observable<Comment[]> {
+    return from(this.ensureConfigured().users.getComments(uniqueId));
+  }
+
+  getUserActivities(uniqueId: string): Observable<UserActivity[]> {
+    return from(this.ensureConfigured().users.getActivities(uniqueId));
+  }
+
+  addUserTag(uniqueId: string, tagUniqueId: string): Observable<ContentUser> {
+    return from(this.ensureConfigured().users.addTag(uniqueId, tagUniqueId));
+  }
+
+  removeUserTag(uniqueId: string, tagUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().users.removeTag(uniqueId, tagUniqueId));
+  }
+
+  getUserFollowers(uniqueId: string): Observable<ContentUser[]> {
+    return from(this.ensureConfigured().users.getFollowers(uniqueId));
+  }
+
+  getUserFollowing(uniqueId: string): Observable<ContentUser[]> {
+    return from(this.ensureConfigured().users.getFollowing(uniqueId));
+  }
+
+  followContentUser(uniqueId: string, targetUserUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().users.followUser(uniqueId, targetUserUniqueId));
+  }
+
+  unfollowContentUser(uniqueId: string, targetUserUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().users.unfollowUser(uniqueId, targetUserUniqueId));
   }
 
   // ───────────────────────────────────────────────────────────────────────────

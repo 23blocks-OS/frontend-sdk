@@ -60,3 +60,24 @@ export interface ListAssetEventsParams {
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }
+
+// Event Image types
+export interface EventImagePresignResponse {
+  url: string;
+  fields: Record<string, string>;
+  key: string;
+}
+
+export interface CreateEventImageRequest {
+  key: string;
+  filename: string;
+  contentType?: string;
+}
+
+export interface EventImage {
+  uniqueId: string;
+  url: string;
+  filename: string;
+  contentType?: string;
+  createdAt: Date;
+}
