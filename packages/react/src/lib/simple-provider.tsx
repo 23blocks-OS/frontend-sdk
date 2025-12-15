@@ -873,7 +873,7 @@ export function useClient(): ClientContext {
 /**
  * Hook for authentication operations with automatic token management.
  *
- * @example
+ * @example Basic login/logout
  * ```tsx
  * function LoginPage() {
  *   const { signIn, signOut, isAuthenticated } = useAuth();
@@ -894,6 +894,22 @@ export function useClient(): ClientContext {
  * }
  * ```
  *
+ * @example Validate email before registration
+ * ```tsx
+ * function SignUpForm() {
+ *   const { validateEmail, signUp } = useAuth();
+ *
+ *   const checkEmail = async (email: string) => {
+ *     const result = await validateEmail({ email });
+ *     if (result.exists) {
+ *       alert('Email already registered');
+ *     } else if (!result.wellFormed) {
+ *       alert('Invalid email format');
+ *     }
+ *   };
+ * }
+ * ```
+ *
  * @example React Native - wait for tokens to load
  * ```tsx
  * function App() {
@@ -909,18 +925,57 @@ export function useClient(): ClientContext {
  */
 export function useAuth() {
   const context = useClient();
+  const auth = context.authentication.auth;
+
   return {
+    // Core auth with automatic token management
     signIn: context.signIn,
     signUp: context.signUp,
     signOut: context.signOut,
+
+    // Token utilities
     getAccessToken: context.getAccessToken,
     getRefreshToken: context.getRefreshToken,
     setTokens: context.setTokens,
     clearTokens: context.clearTokens,
     isAuthenticated: context.isAuthenticated,
     onStorageChange: context.onStorageChange,
-    authentication: context.authentication,
     isReady: context.isReady,
+
+    // Password management
+    requestPasswordReset: auth.requestPasswordReset.bind(auth),
+    updatePassword: auth.updatePassword.bind(auth),
+
+    // Token refresh
+    refreshToken: auth.refreshToken.bind(auth),
+
+    // Magic link (passwordless)
+    requestMagicLink: auth.requestMagicLink.bind(auth),
+    verifyMagicLink: auth.verifyMagicLink.bind(auth),
+
+    // Invitations
+    sendInvitation: auth.sendInvitation.bind(auth),
+    acceptInvitation: auth.acceptInvitation.bind(auth),
+    resendInvitation: auth.resendInvitation.bind(auth),
+
+    // Email confirmation
+    confirmEmail: auth.confirmEmail.bind(auth),
+    resendConfirmation: auth.resendConfirmation.bind(auth),
+
+    // Validation (pre-registration checks)
+    validateEmail: auth.validateEmail.bind(auth),
+    validateDocument: auth.validateDocument.bind(auth),
+
+    // Account recovery
+    requestAccountRecovery: auth.requestAccountRecovery.bind(auth),
+    completeAccountRecovery: auth.completeAccountRecovery.bind(auth),
+
+    // Token validation
+    validateToken: auth.validateToken.bind(auth),
+    getCurrentUser: auth.getCurrentUser.bind(auth),
+
+    // Full block access for advanced usage
+    authentication: context.authentication,
   };
 }
 
