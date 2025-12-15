@@ -26,11 +26,11 @@ export interface SignUpRequest {
   email: string;
   password: string;
   passwordConfirmation: string;
-  /** URL to redirect after email confirmation */
-  confirmSuccessUrl: string;
   name?: string;
   username?: string;
   roleId?: string;
+  /** URL to redirect after email confirmation (required if email confirmation is enabled and no server default is set) */
+  confirmSuccessUrl?: string;
   /** User's timezone (e.g., 'America/New_York') */
   timeZone?: string;
   /** User's preferred language (e.g., 'en', 'es') */
@@ -163,8 +163,8 @@ export interface AcceptInvitationRequest {
  */
 export interface ResendConfirmationRequest {
   email: string;
-  /** URL to redirect after email confirmation */
-  confirmSuccessUrl: string;
+  /** URL to redirect after email confirmation (defaults to '#' if not provided) */
+  confirmSuccessUrl?: string;
 }
 
 /**
