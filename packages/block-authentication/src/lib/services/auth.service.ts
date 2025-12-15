@@ -134,6 +134,7 @@ export function createAuthService(
           name: request.name,
           username: request.username,
           role_id: request.roleId,
+          confirm_success_url: request.confirmSuccessUrl,
         },
       });
 

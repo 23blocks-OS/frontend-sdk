@@ -29,6 +29,8 @@ export interface SignUpRequest {
   name?: string;
   username?: string;
   roleId?: string;
+  /** URL to redirect after email confirmation (required when email confirmation is enabled) */
+  confirmSuccessUrl?: string;
 }
 
 /**

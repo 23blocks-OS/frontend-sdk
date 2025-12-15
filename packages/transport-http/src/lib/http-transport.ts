@@ -72,14 +72,40 @@ async function handleResponse<T>(response: Response): Promise<T> {
         const errorBody = await response.json();
         // JSON:API error format
         if (errorBody.errors && Array.isArray(errorBody.errors)) {
+          // Check if it's JSON:API format (objects with detail/title)
           const firstError = errorBody.errors[0];
+          if (typeof firstError === 'object' && firstError !== null) {
+            throw new BlockErrorException({
+              code: firstError.code || ErrorCodes.VALIDATION_ERROR,
+              message: firstError.detail || firstError.title || 'Request failed',
+              status: response.status,
+              source: firstError.source?.pointer,
+              meta: {
+                errors: errorBody.errors,
+              },
+            });
+          }
+          // Devise/Rails format - errors is array of strings
           throw new BlockErrorException({
-            code: firstError.code || ErrorCodes.INTERNAL_ERROR,
-            message: firstError.detail || firstError.title || 'Request failed',
+            code: ErrorCodes.VALIDATION_ERROR,
+            message: errorBody.errors.join(', '),
             status: response.status,
-            source: firstError.source?.pointer,
             meta: {
               errors: errorBody.errors,
+              data: errorBody.data,
+            },
+          });
+        }
+        // Devise format with success: false
+        if (errorBody.success === false && errorBody.errors) {
+          const errors = Array.isArray(errorBody.errors) ? errorBody.errors : [errorBody.errors];
+          throw new BlockErrorException({
+            code: ErrorCodes.VALIDATION_ERROR,
+            message: errors.join(', '),
+            status: response.status,
+            meta: {
+              errors: errors,
+              data: errorBody.data,
             },
           });
         }
