@@ -1,3 +1,14 @@
+## 3.0.2 (2025-12-15)
+
+### 🩹 Fixes
+
+- add all missing registration parameters to SignUpRequest ([e1c514c](https://github.com/23blocks-OS/frontend-sdk/commit/e1c514c))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.0.1 (2025-12-15)
 
 ### 🩹 Fixes
