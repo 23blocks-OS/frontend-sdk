@@ -1,3 +1,14 @@
+## 2.1.0 (2025-12-15)
+
+### 🚀 Features
+
+- add missing API services across 6 blocks ([cae5b8c](https://github.com/23blocks-OS/frontend-sdk/commit/cae5b8c))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 # 2.0.0 (2025-12-15)
 
 ### 🩹 Fixes

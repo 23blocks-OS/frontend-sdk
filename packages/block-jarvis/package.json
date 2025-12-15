@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-jarvis",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Jarvis AI block for 23blocks SDK - agents, prompts, workflows, executions, conversations",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

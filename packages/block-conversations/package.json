@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-conversations",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Conversations block for 23blocks SDK - messaging, groups, notifications, and conversations management",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

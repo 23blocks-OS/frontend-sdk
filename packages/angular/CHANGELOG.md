@@ -1,3 +1,14 @@
+## 4.1.0 (2025-12-15)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 2.1.0
+- Updated @23blocks/block-onboarding to 2.1.0
+- Updated @23blocks/block-assets to 2.1.0
+- Updated @23blocks/block-jarvis to 2.1.0
+- Updated @23blocks/block-sales to 2.1.0
+- Updated @23blocks/block-crm to 2.2.0
+
 # 4.0.0 (2025-12-15)
 
 ### 🧱 Updated Dependencies

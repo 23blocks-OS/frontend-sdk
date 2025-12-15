@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-sales",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Sales block for 23blocks SDK - orders, payments, subscriptions, transactions",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
