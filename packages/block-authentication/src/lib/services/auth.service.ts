@@ -128,6 +128,7 @@ export function createAuthService(
         meta?: { token?: string; access_token?: string; message?: string; auth?: { access_token?: string; refresh_token?: string; expires_in?: number } };
       }>('/auth', {
         confirm_success_url: request.confirmSuccessUrl,
+        subscription: request.subscription,
         user: {
           email: request.email,
           password: request.password,

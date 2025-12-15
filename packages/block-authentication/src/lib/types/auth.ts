@@ -43,6 +43,8 @@ export interface SignUpRequest {
   provider?: string;
   /** OAuth uid from the provider - for OAuth registrations */
   uid?: string;
+  /** Subscription model unique_id - assigns user to a subscription/plan on registration */
+  subscription?: string;
 }
 
 /**
