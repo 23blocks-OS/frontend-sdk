@@ -1,3 +1,14 @@
+## 3.0.3 (2025-12-15)
+
+### 🩹 Fixes
+
+- add subscription field for plan assignment on registration ([b3b14b8](https://github.com/23blocks-OS/frontend-sdk/commit/b3b14b8))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.0.2 (2025-12-15)
 
 ### 🩹 Fixes
