@@ -3,3 +3,7 @@ export * from './reward.mapper';
 export * from './coupon.mapper';
 export * from './loyalty.mapper';
 export * from './badge.mapper';
+export * from './coupon-configuration.mapper';
+export * from './offer-code.mapper';
+export * from './expiration-rule.mapper';
+export * from './rewards-customer.mapper';

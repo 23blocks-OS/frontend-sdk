@@ -5,11 +5,23 @@ import {
   createEnrollmentsService,
   createAssignmentsService,
   createSubmissionsService,
+  createSubjectsService,
+  createTeachersService,
+  createStudentsService,
+  createCourseGroupsService,
+  createCoachingSessionsService,
+  createContentTestsService,
   type CoursesService,
   type LessonsService,
   type EnrollmentsService,
   type AssignmentsService,
   type SubmissionsService,
+  type SubjectsService,
+  type TeachersService,
+  type StudentsService,
+  type CourseGroupsService,
+  type CoachingSessionsService,
+  type ContentTestsService,
 } from './services';
 
 export interface UniversityBlockConfig extends BlockConfig {
@@ -23,6 +35,12 @@ export interface UniversityBlock {
   enrollments: EnrollmentsService;
   assignments: AssignmentsService;
   submissions: SubmissionsService;
+  subjects: SubjectsService;
+  teachers: TeachersService;
+  students: StudentsService;
+  courseGroups: CourseGroupsService;
+  coachingSessions: CoachingSessionsService;
+  tests: ContentTestsService;
 }
 
 export function createUniversityBlock(
@@ -35,6 +53,12 @@ export function createUniversityBlock(
     enrollments: createEnrollmentsService(transport, config),
     assignments: createAssignmentsService(transport, config),
     submissions: createSubmissionsService(transport, config),
+    subjects: createSubjectsService(transport, config),
+    teachers: createTeachersService(transport, config),
+    students: createStudentsService(transport, config),
+    courseGroups: createCourseGroupsService(transport, config),
+    coachingSessions: createCoachingSessionsService(transport, config),
+    tests: createContentTestsService(transport, config),
   };
 }
 
@@ -48,5 +72,13 @@ export const universityBlockMetadata: BlockMetadata = {
     'Enrollment',
     'Assignment',
     'Submission',
+    'Subject',
+    'Teacher',
+    'Student',
+    'CourseGroup',
+    'CoachingSession',
+    'ContentTest',
+    'TestQuestion',
+    'TestOption',
   ],
 };

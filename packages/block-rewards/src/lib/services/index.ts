@@ -2,3 +2,7 @@ export * from './rewards.service';
 export * from './coupons.service';
 export * from './loyalty.service';
 export * from './badges.service';
+export * from './coupon-configurations.service';
+export * from './offer-codes.service';
+export * from './expiration-rules.service';
+export * from './rewards-customers.service';

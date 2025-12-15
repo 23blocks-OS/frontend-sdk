@@ -4,10 +4,18 @@ import {
   createCouponsService,
   createLoyaltyService,
   createBadgesService,
+  createCouponConfigurationsService,
+  createOfferCodesService,
+  createExpirationRulesService,
+  createRewardsCustomersService,
   type RewardsService,
   type CouponsService,
   type LoyaltyService,
   type BadgesService,
+  type CouponConfigurationsService,
+  type OfferCodesService,
+  type ExpirationRulesService,
+  type RewardsCustomersService,
 } from './services';
 
 export interface RewardsBlockConfig extends BlockConfig {
@@ -20,6 +28,10 @@ export interface RewardsBlock {
   coupons: CouponsService;
   loyalty: LoyaltyService;
   badges: BadgesService;
+  couponConfigurations: CouponConfigurationsService;
+  offerCodes: OfferCodesService;
+  expirationRules: ExpirationRulesService;
+  customers: RewardsCustomersService;
 }
 
 export function createRewardsBlock(
@@ -31,6 +43,10 @@ export function createRewardsBlock(
     coupons: createCouponsService(transport, config),
     loyalty: createLoyaltyService(transport, config),
     badges: createBadgesService(transport, config),
+    couponConfigurations: createCouponConfigurationsService(transport, config),
+    offerCodes: createOfferCodesService(transport, config),
+    expirationRules: createExpirationRulesService(transport, config),
+    customers: createRewardsCustomersService(transport, config),
   };
 }
 
@@ -47,5 +63,9 @@ export const rewardsBlockMetadata: BlockMetadata = {
     'LoyaltyTransaction',
     'Badge',
     'UserBadge',
+    'CouponConfiguration',
+    'OfferCode',
+    'ExpirationRule',
+    'RewardsCustomer',
   ],
 };

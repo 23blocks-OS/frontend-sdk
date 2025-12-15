@@ -8,3 +8,6 @@ export type {
   SearchResponse,
   AddFavoriteRequest,
 } from './search.js';
+
+export * from './entity.js';
+export * from './identity.js';

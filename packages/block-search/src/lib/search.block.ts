@@ -3,9 +3,13 @@ import {
   createSearchService,
   createSearchHistoryService,
   createFavoritesService,
+  createEntitiesService,
+  createIdentitiesService,
   type SearchService,
   type SearchHistoryService,
   type FavoritesService,
+  type EntitiesService,
+  type IdentitiesService,
 } from './services/index.js';
 
 /**
@@ -36,6 +40,16 @@ export interface SearchBlock {
    * Favorites/bookmarks management
    */
   favorites: FavoritesService;
+
+  /**
+   * Entity management for indexing
+   */
+  entities: EntitiesService;
+
+  /**
+   * Identity management for search users
+   */
+  identities: IdentitiesService;
 }
 
 /**
@@ -85,6 +99,8 @@ export function createSearchBlock(
     search: createSearchService(transport, config),
     history: createSearchHistoryService(transport, config),
     favorites: createFavoritesService(transport, config),
+    entities: createEntitiesService(transport, config),
+    identities: createIdentitiesService(transport, config),
   };
 }
 
@@ -101,5 +117,7 @@ export const searchBlockMetadata = {
     'LastQuery',
     'FavoriteEntity',
     'EntityType',
+    'SearchEntity',
+    'SearchIdentity',
   ],
 };

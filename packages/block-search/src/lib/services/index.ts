@@ -6,3 +6,13 @@ export {
   type SearchHistoryService,
   type FavoritesService,
 } from './search.service.js';
+
+export {
+  createEntitiesService,
+  type EntitiesService,
+} from './entities.service.js';
+
+export {
+  createIdentitiesService,
+  type IdentitiesService,
+} from './identities.service.js';

@@ -8,6 +8,11 @@ import {
   createWarehousesService,
   createChannelsService,
   createCollectionsService,
+  createProductSetsService,
+  createShoppingListsService,
+  createProductPromotionsService,
+  createProductPricesService,
+  createProductFiltersService,
   type ProductsService,
   type CartService,
   type CategoriesService,
@@ -16,6 +21,11 @@ import {
   type WarehousesService,
   type ChannelsService,
   type CollectionsService,
+  type ProductSetsService,
+  type ShoppingListsService,
+  type ProductPromotionsService,
+  type ProductPricesService,
+  type ProductFiltersService,
 } from './services';
 
 export interface ProductsBlockConfig extends BlockConfig {
@@ -32,6 +42,11 @@ export interface ProductsBlock {
   warehouses: WarehousesService;
   channels: ChannelsService;
   collections: CollectionsService;
+  productSets: ProductSetsService;
+  shoppingLists: ShoppingListsService;
+  promotions: ProductPromotionsService;
+  prices: ProductPricesService;
+  filters: ProductFiltersService;
 }
 
 export function createProductsBlock(
@@ -47,6 +62,11 @@ export function createProductsBlock(
     warehouses: createWarehousesService(transport, config),
     channels: createChannelsService(transport, config),
     collections: createCollectionsService(transport, config),
+    productSets: createProductSetsService(transport, config),
+    shoppingLists: createShoppingListsService(transport, config),
+    promotions: createProductPromotionsService(transport, config),
+    prices: createProductPricesService(transport, config),
+    filters: createProductFiltersService(transport, config),
   };
 }
 
@@ -69,5 +89,10 @@ export const productsBlockMetadata: BlockMetadata = {
     'Channel',
     'Collection',
     'ProductCatalog',
+    'ProductSet',
+    'ShoppingList',
+    'ProductPromotion',
+    'ProductPrice',
+    'ProductFilter',
   ],
 };
