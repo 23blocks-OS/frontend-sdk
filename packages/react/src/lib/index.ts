@@ -52,15 +52,35 @@ export {
 
 // Hooks (for advanced API with custom transport)
 export {
-  // Auth - renamed to avoid conflict with main useAuth
-  useAuth as useAuthState,
+  // User management (admin operations)
   useUsers,
-  type UseAuthReturn,
-  type UseAuthState,
-  type UseAuthActions,
   type UseUsersReturn,
   type UseUsersState,
   type UseUsersActions,
+
+  // MFA
+  useMfa,
+  type UseMfaReturn,
+  type UseMfaState,
+  type UseMfaActions,
+
+  // OAuth
+  useOAuth,
+  type UseOAuthReturn,
+  type UseOAuthState,
+  type UseOAuthActions,
+
+  // Avatars
+  useAvatars,
+  type UseAvatarsReturn,
+  type UseAvatarsState,
+  type UseAvatarsActions,
+
+  // Tenants
+  useTenants,
+  type UseTenantsReturn,
+  type UseTenantsState,
+  type UseTenantsActions,
 
   // Search
   useSearch,
