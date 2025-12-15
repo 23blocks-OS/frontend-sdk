@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/angular",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Angular bindings for 23blocks SDK - Injectable services with RxJS Observables",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

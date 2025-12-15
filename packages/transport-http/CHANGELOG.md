@@ -1,3 +1,14 @@
+## 2.0.1 (2025-12-15)
+
+### 🩹 Fixes
+
+- use application/json Content-Type for Rails compatibility ([e81794a](https://github.com/23blocks-OS/frontend-sdk/commit/e81794a))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 # 2.0.0 (2025-12-15)
 
 ### 🩹 Fixes
