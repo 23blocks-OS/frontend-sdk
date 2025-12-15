@@ -1,3 +1,22 @@
+## 4.4.0 (2025-12-15)
+
+### 🚀 Features
+
+- achieve full Angular/React parity across all SDK blocks ([7debcce](https://github.com/23blocks-OS/frontend-sdk/commit/7debcce))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-campaigns to 2.1.0
+- Updated @23blocks/block-products to 2.2.0
+- Updated @23blocks/block-assets to 2.2.0
+- Updated @23blocks/block-wallet to 2.1.0
+- Updated @23blocks/block-sales to 2.2.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 4.3.0 (2025-12-15)
 
 ### 🧱 Updated Dependencies

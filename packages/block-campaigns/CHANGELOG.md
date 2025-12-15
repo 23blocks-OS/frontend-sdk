@@ -1,3 +1,14 @@
+## 2.1.0 (2025-12-15)
+
+### 🚀 Features
+
+- achieve full Angular/React parity across all SDK blocks ([7debcce](https://github.com/23blocks-OS/frontend-sdk/commit/7debcce))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 # 2.0.0 (2025-12-15)
 
 ### 🩹 Fixes
