@@ -1,3 +1,19 @@
+## 3.1.0 (2025-12-15)
+
+### 🚀 Features
+
+- add validateEmail, MFA, OAuth, Avatars, Tenants to Auth block and expand CRM block ([48b980f](https://github.com/23blocks-OS/frontend-sdk/commit/48b980f))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 3.1.0
+- Updated @23blocks/block-crm to 2.1.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.0.4 (2025-12-15)
 
 ### 🧱 Updated Dependencies

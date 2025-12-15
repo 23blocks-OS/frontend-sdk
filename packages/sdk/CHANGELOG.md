@@ -1,3 +1,10 @@
+## 3.1.0 (2025-12-15)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 3.1.0
+- Updated @23blocks/block-crm to 2.1.0
+
 ## 3.0.4 (2025-12-15)
 
 ### 🧱 Updated Dependencies
