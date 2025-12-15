@@ -1,3 +1,14 @@
+## 2.1.0 (2025-12-15)
+
+### 🚀 Features
+
+- expand SDK API coverage for Content, Files, Forms, Geolocation blocks ([8e5c709](https://github.com/23blocks-OS/frontend-sdk/commit/8e5c709))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 # 2.0.0 (2025-12-15)
 
 ### 🩹 Fixes

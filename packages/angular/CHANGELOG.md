@@ -1,3 +1,12 @@
+## 4.2.0 (2025-12-15)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-geolocation to 2.1.0
+- Updated @23blocks/block-content to 2.1.0
+- Updated @23blocks/block-files to 2.1.0
+- Updated @23blocks/block-forms to 2.1.0
+
 ## 4.1.0 (2025-12-15)
 
 ### 🧱 Updated Dependencies
