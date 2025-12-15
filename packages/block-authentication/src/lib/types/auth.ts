@@ -159,6 +159,55 @@ export interface AcceptInvitationRequest {
 }
 
 /**
+ * Resend confirmation email request
+ */
+export interface ResendConfirmationRequest {
+  email: string;
+  /** URL to redirect after email confirmation (optional) */
+  confirmSuccessUrl?: string;
+}
+
+/**
+ * Email validation request (pre-registration check)
+ */
+export interface ValidateEmailRequest {
+  email: string;
+}
+
+/**
+ * Email validation response
+ */
+export interface ValidateEmailResponse {
+  email: string | null;
+  exists: boolean;
+  maskedEmail: string | null;
+  wellFormed: boolean;
+  canRecover?: boolean;
+  accountStatus?: string;
+}
+
+/**
+ * Document validation request (pre-registration check)
+ */
+export interface ValidateDocumentRequest {
+  documentType: string;
+  documentNumber: string;
+}
+
+/**
+ * Document validation response
+ */
+export interface ValidateDocumentResponse {
+  documentType: string;
+  documentNumber: string;
+  exists: boolean;
+  maskedEmail: string | null;
+  maskedDocument: string | null;
+  canRecover: boolean;
+  accountStatus?: string;
+}
+
+/**
  * Auth headers extracted from response
  */
 export interface AuthHeaders {

@@ -45,6 +45,10 @@ import {
   type TenantUsersService,
   type MailTemplatesService,
 } from './services/guests.service.js';
+import { createMfaService, type MfaService } from './services/mfa.service.js';
+import { createOAuthService, type OAuthService } from './services/oauth.service.js';
+import { createAvatarsService, type AvatarsService } from './services/avatars.service.js';
+import { createTenantsService, type TenantsService } from './services/tenants.service.js';
 
 /**
  * Configuration for the Authentication block

@@ -53,3 +53,15 @@ export {
   type TenantUsersService,
   type MailTemplatesService,
 } from './guests.service.js';
+
+// MFA
+export { createMfaService, type MfaService } from './mfa.service.js';
+
+// OAuth
+export { createOAuthService, type OAuthService } from './oauth.service.js';
+
+// Avatars
+export { createAvatarsService, type AvatarsService } from './avatars.service.js';
+
+// Tenants
+export { createTenantsService, type TenantsService } from './tenants.service.js';

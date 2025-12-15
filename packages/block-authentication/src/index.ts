@@ -39,6 +39,11 @@ export {
   type MfaVerifyRequest,
   type InvitationRequest,
   type AcceptInvitationRequest,
+  type ResendConfirmationRequest,
+  type ValidateEmailRequest,
+  type ValidateEmailResponse,
+  type ValidateDocumentRequest,
+  type ValidateDocumentResponse,
   type AuthHeaders,
 
   // API Key types
@@ -47,6 +52,57 @@ export {
   type CreateApiKeyRequest,
   type UpdateApiKeyRequest,
   type RevokeApiKeyRequest,
+
+  // MFA types
+  type MfaSetupResponseFull,
+  type MfaEnableRequest,
+  type MfaDisableRequest,
+  type MfaVerifyRequestFull,
+  type MfaStatusResponse,
+  type MfaVerificationResponse,
+  type MfaOperationResponse,
+
+  // OAuth and Token types
+  type OAuthSocialLoginRequest,
+  type TenantLoginRequest,
+  type TokenIntrospectionResponse,
+  type TokenRevokeRequest,
+  type TokenRevokeAllRequest,
+  type TokenRevokeResponse,
+  type TenantContextCreateRequest,
+  type TenantInfo,
+  type TenantContextResponse,
+  type TenantContextRevokeRequest,
+  type TenantContextAuditEntry,
+
+  // Extended User types
+  type UserProfileFull,
+  type ProfileRequest,
+  type UpdateEmailRequest,
+  type UserDeviceFull,
+  type AddDeviceRequest,
+  type UserSearchRequest,
+  type AddUserSubscriptionRequest,
+  type AccountRecoveryRequest,
+  type AccountRecoveryResponse,
+  type CompleteRecoveryRequest,
+  type UserAvatarFull,
+  type CreateAvatarRequest,
+  type AvatarPresignResponse,
+  type MultipartPresignRequest,
+  type MultipartPresignResponse,
+  type MultipartCompleteRequest,
+  type MultipartCompleteResponse,
+
+  // Tenant types
+  type TenantUserFull,
+  type CreateTenantUserRequest,
+  type ValidateTenantCodeRequest,
+  type ValidateTenantCodeResponse,
+  type SearchTenantRequest,
+  type UpdateTenantUserOnboardingRequest,
+  type UpdateTenantUserSalesRequest,
+  type ResendInvitationRequest,
 } from './lib/types/index.js';
 
 // Services (for advanced usage)
@@ -60,6 +116,10 @@ export {
   type CreateRoleRequest,
   type UpdateRoleRequest,
   type ApiKeyUsageStats,
+  type MfaService,
+  type OAuthService,
+  type AvatarsService,
+  type TenantsService,
 } from './lib/services/index.js';
 
 // Mappers (for custom decoding)

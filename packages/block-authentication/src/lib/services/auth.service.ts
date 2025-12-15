@@ -14,6 +14,15 @@ import type {
   MagicLinkVerifyRequest,
   InvitationRequest,
   AcceptInvitationRequest,
+  ResendConfirmationRequest,
+  ValidateEmailRequest,
+  ValidateEmailResponse,
+  ValidateDocumentRequest,
+  ValidateDocumentResponse,
+  ResendInvitationRequest,
+  AccountRecoveryRequest,
+  AccountRecoveryResponse,
+  CompleteRecoveryRequest,
   User,
 } from '../types/index.js';
 import { userMapper } from '../mappers/index.js';
@@ -91,7 +100,32 @@ export interface AuthService {
   /**
    * Resend confirmation email
    */
-  resendConfirmation(email: string): Promise<void>;
+  resendConfirmation(request: ResendConfirmationRequest): Promise<void>;
+
+  /**
+   * Validate email before registration (check if exists, format, etc.)
+   */
+  validateEmail(request: ValidateEmailRequest): Promise<ValidateEmailResponse>;
+
+  /**
+   * Validate document before registration (check if exists)
+   */
+  validateDocument(request: ValidateDocumentRequest): Promise<ValidateDocumentResponse>;
+
+  /**
+   * Resend invitation email
+   */
+  resendInvitation(request: ResendInvitationRequest): Promise<User>;
+
+  /**
+   * Request account recovery (for deleted accounts)
+   */
+  requestAccountRecovery(request: AccountRecoveryRequest): Promise<AccountRecoveryResponse>;
+
+  /**
+   * Complete account recovery with new password
+   */
+  completeAccountRecovery(request: CompleteRecoveryRequest): Promise<User>;
 }
 
 /**
@@ -273,8 +307,110 @@ export function createAuthService(
       return decodeOne(response, userMapper);
     },
 
-    async resendConfirmation(email: string): Promise<void> {
-      await transport.post('/auth/confirmation', { email });
+    async resendConfirmation(request: ResendConfirmationRequest): Promise<void> {
+      await transport.post('/users/reconfirm', {
+        confirm_success_url: request.confirmSuccessUrl,
+        user: {
+          email: request.email,
+        },
+      });
+    },
+
+    async validateEmail(request: ValidateEmailRequest): Promise<ValidateEmailResponse> {
+      const response = await transport.post<{
+        data: {
+          attributes: {
+            email: string | null;
+            exists: boolean;
+            masked_email: string | null;
+            well_formed: boolean;
+            can_recover?: boolean;
+            account_status?: string;
+          };
+        };
+      }>('/users/validate-email', {
+        email: request.email,
+      });
+
+      const attrs = response.data.attributes;
+      return {
+        email: attrs.email,
+        exists: attrs.exists,
+        maskedEmail: attrs.masked_email,
+        wellFormed: attrs.well_formed,
+        canRecover: attrs.can_recover,
+        accountStatus: attrs.account_status,
+      };
+    },
+
+    async validateDocument(request: ValidateDocumentRequest): Promise<ValidateDocumentResponse> {
+      const response = await transport.post<{
+        data: {
+          attributes: {
+            document_type: string;
+            document_number: string;
+            exists: boolean;
+            masked_email: string | null;
+            masked_document: string | null;
+            can_recover: boolean;
+            account_status?: string;
+          };
+        };
+      }>('/users/validate-document', {
+        document_type: request.documentType,
+        document_number: request.documentNumber,
+      });
+
+      const attrs = response.data.attributes;
+      return {
+        documentType: attrs.document_type,
+        documentNumber: attrs.document_number,
+        exists: attrs.exists,
+        maskedEmail: attrs.masked_email,
+        maskedDocument: attrs.masked_document,
+        canRecover: attrs.can_recover,
+        accountStatus: attrs.account_status,
+      };
+    },
+
+    async resendInvitation(request: ResendInvitationRequest): Promise<User> {
+      const response = await transport.post<{ data: unknown }>('/auth/invitation/resend', {
+        invitation: {
+          email: request.email,
+          appid: request.appid,
+          accept_invitation_url: request.acceptInvitationUrl,
+        },
+      });
+      return decodeOne(response, userMapper);
+    },
+
+    async requestAccountRecovery(request: AccountRecoveryRequest): Promise<AccountRecoveryResponse> {
+      const response = await transport.post<{
+        data: {
+          type: string;
+          attributes: {
+            success: boolean;
+            message: string;
+          };
+        };
+      }>('/users/recover', {
+        email: request.email,
+        recovery_url: request.recoveryUrl,
+      });
+
+      return {
+        success: response.data.attributes.success,
+        message: response.data.attributes.message,
+      };
+    },
+
+    async completeAccountRecovery(request: CompleteRecoveryRequest): Promise<User> {
+      const response = await transport.put<{ data: unknown }>('/users/recover', {
+        recovery_token: request.recoveryToken,
+        password: request.password,
+        password_confirmation: request.passwordConfirmation,
+      });
+      return decodeOne(response, userMapper);
     },
   };
 }
