@@ -127,6 +127,7 @@ export function createAuthService(
         data: unknown;
         meta?: { token?: string; access_token?: string; message?: string; auth?: { access_token?: string; refresh_token?: string; expires_in?: number } };
       }>('/auth', {
+        confirm_success_url: request.confirmSuccessUrl,
         user: {
           email: request.email,
           password: request.password,
@@ -134,7 +135,12 @@ export function createAuthService(
           name: request.name,
           username: request.username,
           role_id: request.roleId,
-          confirm_success_url: request.confirmSuccessUrl,
+          time_zone: request.timeZone,
+          preferred_language: request.preferredLanguage,
+          payload: request.payload,
+          unique_id: request.uniqueId,
+          provider: request.provider,
+          uid: request.uid,
         },
       });
 

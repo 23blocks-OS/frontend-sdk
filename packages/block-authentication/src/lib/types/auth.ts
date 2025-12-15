@@ -31,6 +31,18 @@ export interface SignUpRequest {
   roleId?: string;
   /** URL to redirect after email confirmation (required when email confirmation is enabled) */
   confirmSuccessUrl?: string;
+  /** User's timezone (e.g., 'America/New_York') */
+  timeZone?: string;
+  /** User's preferred language (e.g., 'en', 'es') */
+  preferredLanguage?: string;
+  /** Arbitrary JSON payload for custom user data */
+  payload?: Record<string, unknown>;
+  /** Custom unique identifier for the user */
+  uniqueId?: string;
+  /** OAuth provider (e.g., 'google', 'facebook') - for OAuth registrations */
+  provider?: string;
+  /** OAuth uid from the provider - for OAuth registrations */
+  uid?: string;
 }
 
 /**
