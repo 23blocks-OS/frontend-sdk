@@ -51,9 +51,7 @@ export function createCouponsService(transport: Transport, _config: { appId: str
 
     async create(data: CreateCouponRequest): Promise<Coupon> {
       const response = await transport.post<unknown>('/coupons', {
-        data: {
-          type: 'Coupon',
-          attributes: {
+        coupon: {
             code: data.code,
             name: data.name,
             description: data.description,
@@ -66,16 +64,13 @@ export function createCouponsService(transport: Transport, _config: { appId: str
             end_date: data.endDate?.toISOString(),
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, couponMapper);
     },
 
     async update(uniqueId: string, data: UpdateCouponRequest): Promise<Coupon> {
       const response = await transport.put<unknown>(`/coupons/${uniqueId}`, {
-        data: {
-          type: 'Coupon',
-          attributes: {
+        coupon: {
             name: data.name,
             description: data.description,
             discount_type: data.discountType,
@@ -89,7 +84,6 @@ export function createCouponsService(transport: Transport, _config: { appId: str
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, couponMapper);
     },
@@ -100,14 +94,11 @@ export function createCouponsService(transport: Transport, _config: { appId: str
 
     async validate(data: ValidateCouponRequest): Promise<CouponValidationResult> {
       const response = await transport.post<unknown>('/coupons/validate', {
-        data: {
-          type: 'CouponValidation',
-          attributes: {
+        couponvalidation: {
             code: data.code,
             user_unique_id: data.userUniqueId,
             purchase_amount: data.purchaseAmount,
           },
-        },
       });
 
       // Parse the validation response
@@ -122,16 +113,13 @@ export function createCouponsService(transport: Transport, _config: { appId: str
 
     async apply(data: ApplyCouponRequest): Promise<CouponApplication> {
       const response = await transport.post<unknown>('/coupons/apply', {
-        data: {
-          type: 'CouponApplication',
-          attributes: {
+        couponapplication: {
             code: data.code,
             user_unique_id: data.userUniqueId,
             order_unique_id: data.orderUniqueId,
             cart_unique_id: data.cartUniqueId,
             purchase_amount: data.purchaseAmount,
           },
-        },
       });
       return decodeOne(response, couponApplicationMapper);
     },

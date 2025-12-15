@@ -44,9 +44,7 @@ export function createPremiseBookingsService(transport: Transport, _config: { ap
 
     async create(data: CreatePremiseBookingRequest): Promise<PremiseBooking> {
       const response = await transport.post<unknown>('/premise_bookings', {
-        data: {
-          type: 'PremiseBooking',
-          attributes: {
+        premisebooking: {
             premise_unique_id: data.premiseUniqueId,
             code: data.code,
             user_type: data.userType,
@@ -55,23 +53,19 @@ export function createPremiseBookingsService(transport: Transport, _config: { ap
             check_out_time: data.checkOutTime?.toISOString(),
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, premiseBookingMapper);
     },
 
     async update(uniqueId: string, data: UpdatePremiseBookingRequest): Promise<PremiseBooking> {
       const response = await transport.put<unknown>(`/premise_bookings/${uniqueId}`, {
-        data: {
-          type: 'PremiseBooking',
-          attributes: {
+        premisebooking: {
             check_in_time: data.checkInTime?.toISOString(),
             check_out_time: data.checkOutTime?.toISOString(),
             enabled: data.enabled,
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, premiseBookingMapper);
     },

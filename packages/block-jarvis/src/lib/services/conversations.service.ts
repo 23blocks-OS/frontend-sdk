@@ -40,15 +40,12 @@ export function createConversationsService(transport: Transport, _config: { appI
 
     async create(data: CreateConversationRequest): Promise<Conversation> {
       const response = await transport.post<unknown>('/conversations', {
-        data: {
-          type: 'Conversation',
-          attributes: {
+        conversation: {
             agent_unique_id: data.agentUniqueId,
             user_unique_id: data.userUniqueId,
             title: data.title,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, conversationMapper);
     },

@@ -42,9 +42,7 @@ export function createWorkflowsService(transport: Transport, _config: { appId: s
 
     async create(data: CreateWorkflowRequest): Promise<Workflow> {
       const response = await transport.post<unknown>('/workflows', {
-        data: {
-          type: 'Workflow',
-          attributes: {
+        workflow: {
             code: data.code,
             name: data.name,
             description: data.description,
@@ -52,16 +50,13 @@ export function createWorkflowsService(transport: Transport, _config: { appId: s
             triggers: data.triggers,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, workflowMapper);
     },
 
     async update(uniqueId: string, data: UpdateWorkflowRequest): Promise<Workflow> {
       const response = await transport.put<unknown>(`/workflows/${uniqueId}`, {
-        data: {
-          type: 'Workflow',
-          attributes: {
+        workflow: {
             name: data.name,
             description: data.description,
             steps: data.steps,
@@ -70,7 +65,6 @@ export function createWorkflowsService(transport: Transport, _config: { appId: s
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, workflowMapper);
     },

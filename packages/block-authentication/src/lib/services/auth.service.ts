@@ -105,7 +105,7 @@ export function createAuthService(
     async signIn(request: SignInRequest): Promise<SignInResponse> {
       const response = await transport.post<{
         data: unknown;
-        meta?: { token?: string; access_token?: string; refresh_token?: string; expires_in?: number };
+        meta?: { token?: string; access_token?: string; refresh_token?: string; expires_in?: number; auth?: { access_token?: string; refresh_token?: string; expires_in?: number } };
       }>('/auth/sign_in', {
         email: request.email,
         password: request.password,
@@ -115,31 +115,33 @@ export function createAuthService(
 
       return {
         user,
-        accessToken: response.meta?.access_token ?? response.meta?.token ?? '',
-        refreshToken: response.meta?.refresh_token,
+        accessToken: response.meta?.auth?.access_token ?? response.meta?.access_token ?? response.meta?.token ?? '',
+        refreshToken: response.meta?.auth?.refresh_token ?? response.meta?.refresh_token,
         tokenType: 'Bearer',
-        expiresIn: response.meta?.expires_in,
+        expiresIn: response.meta?.auth?.expires_in ?? response.meta?.expires_in,
       };
     },
 
     async signUp(request: SignUpRequest): Promise<SignUpResponse> {
       const response = await transport.post<{
         data: unknown;
-        meta?: { token?: string; access_token?: string; message?: string };
+        meta?: { token?: string; access_token?: string; message?: string; auth?: { access_token?: string; refresh_token?: string; expires_in?: number } };
       }>('/auth', {
-        email: request.email,
-        password: request.password,
-        password_confirmation: request.passwordConfirmation,
-        name: request.name,
-        username: request.username,
-        role_id: request.roleId,
+        user: {
+          email: request.email,
+          password: request.password,
+          password_confirmation: request.passwordConfirmation,
+          name: request.name,
+          username: request.username,
+          role_id: request.roleId,
+        },
       });
 
       const user = decodeOne(response, userMapper);
 
       return {
         user,
-        accessToken: response.meta?.access_token ?? response.meta?.token,
+        accessToken: response.meta?.auth?.access_token ?? response.meta?.access_token ?? response.meta?.token,
         message: response.meta?.message,
       };
     },
@@ -225,31 +227,34 @@ export function createAuthService(
 
     async sendInvitation(request: InvitationRequest): Promise<void> {
       await transport.post('/auth/invitation', {
-        email: request.email,
-        role_id: request.roleId,
-        redirect_url: request.redirectUrl,
+        user: {
+          email: request.email,
+          role_id: request.roleId,
+          accept_invitation_url: request.redirectUrl,
+        },
       });
     },
 
     async acceptInvitation(request: AcceptInvitationRequest): Promise<SignInResponse> {
       const response = await transport.put<{
         data: unknown;
-        meta?: { access_token?: string; refresh_token?: string; expires_in?: number };
+        meta?: { access_token?: string; refresh_token?: string; expires_in?: number; auth?: { access_token?: string; refresh_token?: string; expires_in?: number } };
       }>('/auth/invitation', {
-        invitation_token: request.invitationToken,
-        password: request.password,
-        password_confirmation: request.passwordConfirmation,
-        name: request.name,
+        invitation: {
+          invitation_token: request.invitationToken,
+          password: request.password,
+          name: request.name,
+        },
       });
 
       const user = decodeOne(response, userMapper);
 
       return {
         user,
-        accessToken: response.meta?.access_token ?? '',
-        refreshToken: response.meta?.refresh_token,
+        accessToken: response.meta?.auth?.access_token ?? response.meta?.access_token ?? '',
+        refreshToken: response.meta?.auth?.refresh_token ?? response.meta?.refresh_token,
         tokenType: 'Bearer',
-        expiresIn: response.meta?.expires_in,
+        expiresIn: response.meta?.auth?.expires_in ?? response.meta?.expires_in,
       };
     },
 

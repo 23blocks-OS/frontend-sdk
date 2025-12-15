@@ -43,24 +43,21 @@ export function createQuotesService(transport: Transport, _config: { appId: stri
 
     async create(data: CreateQuoteRequest): Promise<Quote> {
       const response = await transport.post<unknown>('/quotes', {
-        data: {
-          type: 'Quote',
-          attributes: {
-            account_unique_id: data.accountUniqueId,
-            contact_unique_id: data.contactUniqueId,
-            code: data.code,
-            name: data.name,
-            notes: data.notes,
-            budget: data.budget,
-            total: data.total,
-            duration: data.duration,
-            duration_unit: data.durationUnit,
-            duration_description: data.durationDescription,
-            payload: data.payload,
-            next_action_at: data.nextActionAt,
-            owner_unique_id: data.ownerUniqueId,
-            tags: data.tags,
-          },
+        quote: {
+          account_unique_id: data.accountUniqueId,
+          contact_unique_id: data.contactUniqueId,
+          code: data.code,
+          name: data.name,
+          notes: data.notes,
+          budget: data.budget,
+          total: data.total,
+          duration: data.duration,
+          duration_unit: data.durationUnit,
+          duration_description: data.durationDescription,
+          payload: data.payload,
+          next_action_at: data.nextActionAt,
+          owner_unique_id: data.ownerUniqueId,
+          tags: data.tags,
         },
       });
       return decodeOne(response, quoteMapper);
@@ -68,25 +65,22 @@ export function createQuotesService(transport: Transport, _config: { appId: stri
 
     async update(uniqueId: string, data: UpdateQuoteRequest): Promise<Quote> {
       const response = await transport.put<unknown>(`/quotes/${uniqueId}`, {
-        data: {
-          type: 'Quote',
-          attributes: {
-            name: data.name,
-            notes: data.notes,
-            budget: data.budget,
-            total: data.total,
-            duration: data.duration,
-            duration_unit: data.durationUnit,
-            duration_description: data.durationDescription,
-            payload: data.payload,
-            next_action_at: data.nextActionAt,
-            owner_unique_id: data.ownerUniqueId,
-            owner_name: data.ownerName,
-            owner_email: data.ownerEmail,
-            enabled: data.enabled,
-            status: data.status,
-            tags: data.tags,
-          },
+        quote: {
+          name: data.name,
+          notes: data.notes,
+          budget: data.budget,
+          total: data.total,
+          duration: data.duration,
+          duration_unit: data.durationUnit,
+          duration_description: data.durationDescription,
+          payload: data.payload,
+          next_action_at: data.nextActionAt,
+          owner_unique_id: data.ownerUniqueId,
+          owner_name: data.ownerName,
+          owner_email: data.ownerEmail,
+          enabled: data.enabled,
+          status: data.status,
+          tags: data.tags,
         },
       });
       return decodeOne(response, quoteMapper);

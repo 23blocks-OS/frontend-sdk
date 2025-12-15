@@ -41,20 +41,17 @@ export function createContactsService(transport: Transport, _config: { appId: st
 
     async create(data: CreateContactRequest): Promise<Contact> {
       const response = await transport.post<unknown>('/contacts', {
-        data: {
-          type: 'Contact',
-          attributes: {
-            first_name: data.firstName,
-            last_name: data.lastName,
-            middle_name: data.middleName,
-            primary_email: data.primaryEmail,
-            primary_phone: data.primaryPhone,
-            position: data.position,
-            notes: data.notes,
-            source: data.source,
-            user_unique_id: data.userUniqueId,
-            tags: data.tags,
-          },
+        contact: {
+          first_name: data.firstName,
+          last_name: data.lastName,
+          middle_name: data.middleName,
+          primary_email: data.primaryEmail,
+          primary_phone: data.primaryPhone,
+          position: data.position,
+          notes: data.notes,
+          source: data.source,
+          user_unique_id: data.userUniqueId,
+          tags: data.tags,
         },
       });
       return decodeOne(response, contactMapper);
@@ -62,21 +59,18 @@ export function createContactsService(transport: Transport, _config: { appId: st
 
     async update(uniqueId: string, data: UpdateContactRequest): Promise<Contact> {
       const response = await transport.put<unknown>(`/contacts/${uniqueId}`, {
-        data: {
-          type: 'Contact',
-          attributes: {
-            first_name: data.firstName,
-            last_name: data.lastName,
-            middle_name: data.middleName,
-            primary_email: data.primaryEmail,
-            primary_phone: data.primaryPhone,
-            position: data.position,
-            notes: data.notes,
-            contact_status: data.contactStatus,
-            enabled: data.enabled,
-            status: data.status,
-            tags: data.tags,
-          },
+        contact: {
+          first_name: data.firstName,
+          last_name: data.lastName,
+          middle_name: data.middleName,
+          primary_email: data.primaryEmail,
+          primary_phone: data.primaryPhone,
+          position: data.position,
+          notes: data.notes,
+          contact_status: data.contactStatus,
+          enabled: data.enabled,
+          status: data.status,
+          tags: data.tags,
         },
       });
       return decodeOne(response, contactMapper);

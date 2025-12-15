@@ -40,17 +40,14 @@ export function createAccountsService(transport: Transport, _config: { appId: st
 
     async create(data: CreateAccountRequest): Promise<Account> {
       const response = await transport.post<unknown>('/accounts', {
-        data: {
-          type: 'Account',
-          attributes: {
-            code: data.code,
-            name: data.name,
-            label: data.label,
-            preferred_domain: data.preferredDomain,
-            preferred_language: data.preferredLanguage,
-            payload: data.payload,
-            tags: data.tags,
-          },
+        account: {
+          code: data.code,
+          name: data.name,
+          label: data.label,
+          preferred_domain: data.preferredDomain,
+          preferred_language: data.preferredLanguage,
+          payload: data.payload,
+          tags: data.tags,
         },
       });
       return decodeOne(response, accountMapper);
@@ -58,18 +55,15 @@ export function createAccountsService(transport: Transport, _config: { appId: st
 
     async update(uniqueId: string, data: UpdateAccountRequest): Promise<Account> {
       const response = await transport.put<unknown>(`/accounts/${uniqueId}`, {
-        data: {
-          type: 'Account',
-          attributes: {
-            name: data.name,
-            label: data.label,
-            preferred_domain: data.preferredDomain,
-            preferred_language: data.preferredLanguage,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-            tags: data.tags,
-          },
+        account: {
+          name: data.name,
+          label: data.label,
+          preferred_domain: data.preferredDomain,
+          preferred_language: data.preferredLanguage,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
+          tags: data.tags,
         },
       });
       return decodeOne(response, accountMapper);

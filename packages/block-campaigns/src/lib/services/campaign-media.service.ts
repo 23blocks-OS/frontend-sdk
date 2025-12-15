@@ -40,9 +40,7 @@ export function createCampaignMediaService(transport: Transport, _config: { appI
 
     async create(data: CreateCampaignMediaRequest): Promise<CampaignMedia> {
       const response = await transport.post<unknown>('/campaign_media', {
-        data: {
-          type: 'CampaignMedia',
-          attributes: {
+        campaign_media: {
             campaign_unique_id: data.campaignUniqueId,
             media_type: data.mediaType,
             name: data.name,
@@ -51,16 +49,13 @@ export function createCampaignMediaService(transport: Transport, _config: { appI
             click_url: data.clickUrl,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, campaignMediaMapper);
     },
 
     async update(uniqueId: string, data: UpdateCampaignMediaRequest): Promise<CampaignMedia> {
       const response = await transport.put<unknown>(`/campaign_media/${uniqueId}`, {
-        data: {
-          type: 'CampaignMedia',
-          attributes: {
+        campaign_media: {
             name: data.name,
             media_type: data.mediaType,
             content_url: data.contentUrl,
@@ -73,7 +68,6 @@ export function createCampaignMediaService(transport: Transport, _config: { appI
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, campaignMediaMapper);
     },

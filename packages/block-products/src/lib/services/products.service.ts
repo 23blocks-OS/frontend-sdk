@@ -79,20 +79,17 @@ export function createProductsService(transport: Transport, _config: { appId: st
 
     async create(data: CreateProductRequest): Promise<Product> {
       const response = await transport.post<unknown>('/products', {
-        data: {
-          type: 'Product',
-          attributes: {
-            sku: data.sku,
-            name: data.name,
-            description: data.description,
-            product_type: data.productType,
-            price: data.price,
-            cost: data.cost,
-            image_url: data.imageUrl,
-            brand_unique_id: data.brandUniqueId,
-            category_unique_ids: data.categoryUniqueIds,
-            payload: data.payload,
-          },
+        product: {
+          sku: data.sku,
+          name: data.name,
+          description: data.description,
+          product_type: data.productType,
+          price: data.price,
+          cost: data.cost,
+          image_url: data.imageUrl,
+          brand_unique_id: data.brandUniqueId,
+          category_unique_ids: data.categoryUniqueIds,
+          payload: data.payload,
         },
       });
       return decodeOne(response, productMapper);
@@ -100,22 +97,19 @@ export function createProductsService(transport: Transport, _config: { appId: st
 
     async update(uniqueId: string, data: UpdateProductRequest): Promise<Product> {
       const response = await transport.put<unknown>(`/products/${uniqueId}`, {
-        data: {
-          type: 'Product',
-          attributes: {
-            name: data.name,
-            description: data.description,
-            product_type: data.productType,
-            price: data.price,
-            cost: data.cost,
-            discount: data.discount,
-            tax: data.tax,
-            fees: data.fees,
-            image_url: data.imageUrl,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        product: {
+          name: data.name,
+          description: data.description,
+          product_type: data.productType,
+          price: data.price,
+          cost: data.cost,
+          discount: data.discount,
+          tax: data.tax,
+          fees: data.fees,
+          image_url: data.imageUrl,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
         },
       });
       return decodeOne(response, productMapper);
@@ -161,18 +155,15 @@ export function createProductsService(transport: Transport, _config: { appId: st
 
     async createVariation(data: CreateVariationRequest): Promise<ProductVariation> {
       const response = await transport.post<unknown>('/product_variations', {
-        data: {
-          type: 'Variation',
-          attributes: {
-            product_unique_id: data.productUniqueId,
-            sku: data.sku,
-            name: data.name,
-            size: data.size,
-            color: data.color,
-            extra_variation: data.extraVariation,
-            price: data.price,
-            image_url: data.imageUrl,
-          },
+        variation: {
+          product_unique_id: data.productUniqueId,
+          sku: data.sku,
+          name: data.name,
+          size: data.size,
+          color: data.color,
+          extra_variation: data.extraVariation,
+          price: data.price,
+          image_url: data.imageUrl,
         },
       });
       return decodeOne(response, productVariationMapper);
@@ -180,18 +171,15 @@ export function createProductsService(transport: Transport, _config: { appId: st
 
     async updateVariation(uniqueId: string, data: UpdateVariationRequest): Promise<ProductVariation> {
       const response = await transport.put<unknown>(`/product_variations/${uniqueId}`, {
-        data: {
-          type: 'Variation',
-          attributes: {
-            name: data.name,
-            size: data.size,
-            color: data.color,
-            extra_variation: data.extraVariation,
-            price: data.price,
-            image_url: data.imageUrl,
-            enabled: data.enabled,
-            status: data.status,
-          },
+        variation: {
+          name: data.name,
+          size: data.size,
+          color: data.color,
+          extra_variation: data.extraVariation,
+          price: data.price,
+          image_url: data.imageUrl,
+          enabled: data.enabled,
+          status: data.status,
         },
       });
       return decodeOne(response, productVariationMapper);
@@ -209,12 +197,9 @@ export function createProductsService(transport: Transport, _config: { appId: st
 
     async addImage(productUniqueId: string, imageUrl: string, isPrimary = false): Promise<ProductImage> {
       const response = await transport.post<unknown>(`/products/${productUniqueId}/images`, {
-        data: {
-          type: 'ProductImage',
-          attributes: {
-            image_url: imageUrl,
-            is_primary: isPrimary,
-          },
+        file: {
+          image_url: imageUrl,
+          is_primary: isPrimary,
         },
       });
       return decodeOne(response, productImageMapper);
@@ -240,13 +225,10 @@ export function createProductsService(transport: Transport, _config: { appId: st
       quantity: number
     ): Promise<ProductStock> {
       const response = await transport.put<unknown>(`/stock_manager/${productUniqueId}`, {
-        data: {
-          type: 'ProductStock',
-          attributes: {
-            vendor_unique_id: vendorUniqueId,
-            warehouse_unique_id: warehouseUniqueId,
-            quantity: quantity,
-          },
+        stock: {
+          vendor_unique_id: vendorUniqueId,
+          warehouse_unique_id: warehouseUniqueId,
+          quantity: quantity,
         },
       });
       return decodeOne(response, productStockMapper);
@@ -260,13 +242,10 @@ export function createProductsService(transport: Transport, _config: { appId: st
 
     async addReview(productUniqueId: string, rating: number, title?: string, content?: string): Promise<ProductReview> {
       const response = await transport.post<unknown>(`/products/${productUniqueId}/reviews`, {
-        data: {
-          type: 'ProductReview',
-          attributes: {
-            rating,
-            title,
-            content,
-          },
+        review: {
+          rating,
+          title,
+          content,
         },
       });
       return decodeOne(response, productReviewMapper);

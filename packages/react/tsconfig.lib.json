@@ -10,5 +10,66 @@
     "declaration": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "references": []
+  "references": [
+    {
+      "path": "../block-university/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-onboarding/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-jarvis/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-wallet/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-sales/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-rewards/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-company/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-campaigns/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-assets/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-forms/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-files/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-conversations/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-geolocation/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-content/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-crm/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-products/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-search/tsconfig.lib.json"
+    },
+    {
+      "path": "../block-authentication/tsconfig.lib.json"
+    },
+    {
+      "path": "../transport-http/tsconfig.lib.json"
+    },
+    {
+      "path": "../contracts/tsconfig.lib.json"
+    }
+  ]
 }

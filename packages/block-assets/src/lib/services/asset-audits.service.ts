@@ -41,9 +41,7 @@ export function createAssetAuditsService(transport: Transport, _config: { appId:
 
     async create(data: CreateAssetAuditRequest): Promise<AssetAudit> {
       const response = await transport.post<unknown>('/asset_audits', {
-        data: {
-          type: 'AssetAudit',
-          attributes: {
+        asset_audit: {
             asset_unique_id: data.assetUniqueId,
             audit_date: data.auditDate.toISOString(),
             auditor_unique_id: data.auditorUniqueId,
@@ -52,16 +50,13 @@ export function createAssetAuditsService(transport: Transport, _config: { appId:
             notes: data.notes,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, assetAuditMapper);
     },
 
     async update(uniqueId: string, data: UpdateAssetAuditRequest): Promise<AssetAudit> {
       const response = await transport.put<unknown>(`/asset_audits/${uniqueId}`, {
-        data: {
-          type: 'AssetAudit',
-          attributes: {
+        asset_audit: {
             audit_date: data.auditDate?.toISOString(),
             auditor_unique_id: data.auditorUniqueId,
             condition: data.condition,
@@ -71,7 +66,6 @@ export function createAssetAuditsService(transport: Transport, _config: { appId:
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, assetAuditMapper);
     },

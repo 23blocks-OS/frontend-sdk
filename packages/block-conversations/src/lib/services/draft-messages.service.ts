@@ -40,9 +40,7 @@ export function createDraftMessagesService(transport: Transport, _config: { appI
 
     async create(data: CreateDraftMessageRequest): Promise<DraftMessage> {
       const response = await transport.post<unknown>('/draft_messages', {
-        data: {
-          type: 'DraftMessage',
-          attributes: {
+        draft_message: {
             context_id: data.contextId,
             parent_id: data.parentId,
             content: data.content,
@@ -71,22 +69,18 @@ export function createDraftMessagesService(transport: Transport, _config: { appI
             idempotency_key: data.idempotencyKey,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, draftMessageMapper);
     },
 
     async update(uniqueId: string, data: UpdateDraftMessageRequest): Promise<DraftMessage> {
       const response = await transport.put<unknown>(`/draft_messages/${uniqueId}`, {
-        data: {
-          type: 'DraftMessage',
-          attributes: {
+        draft_message: {
             content: data.content,
             status: data.status,
             enabled: data.enabled,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, draftMessageMapper);
     },

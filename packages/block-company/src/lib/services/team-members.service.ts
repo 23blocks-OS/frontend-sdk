@@ -39,14 +39,11 @@ export function createTeamMembersService(transport: Transport, _config: { appId:
 
     async add(data: AddTeamMemberRequest): Promise<TeamMember> {
       const response = await transport.post<unknown>('/team_members', {
-        data: {
-          type: 'TeamMember',
-          attributes: {
-            team_unique_id: data.teamUniqueId,
-            user_unique_id: data.userUniqueId,
-            role: data.role,
-            payload: data.payload,
-          },
+        team_member: {
+          team_unique_id: data.teamUniqueId,
+          user_unique_id: data.userUniqueId,
+          role: data.role,
+          payload: data.payload,
         },
       });
       return decodeOne(response, teamMemberMapper);
@@ -54,14 +51,11 @@ export function createTeamMembersService(transport: Transport, _config: { appId:
 
     async update(uniqueId: string, data: UpdateTeamMemberRequest): Promise<TeamMember> {
       const response = await transport.put<unknown>(`/team_members/${uniqueId}`, {
-        data: {
-          type: 'TeamMember',
-          attributes: {
-            role: data.role,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        team_member: {
+          role: data.role,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
         },
       });
       return decodeOne(response, teamMemberMapper);

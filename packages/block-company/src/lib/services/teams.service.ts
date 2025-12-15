@@ -39,16 +39,13 @@ export function createTeamsService(transport: Transport, _config: { appId: strin
 
     async create(data: CreateTeamRequest): Promise<Team> {
       const response = await transport.post<unknown>('/teams', {
-        data: {
-          type: 'Team',
-          attributes: {
-            department_unique_id: data.departmentUniqueId,
-            code: data.code,
-            name: data.name,
-            description: data.description,
-            leader_unique_id: data.leaderUniqueId,
-            payload: data.payload,
-          },
+        team: {
+          department_unique_id: data.departmentUniqueId,
+          code: data.code,
+          name: data.name,
+          description: data.description,
+          leader_unique_id: data.leaderUniqueId,
+          payload: data.payload,
         },
       });
       return decodeOne(response, teamMapper);
@@ -56,16 +53,13 @@ export function createTeamsService(transport: Transport, _config: { appId: strin
 
     async update(uniqueId: string, data: UpdateTeamRequest): Promise<Team> {
       const response = await transport.put<unknown>(`/teams/${uniqueId}`, {
-        data: {
-          type: 'Team',
-          attributes: {
-            name: data.name,
-            description: data.description,
-            leader_unique_id: data.leaderUniqueId,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        team: {
+          name: data.name,
+          description: data.description,
+          leader_unique_id: data.leaderUniqueId,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
         },
       });
       return decodeOne(response, teamMapper);

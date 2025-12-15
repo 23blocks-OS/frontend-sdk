@@ -43,26 +43,23 @@ export function createMeetingsService(transport: Transport, _config: { appId: st
 
     async create(data: CreateMeetingRequest): Promise<Meeting> {
       const response = await transport.post<unknown>('/meetings', {
-        data: {
-          type: 'Meeting',
-          attributes: {
-            code: data.code,
-            title: data.title,
-            meeting_type: data.meetingType,
-            description: data.description,
-            scheduled_at: data.scheduledAt,
-            start_time: data.startTime,
-            end_time: data.endTime,
-            time_unit: data.timeUnit,
-            time_quantity: data.timeQuantity,
-            all_day: data.allDay,
-            timezone: data.timezone,
-            user_unique_id: data.userUniqueId,
-            account_unique_id: data.accountUniqueId,
-            meeting_location: data.meetingLocation,
-            meeting_url: data.meetingUrl,
-            payload: data.payload,
-          },
+        meeting: {
+          code: data.code,
+          title: data.title,
+          meeting_type: data.meetingType,
+          description: data.description,
+          scheduled_at: data.scheduledAt,
+          start_time: data.startTime,
+          end_time: data.endTime,
+          time_unit: data.timeUnit,
+          time_quantity: data.timeQuantity,
+          all_day: data.allDay,
+          timezone: data.timezone,
+          user_unique_id: data.userUniqueId,
+          account_unique_id: data.accountUniqueId,
+          meeting_location: data.meetingLocation,
+          meeting_url: data.meetingUrl,
+          payload: data.payload,
         },
       });
       return decodeOne(response, meetingMapper);
@@ -70,26 +67,23 @@ export function createMeetingsService(transport: Transport, _config: { appId: st
 
     async update(uniqueId: string, data: UpdateMeetingRequest): Promise<Meeting> {
       const response = await transport.put<unknown>(`/meetings/${uniqueId}`, {
-        data: {
-          type: 'Meeting',
-          attributes: {
-            title: data.title,
-            meeting_type: data.meetingType,
-            description: data.description,
-            scheduled_at: data.scheduledAt,
-            start_time: data.startTime,
-            end_time: data.endTime,
-            time_unit: data.timeUnit,
-            time_quantity: data.timeQuantity,
-            all_day: data.allDay,
-            timezone: data.timezone,
-            meeting_location: data.meetingLocation,
-            meeting_url: data.meetingUrl,
-            meeting_score: data.meetingScore,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        meeting: {
+          title: data.title,
+          meeting_type: data.meetingType,
+          description: data.description,
+          scheduled_at: data.scheduledAt,
+          start_time: data.startTime,
+          end_time: data.endTime,
+          time_unit: data.timeUnit,
+          time_quantity: data.timeQuantity,
+          all_day: data.allDay,
+          timezone: data.timezone,
+          meeting_location: data.meetingLocation,
+          meeting_url: data.meetingUrl,
+          meeting_score: data.meetingScore,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
         },
       });
       return decodeOne(response, meetingMapper);

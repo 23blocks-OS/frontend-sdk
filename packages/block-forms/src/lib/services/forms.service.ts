@@ -38,25 +38,20 @@ export function createFormsService(transport: Transport, _config: { appId: strin
 
     async create(data: CreateFormRequest): Promise<Form> {
       const response = await transport.post<unknown>('/forms', {
-        data: {
-          type: 'Form',
-          attributes: {
+        form: {
             code: data.code,
             name: data.name,
             description: data.description,
             form_type: data.formType,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, formMapper);
     },
 
     async update(uniqueId: string, data: UpdateFormRequest): Promise<Form> {
       const response = await transport.put<unknown>(`/forms/${uniqueId}`, {
-        data: {
-          type: 'Form',
-          attributes: {
+        form: {
             name: data.name,
             description: data.description,
             form_type: data.formType,
@@ -64,7 +59,6 @@ export function createFormsService(transport: Transport, _config: { appId: strin
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, formMapper);
     },

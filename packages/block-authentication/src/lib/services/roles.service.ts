@@ -133,13 +133,15 @@ export function createRolesService(
       const response = await transport.post<{ data: unknown }>(
         '/roles',
         {
-          name: request.name,
-          code: request.code,
-          description: request.description,
-          payload: request.payload,
-          on_boarding_unique_id: request.onBoardingUniqueId,
-          on_boarding_url: request.onBoardingUrl,
-          on_boarding_payload: request.onBoardingPayload,
+          role: {
+            name: request.name,
+            code: request.code,
+            description: request.description,
+            payload: request.payload,
+            on_boarding_unique_id: request.onBoardingUniqueId,
+            on_boarding_url: request.onBoardingUrl,
+            on_boarding_payload: request.onBoardingPayload,
+          },
         }
       );
       return decodeOne(response, roleMapper);
@@ -149,14 +151,16 @@ export function createRolesService(
       const response = await transport.patch<{ data: unknown }>(
         `/roles/${id}`,
         {
-          name: request.name,
-          code: request.code,
-          description: request.description,
-          status: request.status,
-          payload: request.payload,
-          on_boarding_unique_id: request.onBoardingUniqueId,
-          on_boarding_url: request.onBoardingUrl,
-          on_boarding_payload: request.onBoardingPayload,
+          role: {
+            name: request.name,
+            code: request.code,
+            description: request.description,
+            status: request.status,
+            payload: request.payload,
+            on_boarding_unique_id: request.onBoardingUniqueId,
+            on_boarding_url: request.onBoardingUrl,
+            on_boarding_payload: request.onBoardingPayload,
+          },
         }
       );
       return decodeOne(response, roleMapper);

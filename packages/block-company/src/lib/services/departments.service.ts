@@ -42,17 +42,14 @@ export function createDepartmentsService(transport: Transport, _config: { appId:
 
     async create(data: CreateDepartmentRequest): Promise<Department> {
       const response = await transport.post<unknown>('/departments', {
-        data: {
-          type: 'Department',
-          attributes: {
-            company_unique_id: data.companyUniqueId,
-            code: data.code,
-            name: data.name,
-            description: data.description,
-            parent_unique_id: data.parentUniqueId,
-            manager_unique_id: data.managerUniqueId,
-            payload: data.payload,
-          },
+        department: {
+          company_unique_id: data.companyUniqueId,
+          code: data.code,
+          name: data.name,
+          description: data.description,
+          parent_unique_id: data.parentUniqueId,
+          manager_unique_id: data.managerUniqueId,
+          payload: data.payload,
         },
       });
       return decodeOne(response, departmentMapper);
@@ -60,17 +57,14 @@ export function createDepartmentsService(transport: Transport, _config: { appId:
 
     async update(uniqueId: string, data: UpdateDepartmentRequest): Promise<Department> {
       const response = await transport.put<unknown>(`/departments/${uniqueId}`, {
-        data: {
-          type: 'Department',
-          attributes: {
-            name: data.name,
-            description: data.description,
-            parent_unique_id: data.parentUniqueId,
-            manager_unique_id: data.managerUniqueId,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        department: {
+          name: data.name,
+          description: data.description,
+          parent_unique_id: data.parentUniqueId,
+          manager_unique_id: data.managerUniqueId,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
         },
       });
       return decodeOne(response, departmentMapper);

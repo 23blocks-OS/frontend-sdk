@@ -56,23 +56,20 @@ export function createPostsService(transport: Transport, _config: { appId: strin
 
     async create(data: CreatePostRequest): Promise<Post> {
       const response = await transport.post<unknown>('/posts', {
-        data: {
-          type: 'Post',
-          attributes: {
-            title: data.title,
-            abstract: data.abstract,
-            keywords: data.keywords,
-            content: data.content,
-            thumbnail_url: data.thumbnailUrl,
-            image_url: data.imageUrl,
-            media_url: data.mediaUrl,
-            category_unique_ids: data.categoryUniqueIds,
-            tag_unique_ids: data.tagUniqueIds,
-            is_public: data.isPublic,
-            publish_at: data.publishAt,
-            publish_until: data.publishUntil,
-            payload: data.payload,
-          },
+        post: {
+          title: data.title,
+          abstract: data.abstract,
+          keywords: data.keywords,
+          content: data.content,
+          thumbnail_url: data.thumbnailUrl,
+          image_url: data.imageUrl,
+          media_url: data.mediaUrl,
+          category_unique_ids: data.categoryUniqueIds,
+          tag_unique_ids: data.tagUniqueIds,
+          is_public: data.isPublic,
+          publish_at: data.publishAt,
+          publish_until: data.publishUntil,
+          payload: data.payload,
         },
       });
       return decodeOne(response, postMapper);
@@ -80,25 +77,22 @@ export function createPostsService(transport: Transport, _config: { appId: strin
 
     async update(uniqueId: string, data: UpdatePostRequest): Promise<Post> {
       const response = await transport.put<unknown>(`/posts/${uniqueId}`, {
-        data: {
-          type: 'Post',
-          attributes: {
-            title: data.title,
-            abstract: data.abstract,
-            keywords: data.keywords,
-            content: data.content,
-            thumbnail_url: data.thumbnailUrl,
-            image_url: data.imageUrl,
-            media_url: data.mediaUrl,
-            category_unique_ids: data.categoryUniqueIds,
-            tag_unique_ids: data.tagUniqueIds,
-            is_public: data.isPublic,
-            publish_at: data.publishAt,
-            publish_until: data.publishUntil,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        post: {
+          title: data.title,
+          abstract: data.abstract,
+          keywords: data.keywords,
+          content: data.content,
+          thumbnail_url: data.thumbnailUrl,
+          image_url: data.imageUrl,
+          media_url: data.mediaUrl,
+          category_unique_ids: data.categoryUniqueIds,
+          tag_unique_ids: data.tagUniqueIds,
+          is_public: data.isPublic,
+          publish_at: data.publishAt,
+          publish_until: data.publishUntil,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
         },
       });
       return decodeOne(response, postMapper);

@@ -41,9 +41,7 @@ export function createRegionsService(transport: Transport, _config: { appId: str
 
     async create(data: CreateRegionRequest): Promise<Region> {
       const response = await transport.post<unknown>('/regions', {
-        data: {
-          type: 'Region',
-          attributes: {
+        region: {
             name: data.name,
             code: data.code,
             description: data.description,
@@ -56,16 +54,13 @@ export function createRegionsService(transport: Transport, _config: { appId: str
             source_alias: data.sourceAlias,
             source_id: data.sourceId,
           },
-        },
       });
       return decodeOne(response, regionMapper);
     },
 
     async update(uniqueId: string, data: UpdateRegionRequest): Promise<Region> {
       const response = await transport.put<unknown>(`/regions/${uniqueId}`, {
-        data: {
-          type: 'Region',
-          attributes: {
+        region: {
             name: data.name,
             code: data.code,
             description: data.description,
@@ -81,7 +76,6 @@ export function createRegionsService(transport: Transport, _config: { appId: str
             enabled: data.enabled,
             status: data.status,
           },
-        },
       });
       return decodeOne(response, regionMapper);
     },

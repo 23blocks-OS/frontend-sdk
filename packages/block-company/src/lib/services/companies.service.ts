@@ -37,19 +37,16 @@ export function createCompaniesService(transport: Transport, _config: { appId: s
 
     async create(data: CreateCompanyRequest): Promise<Company> {
       const response = await transport.post<unknown>('/companies', {
-        data: {
-          type: 'Company',
-          attributes: {
-            code: data.code,
-            name: data.name,
-            description: data.description,
-            legal_name: data.legalName,
-            tax_id: data.taxId,
-            industry: data.industry,
-            website: data.website,
-            logo_url: data.logoUrl,
-            payload: data.payload,
-          },
+        company: {
+          code: data.code,
+          name: data.name,
+          description: data.description,
+          legal_name: data.legalName,
+          tax_id: data.taxId,
+          industry: data.industry,
+          website: data.website,
+          logo_url: data.logoUrl,
+          payload: data.payload,
         },
       });
       return decodeOne(response, companyMapper);
@@ -57,20 +54,17 @@ export function createCompaniesService(transport: Transport, _config: { appId: s
 
     async update(uniqueId: string, data: UpdateCompanyRequest): Promise<Company> {
       const response = await transport.put<unknown>(`/companies/${uniqueId}`, {
-        data: {
-          type: 'Company',
-          attributes: {
-            name: data.name,
-            description: data.description,
-            legal_name: data.legalName,
-            tax_id: data.taxId,
-            industry: data.industry,
-            website: data.website,
-            logo_url: data.logoUrl,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        company: {
+          name: data.name,
+          description: data.description,
+          legal_name: data.legalName,
+          tax_id: data.taxId,
+          industry: data.industry,
+          website: data.website,
+          logo_url: data.logoUrl,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
         },
       });
       return decodeOne(response, companyMapper);

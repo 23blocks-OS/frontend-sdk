@@ -44,9 +44,7 @@ export function createLocationsService(transport: Transport, _config: { appId: s
 
     async create(data: CreateLocationRequest): Promise<Location> {
       const response = await transport.post<unknown>('/locations', {
-        data: {
-          type: 'Location',
-          attributes: {
+        location: {
             name: data.name,
             code: data.code,
             owner_unique_id: data.ownerUniqueId,
@@ -62,16 +60,13 @@ export function createLocationsService(transport: Transport, _config: { appId: s
             image_url: data.imageUrl,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, locationMapper);
     },
 
     async update(uniqueId: string, data: UpdateLocationRequest): Promise<Location> {
       const response = await transport.put<unknown>(`/locations/${uniqueId}`, {
-        data: {
-          type: 'Location',
-          attributes: {
+        location: {
             name: data.name,
             code: data.code,
             address_unique_id: data.addressUniqueId,
@@ -87,7 +82,6 @@ export function createLocationsService(transport: Transport, _config: { appId: s
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, locationMapper);
     },

@@ -42,31 +42,25 @@ export function createFormInstancesService(transport: Transport, _config: { appI
 
     async create(data: CreateFormInstanceRequest): Promise<FormInstance> {
       const response = await transport.post<unknown>('/form_instances', {
-        data: {
-          type: 'FormInstance',
-          attributes: {
+        form_instance: {
             form_schema_unique_id: data.formSchemaUniqueId,
             form_schema_version: data.formSchemaVersion,
             user_unique_id: data.userUniqueId,
             data: data.data,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, formInstanceMapper);
     },
 
     async update(uniqueId: string, data: UpdateFormInstanceRequest): Promise<FormInstance> {
       const response = await transport.put<unknown>(`/form_instances/${uniqueId}`, {
-        data: {
-          type: 'FormInstance',
-          attributes: {
+        form_instance: {
             data: data.data,
             enabled: data.enabled,
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, formInstanceMapper);
     },
@@ -77,15 +71,12 @@ export function createFormInstancesService(transport: Transport, _config: { appI
 
     async submit(data: SubmitFormInstanceRequest): Promise<FormInstance> {
       const response = await transport.post<unknown>('/form_instances/submit', {
-        data: {
-          type: 'FormInstance',
-          attributes: {
+        form_instance: {
             form_schema_unique_id: data.formSchemaUniqueId,
             form_schema_version: data.formSchemaVersion,
             data: data.data,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, formInstanceMapper);
     },

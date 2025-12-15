@@ -281,13 +281,15 @@ export function createMagicLinksService(
 
     async create(request: CreateMagicLinkRequest): Promise<MagicLink> {
       const response = await transport.post<JsonApiDocument>('/magic_links', {
-        user_unique_id: request.userUniqueId,
-        email: request.email,
-        target_url: request.targetUrl,
-        expired_url: request.expiredUrl,
-        expires_in_hours: request.expiresInHours,
-        description: request.description,
-        payload: request.payload,
+        magic_link: {
+          user_unique_id: request.userUniqueId,
+          user_email: request.email,
+          target_url: request.targetUrl,
+          expired_url: request.expiredUrl,
+          expires_at: request.expiresInHours ? new Date(Date.now() + request.expiresInHours * 60 * 60 * 1000).toISOString() : undefined,
+          description: request.description,
+          payload: request.payload,
+        },
       });
       return decodeOne(response, magicLinkMapper);
     },
@@ -373,13 +375,15 @@ export function createUserDevicesService(
     },
 
     async register(request: RegisterDeviceRequest): Promise<UserDevice> {
-      const response = await transport.post<JsonApiDocument>('/user_devices', {
-        device_type: request.deviceType,
-        push_id: request.pushId,
-        os_type: request.osType,
-        default_device: request.defaultDevice,
-        location_enabled: request.locationEnabled,
-        notifications_enabled: request.notificationsEnabled,
+      const response = await transport.post<JsonApiDocument>('/users/devices', {
+        device: {
+          device_type: request.deviceType,
+          push_id: request.pushId,
+          os_type: request.osType,
+          default_device: request.defaultDevice,
+          location_enabled: request.locationEnabled,
+          notifications_enabled: request.notificationsEnabled,
+        },
       });
       return decodeOne(response, userDeviceMapper);
     },
@@ -389,14 +393,16 @@ export function createUserDevicesService(
       request: Partial<RegisterDeviceRequest>
     ): Promise<UserDevice> {
       const response = await transport.patch<JsonApiDocument>(
-        `/user_devices/${id}`,
+        `/users/devices/${id}`,
         {
-          device_type: request.deviceType,
-          push_id: request.pushId,
-          os_type: request.osType,
-          default_device: request.defaultDevice,
-          location_enabled: request.locationEnabled,
-          notifications_enabled: request.notificationsEnabled,
+          device: {
+            device_type: request.deviceType,
+            push_id: request.pushId,
+            os_type: request.osType,
+            default_device: request.defaultDevice,
+            location_enabled: request.locationEnabled,
+            notifications_enabled: request.notificationsEnabled,
+          },
         }
       );
       return decodeOne(response, userDeviceMapper);
@@ -478,19 +484,21 @@ export function createMailTemplatesService(
     },
 
     async update(id: string, template: Partial<MailTemplate>): Promise<MailTemplate> {
-      const response = await transport.patch<JsonApiDocument>(
+      const response = await transport.put<JsonApiDocument>(
         `/mail_templates/${id}`,
         {
-          template_name: template.templateName,
-          template_html: template.templateHtml,
-          template_text: template.templateText,
-          from_domain: template.fromDomain,
-          from_address: template.fromAddress,
-          from_name: template.fromName,
-          from_subject: template.fromSubject,
-          payload: template.payload,
-          preferred_language: template.preferredLanguage,
-          provider: template.provider,
+          template: {
+            template_name: template.templateName,
+            template_html: template.templateHtml,
+            template_text: template.templateText,
+            from_domain: template.fromDomain,
+            from_address: template.fromAddress,
+            from_name: template.fromName,
+            from_subject: template.fromSubject,
+            payload: template.payload,
+            preferred_language: template.preferredLanguage,
+            provider: template.provider,
+          },
         }
       );
       return decodeOne(response, mailTemplateMapper);

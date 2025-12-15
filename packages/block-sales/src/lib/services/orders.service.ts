@@ -38,21 +38,18 @@ export function createOrdersService(transport: Transport, _config: { appId: stri
 
     async create(data: CreateOrderRequest): Promise<Order> {
       const response = await transport.post<unknown>('/orders', {
-        data: {
-          type: 'Order',
-          attributes: {
-            user_unique_id: data.userUniqueId,
-            items: data.items.map((item) => ({
-              product_unique_id: item.productUniqueId,
-              product_variation_unique_id: item.productVariationUniqueId,
-              quantity: item.quantity,
-              unit_price: item.unitPrice,
-            })),
-            shipping_address_unique_id: data.shippingAddressUniqueId,
-            billing_address_unique_id: data.billingAddressUniqueId,
-            notes: data.notes,
-            payload: data.payload,
-          },
+        order: {
+          user_unique_id: data.userUniqueId,
+          items: data.items.map((item) => ({
+            product_unique_id: item.productUniqueId,
+            product_variation_unique_id: item.productVariationUniqueId,
+            quantity: item.quantity,
+            unit_price: item.unitPrice,
+          })),
+          shipping_address_unique_id: data.shippingAddressUniqueId,
+          billing_address_unique_id: data.billingAddressUniqueId,
+          notes: data.notes,
+          payload: data.payload,
         },
       });
       return decodeOne(response, orderMapper);
@@ -60,15 +57,12 @@ export function createOrdersService(transport: Transport, _config: { appId: stri
 
     async update(uniqueId: string, data: UpdateOrderRequest): Promise<Order> {
       const response = await transport.put<unknown>(`/orders/${uniqueId}`, {
-        data: {
-          type: 'Order',
-          attributes: {
-            status: data.status,
-            shipping_address_unique_id: data.shippingAddressUniqueId,
-            billing_address_unique_id: data.billingAddressUniqueId,
-            notes: data.notes,
-            payload: data.payload,
-          },
+        order: {
+          status: data.status,
+          shipping_address_unique_id: data.shippingAddressUniqueId,
+          billing_address_unique_id: data.billingAddressUniqueId,
+          notes: data.notes,
+          payload: data.payload,
         },
       });
       return decodeOne(response, orderMapper);
@@ -86,11 +80,8 @@ export function createOrdersService(transport: Transport, _config: { appId: stri
 
     async ship(uniqueId: string, trackingNumber?: string): Promise<Order> {
       const response = await transport.put<unknown>(`/orders/${uniqueId}/ship`, {
-        data: {
-          type: 'Order',
-          attributes: {
-            tracking_number: trackingNumber,
-          },
+        order: {
+          tracking_number: trackingNumber,
         },
       });
       return decodeOne(response, orderMapper);

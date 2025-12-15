@@ -42,18 +42,15 @@ export function createCommentsService(transport: Transport, _config: { appId: st
 
     async create(data: CreateCommentRequest): Promise<Comment> {
       const response = await transport.post<unknown>('/comments', {
-        data: {
-          type: 'Comment',
-          attributes: {
-            post_unique_id: data.postUniqueId,
-            content: data.content,
-            thumbnail_url: data.thumbnailUrl,
-            image_url: data.imageUrl,
-            content_url: data.contentUrl,
-            media_url: data.mediaUrl,
-            parent_id: data.parentId,
-            payload: data.payload,
-          },
+        comment: {
+          post_unique_id: data.postUniqueId,
+          content: data.content,
+          thumbnail_url: data.thumbnailUrl,
+          image_url: data.imageUrl,
+          content_url: data.contentUrl,
+          media_url: data.mediaUrl,
+          parent_id: data.parentId,
+          payload: data.payload,
         },
       });
       return decodeOne(response, commentMapper);
@@ -61,18 +58,15 @@ export function createCommentsService(transport: Transport, _config: { appId: st
 
     async update(uniqueId: string, data: UpdateCommentRequest): Promise<Comment> {
       const response = await transport.put<unknown>(`/comments/${uniqueId}`, {
-        data: {
-          type: 'Comment',
-          attributes: {
-            content: data.content,
-            thumbnail_url: data.thumbnailUrl,
-            image_url: data.imageUrl,
-            content_url: data.contentUrl,
-            media_url: data.mediaUrl,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        comment: {
+          content: data.content,
+          thumbnail_url: data.thumbnailUrl,
+          image_url: data.imageUrl,
+          content_url: data.contentUrl,
+          media_url: data.mediaUrl,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
         },
       });
       return decodeOne(response, commentMapper);

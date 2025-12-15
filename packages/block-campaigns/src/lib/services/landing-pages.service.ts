@@ -40,9 +40,7 @@ export function createLandingPagesService(transport: Transport, _config: { appId
 
     async create(data: CreateLandingPageRequest): Promise<LandingPage> {
       const response = await transport.post<unknown>('/landing_pages', {
-        data: {
-          type: 'LandingPage',
-          attributes: {
+        landing_page: {
             campaign_unique_id: data.campaignUniqueId,
             code: data.code,
             name: data.name,
@@ -53,16 +51,13 @@ export function createLandingPagesService(transport: Transport, _config: { appId
             meta_description: data.metaDescription,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, landingPageMapper);
     },
 
     async update(uniqueId: string, data: UpdateLandingPageRequest): Promise<LandingPage> {
       const response = await transport.put<unknown>(`/landing_pages/${uniqueId}`, {
-        data: {
-          type: 'LandingPage',
-          attributes: {
+        landing_page: {
             name: data.name,
             slug: data.slug,
             template_unique_id: data.templateUniqueId,
@@ -75,7 +70,6 @@ export function createLandingPagesService(transport: Transport, _config: { appId
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, landingPageMapper);
     },

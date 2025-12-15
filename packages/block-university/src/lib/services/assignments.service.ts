@@ -38,9 +38,7 @@ export function createAssignmentsService(transport: Transport, _config: { appId:
 
     async create(data: CreateAssignmentRequest): Promise<Assignment> {
       const response = await transport.post<unknown>('/assignments', {
-        data: {
-          type: 'Assignment',
-          attributes: {
+        assignment: {
             lesson_unique_id: data.lessonUniqueId,
             title: data.title,
             description: data.description,
@@ -49,16 +47,13 @@ export function createAssignmentsService(transport: Transport, _config: { appId:
             submission_type: data.submissionType,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, assignmentMapper);
     },
 
     async update(uniqueId: string, data: UpdateAssignmentRequest): Promise<Assignment> {
       const response = await transport.put<unknown>(`/assignments/${uniqueId}`, {
-        data: {
-          type: 'Assignment',
-          attributes: {
+        assignment: {
             title: data.title,
             description: data.description,
             due_date: data.dueDate,
@@ -68,7 +63,6 @@ export function createAssignmentsService(transport: Transport, _config: { appId:
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, assignmentMapper);
     },

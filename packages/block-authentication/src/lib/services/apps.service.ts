@@ -148,35 +148,39 @@ export function createAppsService(
 
     async create(request: CreateAppRequest): Promise<App> {
       const response = await transport.post<JsonApiDocument>('/apps', {
-        name: request.name,
-        description: request.description,
-        app_type: request.appType,
-        oauth_enabled: request.oauthEnabled,
-        oauth_access_token_lifetime_hours: request.oauthAccessTokenLifetimeHours,
-        oauth_refresh_token_lifetime_days: request.oauthRefreshTokenLifetimeDays,
-        rate_limit_per_minute: request.rateLimitPerMinute,
-        rate_limit_per_hour: request.rateLimitPerHour,
-        webhook_url: request.webhookUrl,
-        allowed_origins: request.allowedOrigins,
-        metadata: request.metadata,
+        app: {
+          name: request.name,
+          description: request.description,
+          app_type: request.appType,
+          oauth_enabled: request.oauthEnabled,
+          oauth_access_token_lifetime_hours: request.oauthAccessTokenLifetimeHours,
+          oauth_refresh_token_lifetime_days: request.oauthRefreshTokenLifetimeDays,
+          rate_limit_per_minute: request.rateLimitPerMinute,
+          rate_limit_per_hour: request.rateLimitPerHour,
+          webhook_url: request.webhookUrl,
+          allowed_origins: request.allowedOrigins,
+          metadata: request.metadata,
+        },
       });
       return decodeOne(response, appMapper);
     },
 
     async update(id: string, request: UpdateAppRequest): Promise<App> {
       const response = await transport.patch<JsonApiDocument>(`/apps/${id}`, {
-        name: request.name,
-        description: request.description,
-        app_type: request.appType,
-        oauth_enabled: request.oauthEnabled,
-        oauth_access_token_lifetime_hours: request.oauthAccessTokenLifetimeHours,
-        oauth_refresh_token_lifetime_days: request.oauthRefreshTokenLifetimeDays,
-        rate_limit_per_minute: request.rateLimitPerMinute,
-        rate_limit_per_hour: request.rateLimitPerHour,
-        webhook_url: request.webhookUrl,
-        allowed_origins: request.allowedOrigins,
-        metadata: request.metadata,
-        status: request.status,
+        app: {
+          name: request.name,
+          description: request.description,
+          app_type: request.appType,
+          oauth_enabled: request.oauthEnabled,
+          oauth_access_token_lifetime_hours: request.oauthAccessTokenLifetimeHours,
+          oauth_refresh_token_lifetime_days: request.oauthRefreshTokenLifetimeDays,
+          rate_limit_per_minute: request.rateLimitPerMinute,
+          rate_limit_per_hour: request.rateLimitPerHour,
+          webhook_url: request.webhookUrl,
+          allowed_origins: request.allowedOrigins,
+          metadata: request.metadata,
+          status: request.status,
+        },
       });
       return decodeOne(response, appMapper);
     },

@@ -47,9 +47,7 @@ export function createAssetsService(transport: Transport, _config: { appId: stri
 
     async create(data: CreateAssetRequest): Promise<Asset> {
       const response = await transport.post<unknown>('/assets', {
-        data: {
-          type: 'Asset',
-          attributes: {
+        asset: {
             code: data.code,
             name: data.name,
             description: data.description,
@@ -65,16 +63,13 @@ export function createAssetsService(transport: Transport, _config: { appId: stri
             payload: data.payload,
             tags: data.tags,
           },
-        },
       });
       return decodeOne(response, assetMapper);
     },
 
     async update(uniqueId: string, data: UpdateAssetRequest): Promise<Asset> {
       const response = await transport.put<unknown>(`/assets/${uniqueId}`, {
-        data: {
-          type: 'Asset',
-          attributes: {
+        asset: {
             name: data.name,
             description: data.description,
             asset_type: data.assetType,
@@ -91,7 +86,6 @@ export function createAssetsService(transport: Transport, _config: { appId: stri
             payload: data.payload,
             tags: data.tags,
           },
-        },
       });
       return decodeOne(response, assetMapper);
     },
@@ -102,26 +96,20 @@ export function createAssetsService(transport: Transport, _config: { appId: stri
 
     async transfer(uniqueId: string, data: TransferAssetRequest): Promise<Asset> {
       const response = await transport.post<unknown>(`/assets/${uniqueId}/transfer`, {
-        data: {
-          type: 'Asset',
-          attributes: {
+        asset: {
             location_unique_id: data.locationUniqueId,
             notes: data.notes,
           },
-        },
       });
       return decodeOne(response, assetMapper);
     },
 
     async assign(uniqueId: string, data: AssignAssetRequest): Promise<Asset> {
       const response = await transport.post<unknown>(`/assets/${uniqueId}/assign`, {
-        data: {
-          type: 'Asset',
-          attributes: {
+        asset: {
             assigned_to_unique_id: data.assignedToUniqueId,
             notes: data.notes,
           },
-        },
       });
       return decodeOne(response, assetMapper);
     },

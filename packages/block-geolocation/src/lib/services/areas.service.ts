@@ -42,9 +42,7 @@ export function createAreasService(transport: Transport, _config: { appId: strin
 
     async create(data: CreateAreaRequest): Promise<Area> {
       const response = await transport.post<unknown>('/areas', {
-        data: {
-          type: 'Area',
-          attributes: {
+        area: {
             name: data.name,
             code: data.code,
             address_unique_id: data.addressUniqueId,
@@ -54,16 +52,13 @@ export function createAreasService(transport: Transport, _config: { appId: strin
             tags: data.tags,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, areaMapper);
     },
 
     async update(uniqueId: string, data: UpdateAreaRequest): Promise<Area> {
       const response = await transport.put<unknown>(`/areas/${uniqueId}`, {
-        data: {
-          type: 'Area',
-          attributes: {
+        area: {
             name: data.name,
             code: data.code,
             address_unique_id: data.addressUniqueId,
@@ -74,7 +69,6 @@ export function createAreasService(transport: Transport, _config: { appId: strin
             tags: data.tags,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, areaMapper);
     },

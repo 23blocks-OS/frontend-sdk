@@ -44,9 +44,7 @@ export function createCoursesService(transport: Transport, _config: { appId: str
 
     async create(data: CreateCourseRequest): Promise<Course> {
       const response = await transport.post<unknown>('/courses', {
-        data: {
-          type: 'Course',
-          attributes: {
+        course: {
             code: data.code,
             name: data.name,
             description: data.description,
@@ -58,16 +56,13 @@ export function createCoursesService(transport: Transport, _config: { appId: str
             price: data.price,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, courseMapper);
     },
 
     async update(uniqueId: string, data: UpdateCourseRequest): Promise<Course> {
       const response = await transport.put<unknown>(`/courses/${uniqueId}`, {
-        data: {
-          type: 'Course',
-          attributes: {
+        course: {
             name: data.name,
             description: data.description,
             instructor_unique_id: data.instructorUniqueId,
@@ -80,7 +75,6 @@ export function createCoursesService(transport: Transport, _config: { appId: str
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, courseMapper);
     },

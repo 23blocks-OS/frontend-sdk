@@ -42,9 +42,7 @@ export function createBadgesService(transport: Transport, _config: { appId: stri
 
     async create(data: CreateBadgeRequest): Promise<Badge> {
       const response = await transport.post<unknown>('/badges', {
-        data: {
-          type: 'Badge',
-          attributes: {
+        badge: {
             code: data.code,
             name: data.name,
             description: data.description,
@@ -52,16 +50,13 @@ export function createBadgesService(transport: Transport, _config: { appId: stri
             criteria: data.criteria,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, badgeMapper);
     },
 
     async update(uniqueId: string, data: UpdateBadgeRequest): Promise<Badge> {
       const response = await transport.put<unknown>(`/badges/${uniqueId}`, {
-        data: {
-          type: 'Badge',
-          attributes: {
+        badge: {
             name: data.name,
             description: data.description,
             image_url: data.imageUrl,
@@ -70,7 +65,6 @@ export function createBadgesService(transport: Transport, _config: { appId: stri
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, badgeMapper);
     },
@@ -81,15 +75,12 @@ export function createBadgesService(transport: Transport, _config: { appId: stri
 
     async award(data: AwardBadgeRequest): Promise<UserBadge> {
       const response = await transport.post<unknown>('/badges/award', {
-        data: {
-          type: 'UserBadge',
-          attributes: {
+        userbadge: {
             badge_unique_id: data.badgeUniqueId,
             user_unique_id: data.userUniqueId,
             reason: data.reason,
             metadata: data.metadata,
           },
-        },
       });
       return decodeOne(response, userBadgeMapper);
     },

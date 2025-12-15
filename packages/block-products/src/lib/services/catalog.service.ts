@@ -93,16 +93,13 @@ export function createCategoriesService(transport: Transport, _config: { appId: 
 
     async create(data: CreateCategoryRequest): Promise<Category> {
       const response = await transport.post<unknown>('/categories', {
-        data: {
-          type: 'Category',
-          attributes: {
-            name: data.name,
-            description: data.description,
-            parent_unique_id: data.parentUniqueId,
-            display_order: data.displayOrder,
-            image_url: data.imageUrl,
-            icon_url: data.iconUrl,
-          },
+        category: {
+          name: data.name,
+          description: data.description,
+          parent_unique_id: data.parentUniqueId,
+          display_order: data.displayOrder,
+          image_url: data.imageUrl,
+          icon_url: data.iconUrl,
         },
       });
       return decodeOne(response, categoryMapper);
@@ -110,18 +107,15 @@ export function createCategoriesService(transport: Transport, _config: { appId: 
 
     async update(uniqueId: string, data: UpdateCategoryRequest): Promise<Category> {
       const response = await transport.put<unknown>(`/categories/${uniqueId}`, {
-        data: {
-          type: 'Category',
-          attributes: {
-            name: data.name,
-            description: data.description,
-            parent_unique_id: data.parentUniqueId,
-            display_order: data.displayOrder,
-            image_url: data.imageUrl,
-            icon_url: data.iconUrl,
-            enabled: data.enabled,
-            status: data.status,
-          },
+        category: {
+          name: data.name,
+          description: data.description,
+          parent_unique_id: data.parentUniqueId,
+          display_order: data.displayOrder,
+          image_url: data.imageUrl,
+          icon_url: data.iconUrl,
+          enabled: data.enabled,
+          status: data.status,
         },
       });
       return decodeOne(response, categoryMapper);
@@ -161,14 +155,11 @@ export function createBrandsService(transport: Transport, _config: { appId: stri
 
     async create(data: CreateBrandRequest): Promise<Brand> {
       const response = await transport.post<unknown>('/brands', {
-        data: {
-          type: 'Brand',
-          attributes: {
-            name: data.name,
-            image_url: data.imageUrl,
-            is_global: data.isGlobal,
-            country_id: data.countryId,
-          },
+        brand: {
+          name: data.name,
+          image_url: data.imageUrl,
+          is_global: data.isGlobal,
+          country_id: data.countryId,
         },
       });
       return decodeOne(response, brandMapper);
@@ -176,16 +167,13 @@ export function createBrandsService(transport: Transport, _config: { appId: stri
 
     async update(uniqueId: string, data: UpdateBrandRequest): Promise<Brand> {
       const response = await transport.put<unknown>(`/brands/${uniqueId}`, {
-        data: {
-          type: 'Brand',
-          attributes: {
-            name: data.name,
-            image_url: data.imageUrl,
-            is_global: data.isGlobal,
-            country_id: data.countryId,
-            enabled: data.enabled,
-            status: data.status,
-          },
+        brand: {
+          name: data.name,
+          image_url: data.imageUrl,
+          is_global: data.isGlobal,
+          country_id: data.countryId,
+          enabled: data.enabled,
+          status: data.status,
         },
       });
       return decodeOne(response, brandMapper);
@@ -216,16 +204,13 @@ export function createVendorsService(transport: Transport, _config: { appId: str
 
     async create(data: CreateVendorRequest): Promise<Vendor> {
       const response = await transport.post<unknown>('/vendors', {
-        data: {
-          type: 'Vendor',
-          attributes: {
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            contact_name: data.contactName,
-            tax_id: data.taxId,
-            image_url: data.imageUrl,
-          },
+        vendor: {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          contact_name: data.contactName,
+          tax_id: data.taxId,
+          image_url: data.imageUrl,
         },
       });
       return decodeOne(response, vendorMapper);
@@ -233,18 +218,15 @@ export function createVendorsService(transport: Transport, _config: { appId: str
 
     async update(uniqueId: string, data: UpdateVendorRequest): Promise<Vendor> {
       const response = await transport.put<unknown>(`/vendors/${uniqueId}`, {
-        data: {
-          type: 'Vendor',
-          attributes: {
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            contact_name: data.contactName,
-            tax_id: data.taxId,
-            image_url: data.imageUrl,
-            enabled: data.enabled,
-            status: data.status,
-          },
+        vendor: {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          contact_name: data.contactName,
+          tax_id: data.taxId,
+          image_url: data.imageUrl,
+          enabled: data.enabled,
+          status: data.status,
         },
       });
       return decodeOne(response, vendorMapper);
@@ -275,15 +257,12 @@ export function createWarehousesService(transport: Transport, _config: { appId: 
 
     async create(data: CreateWarehouseRequest): Promise<Warehouse> {
       const response = await transport.post<unknown>('/warehouses', {
-        data: {
-          type: 'Warehouse',
-          attributes: {
-            name: data.name,
-            vendor_unique_id: data.vendorUniqueId,
-            address_unique_id: data.addressUniqueId,
-            location_unique_id: data.locationUniqueId,
-            is_global: data.isGlobal,
-          },
+        warehouse: {
+          name: data.name,
+          vendor_unique_id: data.vendorUniqueId,
+          address_unique_id: data.addressUniqueId,
+          location_unique_id: data.locationUniqueId,
+          is_global: data.isGlobal,
         },
       });
       return decodeOne(response, warehouseMapper);
@@ -291,16 +270,13 @@ export function createWarehousesService(transport: Transport, _config: { appId: 
 
     async update(uniqueId: string, data: UpdateWarehouseRequest): Promise<Warehouse> {
       const response = await transport.put<unknown>(`/warehouses/${uniqueId}`, {
-        data: {
-          type: 'Warehouse',
-          attributes: {
-            name: data.name,
-            address_unique_id: data.addressUniqueId,
-            location_unique_id: data.locationUniqueId,
-            is_global: data.isGlobal,
-            enabled: data.enabled,
-            status: data.status,
-          },
+        warehouse: {
+          name: data.name,
+          address_unique_id: data.addressUniqueId,
+          location_unique_id: data.locationUniqueId,
+          is_global: data.isGlobal,
+          enabled: data.enabled,
+          status: data.status,
         },
       });
       return decodeOne(response, warehouseMapper);

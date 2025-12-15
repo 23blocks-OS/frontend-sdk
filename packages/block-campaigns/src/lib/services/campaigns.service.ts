@@ -43,9 +43,7 @@ export function createCampaignsService(transport: Transport, _config: { appId: s
 
     async create(data: CreateCampaignRequest): Promise<Campaign> {
       const response = await transport.post<unknown>('/campaigns', {
-        data: {
-          type: 'Campaign',
-          attributes: {
+        campaign: {
             code: data.code,
             name: data.name,
             description: data.description,
@@ -56,16 +54,13 @@ export function createCampaignsService(transport: Transport, _config: { appId: s
             target_audience: data.targetAudience,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, campaignMapper);
     },
 
     async update(uniqueId: string, data: UpdateCampaignRequest): Promise<Campaign> {
       const response = await transport.put<unknown>(`/campaigns/${uniqueId}`, {
-        data: {
-          type: 'Campaign',
-          attributes: {
+        campaign: {
             name: data.name,
             description: data.description,
             campaign_type: data.campaignType,
@@ -78,7 +73,6 @@ export function createCampaignsService(transport: Transport, _config: { appId: s
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, campaignMapper);
     },

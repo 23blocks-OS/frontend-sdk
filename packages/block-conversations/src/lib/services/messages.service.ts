@@ -44,9 +44,7 @@ export function createMessagesService(transport: Transport, _config: { appId: st
 
     async create(data: CreateMessageRequest): Promise<Message> {
       const response = await transport.post<unknown>('/messages', {
-        data: {
-          type: 'Message',
-          attributes: {
+        message: {
             context_id: data.contextId,
             parent_id: data.parentId,
             content: data.content,
@@ -75,22 +73,18 @@ export function createMessagesService(transport: Transport, _config: { appId: st
             idempotency_key: data.idempotencyKey,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, messageMapper);
     },
 
     async update(uniqueId: string, data: UpdateMessageRequest): Promise<Message> {
       const response = await transport.put<unknown>(`/messages/${uniqueId}`, {
-        data: {
-          type: 'Message',
-          attributes: {
+        message: {
             content: data.content,
             status: data.status,
             enabled: data.enabled,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, messageMapper);
     },

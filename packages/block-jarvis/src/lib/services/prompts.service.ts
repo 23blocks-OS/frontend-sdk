@@ -44,9 +44,7 @@ export function createPromptsService(transport: Transport, _config: { appId: str
 
     async create(data: CreatePromptRequest): Promise<Prompt> {
       const response = await transport.post<unknown>('/prompts', {
-        data: {
-          type: 'Prompt',
-          attributes: {
+        prompt: {
             agent_unique_id: data.agentUniqueId,
             code: data.code,
             name: data.name,
@@ -55,16 +53,13 @@ export function createPromptsService(transport: Transport, _config: { appId: str
             variables: data.variables,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, promptMapper);
     },
 
     async update(uniqueId: string, data: UpdatePromptRequest): Promise<Prompt> {
       const response = await transport.put<unknown>(`/prompts/${uniqueId}`, {
-        data: {
-          type: 'Prompt',
-          attributes: {
+        prompt: {
             name: data.name,
             description: data.description,
             template: data.template,
@@ -73,7 +68,6 @@ export function createPromptsService(transport: Transport, _config: { appId: str
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, promptMapper);
     },

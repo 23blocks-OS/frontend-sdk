@@ -39,16 +39,13 @@ export function createCategoriesService(transport: Transport, _config: { appId: 
 
     async create(data: CreateCategoryRequest): Promise<Category> {
       const response = await transport.post<unknown>('/content/categories', {
-        data: {
-          type: 'Category',
-          attributes: {
-            name: data.name,
-            description: data.description,
-            parent_unique_id: data.parentUniqueId,
-            display_order: data.displayOrder,
-            image_url: data.imageUrl,
-            icon_url: data.iconUrl,
-          },
+        category: {
+          name: data.name,
+          description: data.description,
+          parent_unique_id: data.parentUniqueId,
+          display_order: data.displayOrder,
+          image_url: data.imageUrl,
+          icon_url: data.iconUrl,
         },
       });
       return decodeOne(response, categoryMapper);
@@ -56,18 +53,15 @@ export function createCategoriesService(transport: Transport, _config: { appId: 
 
     async update(uniqueId: string, data: UpdateCategoryRequest): Promise<Category> {
       const response = await transport.put<unknown>(`/content/categories/${uniqueId}`, {
-        data: {
-          type: 'Category',
-          attributes: {
-            name: data.name,
-            description: data.description,
-            parent_unique_id: data.parentUniqueId,
-            display_order: data.displayOrder,
-            image_url: data.imageUrl,
-            icon_url: data.iconUrl,
-            enabled: data.enabled,
-            status: data.status,
-          },
+        category: {
+          name: data.name,
+          description: data.description,
+          parent_unique_id: data.parentUniqueId,
+          display_order: data.displayOrder,
+          image_url: data.imageUrl,
+          icon_url: data.iconUrl,
+          enabled: data.enabled,
+          status: data.status,
         },
       });
       return decodeOne(response, categoryMapper);

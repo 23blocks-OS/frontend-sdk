@@ -39,27 +39,21 @@ export function createSubmissionsService(transport: Transport, _config: { appId:
 
     async submit(data: SubmitAssignmentRequest): Promise<Submission> {
       const response = await transport.post<unknown>('/submissions', {
-        data: {
-          type: 'Submission',
-          attributes: {
+        submission: {
             assignment_unique_id: data.assignmentUniqueId,
             content: data.content,
             content_url: data.contentUrl,
           },
-        },
       });
       return decodeOne(response, submissionMapper);
     },
 
     async grade(uniqueId: string, data: GradeSubmissionRequest): Promise<Submission> {
       const response = await transport.put<unknown>(`/submissions/${uniqueId}/grade`, {
-        data: {
-          type: 'SubmissionGrade',
-          attributes: {
+        submissiongrade: {
             score: data.score,
             feedback: data.feedback,
           },
-        },
       });
       return decodeOne(response, submissionMapper);
     },

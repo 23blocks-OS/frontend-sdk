@@ -51,61 +51,49 @@ export function createWalletsService(transport: Transport, _config: { appId: str
 
     async create(data: CreateWalletRequest): Promise<Wallet> {
       const response = await transport.post<unknown>('/wallets', {
-        data: {
-          type: 'Wallet',
-          attributes: {
+        wallet: {
             user_unique_id: data.userUniqueId,
             currency: data.currency,
             initial_balance: data.initialBalance,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, walletMapper);
     },
 
     async update(uniqueId: string, data: UpdateWalletRequest): Promise<Wallet> {
       const response = await transport.put<unknown>(`/wallets/${uniqueId}`, {
-        data: {
-          type: 'Wallet',
-          attributes: {
+        wallet: {
             enabled: data.enabled,
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, walletMapper);
     },
 
     async credit(uniqueId: string, data: CreditWalletRequest): Promise<Transaction> {
       const response = await transport.post<unknown>(`/wallets/${uniqueId}/credit`, {
-        data: {
-          type: 'Transaction',
-          attributes: {
+        transaction: {
             amount: data.amount,
             description: data.description,
             reference_type: data.referenceType,
             reference_unique_id: data.referenceUniqueId,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, transactionMapper);
     },
 
     async debit(uniqueId: string, data: DebitWalletRequest): Promise<Transaction> {
       const response = await transport.post<unknown>(`/wallets/${uniqueId}/debit`, {
-        data: {
-          type: 'Transaction',
-          attributes: {
+        transaction: {
             amount: data.amount,
             description: data.description,
             reference_type: data.referenceType,
             reference_unique_id: data.referenceUniqueId,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, transactionMapper);
     },

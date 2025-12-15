@@ -35,17 +35,14 @@ export function createPaymentsService(transport: Transport, _config: { appId: st
 
     async create(data: CreatePaymentRequest): Promise<Payment> {
       const response = await transport.post<unknown>('/payments', {
-        data: {
-          type: 'Payment',
-          attributes: {
-            order_unique_id: data.orderUniqueId,
-            payment_method: data.paymentMethod,
-            payment_provider: data.paymentProvider,
-            amount: data.amount,
-            currency: data.currency,
-            transaction_id: data.transactionId,
-            payload: data.payload,
-          },
+        payment: {
+          order_unique_id: data.orderUniqueId,
+          payment_method: data.paymentMethod,
+          payment_provider: data.paymentProvider,
+          amount: data.amount,
+          currency: data.currency,
+          transaction_id: data.transactionId,
+          payload: data.payload,
         },
       });
       return decodeOne(response, paymentMapper);
@@ -53,11 +50,8 @@ export function createPaymentsService(transport: Transport, _config: { appId: st
 
     async refund(uniqueId: string, amount?: number): Promise<Payment> {
       const response = await transport.put<unknown>(`/payments/${uniqueId}/refund`, {
-        data: {
-          type: 'Payment',
-          attributes: {
-            amount,
-          },
+        payment: {
+          amount,
         },
       });
       return decodeOne(response, paymentMapper);

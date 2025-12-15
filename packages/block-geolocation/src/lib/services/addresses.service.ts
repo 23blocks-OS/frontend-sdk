@@ -45,9 +45,7 @@ export function createAddressesService(transport: Transport, _config: { appId: s
 
     async create(data: CreateAddressRequest): Promise<Address> {
       const response = await transport.post<unknown>('/addresses', {
-        data: {
-          type: 'Address',
-          attributes: {
+        address: {
             owner_unique_id: data.ownerUniqueId,
             owner_type: data.ownerType,
             country_code: data.countryCode,
@@ -62,16 +60,13 @@ export function createAddressesService(transport: Transport, _config: { appId: s
             tags: data.tags,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, addressMapper);
     },
 
     async update(uniqueId: string, data: UpdateAddressRequest): Promise<Address> {
       const response = await transport.put<unknown>(`/addresses/${uniqueId}`, {
-        data: {
-          type: 'Address',
-          attributes: {
+        address: {
             country_code: data.countryCode,
             address: data.address,
             postal_code: data.postalCode,
@@ -86,7 +81,6 @@ export function createAddressesService(transport: Transport, _config: { appId: s
             tags: data.tags,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, addressMapper);
     },

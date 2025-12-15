@@ -37,25 +37,20 @@ export function createFormSetsService(transport: Transport, _config: { appId: st
 
     async create(data: CreateFormSetRequest): Promise<FormSet> {
       const response = await transport.post<unknown>('/form_sets', {
-        data: {
-          type: 'FormSet',
-          attributes: {
+        form_set: {
             code: data.code,
             name: data.name,
             description: data.description,
             forms: data.forms,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, formSetMapper);
     },
 
     async update(uniqueId: string, data: UpdateFormSetRequest): Promise<FormSet> {
       const response = await transport.put<unknown>(`/form_sets/${uniqueId}`, {
-        data: {
-          type: 'FormSet',
-          attributes: {
+        form_set: {
             name: data.name,
             description: data.description,
             forms: data.forms,
@@ -63,7 +58,6 @@ export function createFormSetsService(transport: Transport, _config: { appId: st
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, formSetMapper);
     },

@@ -42,16 +42,13 @@ export function createAuthorizationCodesService(transport: Transport, _config: {
 
     async create(data: CreateAuthorizationCodeRequest): Promise<AuthorizationCode> {
       const response = await transport.post<unknown>('/authorization_codes', {
-        data: {
-          type: 'AuthorizationCode',
-          attributes: {
+        authorization_code: {
             wallet_unique_id: data.walletUniqueId,
             amount: data.amount,
             purpose: data.purpose,
             expires_at: data.expiresAt?.toISOString(),
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, authorizationCodeMapper);
     },
@@ -59,13 +56,10 @@ export function createAuthorizationCodesService(transport: Transport, _config: {
     async validate(data: ValidateAuthorizationCodeRequest): Promise<{ valid: boolean; authorizationCode?: AuthorizationCode }> {
       try {
         const response = await transport.post<unknown>('/authorization_codes/validate', {
-          data: {
-            type: 'AuthorizationCode',
-            attributes: {
+          authorization_code: {
               code: data.code,
               amount: data.amount,
             },
-          },
         });
 
         const authCode = decodeOne(response, authorizationCodeMapper);
@@ -82,24 +76,18 @@ export function createAuthorizationCodesService(transport: Transport, _config: {
 
     async use(data: UseAuthorizationCodeRequest): Promise<Transaction> {
       const response = await transport.post<unknown>('/authorization_codes/use', {
-        data: {
-          type: 'AuthorizationCode',
-          attributes: {
+        authorization_code: {
             code: data.code,
             amount: data.amount,
             description: data.description,
           },
-        },
       });
       return decodeOne(response, transactionMapper);
     },
 
     async invalidate(uniqueId: string): Promise<AuthorizationCode> {
       const response = await transport.put<unknown>(`/authorization_codes/${uniqueId}/invalidate`, {
-        data: {
-          type: 'AuthorizationCode',
-          attributes: {},
-        },
+        authorization_code: {},
       });
       return decodeOne(response, authorizationCodeMapper);
     },

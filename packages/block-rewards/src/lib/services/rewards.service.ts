@@ -43,9 +43,7 @@ export function createRewardsService(transport: Transport, _config: { appId: str
 
     async create(data: CreateRewardRequest): Promise<Reward> {
       const response = await transport.post<unknown>('/rewards', {
-        data: {
-          type: 'Reward',
-          attributes: {
+        reward: {
             code: data.code,
             name: data.name,
             description: data.description,
@@ -55,16 +53,13 @@ export function createRewardsService(transport: Transport, _config: { appId: str
             image_url: data.imageUrl,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, rewardMapper);
     },
 
     async update(uniqueId: string, data: UpdateRewardRequest): Promise<Reward> {
       const response = await transport.put<unknown>(`/rewards/${uniqueId}`, {
-        data: {
-          type: 'Reward',
-          attributes: {
+        reward: {
             name: data.name,
             description: data.description,
             reward_type: data.rewardType,
@@ -75,7 +70,6 @@ export function createRewardsService(transport: Transport, _config: { appId: str
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, rewardMapper);
     },
@@ -86,14 +80,11 @@ export function createRewardsService(transport: Transport, _config: { appId: str
 
     async redeem(data: RedeemRewardRequest): Promise<RewardRedemption> {
       const response = await transport.post<unknown>('/rewards/redeem', {
-        data: {
-          type: 'RewardRedemption',
-          attributes: {
+        rewardredemption: {
             reward_unique_id: data.rewardUniqueId,
             user_unique_id: data.userUniqueId,
             points: data.points,
           },
-        },
       });
       return decodeOne(response, rewardRedemptionMapper);
     },

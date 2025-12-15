@@ -42,26 +42,20 @@ export function createEnrollmentsService(transport: Transport, _config: { appId:
 
     async enroll(data: EnrollRequest): Promise<Enrollment> {
       const response = await transport.post<unknown>('/enrollments', {
-        data: {
-          type: 'Enrollment',
-          attributes: {
+        enrollment: {
             course_unique_id: data.courseUniqueId,
             user_unique_id: data.userUniqueId,
           },
-        },
       });
       return decodeOne(response, enrollmentMapper);
     },
 
     async updateProgress(uniqueId: string, data: UpdateEnrollmentProgressRequest): Promise<Enrollment> {
       const response = await transport.put<unknown>(`/enrollments/${uniqueId}/progress`, {
-        data: {
-          type: 'EnrollmentProgress',
-          attributes: {
+        enrollmentprogress: {
             lesson_unique_id: data.lessonUniqueId,
             progress: data.progress,
           },
-        },
       });
       return decodeOne(response, enrollmentMapper);
     },

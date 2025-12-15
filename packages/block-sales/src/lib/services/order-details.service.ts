@@ -24,16 +24,13 @@ export function createOrderDetailsService(transport: Transport, _config: { appId
 
     async update(uniqueId: string, data: UpdateOrderDetailRequest): Promise<OrderDetail> {
       const response = await transport.put<unknown>(`/order_details/${uniqueId}`, {
-        data: {
-          type: 'OrderDetail',
-          attributes: {
-            quantity: data.quantity,
-            unit_price: data.unitPrice,
-            discount: data.discount,
-            tax: data.tax,
-            status: data.status,
-            payload: data.payload,
-          },
+        details: {
+          quantity: data.quantity,
+          unit_price: data.unitPrice,
+          discount: data.discount,
+          tax: data.tax,
+          status: data.status,
+          payload: data.payload,
         },
       });
       return decodeOne(response, orderDetailMapper);

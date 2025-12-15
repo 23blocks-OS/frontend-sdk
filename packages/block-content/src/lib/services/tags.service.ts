@@ -35,16 +35,13 @@ export function createTagsService(transport: Transport, _config: { appId: string
 
     async create(data: CreateTagRequest): Promise<Tag> {
       const response = await transport.post<unknown>('/tags', {
-        data: {
-          type: 'Tag',
-          attributes: {
-            tag: data.tag,
-            thumbnail_url: data.thumbnailUrl,
-            image_url: data.imageUrl,
-            content_url: data.contentUrl,
-            media_url: data.mediaUrl,
-            payload: data.payload,
-          },
+        tag: {
+          tag: data.tag,
+          thumbnail_url: data.thumbnailUrl,
+          image_url: data.imageUrl,
+          content_url: data.contentUrl,
+          media_url: data.mediaUrl,
+          payload: data.payload,
         },
       });
       return decodeOne(response, tagMapper);
@@ -52,18 +49,15 @@ export function createTagsService(transport: Transport, _config: { appId: string
 
     async update(uniqueId: string, data: UpdateTagRequest): Promise<Tag> {
       const response = await transport.put<unknown>(`/tags/${uniqueId}`, {
-        data: {
-          type: 'Tag',
-          attributes: {
-            tag: data.tag,
-            thumbnail_url: data.thumbnailUrl,
-            image_url: data.imageUrl,
-            content_url: data.contentUrl,
-            media_url: data.mediaUrl,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        tag: {
+          tag: data.tag,
+          thumbnail_url: data.thumbnailUrl,
+          image_url: data.imageUrl,
+          content_url: data.contentUrl,
+          media_url: data.mediaUrl,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
         },
       });
       return decodeOne(response, tagMapper);

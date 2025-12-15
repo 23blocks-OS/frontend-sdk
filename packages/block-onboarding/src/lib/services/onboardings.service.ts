@@ -38,25 +38,20 @@ export function createOnboardingsService(transport: Transport, _config: { appId:
 
     async create(data: CreateOnboardingRequest): Promise<Onboarding> {
       const response = await transport.post<unknown>('/onboardings', {
-        data: {
-          type: 'Onboarding',
-          attributes: {
+        onboarding: {
             code: data.code,
             name: data.name,
             description: data.description,
             steps: data.steps,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, onboardingMapper);
     },
 
     async update(uniqueId: string, data: UpdateOnboardingRequest): Promise<Onboarding> {
       const response = await transport.put<unknown>(`/onboardings/${uniqueId}`, {
-        data: {
-          type: 'Onboarding',
-          attributes: {
+        onboarding: {
             name: data.name,
             description: data.description,
             steps: data.steps,
@@ -64,7 +59,6 @@ export function createOnboardingsService(transport: Transport, _config: { appId:
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, onboardingMapper);
     },

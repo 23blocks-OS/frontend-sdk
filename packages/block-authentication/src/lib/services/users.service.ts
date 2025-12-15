@@ -84,8 +84,12 @@ export interface UsersService {
 
   /**
    * Change user role
+   * @param id - User unique ID
+   * @param roleUniqueId - The unique ID of the new role
+   * @param reason - Reason for role change (minimum 10 characters)
+   * @param forceReauth - If true, invalidates user's existing tokens
    */
-  changeRole(id: string, roleId: string): Promise<User>;
+  changeRole(id: string, roleUniqueId: string, reason: string, forceReauth?: boolean): Promise<User>;
 
   /**
    * Search users
@@ -164,37 +168,41 @@ export function createUsersService(
       const response = await transport.patch<{ data: unknown }>(
         `/users/${id}`,
         {
-          name: request.name,
-          username: request.username,
-          nickname: request.nickname,
-          bio: request.bio,
-          role_id: request.roleId,
-          status: request.status,
+          user: {
+            name: request.name,
+            username: request.username,
+            nickname: request.nickname,
+            bio: request.bio,
+            role_id: request.roleId,
+            status: request.status,
+          },
         }
       );
       return decodeOne(response, userMapper);
     },
 
     async updateProfile(userId: string, request: UpdateProfileRequest): Promise<User> {
-      const response = await transport.patch<{ data: unknown }>(
+      const response = await transport.put<{ data: unknown }>(
         `/users/${userId}/profile`,
         {
-          first_name: request.firstName,
-          middle_name: request.middleName,
-          last_name: request.lastName,
-          gender: request.gender,
-          zipcode: request.zipcode,
-          phone_number: request.phoneNumber,
-          preferred_language: request.preferredLanguage,
-          time_zone: request.timeZone,
-          web_site: request.webSite,
-          twitter: request.twitter,
-          fb: request.fb,
-          instagram: request.instagram,
-          linkedin: request.linkedin,
-          youtube: request.youtube,
-          blog: request.blog,
-          payload: request.payload,
+          profile: {
+            first_name: request.firstName,
+            middle_name: request.middleName,
+            last_name: request.lastName,
+            gender: request.gender,
+            zipcode: request.zipcode,
+            phone_number: request.phoneNumber,
+            preferred_language: request.preferredLanguage,
+            time_zone: request.timeZone,
+            web_site: request.webSite,
+            twitter: request.twitter,
+            fb: request.fb,
+            instagram: request.instagram,
+            linkedin: request.linkedin,
+            youtube: request.youtube,
+            blog: request.blog,
+            payload: request.payload,
+          },
         }
       );
       return decodeOne(response, userMapper);
@@ -218,10 +226,16 @@ export function createUsersService(
       return decodeOne(response, userMapper);
     },
 
-    async changeRole(id: string, roleId: string): Promise<User> {
-      const response = await transport.patch<{ data: unknown }>(
+    async changeRole(id: string, roleUniqueId: string, reason: string, forceReauth?: boolean): Promise<User> {
+      const response = await transport.put<{ data: unknown }>(
         `/users/${id}/role`,
-        { role_id: roleId }
+        {
+          role: {
+            role_unique_id: roleUniqueId,
+            reason: reason,
+            force_reauth: forceReauth,
+          },
+        }
       );
       return decodeOne(response, userMapper);
     },

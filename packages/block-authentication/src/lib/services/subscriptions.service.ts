@@ -227,10 +227,11 @@ export function createUserSubscriptionsService(
       request: SubscribeRequest
     ): Promise<UserSubscription> {
       const response = await transport.post<JsonApiDocument>(
-        `/users/${userUniqueId}/subscriptions`,
+        `/users/${userUniqueId}/subscription`,
         {
-          subscription_model_code: request.subscriptionModelCode,
-          initial_payment: request.initialPayment,
+          subscription: {
+            subscription_unique_id: request.subscriptionModelCode,
+          },
         }
       );
       return decodeOne(response, userSubscriptionMapper);
@@ -291,8 +292,9 @@ export function createCompanySubscriptionsService(
       const response = await transport.post<JsonApiDocument>(
         `/companies/${companyUniqueId}/subscriptions`,
         {
-          subscription_model_code: request.subscriptionModelCode,
-          initial_payment: request.initialPayment,
+          subscription: {
+            subscription_unique_id: request.subscriptionModelCode,
+          },
         }
       );
       return decodeOne(response, companySubscriptionMapper);

@@ -42,26 +42,23 @@ export function createLeadsService(transport: Transport, _config: { appId: strin
 
     async create(data: CreateLeadRequest): Promise<Lead> {
       const response = await transport.post<unknown>('/leads', {
-        data: {
-          type: 'Lead',
-          attributes: {
-            first_name: data.firstName,
-            last_name: data.lastName,
-            middle_name: data.middleName,
-            lead_email: data.leadEmail,
-            phone_number: data.phoneNumber,
-            web_site: data.webSite,
-            twitter: data.twitter,
-            fb: data.fb,
-            instagram: data.instagram,
-            linkedin: data.linkedin,
-            youtube: data.youtube,
-            blog: data.blog,
-            notes: data.notes,
-            source: data.source,
-            payload: data.payload,
-            tags: data.tags,
-          },
+        lead: {
+          first_name: data.firstName,
+          last_name: data.lastName,
+          middle_name: data.middleName,
+          lead_email: data.leadEmail,
+          phone_number: data.phoneNumber,
+          web_site: data.webSite,
+          twitter: data.twitter,
+          fb: data.fb,
+          instagram: data.instagram,
+          linkedin: data.linkedin,
+          youtube: data.youtube,
+          blog: data.blog,
+          notes: data.notes,
+          source: data.source,
+          payload: data.payload,
+          tags: data.tags,
         },
       });
       return decodeOne(response, leadMapper);
@@ -69,28 +66,25 @@ export function createLeadsService(transport: Transport, _config: { appId: strin
 
     async update(uniqueId: string, data: UpdateLeadRequest): Promise<Lead> {
       const response = await transport.put<unknown>(`/leads/${uniqueId}`, {
-        data: {
-          type: 'Lead',
-          attributes: {
-            first_name: data.firstName,
-            last_name: data.lastName,
-            middle_name: data.middleName,
-            lead_email: data.leadEmail,
-            phone_number: data.phoneNumber,
-            web_site: data.webSite,
-            twitter: data.twitter,
-            fb: data.fb,
-            instagram: data.instagram,
-            linkedin: data.linkedin,
-            youtube: data.youtube,
-            blog: data.blog,
-            notes: data.notes,
-            contact_status: data.contactStatus,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-            tags: data.tags,
-          },
+        lead: {
+          first_name: data.firstName,
+          last_name: data.lastName,
+          middle_name: data.middleName,
+          lead_email: data.leadEmail,
+          phone_number: data.phoneNumber,
+          web_site: data.webSite,
+          twitter: data.twitter,
+          fb: data.fb,
+          instagram: data.instagram,
+          linkedin: data.linkedin,
+          youtube: data.youtube,
+          blog: data.blog,
+          notes: data.notes,
+          contact_status: data.contactStatus,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
+          tags: data.tags,
         },
       });
       return decodeOne(response, leadMapper);

@@ -39,9 +39,7 @@ export function createFormSchemasService(transport: Transport, _config: { appId:
 
     async create(data: CreateFormSchemaRequest): Promise<FormSchema> {
       const response = await transport.post<unknown>('/form_schemas', {
-        data: {
-          type: 'FormSchema',
-          attributes: {
+        form_schema: {
             form_unique_id: data.formUniqueId,
             code: data.code,
             name: data.name,
@@ -51,16 +49,13 @@ export function createFormSchemasService(transport: Transport, _config: { appId:
             ui_schema: data.uiSchema,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, formSchemaMapper);
     },
 
     async update(uniqueId: string, data: UpdateFormSchemaRequest): Promise<FormSchema> {
       const response = await transport.put<unknown>(`/form_schemas/${uniqueId}`, {
-        data: {
-          type: 'FormSchema',
-          attributes: {
+        form_schema: {
             name: data.name,
             description: data.description,
             schema: data.schema,
@@ -69,7 +64,6 @@ export function createFormSchemasService(transport: Transport, _config: { appId:
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, formSchemaMapper);
     },

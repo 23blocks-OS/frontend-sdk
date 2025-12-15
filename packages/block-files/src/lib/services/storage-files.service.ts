@@ -65,9 +65,7 @@ export function createStorageFilesService(transport: Transport, _config: { appId
 
     async create(data: CreateStorageFileRequest): Promise<StorageFile> {
       const response = await transport.post<unknown>('/storage_files', {
-        data: {
-          type: 'StorageFile',
-          attributes: {
+        file: {
             owner_unique_id: data.ownerUniqueId,
             owner_type: data.ownerType,
             file_name: data.fileName,
@@ -80,16 +78,13 @@ export function createStorageFilesService(transport: Transport, _config: { appId
             payload: data.payload,
             tags: data.tags,
           },
-        },
       });
       return decodeOne(response, storageFileMapper);
     },
 
     async update(uniqueId: string, data: UpdateStorageFileRequest): Promise<StorageFile> {
       const response = await transport.put<unknown>(`/storage_files/${uniqueId}`, {
-        data: {
-          type: 'StorageFile',
-          attributes: {
+        file: {
             file_name: data.fileName,
             file_type: data.fileType,
             content_url: data.contentUrl,
@@ -100,7 +95,6 @@ export function createStorageFilesService(transport: Transport, _config: { appId
             payload: data.payload,
             tags: data.tags,
           },
-        },
       });
       return decodeOne(response, storageFileMapper);
     },

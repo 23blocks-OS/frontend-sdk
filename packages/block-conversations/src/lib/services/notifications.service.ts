@@ -42,9 +42,7 @@ export function createNotificationsService(transport: Transport, _config: { appI
 
     async create(data: CreateNotificationRequest): Promise<Notification> {
       const response = await transport.post<unknown>('/notifications', {
-        data: {
-          type: 'Notification',
-          attributes: {
+        notification: {
             content: data.content,
             source: data.source,
             source_alias: data.sourceAlias,
@@ -62,22 +60,18 @@ export function createNotificationsService(transport: Transport, _config: { appI
             expires_at: data.expiresAt,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, notificationMapper);
     },
 
     async update(uniqueId: string, data: UpdateNotificationRequest): Promise<Notification> {
       const response = await transport.put<unknown>(`/notifications/${uniqueId}`, {
-        data: {
-          type: 'Notification',
-          attributes: {
+        notification: {
             content: data.content,
             url: data.url,
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, notificationMapper);
     },

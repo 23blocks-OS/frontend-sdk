@@ -13,9 +13,6 @@
       "path": "./packages/transport-http"
     },
     {
-      "path": "./packages/block-gateway"
-    },
-    {
       "path": "./packages/block-content"
     },
     {
@@ -35,6 +32,9 @@
     },
     {
       "path": "./packages/block-search"
+    },
+    {
+      "path": "./packages/block-conversations"
     }
   ]
 }

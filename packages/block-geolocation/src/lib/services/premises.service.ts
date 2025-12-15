@@ -45,9 +45,7 @@ export function createPremisesService(transport: Transport, _config: { appId: st
 
     async create(data: CreatePremiseRequest): Promise<Premise> {
       const response = await transport.post<unknown>('/premises', {
-        data: {
-          type: 'Premise',
-          attributes: {
+        premise: {
             name: data.name,
             code: data.code,
             address_unique_id: data.addressUniqueId,
@@ -63,16 +61,13 @@ export function createPremisesService(transport: Transport, _config: { appId: st
             tags: data.tags,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, premiseMapper);
     },
 
     async update(uniqueId: string, data: UpdatePremiseRequest): Promise<Premise> {
       const response = await transport.put<unknown>(`/premises/${uniqueId}`, {
-        data: {
-          type: 'Premise',
-          attributes: {
+        premise: {
             name: data.name,
             code: data.code,
             address_unique_id: data.addressUniqueId,
@@ -91,7 +86,6 @@ export function createPremisesService(transport: Transport, _config: { appId: st
             tags: data.tags,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, premiseMapper);
     },

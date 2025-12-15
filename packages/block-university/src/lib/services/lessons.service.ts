@@ -40,9 +40,7 @@ export function createLessonsService(transport: Transport, _config: { appId: str
 
     async create(data: CreateLessonRequest): Promise<Lesson> {
       const response = await transport.post<unknown>('/lessons', {
-        data: {
-          type: 'Lesson',
-          attributes: {
+        lesson: {
             course_unique_id: data.courseUniqueId,
             code: data.code,
             name: data.name,
@@ -54,16 +52,13 @@ export function createLessonsService(transport: Transport, _config: { appId: str
             display_order: data.displayOrder,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, lessonMapper);
     },
 
     async update(uniqueId: string, data: UpdateLessonRequest): Promise<Lesson> {
       const response = await transport.put<unknown>(`/lessons/${uniqueId}`, {
-        data: {
-          type: 'Lesson',
-          attributes: {
+        lesson: {
             name: data.name,
             description: data.description,
             content: data.content,
@@ -75,7 +70,6 @@ export function createLessonsService(transport: Transport, _config: { appId: str
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, lessonMapper);
     },
@@ -86,12 +80,9 @@ export function createLessonsService(transport: Transport, _config: { appId: str
 
     async reorder(courseUniqueId: string, data: ReorderLessonsRequest): Promise<Lesson[]> {
       const response = await transport.put<unknown>(`/courses/${courseUniqueId}/lessons/reorder`, {
-        data: {
-          type: 'LessonReorder',
-          attributes: {
+        lessonreorder: {
             lesson_unique_ids: data.lessonUniqueIds,
           },
-        },
       });
       return decodeMany(response, lessonMapper);
     },

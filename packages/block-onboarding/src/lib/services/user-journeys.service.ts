@@ -41,38 +41,29 @@ export function createUserJourneysService(transport: Transport, _config: { appId
 
     async start(data: StartJourneyRequest): Promise<UserJourney> {
       const response = await transport.post<unknown>('/user_journeys', {
-        data: {
-          type: 'UserJourney',
-          attributes: {
+        user_journey: {
             user_unique_id: data.userUniqueId,
             onboarding_unique_id: data.onboardingUniqueId,
             flow_unique_id: data.flowUniqueId,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, userJourneyMapper);
     },
 
     async completeStep(uniqueId: string, data: CompleteStepRequest): Promise<UserJourney> {
       const response = await transport.post<unknown>(`/user_journeys/${uniqueId}/complete_step`, {
-        data: {
-          type: 'UserJourney',
-          attributes: {
+        user_journey: {
             step_number: data.stepNumber,
             step_data: data.stepData,
           },
-        },
       });
       return decodeOne(response, userJourneyMapper);
     },
 
     async abandon(uniqueId: string): Promise<UserJourney> {
       const response = await transport.put<unknown>(`/user_journeys/${uniqueId}/abandon`, {
-        data: {
-          type: 'UserJourney',
-          attributes: {},
-        },
+        user_journey: {},
       });
       return decodeOne(response, userJourneyMapper);
     },

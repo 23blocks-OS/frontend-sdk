@@ -31,32 +31,26 @@ export function createLoyaltyService(transport: Transport, _config: { appId: str
 
     async addPoints(data: AddPointsRequest): Promise<LoyaltyTransaction> {
       const response = await transport.post<unknown>('/loyalty/points/add', {
-        data: {
-          type: 'LoyaltyTransaction',
-          attributes: {
+        loyaltytransaction: {
             user_unique_id: data.userUniqueId,
             points: data.points,
             reason: data.reason,
             reference_id: data.referenceId,
             reference_type: data.referenceType,
           },
-        },
       });
       return decodeOne(response, loyaltyTransactionMapper);
     },
 
     async redeemPoints(data: RedeemPointsRequest): Promise<LoyaltyTransaction> {
       const response = await transport.post<unknown>('/loyalty/points/redeem', {
-        data: {
-          type: 'LoyaltyTransaction',
-          attributes: {
+        loyaltytransaction: {
             user_unique_id: data.userUniqueId,
             points: data.points,
             reason: data.reason,
             reference_id: data.referenceId,
             reference_type: data.referenceType,
           },
-        },
       });
       return decodeOne(response, loyaltyTransactionMapper);
     },

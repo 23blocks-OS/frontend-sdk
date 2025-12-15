@@ -41,9 +41,7 @@ export function createTravelRoutesService(transport: Transport, _config: { appId
 
     async create(data: CreateTravelRouteRequest): Promise<TravelRoute> {
       const response = await transport.post<unknown>('/travel_routes', {
-        data: {
-          type: 'TravelRoute',
-          attributes: {
+        travelroute: {
             name: data.name,
             code: data.code,
             description: data.description,
@@ -51,16 +49,13 @@ export function createTravelRoutesService(transport: Transport, _config: { appId
             tags: data.tags,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, travelRouteMapper);
     },
 
     async update(uniqueId: string, data: UpdateTravelRouteRequest): Promise<TravelRoute> {
       const response = await transport.put<unknown>(`/travel_routes/${uniqueId}`, {
-        data: {
-          type: 'TravelRoute',
-          attributes: {
+        travelroute: {
             name: data.name,
             code: data.code,
             description: data.description,
@@ -69,7 +64,6 @@ export function createTravelRoutesService(transport: Transport, _config: { appId
             tags: data.tags,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, travelRouteMapper);
     },

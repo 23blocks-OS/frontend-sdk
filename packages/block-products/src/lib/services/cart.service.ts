@@ -39,11 +39,8 @@ export function createCartService(transport: Transport, _config: { appId: string
 
     async getOrCreate(userUniqueId: string): Promise<Cart> {
       const response = await transport.post<unknown>('/carts', {
-        data: {
-          type: 'Cart',
-          attributes: {
-            user_unique_id: userUniqueId,
-          },
+        cart: {
+          user_unique_id: userUniqueId,
         },
       });
       return decodeOne(response, cartMapper);
@@ -51,12 +48,9 @@ export function createCartService(transport: Transport, _config: { appId: string
 
     async update(userUniqueId: string, data: UpdateCartRequest): Promise<Cart> {
       const response = await transport.put<unknown>(`/carts/${userUniqueId}`, {
-        data: {
-          type: 'Cart',
-          attributes: {
-            notes: data.notes,
-            payload: data.payload,
-          },
+        cart: {
+          notes: data.notes,
+          payload: data.payload,
         },
       });
       return decodeOne(response, cartMapper);
@@ -68,16 +62,13 @@ export function createCartService(transport: Transport, _config: { appId: string
 
     async addItem(userUniqueId: string, item: AddToCartRequest): Promise<Cart> {
       const response = await transport.put<unknown>(`/carts/${userUniqueId}/add`, {
-        data: {
-          type: 'CartDetail',
-          attributes: {
-            product_unique_id: item.productUniqueId,
-            product_variation_unique_id: item.productVariationUniqueId,
-            quantity: item.quantity,
-            vendor_unique_id: item.vendorUniqueId,
-            warehouse_unique_id: item.warehouseUniqueId,
-            notes: item.notes,
-          },
+        product: {
+          product_unique_id: item.productUniqueId,
+          product_variation_unique_id: item.productVariationUniqueId,
+          quantity: item.quantity,
+          vendor_unique_id: item.vendorUniqueId,
+          warehouse_unique_id: item.warehouseUniqueId,
+          notes: item.notes,
         },
       });
       return decodeOne(response, cartMapper);
@@ -85,12 +76,9 @@ export function createCartService(transport: Transport, _config: { appId: string
 
     async updateItem(userUniqueId: string, productUniqueId: string, data: UpdateCartItemRequest): Promise<Cart> {
       const response = await transport.put<unknown>(`/carts/${userUniqueId}/products/${productUniqueId}`, {
-        data: {
-          type: 'CartDetail',
-          attributes: {
-            quantity: data.quantity,
-            notes: data.notes,
-          },
+        product: {
+          quantity: data.quantity,
+          notes: data.notes,
         },
       });
       return decodeOne(response, cartMapper);
@@ -108,14 +96,11 @@ export function createCartService(transport: Transport, _config: { appId: string
 
     async checkout(userUniqueId: string, data?: CheckoutRequest): Promise<Cart> {
       const response = await transport.post<unknown>(`/carts/${userUniqueId}/checkout`, {
-        data: {
-          type: 'Checkout',
-          attributes: {
-            address_unique_id: data?.addressUniqueId,
-            delivery_method: data?.deliveryMethod,
-            payment_method: data?.paymentMethod,
-            notes: data?.notes,
-          },
+        cart: {
+          address_unique_id: data?.addressUniqueId,
+          delivery_method: data?.deliveryMethod,
+          payment_method: data?.paymentMethod,
+          notes: data?.notes,
         },
       });
       return decodeOne(response, cartMapper);

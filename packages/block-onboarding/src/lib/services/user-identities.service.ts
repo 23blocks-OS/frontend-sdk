@@ -40,28 +40,22 @@ export function createUserIdentitiesService(transport: Transport, _config: { app
 
     async create(data: CreateUserIdentityRequest): Promise<UserIdentity> {
       const response = await transport.post<unknown>('/user_identities', {
-        data: {
-          type: 'UserIdentity',
-          attributes: {
+        user_identity: {
             user_unique_id: data.userUniqueId,
             identity_type: data.identityType,
             identity_value: data.identityValue,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, userIdentityMapper);
     },
 
     async verify(uniqueId: string, data: VerifyUserIdentityRequest): Promise<UserIdentity> {
       const response = await transport.post<unknown>(`/user_identities/${uniqueId}/verify`, {
-        data: {
-          type: 'UserIdentity',
-          attributes: {
+        user_identity: {
             verification_code: data.verificationCode,
             verification_data: data.verificationData,
           },
-        },
       });
       return decodeOne(response, userIdentityMapper);
     },

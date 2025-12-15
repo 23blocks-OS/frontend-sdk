@@ -43,9 +43,7 @@ export function createFileSchemasService(transport: Transport, _config: { appId:
 
     async create(data: CreateFileSchemaRequest): Promise<FileSchema> {
       const response = await transport.post<unknown>('/file_schemas', {
-        data: {
-          type: 'FileSchema',
-          attributes: {
+        file_schema: {
             code: data.code,
             name: data.name,
             description: data.description,
@@ -55,16 +53,13 @@ export function createFileSchemasService(transport: Transport, _config: { appId:
             multiple: data.multiple,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, fileSchemaMapper);
     },
 
     async update(uniqueId: string, data: UpdateFileSchemaRequest): Promise<FileSchema> {
       const response = await transport.put<unknown>(`/file_schemas/${uniqueId}`, {
-        data: {
-          type: 'FileSchema',
-          attributes: {
+        file_schema: {
             name: data.name,
             description: data.description,
             allowed_mime_types: data.allowedMimeTypes,
@@ -75,7 +70,6 @@ export function createFileSchemasService(transport: Transport, _config: { appId:
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, fileSchemaMapper);
     },

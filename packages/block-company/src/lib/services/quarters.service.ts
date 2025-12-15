@@ -39,17 +39,14 @@ export function createQuartersService(transport: Transport, _config: { appId: st
 
     async create(data: CreateQuarterRequest): Promise<Quarter> {
       const response = await transport.post<unknown>('/quarters', {
-        data: {
-          type: 'Quarter',
-          attributes: {
-            company_unique_id: data.companyUniqueId,
-            name: data.name,
-            year: data.year,
-            quarter: data.quarter,
-            start_date: data.startDate,
-            end_date: data.endDate,
-            payload: data.payload,
-          },
+        quarter: {
+          company_unique_id: data.companyUniqueId,
+          name: data.name,
+          year: data.year,
+          quarter: data.quarter,
+          start_date: data.startDate,
+          end_date: data.endDate,
+          payload: data.payload,
         },
       });
       return decodeOne(response, quarterMapper);
@@ -57,16 +54,13 @@ export function createQuartersService(transport: Transport, _config: { appId: st
 
     async update(uniqueId: string, data: UpdateQuarterRequest): Promise<Quarter> {
       const response = await transport.put<unknown>(`/quarters/${uniqueId}`, {
-        data: {
-          type: 'Quarter',
-          attributes: {
-            name: data.name,
-            start_date: data.startDate,
-            end_date: data.endDate,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        quarter: {
+          name: data.name,
+          start_date: data.startDate,
+          end_date: data.endDate,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
         },
       });
       return decodeOne(response, quarterMapper);

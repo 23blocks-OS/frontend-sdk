@@ -40,9 +40,7 @@ export function createFlowsService(transport: Transport, _config: { appId: strin
 
     async create(data: CreateFlowRequest): Promise<Flow> {
       const response = await transport.post<unknown>('/flows', {
-        data: {
-          type: 'Flow',
-          attributes: {
+        flow: {
             onboarding_unique_id: data.onboardingUniqueId,
             code: data.code,
             name: data.name,
@@ -51,16 +49,13 @@ export function createFlowsService(transport: Transport, _config: { appId: strin
             conditions: data.conditions,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, flowMapper);
     },
 
     async update(uniqueId: string, data: UpdateFlowRequest): Promise<Flow> {
       const response = await transport.put<unknown>(`/flows/${uniqueId}`, {
-        data: {
-          type: 'Flow',
-          attributes: {
+        flow: {
             name: data.name,
             description: data.description,
             steps: data.steps,
@@ -69,7 +64,6 @@ export function createFlowsService(transport: Transport, _config: { appId: strin
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, flowMapper);
     },

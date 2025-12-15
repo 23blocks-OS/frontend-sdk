@@ -37,18 +37,15 @@ export function createSubscriptionsService(transport: Transport, _config: { appI
 
     async create(data: CreateSubscriptionRequest): Promise<Subscription> {
       const response = await transport.post<unknown>('/subscriptions', {
-        data: {
-          type: 'Subscription',
-          attributes: {
-            user_unique_id: data.userUniqueId,
-            plan_unique_id: data.planUniqueId,
-            plan_name: data.planName,
-            price: data.price,
-            currency: data.currency,
-            interval: data.interval,
-            start_date: data.startDate?.toISOString(),
-            payload: data.payload,
-          },
+        subscription: {
+          user_unique_id: data.userUniqueId,
+          plan_unique_id: data.planUniqueId,
+          plan_name: data.planName,
+          price: data.price,
+          currency: data.currency,
+          interval: data.interval,
+          start_date: data.startDate?.toISOString(),
+          payload: data.payload,
         },
       });
       return decodeOne(response, subscriptionMapper);
@@ -56,19 +53,16 @@ export function createSubscriptionsService(transport: Transport, _config: { appI
 
     async update(uniqueId: string, data: UpdateSubscriptionRequest): Promise<Subscription> {
       const response = await transport.put<unknown>(`/subscriptions/${uniqueId}`, {
-        data: {
-          type: 'Subscription',
-          attributes: {
-            plan_unique_id: data.planUniqueId,
-            plan_name: data.planName,
-            price: data.price,
-            currency: data.currency,
-            interval: data.interval,
-            status: data.status,
-            end_date: data.endDate?.toISOString(),
-            next_billing_date: data.nextBillingDate?.toISOString(),
-            payload: data.payload,
-          },
+        subscription: {
+          plan_unique_id: data.planUniqueId,
+          plan_name: data.planName,
+          price: data.price,
+          currency: data.currency,
+          interval: data.interval,
+          status: data.status,
+          end_date: data.endDate?.toISOString(),
+          next_billing_date: data.nextBillingDate?.toISOString(),
+          payload: data.payload,
         },
       });
       return decodeOne(response, subscriptionMapper);

@@ -42,9 +42,7 @@ export function createAssetEventsService(transport: Transport, _config: { appId:
 
     async create(data: CreateAssetEventRequest): Promise<AssetEvent> {
       const response = await transport.post<unknown>('/asset_events', {
-        data: {
-          type: 'AssetEvent',
-          attributes: {
+        asset_event: {
             asset_unique_id: data.assetUniqueId,
             event_type: data.eventType,
             event_date: data.eventDate.toISOString(),
@@ -54,16 +52,13 @@ export function createAssetEventsService(transport: Transport, _config: { appId:
             notes: data.notes,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, assetEventMapper);
     },
 
     async update(uniqueId: string, data: UpdateAssetEventRequest): Promise<AssetEvent> {
       const response = await transport.put<unknown>(`/asset_events/${uniqueId}`, {
-        data: {
-          type: 'AssetEvent',
-          attributes: {
+        asset_event: {
             event_type: data.eventType,
             event_date: data.eventDate?.toISOString(),
             description: data.description,
@@ -74,7 +69,6 @@ export function createAssetEventsService(transport: Transport, _config: { appId:
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, assetEventMapper);
     },

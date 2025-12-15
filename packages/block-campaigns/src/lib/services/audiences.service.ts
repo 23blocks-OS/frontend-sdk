@@ -38,25 +38,20 @@ export function createAudiencesService(transport: Transport, _config: { appId: s
 
     async create(data: CreateAudienceRequest): Promise<Audience> {
       const response = await transport.post<unknown>('/audiences', {
-        data: {
-          type: 'Audience',
-          attributes: {
+        audience: {
             code: data.code,
             name: data.name,
             description: data.description,
             criteria: data.criteria,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, audienceMapper);
     },
 
     async update(uniqueId: string, data: UpdateAudienceRequest): Promise<Audience> {
       const response = await transport.put<unknown>(`/audiences/${uniqueId}`, {
-        data: {
-          type: 'Audience',
-          attributes: {
+        audience: {
             name: data.name,
             description: data.description,
             criteria: data.criteria,
@@ -65,7 +60,6 @@ export function createAudiencesService(transport: Transport, _config: { appId: s
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, audienceMapper);
     },

@@ -43,9 +43,7 @@ export function createGroupsService(transport: Transport, _config: { appId: stri
 
     async create(data: CreateGroupRequest): Promise<Group> {
       const response = await transport.post<unknown>('/groups', {
-        data: {
-          type: 'Group',
-          attributes: {
+        group: {
             name: data.name,
             code: data.code,
             unique_code: data.uniqueCode,
@@ -58,16 +56,13 @@ export function createGroupsService(transport: Transport, _config: { appId: stri
             source_type: data.sourceType,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, groupMapper);
     },
 
     async update(uniqueId: string, data: UpdateGroupRequest): Promise<Group> {
       const response = await transport.put<unknown>(`/groups/${uniqueId}`, {
-        data: {
-          type: 'Group',
-          attributes: {
+        group: {
             name: data.name,
             code: data.code,
             unique_code: data.uniqueCode,
@@ -78,7 +73,6 @@ export function createGroupsService(transport: Transport, _config: { appId: stri
             enabled: data.enabled,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, groupMapper);
     },
@@ -112,12 +106,9 @@ export function createGroupsService(transport: Transport, _config: { appId: stri
 
     async addMember(uniqueId: string, memberId: string): Promise<Group> {
       const response = await transport.post<unknown>(`/groups/${uniqueId}/members`, {
-        data: {
-          type: 'GroupMember',
-          attributes: {
+        groupmember: {
             member_id: memberId,
           },
-        },
       });
       return decodeOne(response, groupMapper);
     },

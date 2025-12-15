@@ -43,9 +43,7 @@ export function createAgentsService(transport: Transport, _config: { appId: stri
 
     async create(data: CreateAgentRequest): Promise<Agent> {
       const response = await transport.post<unknown>('/agents', {
-        data: {
-          type: 'Agent',
-          attributes: {
+        agent: {
             code: data.code,
             name: data.name,
             description: data.description,
@@ -56,16 +54,13 @@ export function createAgentsService(transport: Transport, _config: { appId: stri
             tools: data.tools,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, agentMapper);
     },
 
     async update(uniqueId: string, data: UpdateAgentRequest): Promise<Agent> {
       const response = await transport.put<unknown>(`/agents/${uniqueId}`, {
-        data: {
-          type: 'Agent',
-          attributes: {
+        agent: {
             name: data.name,
             description: data.description,
             system_prompt: data.systemPrompt,
@@ -77,7 +72,6 @@ export function createAgentsService(transport: Transport, _config: { appId: stri
             status: data.status,
             payload: data.payload,
           },
-        },
       });
       return decodeOne(response, agentMapper);
     },

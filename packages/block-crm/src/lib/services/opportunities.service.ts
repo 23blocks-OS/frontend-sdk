@@ -43,24 +43,21 @@ export function createOpportunitiesService(transport: Transport, _config: { appI
 
     async create(data: CreateOpportunityRequest): Promise<Opportunity> {
       const response = await transport.post<unknown>('/opportunities', {
-        data: {
-          type: 'Opportunity',
-          attributes: {
-            account_unique_id: data.accountUniqueId,
-            contact_unique_id: data.contactUniqueId,
-            code: data.code,
-            name: data.name,
-            notes: data.notes,
-            budget: data.budget,
-            total: data.total,
-            duration: data.duration,
-            duration_unit: data.durationUnit,
-            duration_description: data.durationDescription,
-            payload: data.payload,
-            next_action_at: data.nextActionAt,
-            owner_unique_id: data.ownerUniqueId,
-            tags: data.tags,
-          },
+        opportunity: {
+          account_unique_id: data.accountUniqueId,
+          contact_unique_id: data.contactUniqueId,
+          code: data.code,
+          name: data.name,
+          notes: data.notes,
+          budget: data.budget,
+          total: data.total,
+          duration: data.duration,
+          duration_unit: data.durationUnit,
+          duration_description: data.durationDescription,
+          payload: data.payload,
+          next_action_at: data.nextActionAt,
+          owner_unique_id: data.ownerUniqueId,
+          tags: data.tags,
         },
       });
       return decodeOne(response, opportunityMapper);
@@ -68,25 +65,22 @@ export function createOpportunitiesService(transport: Transport, _config: { appI
 
     async update(uniqueId: string, data: UpdateOpportunityRequest): Promise<Opportunity> {
       const response = await transport.put<unknown>(`/opportunities/${uniqueId}`, {
-        data: {
-          type: 'Opportunity',
-          attributes: {
-            name: data.name,
-            notes: data.notes,
-            budget: data.budget,
-            total: data.total,
-            duration: data.duration,
-            duration_unit: data.durationUnit,
-            duration_description: data.durationDescription,
-            payload: data.payload,
-            next_action_at: data.nextActionAt,
-            owner_unique_id: data.ownerUniqueId,
-            owner_name: data.ownerName,
-            owner_email: data.ownerEmail,
-            enabled: data.enabled,
-            status: data.status,
-            tags: data.tags,
-          },
+        opportunity: {
+          name: data.name,
+          notes: data.notes,
+          budget: data.budget,
+          total: data.total,
+          duration: data.duration,
+          duration_unit: data.durationUnit,
+          duration_description: data.durationDescription,
+          payload: data.payload,
+          next_action_at: data.nextActionAt,
+          owner_unique_id: data.ownerUniqueId,
+          owner_name: data.ownerName,
+          owner_email: data.ownerEmail,
+          enabled: data.enabled,
+          status: data.status,
+          tags: data.tags,
         },
       });
       return decodeOne(response, opportunityMapper);

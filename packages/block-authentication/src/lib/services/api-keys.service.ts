@@ -118,17 +118,19 @@ export function createApiKeysService(
       const response = await transport.post<{ data: unknown }>(
         '/api_keys',
         {
-          name: request.name,
-          description: request.description,
-          service_account: request.serviceAccount,
-          scopes: request.scopes,
-          expires_at: request.expiresAt,
-          rate_limit_per_minute: request.rateLimitPerMinute,
-          rate_limit_per_hour: request.rateLimitPerHour,
-          rate_limit_per_day: request.rateLimitPerDay,
-          allowed_origins: request.allowedOrigins,
-          allowed_ips: request.allowedIps,
-          payload: request.payload,
+          api_key: {
+            name: request.name,
+            description: request.description,
+            service_account: request.serviceAccount,
+            scopes: request.scopes,
+            expires_at: request.expiresAt,
+            rate_limit_per_minute: request.rateLimitPerMinute,
+            rate_limit_per_hour: request.rateLimitPerHour,
+            rate_limit_per_day: request.rateLimitPerDay,
+            allowed_origins: request.allowedOrigins,
+            allowed_ips: request.allowedIps,
+            payload: request.payload,
+          },
         }
       );
       return decodeOne(response, apiKeyWithSecretMapper);
@@ -138,15 +140,17 @@ export function createApiKeysService(
       const response = await transport.patch<{ data: unknown }>(
         `/api_keys/${id}`,
         {
-          name: request.name,
-          description: request.description,
-          scopes: request.scopes,
-          rate_limit_per_minute: request.rateLimitPerMinute,
-          rate_limit_per_hour: request.rateLimitPerHour,
-          rate_limit_per_day: request.rateLimitPerDay,
-          allowed_origins: request.allowedOrigins,
-          allowed_ips: request.allowedIps,
-          payload: request.payload,
+          api_key: {
+            name: request.name,
+            description: request.description,
+            scopes: request.scopes,
+            rate_limit_per_minute: request.rateLimitPerMinute,
+            rate_limit_per_hour: request.rateLimitPerHour,
+            rate_limit_per_day: request.rateLimitPerDay,
+            allowed_origins: request.allowedOrigins,
+            allowed_ips: request.allowedIps,
+            payload: request.payload,
+          },
         }
       );
       return decodeOne(response, apiKeyMapper);
