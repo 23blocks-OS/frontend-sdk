@@ -4,10 +4,26 @@ import {
   createOrderDetailsService,
   createPaymentsService,
   createSubscriptionsService,
+  createSubscriptionModelsService,
+  createSalesEntitiesService,
+  createSalesUsersService,
+  createSalesCustomersService,
+  createFlexibleOrdersService,
+  createStripeService,
+  createMercadoPagoService,
+  createVendorPaymentsService,
   type OrdersService,
   type OrderDetailsService,
   type PaymentsService,
   type SubscriptionsService,
+  type SubscriptionModelsService,
+  type SalesEntitiesService,
+  type SalesUsersService,
+  type SalesCustomersService,
+  type FlexibleOrdersService,
+  type StripeService,
+  type MercadoPagoService,
+  type VendorPaymentsService,
 } from './services';
 
 export interface SalesBlockConfig extends BlockConfig {
@@ -20,6 +36,14 @@ export interface SalesBlock {
   orderDetails: OrderDetailsService;
   payments: PaymentsService;
   subscriptions: SubscriptionsService;
+  subscriptionModels: SubscriptionModelsService;
+  entities: SalesEntitiesService;
+  users: SalesUsersService;
+  customers: SalesCustomersService;
+  flexibleOrders: FlexibleOrdersService;
+  stripe: StripeService;
+  mercadopago: MercadoPagoService;
+  vendorPayments: VendorPaymentsService;
 }
 
 export function createSalesBlock(
@@ -31,6 +55,14 @@ export function createSalesBlock(
     orderDetails: createOrderDetailsService(transport, config),
     payments: createPaymentsService(transport, config),
     subscriptions: createSubscriptionsService(transport, config),
+    subscriptionModels: createSubscriptionModelsService(transport, config),
+    entities: createSalesEntitiesService(transport, config),
+    users: createSalesUsersService(transport, config),
+    customers: createSalesCustomersService(transport, config),
+    flexibleOrders: createFlexibleOrdersService(transport, config),
+    stripe: createStripeService(transport, config),
+    mercadopago: createMercadoPagoService(transport, config),
+    vendorPayments: createVendorPaymentsService(transport, config),
   };
 }
 

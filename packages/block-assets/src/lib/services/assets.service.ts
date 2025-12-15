@@ -8,6 +8,15 @@ import type {
   TransferAssetRequest,
   AssignAssetRequest,
 } from '../types/asset';
+import type {
+  AddToCategoryRequest,
+  AddPartsRequest,
+  RemovePartsRequest,
+  UpdateMaintenanceRequest,
+  LendAssetRequest,
+  CreateOTPRequest,
+  OTPResponse,
+} from '../types/asset-image';
 import { assetMapper } from '../mappers/asset.mapper';
 
 export interface AssetsService {
@@ -16,11 +25,18 @@ export interface AssetsService {
   create(data: CreateAssetRequest): Promise<Asset>;
   update(uniqueId: string, data: UpdateAssetRequest): Promise<Asset>;
   delete(uniqueId: string): Promise<void>;
+  listTrash(): Promise<PageResult<Asset>>;
   transfer(uniqueId: string, data: TransferAssetRequest): Promise<Asset>;
   assign(uniqueId: string, data: AssignAssetRequest): Promise<Asset>;
   unassign(uniqueId: string): Promise<Asset>;
   listByLocation(locationUniqueId: string, params?: ListAssetsParams): Promise<PageResult<Asset>>;
   listByAssignee(assignedToUniqueId: string, params?: ListAssetsParams): Promise<PageResult<Asset>>;
+  addToCategory(uniqueId: string, data: AddToCategoryRequest): Promise<Asset>;
+  addParts(uniqueId: string, data: AddPartsRequest): Promise<Asset>;
+  removeParts(uniqueId: string, data: RemovePartsRequest): Promise<Asset>;
+  updateMaintenance(uniqueId: string, data: UpdateMaintenanceRequest): Promise<Asset>;
+  lend(uniqueId: string, data: LendAssetRequest): Promise<Asset>;
+  createOTP(uniqueId: string, data?: CreateOTPRequest): Promise<OTPResponse>;
 }
 
 export function createAssetsService(transport: Transport, _config: { appId: string }): AssetsService {
@@ -143,6 +159,69 @@ export function createAssetsService(transport: Transport, _config: { appId: stri
 
       const response = await transport.get<unknown>('/assets', { params: queryParams });
       return decodePageResult(response, assetMapper);
+    },
+
+    async listTrash(): Promise<PageResult<Asset>> {
+      const response = await transport.get<unknown>('/assets/trash/show');
+      return decodePageResult(response, assetMapper);
+    },
+
+    async addToCategory(uniqueId: string, data: AddToCategoryRequest): Promise<Asset> {
+      const response = await transport.post<unknown>(`/assets/${uniqueId}/categories`, {
+        category_unique_id: data.categoryUniqueId,
+      });
+      return decodeOne(response, assetMapper);
+    },
+
+    async addParts(uniqueId: string, data: AddPartsRequest): Promise<Asset> {
+      const response = await transport.put<unknown>(`/assets/${uniqueId}/parts`, {
+        part_unique_ids: data.partUniqueIds,
+      });
+      return decodeOne(response, assetMapper);
+    },
+
+    async removeParts(uniqueId: string, data: RemovePartsRequest): Promise<Asset> {
+      const response = await transport.delete<unknown>(`/assets/${uniqueId}/parts`, {
+        data: { part_unique_ids: data.partUniqueIds },
+      });
+      return decodeOne(response, assetMapper);
+    },
+
+    async updateMaintenance(uniqueId: string, data: UpdateMaintenanceRequest): Promise<Asset> {
+      const response = await transport.put<unknown>(`/assets/${uniqueId}/maintenance`, {
+        maintenance: {
+          maintenance_date: data.maintenanceDate?.toISOString(),
+          maintenance_interval: data.maintenanceInterval,
+          maintenance_notes: data.maintenanceNotes,
+          payload: data.payload,
+        },
+      });
+      return decodeOne(response, assetMapper);
+    },
+
+    async lend(uniqueId: string, data: LendAssetRequest): Promise<Asset> {
+      const response = await transport.post<unknown>(`/assets/${uniqueId}/lend`, {
+        lend: {
+          user_unique_id: data.userUniqueId,
+          due_date: data.dueDate?.toISOString(),
+          notes: data.notes,
+          payload: data.payload,
+        },
+      });
+      return decodeOne(response, assetMapper);
+    },
+
+    async createOTP(uniqueId: string, data?: CreateOTPRequest): Promise<OTPResponse> {
+      const response = await transport.post<any>(`/assets/${uniqueId}/otp`, {
+        otp: {
+          expires_in: data?.expiresIn,
+          payload: data?.payload,
+        },
+      });
+      return {
+        code: response.code,
+        expiresAt: new Date(response.expires_at),
+      };
     },
   };
 }

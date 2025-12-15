@@ -16,9 +16,8 @@ export interface AssetAudit extends IdentityCore {
   payload?: Record<string, unknown>;
 }
 
-// Request types
+// Request types - assetUniqueId is provided in the URL path
 export interface CreateAssetAuditRequest {
-  assetUniqueId: string;
   auditDate: Date;
   auditorUniqueId: string;
   condition?: string;
@@ -42,8 +41,6 @@ export interface ListAssetAuditsParams {
   page?: number;
   perPage?: number;
   status?: EntityStatus;
-  assetUniqueId?: string;
-  auditorUniqueId?: string;
   startDate?: Date;
   endDate?: Date;
   sortBy?: string;

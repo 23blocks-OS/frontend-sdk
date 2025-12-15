@@ -2,4 +2,8 @@ export * from './message.mapper';
 export * from './draft-message.mapper';
 export * from './group.mapper';
 export * from './notification.mapper';
+export * from './context.mapper';
+export * from './message-file.mapper';
+export * from './source.mapper';
+export * from './user.mapper';
 export * from './utils';

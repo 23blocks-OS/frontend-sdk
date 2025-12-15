@@ -6,7 +6,9 @@ import type {
   UpdateOnboardingRequest,
   ListOnboardingsParams,
 } from '../types/onboarding';
+import type { OnboardingStep, AddStepRequest, UpdateStepRequest } from '../types/step';
 import { onboardingMapper } from '../mappers/onboarding.mapper';
+import { onboardingStepMapper } from '../mappers/step.mapper';
 
 export interface OnboardingsService {
   list(params?: ListOnboardingsParams): Promise<PageResult<Onboarding>>;
@@ -14,6 +16,10 @@ export interface OnboardingsService {
   create(data: CreateOnboardingRequest): Promise<Onboarding>;
   update(uniqueId: string, data: UpdateOnboardingRequest): Promise<Onboarding>;
   delete(uniqueId: string): Promise<void>;
+  addStep(uniqueId: string, data: AddStepRequest): Promise<OnboardingStep>;
+  updateStep(uniqueId: string, stepUniqueId: string, data: UpdateStepRequest): Promise<OnboardingStep>;
+  deleteStep(uniqueId: string, stepUniqueId: string): Promise<void>;
+  stepUser(uniqueId: string, userUniqueId: string, stepData?: Record<string, unknown>): Promise<Onboarding>;
 }
 
 export function createOnboardingsService(transport: Transport, _config: { appId: string }): OnboardingsService {
@@ -65,6 +71,44 @@ export function createOnboardingsService(transport: Transport, _config: { appId:
 
     async delete(uniqueId: string): Promise<void> {
       await transport.delete(`/onboardings/${uniqueId}`);
+    },
+
+    async addStep(uniqueId: string, data: AddStepRequest): Promise<OnboardingStep> {
+      const response = await transport.put<unknown>(`/onboardings/${uniqueId}/steps`, {
+        step: {
+          step_number: data.stepNumber,
+          name: data.name,
+          description: data.description,
+          type: data.type,
+          config: data.config,
+          payload: data.payload,
+        },
+      });
+      return decodeOne(response, onboardingStepMapper);
+    },
+
+    async updateStep(uniqueId: string, stepUniqueId: string, data: UpdateStepRequest): Promise<OnboardingStep> {
+      const response = await transport.put<unknown>(`/onboardings/${uniqueId}/steps/${stepUniqueId}`, {
+        step: {
+          name: data.name,
+          description: data.description,
+          type: data.type,
+          config: data.config,
+          payload: data.payload,
+        },
+      });
+      return decodeOne(response, onboardingStepMapper);
+    },
+
+    async deleteStep(uniqueId: string, stepUniqueId: string): Promise<void> {
+      await transport.delete(`/onboardings/${uniqueId}/steps/${stepUniqueId}`);
+    },
+
+    async stepUser(uniqueId: string, userUniqueId: string, stepData?: Record<string, unknown>): Promise<Onboarding> {
+      const response = await transport.put<unknown>(`/onboardings/${uniqueId}/users/${userUniqueId}`, {
+        step_data: stepData,
+      });
+      return decodeOne(response, onboardingMapper);
     },
   };
 }

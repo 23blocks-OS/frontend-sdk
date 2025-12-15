@@ -18,3 +18,7 @@ export * from './busy-block';
 export * from './ics-token';
 export * from './zoom-meeting';
 export * from './zoom-host';
+export * from './mail-template';
+export * from './communication';
+export * from './user';
+export * from './billing-report';

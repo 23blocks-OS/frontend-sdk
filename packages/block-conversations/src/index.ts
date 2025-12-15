@@ -29,6 +29,33 @@ export type {
   ConversationFile,
   ConversationMeta,
   GetConversationParams,
+  // WebSocket Token types
+  WebSocketToken,
+  // Context types
+  Context,
+  CreateContextRequest,
+  UpdateContextRequest,
+  ListContextsParams,
+  // Notification Settings types
+  NotificationSettings,
+  UpdateNotificationSettingsRequest,
+  // Availability types
+  Availability,
+  UpdateAvailabilityRequest,
+  // Message File types
+  MessageFile,
+  UploadMessageFileRequest,
+  ListMessageFilesParams,
+  // Source types
+  Source,
+  CreateSourceRequest,
+  UpdateSourceRequest,
+  ListSourcesParams,
+  // User types
+  ConversationsUser,
+  RegisterUserRequest,
+  UpdateUserRequest,
+  ListUsersParams,
 } from './lib/types';
 
 // Services
@@ -38,6 +65,13 @@ export type {
   GroupsService,
   NotificationsService,
   ConversationsService,
+  WebSocketTokensService,
+  ContextsService,
+  NotificationSettingsService,
+  AvailabilitiesService,
+  MessageFilesService,
+  SourcesService,
+  UsersService,
 } from './lib/services';
 
 export {
@@ -46,6 +80,13 @@ export {
   createGroupsService,
   createNotificationsService,
   createConversationsService,
+  createWebSocketTokensService,
+  createContextsService,
+  createNotificationSettingsService,
+  createAvailabilitiesService,
+  createMessageFilesService,
+  createSourcesService,
+  createUsersService,
 } from './lib/services';
 
 // Mappers (for advanced use cases)
@@ -54,4 +95,8 @@ export {
   draftMessageMapper,
   groupMapper,
   notificationMapper,
+  contextMapper,
+  messageFileMapper,
+  sourceMapper,
+  conversationsUserMapper,
 } from './lib/mappers';

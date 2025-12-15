@@ -27,9 +27,8 @@ export interface AssetEvent extends IdentityCore {
   payload?: Record<string, unknown>;
 }
 
-// Request types
+// Request types - assetUniqueId is provided in the URL path
 export interface CreateAssetEventRequest {
-  assetUniqueId: string;
   eventType: AssetEventType;
   eventDate: Date;
   description?: string;
@@ -56,8 +55,6 @@ export interface ListAssetEventsParams {
   perPage?: number;
   status?: EntityStatus;
   eventType?: AssetEventType;
-  assetUniqueId?: string;
-  performedByUniqueId?: string;
   startDate?: Date;
   endDate?: Date;
   sortBy?: string;

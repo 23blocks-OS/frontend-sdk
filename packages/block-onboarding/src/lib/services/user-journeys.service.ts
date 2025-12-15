@@ -6,6 +6,11 @@ import type {
   CompleteStepRequest,
   ListUserJourneysParams,
 } from '../types/user-journey';
+import type {
+  UserJourneyReportParams,
+  UserJourneyReportSummary,
+  UserJourneyReportList,
+} from '../types/report';
 import { userJourneyMapper } from '../mappers/user-journey.mapper';
 
 export interface UserJourneysService {
@@ -16,6 +21,9 @@ export interface UserJourneysService {
   abandon(uniqueId: string): Promise<UserJourney>;
   getByUser(userUniqueId: string): Promise<UserJourney[]>;
   getProgress(uniqueId: string): Promise<{ progress: number; currentStep?: number; completedSteps?: number[] }>;
+  listByUserAndOnboarding(userUniqueId: string, onboardingUniqueId: string): Promise<UserJourney>;
+  reportList(params: UserJourneyReportParams): Promise<UserJourneyReportList>;
+  reportSummary(params: UserJourneyReportParams): Promise<UserJourneyReportSummary>;
 }
 
 export function createUserJourneysService(transport: Transport, _config: { appId: string }): UserJourneysService {
@@ -80,6 +88,74 @@ export function createUserJourneysService(transport: Transport, _config: { appId
         progress: data.data.attributes.progress || 0,
         currentStep: data.data.attributes.current_step,
         completedSteps: data.data.attributes.completed_steps,
+      };
+    },
+
+    async listByUserAndOnboarding(userUniqueId: string, onboardingUniqueId: string): Promise<UserJourney> {
+      const response = await transport.get<unknown>(`/users/${userUniqueId}/onboardings/${onboardingUniqueId}`);
+      return decodeOne(response, userJourneyMapper);
+    },
+
+    async reportList(params: UserJourneyReportParams): Promise<UserJourneyReportList> {
+      const response = await transport.post<any>('/reports/user_journeys/list', {
+        start_date: params.startDate,
+        end_date: params.endDate,
+        onboarding_unique_id: params.onboardingUniqueId,
+        status: params.status,
+        page: params.page,
+        per_page: params.perPage,
+      });
+      return {
+        journeys: (response.journeys || []).map((j: any) => ({
+          uniqueId: j.unique_id,
+          userUniqueId: j.user_unique_id,
+          onboardingName: j.onboarding_name,
+          progress: j.progress,
+          status: j.status,
+          startedAt: new Date(j.started_at),
+          completedAt: j.completed_at ? new Date(j.completed_at) : undefined,
+        })),
+        summary: {
+          totalJourneys: response.summary.total_journeys,
+          totalCompleted: response.summary.total_completed,
+          totalAbandoned: response.summary.total_abandoned,
+          totalActive: response.summary.total_active,
+          averageProgress: response.summary.average_progress,
+          completionRate: response.summary.completion_rate,
+          journeysByStatus: response.summary.journeys_by_status,
+          period: {
+            startDate: new Date(response.summary.period.start_date),
+            endDate: new Date(response.summary.period.end_date),
+          },
+        },
+        meta: {
+          totalCount: response.meta.total_count,
+          page: response.meta.page,
+          perPage: response.meta.per_page,
+          totalPages: response.meta.total_pages,
+        },
+      };
+    },
+
+    async reportSummary(params: UserJourneyReportParams): Promise<UserJourneyReportSummary> {
+      const response = await transport.post<any>('/reports/user_journeys/summary', {
+        start_date: params.startDate,
+        end_date: params.endDate,
+        onboarding_unique_id: params.onboardingUniqueId,
+        status: params.status,
+      });
+      return {
+        totalJourneys: response.total_journeys,
+        totalCompleted: response.total_completed,
+        totalAbandoned: response.total_abandoned,
+        totalActive: response.total_active,
+        averageProgress: response.average_progress,
+        completionRate: response.completion_rate,
+        journeysByStatus: response.journeys_by_status,
+        period: {
+          startDate: new Date(response.period.start_date),
+          endDate: new Date(response.period.end_date),
+        },
       };
     },
   };

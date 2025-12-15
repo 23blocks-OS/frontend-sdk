@@ -5,11 +5,25 @@ import {
   createGroupsService,
   createNotificationsService,
   createConversationsService,
+  createWebSocketTokensService,
+  createContextsService,
+  createNotificationSettingsService,
+  createAvailabilitiesService,
+  createMessageFilesService,
+  createSourcesService,
+  createUsersService,
   type MessagesService,
   type DraftMessagesService,
   type GroupsService,
   type NotificationsService,
   type ConversationsService,
+  type WebSocketTokensService,
+  type ContextsService,
+  type NotificationSettingsService,
+  type AvailabilitiesService,
+  type MessageFilesService,
+  type SourcesService,
+  type UsersService,
 } from './services';
 
 export interface ConversationsBlockConfig extends BlockConfig {
@@ -23,6 +37,13 @@ export interface ConversationsBlock {
   groups: GroupsService;
   notifications: NotificationsService;
   conversations: ConversationsService;
+  websocketTokens: WebSocketTokensService;
+  contexts: ContextsService;
+  notificationSettings: NotificationSettingsService;
+  availabilities: AvailabilitiesService;
+  messageFiles: MessageFilesService;
+  sources: SourcesService;
+  users: UsersService;
 }
 
 export function createConversationsBlock(
@@ -35,18 +56,29 @@ export function createConversationsBlock(
     groups: createGroupsService(transport, config),
     notifications: createNotificationsService(transport, config),
     conversations: createConversationsService(transport, config),
+    websocketTokens: createWebSocketTokensService(transport, config),
+    contexts: createContextsService(transport, config),
+    notificationSettings: createNotificationSettingsService(transport, config),
+    availabilities: createAvailabilitiesService(transport, config),
+    messageFiles: createMessageFilesService(transport, config),
+    sources: createSourcesService(transport, config),
+    users: createUsersService(transport, config),
   };
 }
 
 export const conversationsBlockMetadata: BlockMetadata = {
   name: 'conversations',
   version: '0.1.0',
-  description: 'Messaging, conversations, groups, and notifications management',
+  description: 'Messaging, conversations, groups, notifications, and real-time communication management',
   resourceTypes: [
     'Message',
     'DraftMessage',
     'Group',
     'Notification',
     'Conversation',
+    'Context',
+    'MessageFile',
+    'Source',
+    'User',
   ],
 };

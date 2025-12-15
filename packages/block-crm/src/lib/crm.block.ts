@@ -19,6 +19,11 @@ import {
   createIcsTokensService,
   createZoomMeetingsService,
   createZoomHostsService,
+  createCrmMailTemplatesService,
+  createCommunicationsService,
+  createCrmUsersService,
+  createBillingReportsService,
+  createCalendarSyncService,
   type AccountsService,
   type ContactsService,
   type ContactEventsService,
@@ -38,6 +43,11 @@ import {
   type IcsTokensService,
   type ZoomMeetingsService,
   type ZoomHostsService,
+  type CrmMailTemplatesService,
+  type CommunicationsService,
+  type CrmUsersService,
+  type BillingReportsService,
+  type CalendarSyncService,
 } from './services';
 
 export interface CrmBlockConfig extends BlockConfig {
@@ -65,6 +75,11 @@ export interface CrmBlock {
   icsTokens: IcsTokensService;
   zoomMeetings: ZoomMeetingsService;
   zoomHosts: ZoomHostsService;
+  mailTemplates: CrmMailTemplatesService;
+  communications: CommunicationsService;
+  users: CrmUsersService;
+  billingReports: BillingReportsService;
+  calendarSync: CalendarSyncService;
 }
 
 export function createCrmBlock(
@@ -91,6 +106,11 @@ export function createCrmBlock(
     icsTokens: createIcsTokensService(transport, config),
     zoomMeetings: createZoomMeetingsService(transport, config),
     zoomHosts: createZoomHostsService(transport, config),
+    mailTemplates: createCrmMailTemplatesService(transport, config),
+    communications: createCommunicationsService(transport, config),
+    users: createCrmUsersService(transport, config),
+    billingReports: createBillingReportsService(transport, config),
+    calendarSync: createCalendarSyncService(transport, config),
   };
 }
 
@@ -121,5 +141,7 @@ export const crmBlockMetadata: BlockMetadata = {
     'IcsToken',
     'ZoomMeeting',
     'ZoomHost',
+    'CrmMailTemplate',
+    'CrmUser',
   ],
 };

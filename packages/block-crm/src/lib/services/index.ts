@@ -17,3 +17,8 @@ export * from './busy-blocks.service';
 export * from './ics-tokens.service';
 export * from './zoom-meetings.service';
 export * from './zoom-hosts.service';
+export * from './mail-templates.service';
+export * from './communications.service';
+export * from './users.service';
+export * from './billing-reports.service';
+export * from './calendar-sync.service';

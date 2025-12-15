@@ -19,3 +19,5 @@ export * from './ics-token.mapper';
 export * from './zoom-meeting.mapper';
 export * from './zoom-host.mapper';
 export * from './utils';
+export * from './mail-template.mapper';
+export * from './user.mapper';

@@ -15,6 +15,8 @@ export interface FlowsService {
   update(uniqueId: string, data: UpdateFlowRequest): Promise<Flow>;
   delete(uniqueId: string): Promise<void>;
   listByOnboarding(onboardingUniqueId: string): Promise<Flow[]>;
+  getBySource(uniqueId: string, sourceUniqueId: string): Promise<Flow>;
+  stepBySource(uniqueId: string, sourceUniqueId: string, stepData?: Record<string, unknown>): Promise<Flow>;
 }
 
 export function createFlowsService(transport: Transport, _config: { appId: string }): FlowsService {
@@ -75,6 +77,18 @@ export function createFlowsService(transport: Transport, _config: { appId: strin
     async listByOnboarding(onboardingUniqueId: string): Promise<Flow[]> {
       const response = await transport.get<unknown>(`/onboardings/${onboardingUniqueId}/flows`);
       return decodeMany(response, flowMapper);
+    },
+
+    async getBySource(uniqueId: string, sourceUniqueId: string): Promise<Flow> {
+      const response = await transport.get<unknown>(`/flows/${uniqueId}/sources/${sourceUniqueId}`);
+      return decodeOne(response, flowMapper);
+    },
+
+    async stepBySource(uniqueId: string, sourceUniqueId: string, stepData?: Record<string, unknown>): Promise<Flow> {
+      const response = await transport.put<unknown>(`/flows/${uniqueId}/sources/${sourceUniqueId}`, {
+        step_data: stepData,
+      });
+      return decodeOne(response, flowMapper);
     },
   };
 }

@@ -4,10 +4,16 @@ import {
   createFlowsService,
   createUserJourneysService,
   createUserIdentitiesService,
+  createOnboardService,
+  createMailTemplatesService,
+  createRemarketingService,
   type OnboardingsService,
   type FlowsService,
   type UserJourneysService,
   type UserIdentitiesService,
+  type OnboardService,
+  type MailTemplatesService,
+  type RemarketingService,
 } from './services';
 
 export interface OnboardingBlockConfig extends BlockConfig {
@@ -20,6 +26,9 @@ export interface OnboardingBlock {
   flows: FlowsService;
   userJourneys: UserJourneysService;
   userIdentities: UserIdentitiesService;
+  onboard: OnboardService;
+  mailTemplates: MailTemplatesService;
+  remarketing: RemarketingService;
 }
 
 export function createOnboardingBlock(
@@ -31,6 +40,9 @@ export function createOnboardingBlock(
     flows: createFlowsService(transport, config),
     userJourneys: createUserJourneysService(transport, config),
     userIdentities: createUserIdentitiesService(transport, config),
+    onboard: createOnboardService(transport, config),
+    mailTemplates: createMailTemplatesService(transport, config),
+    remarketing: createRemarketingService(transport, config),
   };
 }
 
@@ -43,5 +55,6 @@ export const onboardingBlockMetadata: BlockMetadata = {
     'Flow',
     'UserJourney',
     'UserIdentity',
+    'MailTemplate',
   ],
 };

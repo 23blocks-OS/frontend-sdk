@@ -2,3 +2,8 @@ export * from './onboarding';
 export * from './flow';
 export * from './user-journey';
 export * from './user-identity';
+export * from './onboard';
+export * from './mail-template';
+export * from './remarketing';
+export * from './report';
+export * from './step';
