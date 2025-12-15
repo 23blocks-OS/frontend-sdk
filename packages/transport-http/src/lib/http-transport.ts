@@ -52,8 +52,8 @@ async function resolveHeaders(
   }
 
   return {
-    'Content-Type': 'application/vnd.api+json',
-    Accept: 'application/vnd.api+json',
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
     ...baseHeaders,
     ...optionHeaders,
   };
