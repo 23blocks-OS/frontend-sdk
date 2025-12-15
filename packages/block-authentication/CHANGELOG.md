@@ -1,3 +1,14 @@
+## 3.1.1 (2025-12-15)
+
+### 🩹 Fixes
+
+- add mfa, oauth, avatars, tenants services to AuthenticationBlock ([281f5d6](https://github.com/23blocks-OS/frontend-sdk/commit/281f5d6))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.1.0 (2025-12-15)
 
 ### 🚀 Features
