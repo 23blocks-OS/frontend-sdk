@@ -7,6 +7,12 @@ import {
   createTravelRoutesService,
   createPremiseBookingsService,
   createPremisesService,
+  createLocationHoursService,
+  createLocationImagesService,
+  createLocationSlotsService,
+  createLocationTaxesService,
+  createLocationGroupsService,
+  createGeoIdentitiesService,
   type LocationsService,
   type AddressesService,
   type AreasService,
@@ -14,6 +20,12 @@ import {
   type TravelRoutesService,
   type PremiseBookingsService,
   type PremisesService,
+  type LocationHoursService,
+  type LocationImagesService,
+  type LocationSlotsService,
+  type LocationTaxesService,
+  type LocationGroupsService,
+  type GeoIdentitiesService,
 } from './services';
 
 export interface GeolocationBlockConfig extends BlockConfig {
@@ -29,6 +41,12 @@ export interface GeolocationBlock {
   routes: TravelRoutesService;
   bookings: PremiseBookingsService;
   premises: PremisesService;
+  locationHours: LocationHoursService;
+  locationImages: LocationImagesService;
+  locationSlots: LocationSlotsService;
+  locationTaxes: LocationTaxesService;
+  locationGroups: LocationGroupsService;
+  identities: GeoIdentitiesService;
 }
 
 export function createGeolocationBlock(
@@ -43,6 +61,12 @@ export function createGeolocationBlock(
     routes: createTravelRoutesService(transport, config),
     bookings: createPremiseBookingsService(transport, config),
     premises: createPremisesService(transport, config),
+    locationHours: createLocationHoursService(transport, config),
+    locationImages: createLocationImagesService(transport, config),
+    locationSlots: createLocationSlotsService(transport, config),
+    locationTaxes: createLocationTaxesService(transport, config),
+    locationGroups: createLocationGroupsService(transport, config),
+    identities: createGeoIdentitiesService(transport, config),
   };
 }
 
@@ -58,5 +82,11 @@ export const geolocationBlockMetadata: BlockMetadata = {
     'TravelRoute',
     'PremiseBooking',
     'Premise',
+    'LocationHour',
+    'LocationImage',
+    'LocationSlot',
+    'LocationTax',
+    'LocationGroup',
+    'GeoIdentity',
   ],
 };

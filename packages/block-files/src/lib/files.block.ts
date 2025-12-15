@@ -3,9 +3,11 @@ import {
   createStorageFilesService,
   createEntityFilesService,
   createFileSchemasService,
+  createUserFilesService,
   type StorageFilesService,
   type EntityFilesService,
   type FileSchemasService,
+  type UserFilesService,
 } from './services';
 
 export interface FilesBlockConfig extends BlockConfig {
@@ -17,6 +19,7 @@ export interface FilesBlock {
   storageFiles: StorageFilesService;
   entityFiles: EntityFilesService;
   fileSchemas: FileSchemasService;
+  userFiles: UserFilesService;
 }
 
 export function createFilesBlock(
@@ -27,6 +30,7 @@ export function createFilesBlock(
     storageFiles: createStorageFilesService(transport, config),
     entityFiles: createEntityFilesService(transport, config),
     fileSchemas: createFileSchemasService(transport, config),
+    userFiles: createUserFilesService(transport, config),
   };
 }
 
@@ -38,5 +42,6 @@ export const filesBlockMetadata: BlockMetadata = {
     'StorageFile',
     'EntityFile',
     'FileSchema',
+    'UserFile',
   ],
 };

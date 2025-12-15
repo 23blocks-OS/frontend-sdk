@@ -4,10 +4,24 @@ import {
   createFormSchemasService,
   createFormInstancesService,
   createFormSetsService,
+  createLandingsService,
+  createSubscriptionsService,
+  createAppointmentsService,
+  createSurveysService,
+  createReferralsService,
+  createMailTemplatesService,
+  createPublicFormsService,
   type FormsService,
   type FormSchemasService,
   type FormInstancesService,
   type FormSetsService,
+  type LandingsService,
+  type SubscriptionsService,
+  type AppointmentsService,
+  type SurveysService,
+  type ReferralsService,
+  type MailTemplatesService,
+  type PublicFormsService,
 } from './services';
 
 export interface FormsBlockConfig extends BlockConfig {
@@ -20,6 +34,13 @@ export interface FormsBlock {
   schemas: FormSchemasService;
   instances: FormInstancesService;
   sets: FormSetsService;
+  landings: LandingsService;
+  subscriptions: SubscriptionsService;
+  appointments: AppointmentsService;
+  surveys: SurveysService;
+  referrals: ReferralsService;
+  mailTemplates: MailTemplatesService;
+  publicForms: PublicFormsService;
 }
 
 export function createFormsBlock(
@@ -31,6 +52,13 @@ export function createFormsBlock(
     schemas: createFormSchemasService(transport, config),
     instances: createFormInstancesService(transport, config),
     sets: createFormSetsService(transport, config),
+    landings: createLandingsService(transport, config),
+    subscriptions: createSubscriptionsService(transport, config),
+    appointments: createAppointmentsService(transport, config),
+    surveys: createSurveysService(transport, config),
+    referrals: createReferralsService(transport, config),
+    mailTemplates: createMailTemplatesService(transport, config),
+    publicForms: createPublicFormsService(transport, config),
   };
 }
 
@@ -43,5 +71,12 @@ export const formsBlockMetadata: BlockMetadata = {
     'FormSchema',
     'FormInstance',
     'FormSet',
+    'Landing',
+    'Subscription',
+    'Appointment',
+    'Survey',
+    'Referral',
+    'MailTemplate',
+    'PublicForm',
   ],
 };

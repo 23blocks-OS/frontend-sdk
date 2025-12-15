@@ -17,6 +17,10 @@ export interface LocationsService {
   recover(uniqueId: string): Promise<Location>;
   search(query: string, params?: ListLocationsParams): Promise<PageResult<Location>>;
   listDeleted(params?: ListLocationsParams): Promise<PageResult<Location>>;
+  getQRCode(uniqueId: string): Promise<string>;
+  searchByCode(code: string): Promise<Location[]>;
+  addTag(uniqueId: string, tagUniqueId: string): Promise<Location>;
+  removeTag(uniqueId: string, tagUniqueId: string): Promise<void>;
 }
 
 export function createLocationsService(transport: Transport, _config: { appId: string }): LocationsService {
@@ -111,6 +115,29 @@ export function createLocationsService(transport: Transport, _config: { appId: s
 
       const response = await transport.get<unknown>('/locations/trash/show', { params: queryParams });
       return decodePageResult(response, locationMapper);
+    },
+
+    async getQRCode(uniqueId: string): Promise<string> {
+      const response = await transport.get<unknown>(`/locations/${uniqueId}/qrcode`);
+      return response as string;
+    },
+
+    async searchByCode(code: string): Promise<Location[]> {
+      const response = await transport.post<unknown>('/locations/search/code', {
+        code,
+      });
+      return decodeMany(response, locationMapper);
+    },
+
+    async addTag(uniqueId: string, tagUniqueId: string): Promise<Location> {
+      const response = await transport.post<unknown>(`/locations/${uniqueId}/tags/`, {
+        tag: { tag_unique_id: tagUniqueId },
+      });
+      return decodeOne(response, locationMapper);
+    },
+
+    async removeTag(uniqueId: string, tagUniqueId: string): Promise<void> {
+      await transport.delete(`/locations/${uniqueId}/tags/${tagUniqueId}`);
     },
   };
 }

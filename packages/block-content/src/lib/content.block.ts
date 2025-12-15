@@ -4,10 +4,12 @@ import {
   createCommentsService,
   createCategoriesService,
   createTagsService,
+  createContentUsersService,
   type PostsService,
   type CommentsService,
   type CategoriesService,
   type TagsService,
+  type ContentUsersService,
 } from './services';
 
 export interface ContentBlockConfig extends BlockConfig {
@@ -20,6 +22,7 @@ export interface ContentBlock {
   comments: CommentsService;
   categories: CategoriesService;
   tags: TagsService;
+  users: ContentUsersService;
 }
 
 export function createContentBlock(
@@ -31,17 +34,19 @@ export function createContentBlock(
     comments: createCommentsService(transport, config),
     categories: createCategoriesService(transport, config),
     tags: createTagsService(transport, config),
+    users: createContentUsersService(transport, config),
   };
 }
 
 export const contentBlockMetadata: BlockMetadata = {
   name: 'content',
   version: '0.1.0',
-  description: 'Content management for posts, comments, categories, and tags',
+  description: 'Content management for posts, comments, categories, tags, and users',
   resourceTypes: [
     'Post',
     'Comment',
     'Category',
     'Tag',
+    'ContentUser',
   ],
 };
