@@ -45,3 +45,4 @@ export {
   type BlockMetadata,
   type BlockRegistration,
 } from './lib/block.js';
+// Trigger release for documentation
