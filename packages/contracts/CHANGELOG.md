@@ -1,3 +1,14 @@
+## 2.0.1 (2025-12-17)
+
+### 🩹 Fixes
+
+- include README documentation in npm packages ([eacb9c1](https://github.com/23blocks-OS/frontend-sdk/commit/eacb9c1))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 # 2.0.0 (2025-12-17)
 
 ### 🚀 Features
