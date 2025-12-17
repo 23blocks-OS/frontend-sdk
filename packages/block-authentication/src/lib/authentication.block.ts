@@ -202,7 +202,7 @@ export interface AuthenticationBlock {
  *   baseUrl: 'https://api.example.com',
  *   headers: () => ({
  *     'Authorization': `Bearer ${getToken()}`,
- *     'api-key': 'your-api-key',
+ *     'x-api-key': 'your-api-key',
  *   }),
  * });
  *

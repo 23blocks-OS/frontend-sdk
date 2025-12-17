@@ -35,7 +35,7 @@ const transport = createHttpTransport({
   headers: () => {
     const token = localStorage.getItem('access_token');
     return {
-      'api-key': 'your-api-key',
+      'x-api-key': 'your-api-key',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
   },

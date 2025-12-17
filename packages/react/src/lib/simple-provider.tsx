@@ -583,7 +583,7 @@ export function Provider({
       headers: () => {
         const headers: Record<string, string> = {
           ...staticHeaders,
-          'api-key': apiKey,
+          'x-api-key': apiKey,
         };
 
         if (tenantId) {

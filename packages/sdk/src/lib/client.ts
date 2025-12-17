@@ -434,7 +434,7 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
       headers: () => {
         const headers: Record<string, string> = {
           ...staticHeaders,
-          'api-key': apiKey,
+          'x-api-key': apiKey,
         };
 
         if (tenantId) {

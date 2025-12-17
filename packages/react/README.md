@@ -498,7 +498,7 @@ import { createProductsBlock } from '@23blocks/block-products';
 async function getProducts() {
   const transport = createHttpTransport({
     baseUrl: process.env.PRODUCTS_URL!,
-    headers: () => ({ 'api-key': process.env.API_KEY! }),
+    headers: () => ({ 'x-api-key': process.env.API_KEY! }),
   });
 
   const products = createProductsBlock(transport, {
@@ -565,7 +565,7 @@ export function BlocksProvider({ children }: { children: React.ReactNode }) {
       if (typeof window === 'undefined') return {};
       const token = localStorage.getItem('access_token');
       return {
-        'api-key': process.env.NEXT_PUBLIC_API_KEY!,
+        'x-api-key': process.env.NEXT_PUBLIC_API_KEY!,
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       };
     },
