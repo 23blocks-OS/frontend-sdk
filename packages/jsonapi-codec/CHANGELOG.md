@@ -1,3 +1,9 @@
+# 3.0.0 (2025-12-17)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/contracts to 2.0.0
+
 # 2.0.0 (2025-12-15)
 
 ### 🩹 Fixes

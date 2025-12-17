@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-company",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Company block for 23blocks SDK - organizational structure, departments, teams, and quarters",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

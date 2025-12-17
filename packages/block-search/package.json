@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-search",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "Search block for 23blocks SDK - full-text search, history, favorites",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

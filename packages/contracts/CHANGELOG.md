@@ -1,3 +1,32 @@
+# 2.0.0 (2025-12-17)
+
+### 🚀 Features
+
+- ⚠️  rename appId to apiKey and add test infrastructure ([fb02c62](https://github.com/23blocks-OS/frontend-sdk/commit/fb02c62))
+
+### ⚠️  Breaking Changes
+
+- rename appId to apiKey and add test infrastructure  ([fb02c62](https://github.com/23blocks-OS/frontend-sdk/commit/fb02c62))
+  The configuration property 'appId' has been renamed to 'apiKey' across all packages. The HTTP header sent to the API changed from 'appid' to 'api-key'.
+  - Rename appId to apiKey in BlockConfig interface
+  - Update SDK client, Angular providers, and React context
+  - Update all documentation with new apiKey examples
+  - Add comprehensive test infrastructure:
+    - Vitest workspace configuration (unit/integration/workflows)
+    - Docker compose for API testing
+    - Unit tests for mappers (32 tests passing)
+    - Integration test templates for Auth and Search blocks
+    - CI workflows for tiered testing (pr-checks, merge-tests, full-tests)
+  - Add BACKLOG.md tracking test prerequisites and pending work
+  - Add TEST_SUITE_STRATEGY.md documenting tiered testing approach
+  🤖 Generated with [Claude Code](https://claude.com/claude-code)
+  Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 1.0.4 (2025-12-14)
 
 This was a version bump only for @23blocks/contracts to align it with other projects, there were no code changes.
