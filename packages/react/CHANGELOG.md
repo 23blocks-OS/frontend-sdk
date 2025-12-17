@@ -1,3 +1,26 @@
+# 7.0.0 (2025-12-17)
+
+### 🩹 Fixes
+
+- ⚠️  use x-api-key header for API standards compliance ([8206652](https://github.com/23blocks-OS/frontend-sdk/commit/8206652))
+
+### ⚠️  Breaking Changes
+
+- use x-api-key header for API standards compliance  ([8206652](https://github.com/23blocks-OS/frontend-sdk/commit/8206652))
+  The HTTP header sent with API requests changed from
+  'api-key' to 'x-api-key'. Backend services need to accept 'x-api-key' header.
+  🤖 Generated with [Claude Code](https://claude.com/claude-code)
+  Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 6.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 6.0.1 (2025-12-17)
 
 ### 🧱 Updated Dependencies
