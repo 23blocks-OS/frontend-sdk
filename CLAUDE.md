@@ -74,7 +74,7 @@ Each `block-*` package follows this structure:
 Example:
 ```typescript
 import { createAuthenticationBlock } from '@23blocks/block-authentication';
-const auth = createAuthenticationBlock(transport, { appId: 'xxx' });
+const auth = createAuthenticationBlock(transport, { apiKey: 'xxx' });
 await auth.auth.signIn({ email, password });
 ```
 

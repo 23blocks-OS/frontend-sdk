@@ -100,9 +100,9 @@ export interface ClientConfig {
   urls: ServiceUrls;
 
   /**
-   * Application ID
+   * API Key for authenticating with 23blocks services
    */
-  appId: string;
+  apiKey: string;
 
   /**
    * Tenant ID (optional, for multi-tenant setups)
@@ -360,7 +360,7 @@ function isBrowser(): boolean {
  * @example Basic usage with multiple services
  * ```typescript
  * const client = create23BlocksClient({
- *   appId: 'your-app-id',
+ *   apiKey: 'your-api-key',
  *   urls: {
  *     authentication: 'https://gateway.23blocks.com',
  *     crm: 'https://crm.23blocks.com',
@@ -382,7 +382,7 @@ function isBrowser(): boolean {
  * @example Cookie mode (recommended for security)
  * ```typescript
  * const client = create23BlocksClient({
- *   appId: 'your-app-id',
+ *   apiKey: 'your-api-key',
  *   authMode: 'cookie',
  *   urls: {
  *     authentication: 'https://gateway.23blocks.com',
@@ -394,7 +394,7 @@ function isBrowser(): boolean {
  * @example SSR with token forwarding
  * ```typescript
  * const client = create23BlocksClient({
- *   appId: 'your-app-id',
+ *   apiKey: 'your-api-key',
  *   storage: 'memory',
  *   headers: { Authorization: `Bearer ${tokenFromRequest}` },
  *   urls: {
@@ -407,7 +407,7 @@ function isBrowser(): boolean {
 export function create23BlocksClient(config: ClientConfig): Blocks23Client {
   const {
     urls,
-    appId,
+    apiKey,
     tenantId,
     authMode = 'token',
     storage = isBrowser() ? 'localStorage' : 'memory',
@@ -419,7 +419,7 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
   let tokenManager: TokenManager | null = null;
   if (authMode === 'token') {
     tokenManager = createTokenManager({
-      appId,
+      apiKey,
       tenantId,
       storage,
     });
@@ -434,7 +434,7 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
       headers: () => {
         const headers: Record<string, string> = {
           ...staticHeaders,
-          appid: appId,
+          'api-key': apiKey,
         };
 
         if (tenantId) {
@@ -468,7 +468,7 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
   }
 
   // Create block config
-  const blockConfig = { appId, tenantId };
+  const blockConfig = { apiKey, tenantId };
 
   // Create blocks only if their URL is provided
   const authenticationBlock = urls.authentication

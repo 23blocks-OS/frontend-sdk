@@ -116,7 +116,7 @@ export interface ProviderProps {
    * @example
    * ```tsx
    * <Provider
-   *   appId="your-app-id"
+   *   apiKey="your-api-key"
    *   urls={{
    *     authentication: 'https://gateway.23blocks.com',
    *     crm: 'https://crm.23blocks.com',
@@ -130,9 +130,9 @@ export interface ProviderProps {
   urls: ServiceUrls;
 
   /**
-   * Application ID
+   * API Key for authenticating with 23blocks services
    */
-  appId: string;
+  apiKey: string;
 
   /**
    * Tenant ID (optional, for multi-tenant setups)
@@ -162,7 +162,7 @@ export interface ProviderProps {
    * import AsyncStorage from '@react-native-async-storage/async-storage';
    *
    * <Provider
-   *   appId="your-app-id"
+   *   apiKey="your-api-key"
    *   customStorage={AsyncStorage}
    *   urls={{ authentication: 'https://api.example.com' }}
    * >
@@ -181,7 +181,7 @@ export interface ProviderProps {
    * };
    *
    * <Provider
-   *   appId="your-app-id"
+   *   apiKey="your-api-key"
    *   customStorage={secureStorage}
    *   urls={{ authentication: 'https://api.example.com' }}
    * >
@@ -260,10 +260,10 @@ export interface ClientContext {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Generate storage key scoped to app and tenant
+ * Generate storage key scoped to API key and tenant
  */
-function getStorageKey(type: 'access' | 'refresh', appId: string, tenantId?: string): string {
-  const scope = tenantId ? `${appId}_${tenantId}` : appId;
+function getStorageKey(type: 'access' | 'refresh', apiKey: string, tenantId?: string): string {
+  const scope = tenantId ? `${apiKey}_${tenantId}` : apiKey;
   return `23blocks_${scope}_${type}_token`;
 }
 
@@ -283,11 +283,11 @@ class MemoryStorage {
 /**
  * Create a sync token manager for web (localStorage, sessionStorage, memory)
  */
-function createSyncTokenManager(appId: string, storageType: StorageType, tenantId?: string): TokenManager {
+function createSyncTokenManager(apiKey: string, storageType: StorageType, tenantId?: string): TokenManager {
   const isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
 
-  const accessTokenKey = getStorageKey('access', appId, tenantId);
-  const refreshTokenKey = getStorageKey('refresh', appId, tenantId);
+  const accessTokenKey = getStorageKey('access', apiKey, tenantId);
+  const refreshTokenKey = getStorageKey('refresh', apiKey, tenantId);
 
   let storage: Storage | MemoryStorage;
   if (!isBrowser) {
@@ -367,13 +367,13 @@ function createSyncTokenManager(appId: string, storageType: StorageType, tenantI
  * Uses a sync in-memory cache for immediate access while persisting to async storage.
  */
 function createAsyncTokenManager(
-  appId: string,
+  apiKey: string,
   asyncStorage: AsyncStorageInterface,
   tenantId?: string,
   onReady?: () => void
 ): TokenManager {
-  const accessTokenKey = getStorageKey('access', appId, tenantId);
-  const refreshTokenKey = getStorageKey('refresh', appId, tenantId);
+  const accessTokenKey = getStorageKey('access', apiKey, tenantId);
+  const refreshTokenKey = getStorageKey('refresh', apiKey, tenantId);
 
   // In-memory cache for sync access
   let accessTokenCache: string | null = null;
@@ -475,7 +475,7 @@ function createUnconfiguredServiceProxy<T>(serviceName: string, urlKey: string):
  * function App() {
  *   return (
  *     <Provider
- *       appId="your-app-id"
+ *       apiKey="your-api-key"
  *       urls={{
  *         authentication: 'https://gateway.23blocks.com',
  *         crm: 'https://crm.23blocks.com',
@@ -491,7 +491,7 @@ function createUnconfiguredServiceProxy<T>(serviceName: string, urlKey: string):
  * @example Cookie mode (recommended for security)
  * ```tsx
  * <Provider
- *   appId="your-app-id"
+ *   apiKey="your-api-key"
  *   authMode="cookie"
  *   urls={{
  *     authentication: 'https://gateway.23blocks.com',
@@ -507,7 +507,7 @@ function createUnconfiguredServiceProxy<T>(serviceName: string, urlKey: string):
  * import AsyncStorage from '@react-native-async-storage/async-storage';
  *
  * <Provider
- *   appId="your-app-id"
+ *   apiKey="your-api-key"
  *   customStorage={AsyncStorage}
  *   urls={{
  *     authentication: 'https://gateway.23blocks.com',
@@ -528,7 +528,7 @@ function createUnconfiguredServiceProxy<T>(serviceName: string, urlKey: string):
  * };
  *
  * <Provider
- *   appId="your-app-id"
+ *   apiKey="your-api-key"
  *   customStorage={secureStorage}
  *   urls={{
  *     authentication: 'https://gateway.23blocks.com',
@@ -541,7 +541,7 @@ function createUnconfiguredServiceProxy<T>(serviceName: string, urlKey: string):
 export function Provider({
   children,
   urls,
-  appId,
+  apiKey,
   tenantId,
   authMode = 'token',
   storage = 'localStorage',
@@ -561,18 +561,18 @@ export function Provider({
 
     if (customStorage) {
       // Use async storage for React Native
-      const manager = createAsyncTokenManager(appId, customStorage, tenantId, () => {
+      const manager = createAsyncTokenManager(apiKey, customStorage, tenantId, () => {
         setIsReady(true);
       });
       tokenManagerRef.current = manager;
       return manager;
     } else {
       // Use sync storage for web
-      const manager = createSyncTokenManager(appId, storage, tenantId);
+      const manager = createSyncTokenManager(apiKey, storage, tenantId);
       tokenManagerRef.current = manager;
       return manager;
     }
-  }, [authMode, appId, storage, tenantId, customStorage]);
+  }, [authMode, apiKey, storage, tenantId, customStorage]);
 
   // Factory to create transport for a specific service URL
   const createServiceTransport = useCallback((baseUrl: string) => {
@@ -583,7 +583,7 @@ export function Provider({
       headers: () => {
         const headers: Record<string, string> = {
           ...staticHeaders,
-          'x-api-key': appId,
+          'api-key': apiKey,
         };
 
         if (tenantId) {
@@ -600,10 +600,10 @@ export function Provider({
         return headers;
       },
     });
-  }, [appId, tenantId, authMode, staticHeaders, timeout]);
+  }, [apiKey, tenantId, authMode, staticHeaders, timeout]);
 
   // Create blocks (memoized) - each with its own transport (no fallback)
-  const blockConfig = useMemo(() => ({ appId, tenantId }), [appId, tenantId]);
+  const blockConfig = useMemo(() => ({ apiKey, tenantId }), [apiKey, tenantId]);
 
   // Create blocks only if URL is configured, otherwise use proxy that throws helpful error
   const authentication = useMemo(() => {

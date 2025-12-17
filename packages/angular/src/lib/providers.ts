@@ -87,10 +87,10 @@ export interface Provide23BlocksConfig {
  *   providers: [
  *     provide23Blocks({
  *       transport,
- *       authentication: { appId: 'my-app' },
- *       search: { appId: 'my-app' },
- *       products: { appId: 'my-app' },
- *       crm: { appId: 'my-app' },
+ *       authentication: { apiKey: 'my-api-key' },
+ *       search: { apiKey: 'my-api-key' },
+ *       products: { apiKey: 'my-api-key' },
+ *       crm: { apiKey: 'my-api-key' },
  *     }),
  *   ],
  * };
@@ -172,7 +172,7 @@ export function provide23Blocks(config: Provide23BlocksConfig): EnvironmentProvi
  *   providers: [
  *     ...get23BlocksProviders({
  *       transport,
- *       authentication: { appId: 'my-app' },
+ *       authentication: { apiKey: 'my-api-key' },
  *     }),
  *   ],
  * })

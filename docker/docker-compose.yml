@@ -1,0 +1,79 @@
+# Docker Compose for SDK Integration Testing
+#
+# Usage:
+#   docker-compose up -d           # Start with base seed data
+#   SEED_LEVEL=full docker-compose up -d  # Start with full seed data
+#   docker-compose down -v         # Stop and remove volumes
+#
+# Environment variables:
+#   API_IMAGE     - Docker image for the API (default: 23blocks/api)
+#   API_VERSION   - Image tag (default: latest)
+#   SEED_LEVEL    - base or full (default: base)
+
+version: '3.8'
+
+services:
+  api:
+    image: ${API_IMAGE:-23blocks/api}:${API_VERSION:-latest}
+    container_name: 23blocks-api-test
+    ports:
+      - "3000:3000"
+    environment:
+      - RAILS_ENV=test
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/blocks_test
+      - REDIS_URL=redis://redis:6379
+      - SECRET_KEY_BASE=test-secret-key-for-ci-testing-only-not-for-production
+      - APP_ID=test-app-id
+      - LOG_LEVEL=warn
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 30s
+    networks:
+      - test-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: 23blocks-db-test
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: blocks_test
+    volumes:
+      - ./db/seeds/${SEED_LEVEL:-base}.sql:/docker-entrypoint-initdb.d/01-seeds.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d blocks_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"
+    networks:
+      - test-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: 23blocks-redis-test
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
+
+volumes:
+  postgres-data:

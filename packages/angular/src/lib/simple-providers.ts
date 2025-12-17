@@ -109,7 +109,7 @@ export interface ProviderConfig {
    * @example
    * ```typescript
    * provideBlocks23({
-   *   appId: 'your-app-id',
+   *   apiKey: 'your-api-key',
    *   urls: {
    *     authentication: 'https://gateway.23blocks.com',
    *     crm: 'https://crm.23blocks.com',
@@ -121,9 +121,9 @@ export interface ProviderConfig {
   urls: ServiceUrls;
 
   /**
-   * Application ID
+   * API Key for authenticating with 23blocks services
    */
-  appId: string;
+  apiKey: string;
 
   /**
    * Tenant ID (optional, for multi-tenant setups)
@@ -184,10 +184,10 @@ export interface TokenManagerService {
 }
 
 /**
- * Generate storage key scoped to app and tenant
+ * Generate storage key scoped to API key and tenant
  */
-function getStorageKey(type: 'access' | 'refresh', appId: string, tenantId?: string): string {
-  const scope = tenantId ? `${appId}_${tenantId}` : appId;
+function getStorageKey(type: 'access' | 'refresh', apiKey: string, tenantId?: string): string {
+  const scope = tenantId ? `${apiKey}_${tenantId}` : apiKey;
   return `23blocks_${scope}_${type}_token`;
 }
 
@@ -211,14 +211,14 @@ class MemoryStorage {
  * Create a token manager with scoped storage keys and cross-tab sync
  */
 function createTokenManager(
-  appId: string,
+  apiKey: string,
   storageType: StorageType,
   tenantId?: string
 ): TokenManagerService {
   const isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
 
-  const accessTokenKey = getStorageKey('access', appId, tenantId);
-  const refreshTokenKey = getStorageKey('refresh', appId, tenantId);
+  const accessTokenKey = getStorageKey('access', apiKey, tenantId);
+  const refreshTokenKey = getStorageKey('refresh', apiKey, tenantId);
 
   let storage: Storage | MemoryStorage;
   if (!isBrowser) {
@@ -308,7 +308,7 @@ function createTransportWithAuth(
     headers: () => {
       const headers: Record<string, string> = {
         ...config.headers,
-        'x-api-key': config.appId,
+        'api-key': config.apiKey,
       };
 
       if (config.tenantId) {
@@ -346,7 +346,7 @@ function createTransportWithAuth(
  * export const appConfig: ApplicationConfig = {
  *   providers: [
  *     provideBlocks23({
- *       appId: 'your-app-id',
+ *       apiKey: 'your-api-key',
  *       urls: {
  *         authentication: 'https://gateway.23blocks.com',
  *         crm: 'https://crm.23blocks.com',
@@ -362,7 +362,7 @@ function createTransportWithAuth(
  * export const appConfig: ApplicationConfig = {
  *   providers: [
  *     provideBlocks23({
- *       appId: 'your-app-id',
+ *       apiKey: 'your-api-key',
  *       authMode: 'cookie',
  *       urls: {
  *         authentication: 'https://gateway.23blocks.com',
@@ -375,7 +375,7 @@ function createTransportWithAuth(
  */
 export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
   // Block config for all services
-  const blockConfig = { appId: config.appId, tenantId: config.tenantId };
+  const blockConfig = { apiKey: config.apiKey, tenantId: config.tenantId };
 
   // Helper to create transport provider for a service URL
   const createTransportProvider = (
@@ -399,7 +399,7 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
       provide: TOKEN_MANAGER,
       useFactory: () => {
         const storage = config.storage ?? 'localStorage';
-        return createTokenManager(config.appId, storage, config.tenantId);
+        return createTokenManager(config.apiKey, storage, config.tenantId);
       },
     },
 
@@ -485,7 +485,7 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
  * @NgModule({
  *   providers: [
  *     ...getBlocks23Providers({
- *       appId: 'your-app-id',
+ *       apiKey: 'your-api-key',
  *       urls: {
  *         authentication: 'https://gateway.23blocks.com',
  *         crm: 'https://crm.23blocks.com',
@@ -498,7 +498,7 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
  */
 export function getBlocks23Providers(config: ProviderConfig): Provider[] {
   // Block config for all services
-  const blockConfig = { appId: config.appId, tenantId: config.tenantId };
+  const blockConfig = { apiKey: config.apiKey, tenantId: config.tenantId };
 
   // Helper to create transport provider for a service URL
   const createTransportProvider = (
@@ -522,7 +522,7 @@ export function getBlocks23Providers(config: ProviderConfig): Provider[] {
       provide: TOKEN_MANAGER,
       useFactory: () => {
         const storage = config.storage ?? 'localStorage';
-        return createTokenManager(config.appId, storage, config.tenantId);
+        return createTokenManager(config.apiKey, storage, config.tenantId);
       },
     },
 

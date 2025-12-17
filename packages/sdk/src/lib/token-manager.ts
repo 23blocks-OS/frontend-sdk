@@ -8,10 +8,10 @@ export type StorageType = 'localStorage' | 'sessionStorage' | 'memory';
  */
 export interface TokenManagerConfig {
   /**
-   * Application ID - used to scope token storage
+   * API Key - used to scope token storage
    * This ensures multiple apps on the same domain don't conflict
    */
-  appId: string;
+  apiKey: string;
 
   /**
    * Tenant ID (optional) - further scopes token storage for multi-tenant apps
@@ -57,10 +57,10 @@ export interface TokenManager {
 }
 
 /**
- * Generate storage key scoped to app and tenant
+ * Generate storage key scoped to API key and tenant
  */
-function getStorageKey(type: 'access' | 'refresh', appId: string, tenantId?: string): string {
-  const scope = tenantId ? `${appId}_${tenantId}` : appId;
+function getStorageKey(type: 'access' | 'refresh', apiKey: string, tenantId?: string): string {
+  const scope = tenantId ? `${apiKey}_${tenantId}` : apiKey;
   return `23blocks_${scope}_${type}_token`;
 }
 
@@ -114,13 +114,13 @@ function getStorage(type: StorageType): Storage | MemoryStorage {
 /**
  * Create a token manager instance
  *
- * @param config - Token manager configuration including appId for scoped storage
+ * @param config - Token manager configuration including apiKey for scoped storage
  * @returns A TokenManager instance
  *
  * @example
  * ```typescript
  * const tokenManager = createTokenManager({
- *   appId: 'my-app',
+ *   apiKey: 'my-api-key',
  *   storage: 'localStorage',
  * });
  *
@@ -140,11 +140,11 @@ function getStorage(type: StorageType): Storage | MemoryStorage {
  * ```
  */
 export function createTokenManager(config: TokenManagerConfig): TokenManager {
-  const { appId, tenantId, storage: storageType = 'localStorage' } = config;
+  const { apiKey, tenantId, storage: storageType = 'localStorage' } = config;
   const storage = getStorage(storageType);
 
-  const accessTokenKey = getStorageKey('access', appId, tenantId);
-  const refreshTokenKey = getStorageKey('refresh', appId, tenantId);
+  const accessTokenKey = getStorageKey('access', apiKey, tenantId);
+  const refreshTokenKey = getStorageKey('refresh', apiKey, tenantId);
 
   // Track storage event listeners for cleanup
   const listeners: Set<() => void> = new Set();

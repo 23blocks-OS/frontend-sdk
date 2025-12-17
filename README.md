@@ -24,8 +24,8 @@ import { create23BlocksClient } from '@23blocks/sdk';
 
 // Create client - that's it!
 const client = create23BlocksClient({
-  baseUrl: 'https://api.yourapp.com',
-  appId: 'your-app-id',
+  urls: { authentication: 'https://api.yourapp.com' },
+  apiKey: 'your-api-key',
 });
 
 // Sign in - tokens are stored automatically

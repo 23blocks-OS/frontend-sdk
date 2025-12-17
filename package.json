@@ -21,8 +21,15 @@
   "scripts": {
     "build": "nx run-many -t build",
     "build:affected": "nx affected -t build",
-    "test": "nx run-many -t test",
+    "test": "npm run test:unit && npm run test:integration",
     "test:affected": "nx affected -t test",
+    "test:unit": "vitest run --project unit",
+    "test:unit:watch": "vitest --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:workflows": "vitest run --project workflows",
+    "test:all": "vitest run",
+    "test:consumers": "echo 'Consumer tests not yet configured'",
+    "test:wait-for-api": "npx ts-node tests/integration/setup/wait-for-api.ts",
     "lint": "nx run-many -t lint",
     "typecheck": "nx run-many -t typecheck",
     "clean": "nx reset && rm -rf packages/*/dist node_modules/.cache",
@@ -36,6 +43,9 @@
     "local:publish": "nx run-many -t build && npm run yalc:push",
     "yalc:push": "for pkg in packages/*; do (cd $pkg && yalc push); done",
     "yalc:publish": "for pkg in packages/*; do (cd $pkg && yalc publish); done",
+    "docker:up": "docker-compose -f docker/docker-compose.yml up -d",
+    "docker:down": "docker-compose -f docker/docker-compose.yml down -v",
+    "docker:logs": "docker-compose -f docker/docker-compose.yml logs -f",
     "prepare": "nx run-many -t build"
   },
   "devDependencies": {

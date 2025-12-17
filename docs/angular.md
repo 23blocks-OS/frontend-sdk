@@ -22,8 +22,10 @@ import { provideBlocks23 } from '@23blocks/angular';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBlocks23({
-      baseUrl: 'https://api.yourapp.com',
-      appId: 'your-app-id',
+      apiKey: 'your-api-key',
+      urls: {
+        authentication: 'https://api.yourapp.com',
+      },
     }),
   ],
 };
@@ -105,8 +107,8 @@ export class LoginComponent {
 
 ```typescript
 provideBlocks23({
-  baseUrl: 'https://api.yourapp.com',
-  appId: 'your-app-id',
+  apiKey: 'your-api-key',
+  urls: { authentication: 'https://api.yourapp.com' },
   // authMode: 'token', // default
   // storage: 'localStorage', // 'sessionStorage' | 'memory'
 })
@@ -116,8 +118,8 @@ provideBlocks23({
 
 ```typescript
 provideBlocks23({
-  baseUrl: 'https://api.yourapp.com',
-  appId: 'your-app-id',
+  apiKey: 'your-api-key',
+  urls: { authentication: 'https://api.yourapp.com' },
   authMode: 'cookie',
 })
 ```
@@ -126,8 +128,8 @@ provideBlocks23({
 
 ```typescript
 provideBlocks23({
-  baseUrl: 'https://api.yourapp.com',
-  appId: 'your-app-id',
+  apiKey: 'your-api-key',
+  urls: { authentication: 'https://api.yourapp.com' },
   tenantId: 'tenant-123',
 })
 ```
@@ -142,8 +144,8 @@ import { getBlocks23Providers } from '@23blocks/angular';
 @NgModule({
   providers: [
     ...getBlocks23Providers({
-      baseUrl: 'https://api.yourapp.com',
-      appId: 'your-app-id',
+      apiKey: 'your-api-key',
+      urls: { authentication: 'https://api.yourapp.com' },
     }),
   ],
 })
@@ -180,8 +182,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provide23Blocks({
       transport,
-      authentication: { appId: 'your-app-id' },
-      search: { appId: 'your-app-id' },
+      authentication: { apiKey: 'your-api-key' },
+      search: { apiKey: 'your-api-key' },
       // Add more blocks as needed
     }),
   ],
@@ -401,7 +403,7 @@ import { provide23Blocks } from '@23blocks/angular';
   providers: [
     provide23Blocks({
       transport: existingTransport,
-      products: { appId: 'feature-specific-app-id' },
+      products: { apiKey: 'feature-specific-api-key' },
     }),
   ],
 })

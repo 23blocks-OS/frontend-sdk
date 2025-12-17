@@ -16,8 +16,8 @@ The simplest way to use the SDK with automatic token management:
 import { create23BlocksClient } from '@23blocks/sdk';
 
 const client = create23BlocksClient({
-  baseUrl: 'https://api.yourapp.com',
-  appId: 'your-app-id',
+  urls: { authentication: 'https://api.yourapp.com' },
+  apiKey: 'your-api-key',
 });
 
 // Sign in - tokens are stored automatically
@@ -47,8 +47,8 @@ Tokens are stored in localStorage and attached to requests automatically:
 
 ```typescript
 const client = create23BlocksClient({
-  baseUrl: 'https://api.yourapp.com',
-  appId: 'your-app-id',
+  urls: { authentication: 'https://api.yourapp.com' },
+  apiKey: 'your-api-key',
   // authMode: 'token', // default
   // storage: 'localStorage', // 'sessionStorage' | 'memory'
 });
@@ -60,8 +60,8 @@ Backend manages authentication via httpOnly cookies:
 
 ```typescript
 const client = create23BlocksClient({
-  baseUrl: 'https://api.yourapp.com',
-  appId: 'your-app-id',
+  urls: { authentication: 'https://api.yourapp.com' },
+  apiKey: 'your-api-key',
   authMode: 'cookie',
 });
 
@@ -78,8 +78,8 @@ For server-side rendering, use memory storage and pass tokens manually:
 
 ```typescript
 const client = create23BlocksClient({
-  baseUrl: 'https://api.yourapp.com',
-  appId: 'your-app-id',
+  urls: { authentication: 'https://api.yourapp.com' },
+  apiKey: 'your-api-key',
   storage: 'memory',
   headers: {
     Authorization: `Bearer ${tokenFromRequest}`,
@@ -91,8 +91,8 @@ const client = create23BlocksClient({
 
 ```typescript
 const client = create23BlocksClient({
-  baseUrl: 'https://api.yourapp.com',
-  appId: 'your-app-id',
+  urls: { authentication: 'https://api.yourapp.com' },
+  apiKey: 'your-api-key',
   tenantId: 'tenant-123',
 });
 ```
@@ -145,11 +145,11 @@ import { createAuthenticationBlock } from '@23blocks/block-authentication';
 import { createSearchBlock } from '@23blocks/block-search';
 
 const auth = createAuthenticationBlock(transport, {
-  appId: 'your-app-id',
+  apiKey: 'your-api-key',
 });
 
 const search = createSearchBlock(transport, {
-  appId: 'your-app-id',
+  apiKey: 'your-api-key',
 });
 ```
 
@@ -223,7 +223,7 @@ const transport = createHttpTransport({
 ### Sign In
 
 ```typescript
-const auth = createAuthenticationBlock(transport, { appId: 'your-app-id' });
+const auth = createAuthenticationBlock(transport, { apiKey: 'your-api-key' });
 
 try {
   const { user, accessToken, refreshToken } = await auth.auth.signIn({
@@ -294,7 +294,7 @@ console.log(user.email, user.firstName, user.lastName);
 ### Basic Search
 
 ```typescript
-const search = createSearchBlock(transport, { appId: 'your-app-id' });
+const search = createSearchBlock(transport, { apiKey: 'your-api-key' });
 
 const results = await search.search.search({
   query: 'product name',
@@ -343,7 +343,7 @@ await search.favorites.delete('favorite-id');
 ```typescript
 import { createProductsBlock } from '@23blocks/block-products';
 
-const products = createProductsBlock(transport, { appId: 'your-app-id' });
+const products = createProductsBlock(transport, { apiKey: 'your-api-key' });
 
 // List products
 const { data, meta } = await products.products.list({
@@ -440,7 +440,7 @@ const transport = createHttpTransport({
   },
 });
 
-const config = { appId: import.meta.env.VITE_APP_ID };
+const config = { apiKey: import.meta.env.VITE_API_KEY };
 
 export const api = {
   auth: createAuthenticationBlock(transport, config),
@@ -504,7 +504,7 @@ const transport = createHttpTransport({
 });
 
 const auth = createAuthenticationBlock(transport, {
-  appId: process.env.APP_ID!,
+  apiKey: process.env.API_KEY!,
 });
 
 // Use in your server routes

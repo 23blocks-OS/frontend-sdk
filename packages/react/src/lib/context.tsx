@@ -101,10 +101,10 @@ export interface Blocks23ProviderProps {
  *   return (
  *     <Blocks23Provider
  *       transport={transport}
- *       authentication={{ appId: 'my-app' }}
- *       search={{ appId: 'my-app' }}
- *       products={{ appId: 'my-app' }}
- *       crm={{ appId: 'my-app' }}
+ *       authentication={{ apiKey: 'my-api-key' }}
+ *       search={{ apiKey: 'my-api-key' }}
+ *       products={{ apiKey: 'my-api-key' }}
+ *       crm={{ apiKey: 'my-api-key' }}
  *     >
  *       <MyApp />
  *     </Blocks23Provider>

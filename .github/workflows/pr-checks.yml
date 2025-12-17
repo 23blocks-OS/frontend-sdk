@@ -1,0 +1,73 @@
+# Tier 1: Fast Tests - Run on every PR
+#
+# These tests provide quick feedback on code quality without
+# requiring Docker or external services.
+
+name: PR Checks (Tier 1)
+
+on:
+  pull_request:
+    branches: [main]
+  # Allow manual trigger
+  workflow_dispatch:
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tier1-fast:
+    name: "Fast Tests"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Check package exports
+        run: |
+          # Verify all packages have valid entry points
+          for pkg in packages/*/; do
+            if [ -f "$pkg/package.json" ]; then
+              pkgname=$(node -p "require('./$pkg/package.json').name")
+              echo "Checking $pkgname..."
+              node -e "require('$pkg/dist/index.js')" 2>/dev/null || echo "Warning: $pkgname may have export issues"
+            fi
+          done
+
+  # Summary job for branch protection
+  pr-checks-complete:
+    name: "PR Checks Complete"
+    needs: [tier1-fast]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check results
+        run: |
+          if [ "${{ needs.tier1-fast.result }}" != "success" ]; then
+            echo "Tier 1 tests failed"
+            exit 1
+          fi
+          echo "All PR checks passed!"

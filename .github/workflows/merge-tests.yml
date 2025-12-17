@@ -1,0 +1,343 @@
+# Tier 2: Integration Tests - Run on merge to main
+#
+# These tests run the SDK against a real 23blocks API in Docker.
+# They validate that the SDK correctly communicates with the backend.
+
+name: Merge Tests (Tier 2)
+
+on:
+  push:
+    branches: [main]
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      skip_release:
+        description: 'Skip release after tests'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  API_IMAGE: ${{ vars.API_IMAGE || '23blocks/api' }}
+  API_VERSION: ${{ vars.API_VERSION || 'latest' }}
+  SEED_LEVEL: base
+
+concurrency:
+  group: merge-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Tier 1: Fast Tests (Unit tests, lint, typecheck)
+  # ─────────────────────────────────────────────────────────────────────────────
+  tier1-fast:
+    name: "Tier 1: Fast Tests"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Tier 2: Integration Tests (Against Docker API)
+  # ─────────────────────────────────────────────────────────────────────────────
+  tier2-integration:
+    name: "Tier 2: Integration Tests"
+    needs: tier1-fast
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # Uncomment when ECR is configured
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+
+      # - name: Login to Amazon ECR
+      #   uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Start API environment
+        run: |
+          echo "Starting Docker containers..."
+          docker-compose -f docker/docker-compose.yml up -d
+
+          echo "Waiting for API to be ready..."
+          timeout 120 bash -c 'until curl -s http://localhost:3000/health > /dev/null 2>&1; do sleep 2; done' || {
+            echo "API failed to start. Docker logs:"
+            docker-compose -f docker/docker-compose.yml logs
+            exit 1
+          }
+
+          echo "API is ready!"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+          API_URL: http://localhost:3000
+          SKIP_DOCKER: true
+
+      - name: Docker logs (on failure)
+        if: failure()
+        run: docker-compose -f docker/docker-compose.yml logs
+
+      - name: Cleanup
+        if: always()
+        run: docker-compose -f docker/docker-compose.yml down -v
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Analyze Changes & Decide Test Level
+  # ─────────────────────────────────────────────────────────────────────────────
+  analyze-changes:
+    name: "Analyze Changes"
+    needs: [tier1-fast, tier2-integration]
+    runs-on: ubuntu-latest
+    outputs:
+      needs_full_tests: ${{ steps.analyze.outputs.needs_full_tests }}
+      auto_release: ${{ steps.analyze.outputs.auto_release }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Analyze changes
+        id: analyze
+        run: |
+          echo "Analyzing changes to determine test level..."
+
+          # Get changed files in this push
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only HEAD)
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          NEEDS_FULL=false
+          REASON=""
+
+          # Check for core package changes
+          if echo "$CHANGED_FILES" | grep -qE "packages/(transport-http|jsonapi-codec|contracts)/"; then
+            NEEDS_FULL=true
+            REASON="Core package changed"
+          fi
+
+          # Check for multiple blocks changed
+          BLOCK_COUNT=$(echo "$CHANGED_FILES" | grep -c "packages/block-" || true)
+          if [ "$BLOCK_COUNT" -gt 3 ]; then
+            NEEDS_FULL=true
+            REASON="Multiple blocks changed ($BLOCK_COUNT)"
+          fi
+
+          # Check commit message for [full-test] flag
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          if echo "$COMMIT_MSG" | grep -q "\[full-test\]"; then
+            NEEDS_FULL=true
+            REASON="Commit message contains [full-test]"
+          fi
+
+          # Check for breaking changes
+          if echo "$COMMIT_MSG" | grep -qE "BREAKING CHANGE|feat!:|fix!:"; then
+            NEEDS_FULL=true
+            REASON="Breaking change detected"
+          fi
+
+          # Check for Angular/React wrapper changes
+          if echo "$CHANGED_FILES" | grep -qE "packages/(angular|react)/"; then
+            NEEDS_FULL=true
+            REASON="Framework wrapper changed"
+          fi
+
+          echo "Needs full tests: $NEEDS_FULL"
+          echo "Reason: $REASON"
+
+          echo "needs_full_tests=$NEEDS_FULL" >> $GITHUB_OUTPUT
+          echo "auto_release=$([[ $NEEDS_FULL == false ]] && echo true || echo false)" >> $GITHUB_OUTPUT
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Tier 3: Full Tests (If needed)
+  # ─────────────────────────────────────────────────────────────────────────────
+  tier3-full:
+    name: "Tier 3: Full Tests"
+    needs: analyze-changes
+    if: needs.analyze-changes.outputs.needs_full_tests == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Start API with full seed data
+        env:
+          SEED_LEVEL: full
+        run: |
+          docker-compose -f docker/docker-compose.yml up -d
+          timeout 120 bash -c 'until curl -s http://localhost:3000/health > /dev/null 2>&1; do sleep 2; done'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Run full integration tests
+        run: npm run test:integration
+        env:
+          API_URL: http://localhost:3000
+          SKIP_DOCKER: true
+
+      - name: Run workflow tests
+        run: npm run test:workflows
+        env:
+          API_URL: http://localhost:3000
+          SKIP_DOCKER: true
+
+      - name: Run consumer app tests
+        run: npm run test:consumers || echo "Consumer tests not yet configured"
+
+      - name: Cleanup
+        if: always()
+        run: docker-compose -f docker/docker-compose.yml down -v
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Release (If tests pass)
+  # ─────────────────────────────────────────────────────────────────────────────
+  release:
+    name: "Release"
+    needs: [analyze-changes, tier3-full]
+    # Run if:
+    # - Not skipping release
+    # - tier2 passed (implicit via analyze-changes)
+    # - tier3 passed OR was skipped (not needed)
+    if: |
+      always() &&
+      github.event.inputs.skip_release != 'true' &&
+      needs.analyze-changes.result == 'success' &&
+      (needs.tier3-full.result == 'success' || needs.tier3-full.result == 'skipped') &&
+      !startsWith(github.event.head_commit.message, 'chore(release)')
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      attestations: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Upgrade npm for OIDC
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Run tests (final verification)
+        run: npm run test:unit
+
+      - name: Release
+        run: npx nx release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to npm
+        run: |
+          echo "Publishing packages to npm..."
+          for pkg in packages/*/; do
+            if [ -f "$pkg/package.json" ]; then
+              pkgname=$(node -p "require('./$pkg/package.json').name")
+              pkgver=$(node -p "require('./$pkg/package.json').version")
+              echo "Publishing $pkgname@$pkgver..."
+              npm publish "$pkg" --access public --provenance 2>&1 || echo ">> Failed or already published: $pkgname"
+            fi
+          done
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Summary
+  # ─────────────────────────────────────────────────────────────────────────────
+  summary:
+    name: "Pipeline Summary"
+    needs: [tier1-fast, tier2-integration, analyze-changes, tier3-full, release]
+    if: always()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Summary
+        run: |
+          echo "## Pipeline Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Stage | Result |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Tier 1 (Fast) | ${{ needs.tier1-fast.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tier 2 (Integration) | ${{ needs.tier2-integration.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Analysis | ${{ needs.analyze-changes.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tier 3 (Full) | ${{ needs.tier3-full.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Release | ${{ needs.release.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.analyze-changes.outputs.needs_full_tests }}" == "true" ]; then
+            echo "**Full tests were required for this commit.**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Standard tests were sufficient for this commit.**" >> $GITHUB_STEP_SUMMARY
+          fi

@@ -4,8 +4,8 @@ import type { Transport } from './transport.js';
  * Base configuration for all blocks
  */
 export interface BlockConfig {
-  /** Application ID */
-  appId: string;
+  /** API Key for authenticating with 23blocks services */
+  apiKey: string;
   /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }

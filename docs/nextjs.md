@@ -25,8 +25,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <SimpleBlocks23Provider
-          baseUrl={process.env.NEXT_PUBLIC_API_URL!}
-          appId={process.env.NEXT_PUBLIC_APP_ID!}
+          apiKey={process.env.NEXT_PUBLIC_API_KEY!}
+          urls={{ authentication: process.env.NEXT_PUBLIC_API_URL! }}
         >
           {children}
         </SimpleBlocks23Provider>
@@ -118,8 +118,8 @@ export function ProductList() {
 
 ```tsx
 <SimpleBlocks23Provider
-  baseUrl="https://api.yourapp.com"
-  appId="your-app-id"
+  apiKey="your-api-key"
+  urls={{ authentication: 'https://api.yourapp.com' }}
   // authMode="token" // default
   // storage="localStorage" // 'sessionStorage' | 'memory'
 >
@@ -129,8 +129,8 @@ export function ProductList() {
 
 ```tsx
 <SimpleBlocks23Provider
-  baseUrl="https://api.yourapp.com"
-  appId="your-app-id"
+  apiKey="your-api-key"
+  urls={{ authentication: 'https://api.yourapp.com' }}
   authMode="cookie"
 >
 ```
@@ -139,8 +139,8 @@ export function ProductList() {
 
 ```tsx
 <SimpleBlocks23Provider
-  baseUrl="https://api.yourapp.com"
-  appId="your-app-id"
+  apiKey="your-api-key"
+  urls={{ authentication: 'https://api.yourapp.com' }}
   tenantId="tenant-123"
 >
 ```
@@ -179,8 +179,8 @@ export function BlocksProvider({ children }: { children: ReactNode }) {
   return (
     <Blocks23Provider
       transport={transport}
-      authentication={{ appId: process.env.NEXT_PUBLIC_APP_ID! }}
-      search={{ appId: process.env.NEXT_PUBLIC_APP_ID! }}
+      authentication={{ apiKey: process.env.NEXT_PUBLIC_API_KEY! }}
+      search={{ apiKey: process.env.NEXT_PUBLIC_API_KEY! }}
       // Add more blocks as needed
     >
       {children}
@@ -453,7 +453,7 @@ async function getProducts() {
   });
 
   const products = createProductsBlock(transport, {
-    appId: process.env.APP_ID!,
+    apiKey: process.env.API_KEY!,
   });
 
   return products.products.list({ limit: 20 });
@@ -503,7 +503,7 @@ const handleSubmit = async () => {
 ```env
 # .env.local
 NEXT_PUBLIC_API_URL=https://api.yourapp.com
-NEXT_PUBLIC_APP_ID=your-app-id
+NEXT_PUBLIC_API_KEY=your-api-key
 
 # Server-side only
 API_KEY=your-secret-api-key

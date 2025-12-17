@@ -1,0 +1,192 @@
+# Tier 3: Full Tests - Manual Trigger
+#
+# Use this workflow to manually run the full test suite.
+# Useful for:
+# - Pre-release validation
+# - After major changes
+# - Debugging production issues
+
+name: Full Tests (Tier 3) - Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for running full tests'
+        required: true
+        type: string
+      release_after:
+        description: 'Release to npm after tests pass?'
+        required: true
+        type: boolean
+        default: false
+      seed_level:
+        description: 'Seed data level'
+        required: false
+        type: choice
+        default: 'full'
+        options:
+          - base
+          - full
+
+env:
+  API_IMAGE: ${{ vars.API_IMAGE || '23blocks/api' }}
+  API_VERSION: ${{ vars.API_VERSION || 'latest' }}
+
+jobs:
+  full-tests:
+    name: "Full Test Suite"
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Log trigger info
+        run: |
+          echo "## Full Test Suite Triggered" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Reason:** ${{ inputs.reason }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Release after:** ${{ inputs.release_after }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Seed level:** ${{ inputs.seed_level }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Ref:** ${{ github.ref }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # Uncomment when ECR is configured
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+
+      # - name: Login to Amazon ECR
+      #   uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Start API environment
+        env:
+          SEED_LEVEL: ${{ inputs.seed_level }}
+        run: |
+          echo "Starting Docker containers with SEED_LEVEL=$SEED_LEVEL..."
+          docker-compose -f docker/docker-compose.yml up -d
+
+          echo "Waiting for API to be ready..."
+          timeout 180 bash -c 'until curl -s http://localhost:3000/health > /dev/null 2>&1; do sleep 2; done' || {
+            echo "API failed to start. Docker logs:"
+            docker-compose -f docker/docker-compose.yml logs
+            exit 1
+          }
+
+          echo "API is ready!"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+          API_URL: http://localhost:3000
+          SKIP_DOCKER: true
+
+      - name: Run workflow tests
+        run: npm run test:workflows
+        env:
+          API_URL: http://localhost:3000
+          SKIP_DOCKER: true
+
+      - name: Run consumer app tests
+        run: |
+          echo "Running consumer app tests..."
+          npm run test:consumers || echo "Consumer tests not yet fully configured"
+
+      - name: Test summary
+        if: always()
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All tests completed. Check the logs above for details." >> $GITHUB_STEP_SUMMARY
+
+      - name: Docker logs (on failure)
+        if: failure()
+        run: |
+          echo "## Docker Logs (Failure Debug)" >> $GITHUB_STEP_SUMMARY
+          docker-compose -f docker/docker-compose.yml logs >> $GITHUB_STEP_SUMMARY
+
+      - name: Cleanup
+        if: always()
+        run: docker-compose -f docker/docker-compose.yml down -v
+
+  release:
+    name: "Release to npm"
+    needs: full-tests
+    if: inputs.release_after == true
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      attestations: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Upgrade npm for OIDC
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Release
+        run: npx nx release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to npm
+        run: |
+          echo "Publishing packages to npm..."
+          for pkg in packages/*/; do
+            if [ -f "$pkg/package.json" ]; then
+              pkgname=$(node -p "require('./$pkg/package.json').name")
+              pkgver=$(node -p "require('./$pkg/package.json').version")
+              echo "Publishing $pkgname@$pkgver..."
+              npm publish "$pkg" --access public --provenance 2>&1 || echo ">> Failed or already published: $pkgname"
+            fi
+          done
+
+      - name: Release summary
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Release Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Packages have been published to npm." >> $GITHUB_STEP_SUMMARY

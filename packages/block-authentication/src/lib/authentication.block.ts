@@ -54,8 +54,8 @@ import { createTenantsService, type TenantsService } from './services/tenants.se
  * Configuration for the Authentication block
  */
 export interface AuthenticationBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
+  /** API Key for authenticating with 23blocks services */
+  apiKey: string;
   /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
@@ -202,11 +202,11 @@ export interface AuthenticationBlock {
  *   baseUrl: 'https://api.example.com',
  *   headers: () => ({
  *     'Authorization': `Bearer ${getToken()}`,
- *     'x-api-key': 'your-app-id',
+ *     'api-key': 'your-api-key',
  *   }),
  * });
  *
- * const auth = createAuthenticationBlock(transport, { appId: 'your-app-id' });
+ * const auth = createAuthenticationBlock(transport, { apiKey: 'your-api-key' });
  *
  * // Sign in
  * const { user, accessToken } = await auth.auth.signIn({
