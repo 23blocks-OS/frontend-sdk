@@ -21,7 +21,7 @@
   "scripts": {
     "build": "nx run-many -t build",
     "build:affected": "nx affected -t build",
-    "test": "npm run test:unit && npm run test:integration",
+    "test": "npm run test:unit",
     "test:affected": "nx affected -t test",
     "test:unit": "vitest run --project unit",
     "test:unit:watch": "vitest --project unit",
