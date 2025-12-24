@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useCallback, useEffect, useState, useRef, type ReactNode } from 'react';
 import { createHttpTransport } from '@23blocks/transport-http';
 import type { Transport } from '@23blocks/contracts';
-import { createAuthenticationBlock, type AuthenticationBlock, type SignInRequest, type SignInResponse, type SignUpRequest, type SignUpResponse } from '@23blocks/block-authentication';
+import { createAuthenticationBlock, type AuthenticationBlock, type SignInRequest, type SignInResponse, type SignUpRequest, type SignUpResponse, type User, type UpdateProfileRequest } from '@23blocks/block-authentication';
 import { createSearchBlock, type SearchBlock } from '@23blocks/block-search';
 import { createProductsBlock, type ProductsBlock } from '@23blocks/block-products';
 import { createCrmBlock, type CrmBlock } from '@23blocks/block-crm';
@@ -992,6 +992,153 @@ export function useAuth() {
 
     // Full block access for advanced usage
     authentication: context.authentication,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// useUser Hook Types
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Return type for the useUser hook
+ */
+export interface UseUserReturn {
+  /** The current authenticated user, null if not loaded yet or not authenticated */
+  user: User | null;
+  /** Whether the user is currently being loaded */
+  loading: boolean;
+  /** Error message if user loading failed */
+  error: string | null;
+  /** Update the current user's profile */
+  updateProfile: (request: Omit<UpdateProfileRequest, 'userId'>) => Promise<User>;
+  /** Refetch the current user from the server */
+  refetch: () => Promise<void>;
+}
+
+/**
+ * Hook to access and manage the current authenticated user's profile.
+ *
+ * This hook automatically fetches the current user when the provider is ready
+ * and provides methods to update the profile and refetch user data.
+ *
+ * @example Basic usage
+ * ```tsx
+ * function ProfilePage() {
+ *   const { user, loading, error } = useUser();
+ *
+ *   if (loading) return <LoadingSpinner />;
+ *   if (error) return <ErrorMessage message={error} />;
+ *   if (!user) return <LoginPrompt />;
+ *
+ *   return (
+ *     <div>
+ *       <h1>Welcome, {user.email}</h1>
+ *       <p>Member since: {new Date(user.createdAt).toLocaleDateString()}</p>
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * @example Updating profile
+ * ```tsx
+ * function EditProfileForm() {
+ *   const { user, updateProfile } = useUser();
+ *   const [name, setName] = useState(user?.name || '');
+ *
+ *   const handleSubmit = async () => {
+ *     await updateProfile({ name });
+ *     alert('Profile updated!');
+ *   };
+ *
+ *   return (
+ *     <form onSubmit={handleSubmit}>
+ *       <input value={name} onChange={e => setName(e.target.value)} />
+ *       <button type="submit">Save</button>
+ *     </form>
+ *   );
+ * }
+ * ```
+ *
+ * @example Refreshing user data
+ * ```tsx
+ * function ProfileHeader() {
+ *   const { user, refetch, loading } = useUser();
+ *
+ *   return (
+ *     <div>
+ *       <span>{user?.email}</span>
+ *       <button onClick={refetch} disabled={loading}>
+ *         Refresh
+ *       </button>
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
+export function useUser(): UseUserReturn {
+  const context = useClient();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Helper to get auth service
+  const getAuth = useCallback(() => {
+    return (context.authentication as AuthenticationBlock).auth;
+  }, [context.authentication]);
+
+  // Fetch current user
+  const fetchUser = useCallback(async () => {
+    // Don't fetch if no token (not authenticated)
+    if (context.authMode === 'token' && !context.isAuthenticated()) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const currentUser = await getAuth().getCurrentUser();
+      setUser(currentUser);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load user');
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [context.authMode, context.isAuthenticated, getAuth]);
+
+  // Fetch user on mount and when ready state changes
+  useEffect(() => {
+    if (context.isReady) {
+      fetchUser();
+    }
+  }, [context.isReady, fetchUser]);
+
+  // Update profile
+  const updateProfile = useCallback(async (request: Omit<UpdateProfileRequest, 'userId'>): Promise<User> => {
+    if (!user) {
+      throw new Error('No user is currently logged in');
+    }
+
+    const authentication = context.authentication as AuthenticationBlock;
+    const updatedUser = await authentication.users.updateProfile(user.id, request as UpdateProfileRequest);
+    setUser(updatedUser);
+    return updatedUser;
+  }, [context.authentication, user]);
+
+  // Refetch user
+  const refetch = useCallback(async () => {
+    await fetchUser();
+  }, [fetchUser]);
+
+  return {
+    user,
+    loading,
+    error,
+    updateProfile,
+    refetch,
   };
 }
 

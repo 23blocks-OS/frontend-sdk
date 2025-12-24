@@ -6,12 +6,15 @@ export {
   Provider,
   useClient,
   useAuth,
+  useUser,
   type ProviderProps,
   type ClientContext,
   type ServiceUrls,
   type AuthMode,
   type StorageType,
   type TokenManager,
+  type AsyncStorageInterface,
+  type UseUserReturn,
 
   // Backward compatibility (deprecated)
   SimpleBlocks23Provider,
