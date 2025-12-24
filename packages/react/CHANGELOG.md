@@ -1,3 +1,14 @@
+## 7.0.2 (2025-12-24)
+
+### 🚀 Features
+
+- **react:** add useUser hook for current user profile management ([a9fa091](https://github.com/23blocks-OS/frontend-sdk/commit/a9fa091))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 7.0.1 (2025-12-24)
 
 ### 🩹 Fixes
