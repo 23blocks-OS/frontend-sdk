@@ -925,7 +925,9 @@ export function useClient(): ClientContext {
  */
 export function useAuth() {
   const context = useClient();
-  const auth = context.authentication.auth;
+
+  // Helper to get auth service - accessing authentication.auth will throw if not configured
+  const getAuth = () => (context.authentication as AuthenticationBlock).auth;
 
   return {
     // Core auth with automatic token management
@@ -942,37 +944,51 @@ export function useAuth() {
     onStorageChange: context.onStorageChange,
     isReady: context.isReady,
 
-    // Password management
-    requestPasswordReset: auth.requestPasswordReset.bind(auth),
-    updatePassword: auth.updatePassword.bind(auth),
+    // Password management (lazily access auth to support SSR)
+    requestPasswordReset: (...args: Parameters<AuthenticationBlock['auth']['requestPasswordReset']>) =>
+      getAuth().requestPasswordReset(...args),
+    updatePassword: (...args: Parameters<AuthenticationBlock['auth']['updatePassword']>) =>
+      getAuth().updatePassword(...args),
 
     // Token refresh
-    refreshToken: auth.refreshToken.bind(auth),
+    refreshToken: (...args: Parameters<AuthenticationBlock['auth']['refreshToken']>) =>
+      getAuth().refreshToken(...args),
 
     // Magic link (passwordless)
-    requestMagicLink: auth.requestMagicLink.bind(auth),
-    verifyMagicLink: auth.verifyMagicLink.bind(auth),
+    requestMagicLink: (...args: Parameters<AuthenticationBlock['auth']['requestMagicLink']>) =>
+      getAuth().requestMagicLink(...args),
+    verifyMagicLink: (...args: Parameters<AuthenticationBlock['auth']['verifyMagicLink']>) =>
+      getAuth().verifyMagicLink(...args),
 
     // Invitations
-    sendInvitation: auth.sendInvitation.bind(auth),
-    acceptInvitation: auth.acceptInvitation.bind(auth),
-    resendInvitation: auth.resendInvitation.bind(auth),
+    sendInvitation: (...args: Parameters<AuthenticationBlock['auth']['sendInvitation']>) =>
+      getAuth().sendInvitation(...args),
+    acceptInvitation: (...args: Parameters<AuthenticationBlock['auth']['acceptInvitation']>) =>
+      getAuth().acceptInvitation(...args),
+    resendInvitation: (...args: Parameters<AuthenticationBlock['auth']['resendInvitation']>) =>
+      getAuth().resendInvitation(...args),
 
     // Email confirmation
-    confirmEmail: auth.confirmEmail.bind(auth),
-    resendConfirmation: auth.resendConfirmation.bind(auth),
+    confirmEmail: (...args: Parameters<AuthenticationBlock['auth']['confirmEmail']>) =>
+      getAuth().confirmEmail(...args),
+    resendConfirmation: (...args: Parameters<AuthenticationBlock['auth']['resendConfirmation']>) =>
+      getAuth().resendConfirmation(...args),
 
     // Validation (pre-registration checks)
-    validateEmail: auth.validateEmail.bind(auth),
-    validateDocument: auth.validateDocument.bind(auth),
+    validateEmail: (...args: Parameters<AuthenticationBlock['auth']['validateEmail']>) =>
+      getAuth().validateEmail(...args),
+    validateDocument: (...args: Parameters<AuthenticationBlock['auth']['validateDocument']>) =>
+      getAuth().validateDocument(...args),
 
     // Account recovery
-    requestAccountRecovery: auth.requestAccountRecovery.bind(auth),
-    completeAccountRecovery: auth.completeAccountRecovery.bind(auth),
+    requestAccountRecovery: (...args: Parameters<AuthenticationBlock['auth']['requestAccountRecovery']>) =>
+      getAuth().requestAccountRecovery(...args),
+    completeAccountRecovery: (...args: Parameters<AuthenticationBlock['auth']['completeAccountRecovery']>) =>
+      getAuth().completeAccountRecovery(...args),
 
     // Token validation
-    validateToken: auth.validateToken.bind(auth),
-    getCurrentUser: auth.getCurrentUser.bind(auth),
+    validateToken: () => getAuth().validateToken(),
+    getCurrentUser: () => getAuth().getCurrentUser(),
 
     // Full block access for advanced usage
     authentication: context.authentication,
