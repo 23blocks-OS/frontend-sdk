@@ -104,6 +104,18 @@ npm run local:publish
 # Then in consumer: yalc add @23blocks/block-authentication
 ```
 
+## API Rules
+
+**IMPORTANT: No PATCH HTTP method allowed.** The 23blocks backend does not support PATCH requests. Always use PUT for update operations. This applies to all services across all blocks.
+
+```typescript
+// ✗ WRONG - PATCH is not allowed
+const response = await transport.patch(`/users/${id}`, { ... });
+
+// ✓ CORRECT - Use PUT for updates
+const response = await transport.put(`/users/${id}`, { ... });
+```
+
 ## Conventional Commits
 
 Use these prefixes for automatic versioning:

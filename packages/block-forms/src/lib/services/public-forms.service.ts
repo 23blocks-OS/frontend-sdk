@@ -32,7 +32,7 @@ export function createPublicFormsService(transport: Transport, _config: { appId:
     },
 
     async draft(urlId: string, data: PublicFormDraft): Promise<PublicFormResponse> {
-      const response = await transport.patch<unknown>(`/${urlId}/forms/public`, {
+      const response = await transport.put<unknown>(`/${urlId}/forms/public`, {
         form_draft: {
           data: data.data,
           payload: data.payload,

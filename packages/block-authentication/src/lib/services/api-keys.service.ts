@@ -137,7 +137,7 @@ export function createApiKeysService(
     },
 
     async update(id: string, request: UpdateApiKeyRequest): Promise<ApiKey> {
-      const response = await transport.patch<{ data: unknown }>(
+      const response = await transport.put<{ data: unknown }>(
         `/api_keys/${id}`,
         {
           api_key: {

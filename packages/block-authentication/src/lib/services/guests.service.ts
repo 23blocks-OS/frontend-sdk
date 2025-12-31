@@ -392,7 +392,7 @@ export function createUserDevicesService(
       id: string,
       request: Partial<RegisterDeviceRequest>
     ): Promise<UserDevice> {
-      const response = await transport.patch<JsonApiDocument>(
+      const response = await transport.put<JsonApiDocument>(
         `/users/devices/${id}`,
         {
           device: {

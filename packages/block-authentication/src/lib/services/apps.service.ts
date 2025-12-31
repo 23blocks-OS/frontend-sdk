@@ -166,7 +166,7 @@ export function createAppsService(
     },
 
     async update(id: string, request: UpdateAppRequest): Promise<App> {
-      const response = await transport.patch<JsonApiDocument>(`/apps/${id}`, {
+      const response = await transport.put<JsonApiDocument>(`/apps/${id}`, {
         app: {
           name: request.name,
           description: request.description,

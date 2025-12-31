@@ -308,7 +308,7 @@ export function createUsersService(
     },
 
     async update(id: string, request: UpdateUserRequest): Promise<User> {
-      const response = await transport.patch<{ data: unknown }>(
+      const response = await transport.put<{ data: unknown }>(
         `/users/${id}`,
         {
           user: {

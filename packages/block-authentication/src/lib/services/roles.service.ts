@@ -148,7 +148,7 @@ export function createRolesService(
     },
 
     async update(id: string, request: UpdateRoleRequest): Promise<Role> {
-      const response = await transport.patch<{ data: unknown }>(
+      const response = await transport.put<{ data: unknown }>(
         `/roles/${id}`,
         {
           role: {
