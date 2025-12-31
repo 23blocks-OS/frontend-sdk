@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/react",
-  "version": "7.0.2",
+  "version": "7.0.3",
   "description": "React bindings for 23blocks SDK - hooks and context providers",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

@@ -1,3 +1,10 @@
+## 6.0.1 (2025-12-31)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 6.0.1
+- Updated @23blocks/block-forms to 3.0.2
+
 # 6.0.0 (2025-12-17)
 
 ### 🩹 Fixes

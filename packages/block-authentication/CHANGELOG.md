@@ -1,3 +1,14 @@
+## 6.0.1 (2025-12-31)
+
+### 🩹 Fixes
+
+- replace PATCH with PUT across all services ([6339334](https://github.com/23blocks-OS/frontend-sdk/commit/6339334))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 # 6.0.0 (2025-12-17)
 
 ### 🩹 Fixes
