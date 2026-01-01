@@ -107,6 +107,8 @@ export function createProductsService(transport: Transport, _config: { appId: st
           tax: data.tax,
           fees: data.fees,
           image_url: data.imageUrl,
+          brand_unique_id: data.brandUniqueId,
+          category_unique_ids: data.categoryUniqueIds,
           enabled: data.enabled,
           status: data.status,
           payload: data.payload,

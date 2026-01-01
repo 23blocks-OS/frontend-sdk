@@ -117,10 +117,17 @@ export interface UpdateProfileRequest {
   middleName?: string;
   lastName?: string;
   gender?: string;
+  ethnicity?: string;
   zipcode?: string;
+  maritalStatus?: string;
+  birthdate?: string;
+  hhi?: string;
+  children?: string;
+  source?: string;
+  email?: string;
   phoneNumber?: string;
+  preferredDevice?: string;
   preferredLanguage?: string;
-  timeZone?: string;
   webSite?: string;
   twitter?: string;
   fb?: string;
@@ -128,6 +135,9 @@ export interface UpdateProfileRequest {
   linkedin?: string;
   youtube?: string;
   blog?: string;
+  networkA?: string;
+  networkB?: string;
+  timeZone?: string;
   payload?: Record<string, unknown>;
 }
 
@@ -333,10 +343,17 @@ export function createUsersService(
             middle_name: request.middleName,
             last_name: request.lastName,
             gender: request.gender,
+            ethnicity: request.ethnicity,
             zipcode: request.zipcode,
+            marital_status: request.maritalStatus,
+            birthdate: request.birthdate,
+            hhi: request.hhi,
+            children: request.children,
+            source: request.source,
+            email: request.email,
             phone_number: request.phoneNumber,
+            preferred_device: request.preferredDevice,
             preferred_language: request.preferredLanguage,
-            time_zone: request.timeZone,
             web_site: request.webSite,
             twitter: request.twitter,
             fb: request.fb,
@@ -344,6 +361,9 @@ export function createUsersService(
             linkedin: request.linkedin,
             youtube: request.youtube,
             blog: request.blog,
+            network_a: request.networkA,
+            network_b: request.networkB,
+            time_zone: request.timeZone,
             payload: request.payload,
           },
         }

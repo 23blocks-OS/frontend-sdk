@@ -181,6 +181,8 @@ export interface UpdateProductRequest {
   tax?: number;
   fees?: number;
   imageUrl?: string;
+  brandUniqueId?: string;
+  categoryUniqueIds?: string[];
   enabled?: boolean;
   status?: EntityStatus;
   payload?: Record<string, unknown>;
