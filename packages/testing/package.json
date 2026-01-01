@@ -1,0 +1,66 @@
+{
+  "name": "@23blocks/testing",
+  "version": "1.0.0",
+  "description": "Testing utilities for the 23blocks SDK - mock transport, fixtures, and assertion helpers",
+  "license": "MIT",
+  "author": "23blocks <hello@23blocks.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/23blocks-OS/frontend-sdk.git",
+    "directory": "packages/testing"
+  },
+  "homepage": "https://github.com/23blocks-OS/frontend-sdk/tree/main/packages/testing",
+  "bugs": {
+    "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
+  },
+  "keywords": [
+    "23blocks",
+    "sdk",
+    "testing",
+    "mock",
+    "fixtures",
+    "jest",
+    "vitest",
+    "typescript"
+  ],
+  "type": "module",
+  "main": "./dist/index.esm.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "default": "./dist/index.esm.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "nx": {
+    "sourceRoot": "packages/testing/src",
+    "targets": {
+      "build": {
+        "executor": "@nx/rollup:rollup",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "options": {
+          "outputPath": "packages/testing/dist",
+          "main": "packages/testing/src/index.ts",
+          "tsConfig": "packages/testing/tsconfig.lib.json",
+          "compiler": "swc",
+          "format": [
+            "esm"
+          ]
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@23blocks/contracts": "^2.0.1",
+    "@swc/helpers": "~0.5.11"
+  }
+}

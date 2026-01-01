@@ -20,6 +20,7 @@ This package provides the foundational types and interfaces used throughout the 
 - **Pagination** - Common pagination types and utilities
 - **Identity** - Base entity interfaces
 - **Block configuration** - Standard block configuration types
+- **Logging** - Logger interface and utilities for debugging
 
 ## Usage
 
@@ -39,6 +40,8 @@ try {
   if (isBlockErrorException(error)) {
     console.log('Error code:', error.code);
     console.log('Message:', error.message);
+    console.log('Request ID:', error.requestId);  // For support tickets
+    console.log('Duration:', error.duration);      // Request timing
 
     switch (error.code) {
       case ErrorCodes.INVALID_CREDENTIALS:
@@ -53,6 +56,54 @@ try {
     }
   }
 }
+```
+
+### Logging
+
+The package provides a standard `Logger` interface and implementations:
+
+```typescript
+import {
+  type Logger,
+  consoleLogger,
+  noopLogger,
+  generateRequestId,
+  maskSensitiveData,
+} from '@23blocks/contracts';
+
+// Use the built-in console logger
+consoleLogger.info('User signed in', { userId: '123' });
+// Output: [23blocks] User signed in { userId: '123' }
+
+// Use noopLogger in production to silence logs
+const logger = process.env.NODE_ENV === 'production' ? noopLogger : consoleLogger;
+
+// Generate unique request IDs
+const requestId = generateRequestId();
+// Output: "req_m5abc_xyz123"
+
+// Mask sensitive data before logging
+const safeData = maskSensitiveData({
+  email: 'user@example.com',
+  password: 'secret123',
+  apiKey: 'sk-xxx',
+});
+// Output: { email: 'user@example.com', password: '***', apiKey: '***' }
+```
+
+### Custom Logger
+
+Implement the `Logger` interface for custom logging solutions:
+
+```typescript
+import type { Logger } from '@23blocks/contracts';
+
+const customLogger: Logger = {
+  debug: (message, meta) => winston.debug(message, meta),
+  info: (message, meta) => winston.info(message, meta),
+  warn: (message, meta) => winston.warn(message, meta),
+  error: (message, meta) => winston.error(message, meta),
+};
 ```
 
 ### Pagination
@@ -82,12 +133,24 @@ const empty = emptyPageResult<MyType>();
 ### Transport Interface
 
 ```typescript
-import type { Transport, RequestConfig, RequestOptions } from '@23blocks/contracts';
+import type { Transport, TransportConfig, Interceptors } from '@23blocks/contracts';
 
-// Implement custom transport
-const myTransport: Transport = {
-  request: async <T>(config: RequestConfig, options?: RequestOptions): Promise<T> => {
-    // Custom implementation
+// Configure transport with new options
+const config: TransportConfig = {
+  baseUrl: 'https://api.example.com',
+  timeout: 30000,
+  debug: true,  // Enable debug logging
+  retry: {
+    maxRetries: 3,
+    initialDelay: 1000,
+    maxDelay: 10000,
+    backoffMultiplier: 2,
+  },
+  interceptors: {
+    onError: (error, context) => {
+      console.error(`Request ${context.requestId} failed`);
+      throw error;
+    },
   },
 };
 ```
@@ -115,6 +178,28 @@ const config: BlockConfig = {
 | `isBlockErrorException` | function | Type guard for BlockErrorException |
 | `ErrorCodes` | const | Standard error code constants |
 | `ErrorCode` | type | Union type of all error codes |
+
+#### BlockError Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `code` | `string` | Error code identifier |
+| `message` | `string` | Human-readable error message |
+| `status` | `number` | HTTP status code |
+| `source` | `string?` | Source pointer (e.g., '/data/attributes/email') |
+| `meta` | `Record<string, unknown>?` | Additional metadata |
+| `requestId` | `string?` | Unique request ID for tracing |
+| `duration` | `number?` | Request duration in milliseconds |
+
+### Logger Types
+
+| Export | Type | Description |
+|--------|------|-------------|
+| `Logger` | interface | Logger interface with debug/info/warn/error |
+| `consoleLogger` | const | Console logger with [23blocks] prefix |
+| `noopLogger` | const | Silent no-op logger |
+| `generateRequestId` | function | Generate unique request IDs |
+| `maskSensitiveData` | function | Mask sensitive values in objects |
 
 ### Pagination Types
 
@@ -148,6 +233,7 @@ const config: BlockConfig = {
 | `HeadersProvider` | type | Function returning headers |
 | `TransportConfig` | interface | Transport configuration |
 | `RetryConfig` | interface | Retry configuration |
+| `Interceptors` | interface | Request/response interceptors |
 
 ### Block Types
 
@@ -165,9 +251,12 @@ This package is written in TypeScript and provides full type definitions. All ty
 ```typescript
 import type {
   Transport,
+  TransportConfig,
   BlockConfig,
   PageResult,
   BlockError,
+  Logger,
+  Interceptors,
 } from '@23blocks/contracts';
 ```
 

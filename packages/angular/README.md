@@ -123,6 +123,9 @@ provideBlocks23({
 
   // Optional: Token storage (default: 'localStorage')
   storage: 'localStorage', // 'localStorage' | 'sessionStorage' | 'memory'
+
+  // Optional: Enable debug logging
+  debug: !environment.production,
 })
 ```
 
@@ -460,12 +463,18 @@ currentUser$ = this.auth.getCurrentUser().pipe(
 
 ### Error Handling
 
+Every error includes a unique request ID for easy debugging and support:
+
 ```typescript
 import { isBlockErrorException, ErrorCodes } from '@23blocks/contracts';
 
 this.auth.signIn({ email, password }).subscribe({
   error: (err) => {
     if (isBlockErrorException(err)) {
+      // Request tracing for debugging
+      console.log('Request ID:', err.requestId);  // "req_m5abc_xyz123"
+      console.log('Duration:', err.duration);      // 145 (ms)
+
       switch (err.code) {
         case ErrorCodes.INVALID_CREDENTIALS:
           this.error = 'Invalid email or password';
@@ -479,6 +488,9 @@ this.auth.signIn({ email, password }).subscribe({
         default:
           this.error = err.message;
       }
+
+      // Send request ID to support for debugging
+      // "Please check request req_m5abc_xyz123"
     }
   },
 });

@@ -12,6 +12,10 @@ export interface BlockError {
   source?: string;
   /** Additional metadata */
   meta?: Record<string, unknown>;
+  /** Unique request ID for tracing and support */
+  requestId?: string;
+  /** Request duration in milliseconds */
+  duration?: number;
 }
 
 /**
@@ -22,6 +26,8 @@ export class BlockErrorException extends Error implements BlockError {
   readonly status: number;
   readonly source?: string;
   readonly meta?: Record<string, unknown>;
+  readonly requestId?: string;
+  readonly duration?: number;
 
   constructor(error: BlockError) {
     super(error.message);
@@ -30,6 +36,8 @@ export class BlockErrorException extends Error implements BlockError {
     this.status = error.status;
     this.source = error.source;
     this.meta = error.meta;
+    this.requestId = error.requestId;
+    this.duration = error.duration;
 
     // Maintains proper stack trace for where error was thrown
     if (Error.captureStackTrace) {
@@ -44,6 +52,8 @@ export class BlockErrorException extends Error implements BlockError {
       status: this.status,
       source: this.source,
       meta: this.meta,
+      requestId: this.requestId,
+      duration: this.duration,
     };
   }
 }

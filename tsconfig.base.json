@@ -37,7 +37,8 @@
       "@23blocks/block-jarvis": ["packages/block-jarvis/src/index.ts"],
       "@23blocks/angular": ["packages/angular/src/index.ts"],
       "@23blocks/react": ["packages/react/src/index.ts"],
-      "@23blocks/sdk": ["packages/sdk/src/index.ts"]
+      "@23blocks/sdk": ["packages/sdk/src/index.ts"],
+      "@23blocks/testing": ["packages/testing/src/index.ts"]
     }
   }
 }

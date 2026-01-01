@@ -12,6 +12,10 @@ A modular, framework-agnostic TypeScript SDK for building applications with [23b
 - **First-class TypeScript** - Full type safety with comprehensive type definitions
 - **Angular & React bindings** - Native integrations with RxJS Observables and React hooks
 - **JSON:API compliant** - Built on the [JSON:API v1.0](https://jsonapi.org/) specification
+- **Debug logging** - Built-in request/response logging for development
+- **Request tracing** - Automatic request IDs for debugging and support
+- **Automatic retries** - Exponential backoff with jitter for transient failures
+- **Interceptors** - Hook into request/response lifecycle for cross-cutting concerns
 
 ## Quick Start
 
@@ -42,6 +46,48 @@ await client.auth.signOut();
 > **Note:** This SDK requires a 23blocks-compatible backend API. The backend must implement the 23blocks API contract including specific resource types, endpoints, and JSON:API response formats.
 
 See [Installation Guide](./docs/installation.md) for detailed options.
+
+## Debug Mode
+
+Enable debug logging to see all requests and responses in your console:
+
+```typescript
+import { create23BlocksClient } from '@23blocks/sdk';
+
+const client = create23BlocksClient({
+  urls: { authentication: 'https://api.yourapp.com' },
+  apiKey: 'your-api-key',
+  debug: true,  // Enable debug logging
+});
+```
+
+Console output:
+```
+[23blocks] POST /auth/sign_in [req_m5abc_xyz123]
+[23blocks] → Headers: { "x-api-key": "***", "content-type": "application/json" }
+[23blocks] → Body: { "email": "user@example.com", "password": "***" }
+[23blocks] ← 200 OK (145ms) [req_m5abc_xyz123]
+```
+
+## Error Handling with Request Tracing
+
+Every error includes a unique request ID for easy debugging:
+
+```typescript
+import { isBlockErrorException } from '@23blocks/contracts';
+
+try {
+  await client.auth.signIn({ email: 'user@example.com', password: 'wrong' });
+} catch (error) {
+  if (isBlockErrorException(error)) {
+    console.log('Request ID:', error.requestId);  // "req_m5abc_xyz123"
+    console.log('Duration:', error.duration);      // 145 (ms)
+    console.log('Message:', error.message);        // "Invalid credentials"
+
+    // Send to support: "Please check request req_m5abc_xyz123"
+  }
+}
+```
 
 ## Documentation
 
@@ -92,6 +138,12 @@ See [Installation Guide](./docs/installation.md) for detailed options.
 | `@23blocks/angular` | Angular services with RxJS Observables |
 | `@23blocks/react` | React hooks and context provider |
 | `@23blocks/sdk` | Meta-package with all blocks |
+
+### Testing
+
+| Package | Description |
+|---------|-------------|
+| `@23blocks/testing` | Mock transport, fixtures, and assertion helpers |
 
 ## Architecture
 

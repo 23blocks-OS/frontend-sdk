@@ -149,6 +149,9 @@ export function ProductList() {
 
   // Optional: Token storage (default: 'localStorage')
   storage="localStorage" // 'localStorage' | 'sessionStorage' | 'memory'
+
+  // Optional: Enable debug logging
+  debug={process.env.NODE_ENV === 'development'}
 >
 ```
 
@@ -523,6 +526,8 @@ export default async function ProductsPage() {
 
 ## Error Handling
 
+Every error includes a unique request ID for easy debugging and support:
+
 ```tsx
 import { isBlockErrorException, ErrorCodes } from '@23blocks/contracts';
 
@@ -531,6 +536,10 @@ const handleSubmit = async () => {
     await signIn({ email, password });
   } catch (err) {
     if (isBlockErrorException(err)) {
+      // Request tracing for debugging
+      console.log('Request ID:', err.requestId);  // "req_m5abc_xyz123"
+      console.log('Duration:', err.duration);      // 145 (ms)
+
       switch (err.code) {
         case ErrorCodes.INVALID_CREDENTIALS:
           setError('Invalid email or password');
@@ -544,6 +553,9 @@ const handleSubmit = async () => {
         default:
           setError(err.message);
       }
+
+      // Send request ID to support for debugging
+      // "Please check request req_m5abc_xyz123"
     }
   }
 };

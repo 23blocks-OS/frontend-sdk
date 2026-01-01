@@ -36,6 +36,7 @@ export {
   type HeadersProvider,
   type TransportConfig,
   type RetryConfig,
+  type Interceptors,
 } from './lib/transport.js';
 
 // Block
@@ -45,4 +46,12 @@ export {
   type BlockMetadata,
   type BlockRegistration,
 } from './lib/block.js';
-// Trigger release for documentation
+
+// Logger
+export {
+  type Logger,
+  consoleLogger,
+  noopLogger,
+  generateRequestId,
+  maskSensitiveData,
+} from './lib/logger.js';

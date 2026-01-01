@@ -1,3 +1,5 @@
+import type { Logger } from './logger.js';
+
 /**
  * HTTP request configuration
  */
@@ -68,6 +70,46 @@ export type HeadersProvider =
   | (() => Promise<Record<string, string>>);
 
 /**
+ * Interceptors for request/response lifecycle
+ */
+export interface Interceptors {
+  /**
+   * Called before each request is sent
+   * Can modify the request config or throw to abort
+   */
+  onRequest?: (config: {
+    method: string;
+    path: string;
+    body?: unknown;
+    headers: Record<string, string>;
+    requestId: string;
+  }) => void | Promise<void>;
+
+  /**
+   * Called after each successful response
+   * Can transform the response or throw to convert to error
+   */
+  onResponse?: <T>(response: T, context: {
+    method: string;
+    path: string;
+    status: number;
+    duration: number;
+    requestId: string;
+  }) => T | Promise<T>;
+
+  /**
+   * Called when an error occurs
+   * Can transform the error, recover, or re-throw
+   */
+  onError?: (error: Error, context: {
+    method: string;
+    path: string;
+    duration: number;
+    requestId: string;
+  }) => never | Promise<never>;
+}
+
+/**
  * Transport configuration
  */
 export interface TransportConfig {
@@ -87,6 +129,29 @@ export interface TransportConfig {
    * Use 'include' for cookie-based authentication
    */
   credentials?: 'include' | 'same-origin' | 'omit';
+
+  /**
+   * Enable debug logging
+   * When true, logs all requests and responses to the console
+   */
+  debug?: boolean;
+
+  /**
+   * Custom logger implementation
+   * Defaults to consoleLogger when debug is true, noopLogger otherwise
+   */
+  logger?: Logger;
+
+  /**
+   * Custom request ID generator
+   * Defaults to generateRequestId() which produces 'req_<timestamp>_<random>'
+   */
+  generateRequestId?: () => string;
+
+  /**
+   * Request/response interceptors
+   */
+  interceptors?: Interceptors;
 }
 
 /**
