@@ -1,3 +1,37 @@
+## 7.1.0 (2026-01-01)
+
+### 🚀 Features
+
+- add SDK developer experience improvements and testing package ([37db5f9](https://github.com/23blocks-OS/frontend-sdk/commit/37db5f9))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 6.1.0
+- Updated @23blocks/block-conversations to 3.1.0
+- Updated @23blocks/block-geolocation to 3.1.0
+- Updated @23blocks/block-onboarding to 3.1.0
+- Updated @23blocks/block-university to 3.1.0
+- Updated @23blocks/block-campaigns to 3.1.0
+- Updated @23blocks/block-products to 3.1.0
+- Updated @23blocks/transport-http to 3.1.0
+- Updated @23blocks/block-company to 3.1.0
+- Updated @23blocks/block-content to 3.1.0
+- Updated @23blocks/block-rewards to 3.1.0
+- Updated @23blocks/block-assets to 3.1.0
+- Updated @23blocks/block-jarvis to 3.1.0
+- Updated @23blocks/block-search to 4.1.0
+- Updated @23blocks/block-wallet to 3.1.0
+- Updated @23blocks/block-files to 3.1.0
+- Updated @23blocks/block-forms to 3.1.0
+- Updated @23blocks/block-sales to 3.1.0
+- Updated @23blocks/block-crm to 3.1.0
+- Updated @23blocks/contracts to 2.1.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 7.0.4 (2026-01-01)
 
 ### 🧱 Updated Dependencies

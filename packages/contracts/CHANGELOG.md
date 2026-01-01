@@ -1,3 +1,14 @@
+## 2.1.0 (2026-01-01)
+
+### 🚀 Features
+
+- add SDK developer experience improvements and testing package ([37db5f9](https://github.com/23blocks-OS/frontend-sdk/commit/37db5f9))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 2.0.1 (2025-12-17)
 
 ### 🩹 Fixes

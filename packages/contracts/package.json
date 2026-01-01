@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/contracts",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Core type definitions and interfaces for the 23blocks SDK",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

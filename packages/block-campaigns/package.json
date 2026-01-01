@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-campaigns",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "Campaigns block for 23blocks SDK - marketing campaigns, media, landing pages, and audience management",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

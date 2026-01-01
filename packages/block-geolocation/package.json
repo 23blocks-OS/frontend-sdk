@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-geolocation",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "Geolocation block for 23blocks SDK - locations, addresses, areas, regions, routes, premises, and bookings management",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

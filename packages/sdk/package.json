@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/sdk",
-  "version": "6.0.2",
+  "version": "6.1.0",
   "description": "23blocks SDK - unified meta-package re-exporting all blocks and utilities",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
