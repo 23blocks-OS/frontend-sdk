@@ -15,11 +15,20 @@
   },
   "keywords": [
     "23blocks",
-    "sdk",
     "angular",
+    "angular-services",
+    "angular-sdk",
     "rxjs",
-    "observable",
-    "injectable"
+    "rxjs-observables",
+    "angular-authentication",
+    "angular-http-client",
+    "angular-backend",
+    "angular-api-client",
+    "angular-ecommerce",
+    "angular-crm",
+    "baas-angular",
+    "typescript",
+    "injectable-services"
   ],
   "type": "module",
   "main": "./dist/index.esm.js",

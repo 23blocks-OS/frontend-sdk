@@ -1,9 +1,33 @@
-# 23blocks SDK
+<div align="center">
+  <h1>23blocks SDK</h1>
+  <p><strong>Build full-stack apps 10x faster with modular backend blocks</strong></p>
+  <p>A type-safe TypeScript SDK for <a href="https://23blocks.com">23blocks</a> backend-as-a-service. Authentication, payments, CRM, e-commerce, and 15+ more blocks ready to use.</p>
 
-A modular, framework-agnostic TypeScript SDK for building applications with [23blocks](https://23blocks.com) backends.
+  <!-- Status Badges -->
+  <p>
+    <a href="https://www.npmjs.com/package/@23blocks/sdk"><img src="https://img.shields.io/npm/v/@23blocks/sdk.svg?style=flat-square&color=blue" alt="npm version"></a>
+    <a href="https://www.npmjs.com/package/@23blocks/sdk"><img src="https://img.shields.io/npm/dm/@23blocks/sdk.svg?style=flat-square&color=green" alt="npm downloads"></a>
+    <a href="https://github.com/23blocks-OS/frontend-sdk/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/23blocks-OS/frontend-sdk/ci.yml?style=flat-square" alt="CI"></a>
+    <a href="https://github.com/23blocks-OS/frontend-sdk/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="MIT License"></a>
+  </p>
 
-[![CI](https://github.com/23blocks-OS/frontend-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/23blocks-OS/frontend-sdk/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  <!-- Tech Stack Badges -->
+  <p>
+    <img src="https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
+    <img src="https://img.shields.io/badge/React-18+-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React">
+    <img src="https://img.shields.io/badge/Angular-16+-DD0031?style=flat-square&logo=angular&logoColor=white" alt="Angular">
+    <img src="https://img.shields.io/badge/Next.js-14+-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js">
+    <img src="https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js">
+  </p>
+
+  <p>
+    <a href="https://23blocks.com/docs">Documentation</a> &bull;
+    <a href="https://23blocks.com">Website</a> &bull;
+    <a href="https://github.com/23blocks-OS/frontend-sdk/issues">Issues</a>
+  </p>
+</div>
+
+<br/>
 
 ## Features
 
@@ -16,6 +40,34 @@ A modular, framework-agnostic TypeScript SDK for building applications with [23b
 - **Request tracing** - Automatic request IDs for debugging and support
 - **Automatic retries** - Exponential backoff with jitter for transient failures
 - **Interceptors** - Hook into request/response lifecycle for cross-cutting concerns
+
+## Why 23blocks?
+
+Stop rebuilding the same backend features for every project. 23blocks provides production-ready building blocks:
+
+| Challenge | 23blocks Solution |
+|-----------|------------------|
+| Building auth from scratch | Ready-to-use authentication with MFA, OAuth, roles, API keys |
+| Weeks on CRUD operations | Pre-built blocks for CRM, products, content, forms |
+| Complex payment integrations | Wallet and sales blocks with transaction support |
+| Framework lock-in | Works with React, Angular, Next.js, Vue, or vanilla JS |
+| Inconsistent API responses | JSON:API v1.0 compliant, predictable data structures |
+| Debugging production issues | Built-in request tracing with unique IDs |
+
+**Perfect for building:** SaaS applications &bull; E-commerce platforms &bull; Marketplaces &bull; Internal tools &bull; Mobile app backends &bull; Multi-tenant systems
+
+## Comparison
+
+| Feature | 23blocks | Firebase | Supabase | Custom Backend |
+|---------|:--------:|:--------:|:--------:|:--------------:|
+| Type-safe SDK | ✅ | ⚠️ Partial | ✅ | ❌ Build yourself |
+| Modular architecture | ✅ 18+ blocks | ❌ Monolithic | ⚠️ Limited | ❌ Build yourself |
+| React hooks | ✅ Native | ⚠️ Community | ✅ | ❌ Build yourself |
+| Angular services | ✅ Native RxJS | ⚠️ Community | ❌ | ❌ Build yourself |
+| JSON:API compliant | ✅ | ❌ | ❌ | ❌ Build yourself |
+| Request tracing | ✅ Built-in | ❌ | ❌ | ❌ Build yourself |
+| Self-hostable | ✅ | ❌ | ✅ | ✅ |
+| Open source SDK | ✅ MIT | ✅ | ✅ | N/A |
 
 ## Quick Start
 
@@ -184,6 +236,16 @@ try {
 ## Contributing
 
 We welcome contributions! Please see our [Development Guide](./DEVELOPMENT.md) for details.
+
+## Support the Project
+
+If 23blocks SDK helps you build faster, consider giving us a star! It helps others discover the project and motivates us to keep improving.
+
+<p align="center">
+  <a href="https://github.com/23blocks-OS/frontend-sdk/stargazers">
+    <img src="https://img.shields.io/github/stars/23blocks-OS/frontend-sdk?style=social" alt="GitHub stars">
+  </a>
+</p>
 
 ## License
 

@@ -12,10 +12,25 @@
   "keywords": [
     "23blocks",
     "sdk",
-    "jsonapi",
     "typescript",
+    "typescript-sdk",
+    "api-client",
+    "backend-as-a-service",
+    "baas",
+    "react",
+    "react-hooks",
     "angular",
-    "react"
+    "angular-services",
+    "nextjs",
+    "jsonapi",
+    "authentication",
+    "ecommerce",
+    "crm",
+    "headless-backend",
+    "saas",
+    "modular-architecture",
+    "developer-tools",
+    "open-source"
   ],
   "private": true,
   "scripts": {

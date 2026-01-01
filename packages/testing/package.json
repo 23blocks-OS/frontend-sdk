@@ -15,13 +15,18 @@
   },
   "keywords": [
     "23blocks",
-    "sdk",
     "testing",
-    "mock",
-    "fixtures",
+    "mock-transport",
+    "test-fixtures",
+    "api-mocking",
     "jest",
     "vitest",
-    "typescript"
+    "typescript",
+    "test-utilities",
+    "mock-api",
+    "testing-library",
+    "unit-testing",
+    "integration-testing"
   ],
   "type": "module",
   "main": "./dist/index.esm.js",
