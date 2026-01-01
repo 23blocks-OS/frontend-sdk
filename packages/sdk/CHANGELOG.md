@@ -1,3 +1,10 @@
+## 6.0.2 (2026-01-01)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 6.0.2
+- Updated @23blocks/block-products to 3.0.2
+
 ## 6.0.1 (2025-12-31)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,14 @@
+## 3.0.2 (2026-01-01)
+
+### 🩹 Fixes
+
+- add missing fields to update request types ([2d54e25](https://github.com/23blocks-OS/frontend-sdk/commit/2d54e25))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.0.1 (2025-12-17)
 
 ### 🧱 Updated Dependencies
