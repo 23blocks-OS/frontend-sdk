@@ -56,6 +56,35 @@ Stop rebuilding the same backend features for every project. 23blocks provides p
 
 **Perfect for building:** SaaS applications &bull; E-commerce platforms &bull; Marketplaces &bull; Internal tools &bull; Mobile app backends &bull; Multi-tenant systems
 
+## The LEGO Philosophy: One SDK, Any Backend
+
+This SDK is built on **contracts, not dependencies**. Use 23blocks services or bring your own backend — as long as it speaks the same language, it just works.
+
+```typescript
+// Use 23blocks managed services
+const client = create23BlocksClient({
+  urls: { authentication: 'https://api.23blocks.com' },
+  apiKey: 'your-api-key',
+});
+
+// OR use your own backend
+const client = create23BlocksClient({
+  urls: { authentication: 'https://your-api.com' },
+  apiKey: 'your-api-key',
+});
+
+// Same SDK. Same code. Same types.
+// Your backend just needs to implement the JSON:API contract.
+```
+
+| Approach | Description |
+|----------|-------------|
+| **JSON:API Contract** | Every endpoint follows the [JSON:API specification](https://jsonapi.org/). Standardized request/response formats mean predictable, reliable integrations. |
+| **Swap Any Backend** | Using 23blocks Auth today but want to build your own? Implement the contract, point the SDK at your server, done. Zero frontend changes. |
+| **No Vendor Lock-in** | The contract is open. The SDK is open. Your architecture remains yours — we're just making it easier to build. |
+
+> **Build your own backend?** The contract defines endpoints, models, and response formats. Implement it in Rails, Node, Go, Python, or any language you prefer. See our [Contract Specification](https://23blocks.com/frontend-sdk) for details.
+
 ## Comparison
 
 | Feature | 23blocks | Firebase | Supabase | Custom Backend |
@@ -67,6 +96,7 @@ Stop rebuilding the same backend features for every project. 23blocks provides p
 | JSON:API compliant | ✅ | ❌ | ❌ | ❌ Build yourself |
 | Request tracing | ✅ Built-in | ❌ | ❌ | ❌ Build yourself |
 | Self-hostable | ✅ | ❌ | ✅ | ✅ |
+| Bring your own backend | ✅ Contract-based | ❌ Locked | ❌ Locked | N/A |
 | Open source SDK | ✅ MIT | ✅ | ✅ | N/A |
 
 ## Quick Start
@@ -95,7 +125,7 @@ const user = await client.auth.getCurrentUser();
 await client.auth.signOut();
 ```
 
-> **Note:** This SDK requires a 23blocks-compatible backend API. The backend must implement the 23blocks API contract including specific resource types, endpoints, and JSON:API response formats.
+> **Works with any compatible backend!** Use [23blocks managed services](https://23blocks.com) for instant setup, or implement the [JSON:API contract](https://23blocks.com/frontend-sdk) on your own servers.
 
 See [Installation Guide](./docs/installation.md) for detailed options.
 
