@@ -122,6 +122,39 @@ The SDK and API are hybrid - JSON:API responses but Rails-style requests. This i
 
 ## Future Enhancements
 
+### Smart Caching for API Requests
+- **Priority:** Medium
+- **Date Added:** January 2026
+- **Description:** Add intelligent caching layer to reduce API calls and improve perceived performance
+- **Proposed Features:**
+  - [ ] Response caching for GET requests with configurable TTL
+  - [ ] Request deduplication (merge identical in-flight requests)
+  - [ ] Stale-while-revalidate pattern (return cached, fetch fresh in background)
+  - [ ] Automatic cache invalidation on POST/PUT/DELETE
+  - [ ] Multiple storage backends (memory, localStorage, IndexedDB)
+  - [ ] Per-endpoint cache configuration
+  - [ ] Cache key generation based on URL + params
+  - [ ] Manual cache invalidation API
+- **Example API:**
+  ```typescript
+  const client = create23BlocksClient({
+    urls: { ... },
+    cache: {
+      enabled: true,
+      ttl: 60000,                    // Default: 60 seconds
+      staleWhileRevalidate: true,    // Return stale, fetch fresh in background
+      dedupeRequests: true,          // Dedupe identical in-flight requests
+      storage: 'memory',             // 'memory' | 'localStorage' | 'indexedDB'
+      exclude: ['/auth/*'],          // Don't cache auth endpoints
+    }
+  });
+
+  // Manual cache control
+  client.cache.invalidate('/products');
+  client.cache.clear();
+  ```
+- **Competitive Advantage:** Firebase and Supabase don't offer this at the SDK level
+
 ### Performance Benchmarks
 - **Priority:** Low
 - **Description:** Add performance tracking to catch regressions
