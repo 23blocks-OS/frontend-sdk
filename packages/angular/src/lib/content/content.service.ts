@@ -26,6 +26,15 @@ import {
   type UpdateContentUserRequest,
   type ListContentUsersParams,
   type UserActivity,
+  // Moderation types
+  type ModerationResult,
+  type ModerateContentRequest,
+  type ContentFlag,
+  type CreateContentFlagRequest,
+  type ListContentFlagsParams,
+  // Activity types
+  type Activity,
+  type ListActivitiesParams,
 } from '@23blocks/block-content';
 import { TRANSPORT, CONTENT_TRANSPORT, CONTENT_CONFIG } from '../tokens.js';
 
@@ -272,6 +281,70 @@ export class ContentService {
 
   unfollowContentUser(uniqueId: string, targetUserUniqueId: string): Observable<void> {
     return from(this.ensureConfigured().users.unfollowUser(uniqueId, targetUserUniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Moderation Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Moderate a post
+   */
+  moderatePost(uniqueId: string, request: ModerateContentRequest): Observable<ModerationResult> {
+    return from(this.ensureConfigured().moderation.moderatePost(uniqueId, request));
+  }
+
+  /**
+   * Moderate a comment
+   */
+  moderateComment(uniqueId: string, request: ModerateContentRequest): Observable<ModerationResult> {
+    return from(this.ensureConfigured().moderation.moderateComment(uniqueId, request));
+  }
+
+  /**
+   * List content flags
+   */
+  listContentFlags(params?: ListContentFlagsParams): Observable<PageResult<ContentFlag>> {
+    return from(this.ensureConfigured().moderation.listFlags(params));
+  }
+
+  /**
+   * Create a content flag
+   */
+  createContentFlag(request: CreateContentFlagRequest): Observable<ContentFlag> {
+    return from(this.ensureConfigured().moderation.createFlag(request));
+  }
+
+  /**
+   * Resolve a content flag
+   */
+  resolveContentFlag(uniqueId: string, resolution: string): Observable<ContentFlag> {
+    return from(this.ensureConfigured().moderation.resolveFlag(uniqueId, resolution));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Activity Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get activities
+   */
+  listActivities(params?: ListActivitiesParams): Observable<PageResult<Activity>> {
+    return from(this.ensureConfigured().activities.getActivities(params));
+  }
+
+  /**
+   * Get comments activities for a post
+   */
+  getCommentsActivities(postUniqueId: string): Observable<Activity[]> {
+    return from(this.ensureConfigured().activities.getComments(postUniqueId));
+  }
+
+  /**
+   * Get activity feed for a user
+   */
+  getActivityFeed(userUniqueId: string, params?: ListActivitiesParams): Observable<PageResult<Activity>> {
+    return from(this.ensureConfigured().activities.getFeed(userUniqueId, params));
   }
 
   // ───────────────────────────────────────────────────────────────────────────

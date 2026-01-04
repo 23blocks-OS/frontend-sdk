@@ -33,6 +33,11 @@ import {
   type CreatePremiseRequest,
   type UpdatePremiseRequest,
   type ListPremisesParams,
+  // Geo lookup types
+  type GeoCountry,
+  type GeoState,
+  type GeoCity,
+  type GeoLookupParams,
 } from '@23blocks/block-geolocation';
 import { TRANSPORT, GEOLOCATION_TRANSPORT, GEOLOCATION_CONFIG } from '../tokens.js';
 
@@ -335,6 +340,81 @@ export class GeolocationService {
 
   listDeletedPremises(params?: ListPremisesParams): Observable<PageResult<Premise>> {
     return from(this.ensureConfigured().premises.listDeleted(params));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Geo Countries Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List all countries
+   */
+  listGeoCountries(params?: GeoLookupParams): Observable<PageResult<GeoCountry>> {
+    return from(this.ensureConfigured().geoCountries.list(params));
+  }
+
+  /**
+   * Get a country by code
+   */
+  getGeoCountry(code: string): Observable<GeoCountry> {
+    return from(this.ensureConfigured().geoCountries.get(code));
+  }
+
+  /**
+   * Search countries by name
+   */
+  searchGeoCountries(query: string, params?: GeoLookupParams): Observable<PageResult<GeoCountry>> {
+    return from(this.ensureConfigured().geoCountries.search(query, params));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Geo States Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List states by country
+   */
+  listGeoStates(countryCode: string, params?: GeoLookupParams): Observable<PageResult<GeoState>> {
+    return from(this.ensureConfigured().geoStates.listByCountry(countryCode, params));
+  }
+
+  /**
+   * Get a state by code
+   */
+  getGeoState(code: string): Observable<GeoState> {
+    return from(this.ensureConfigured().geoStates.get(code));
+  }
+
+  /**
+   * Search states by name
+   */
+  searchGeoStates(query: string, countryCode?: string, params?: GeoLookupParams): Observable<PageResult<GeoState>> {
+    return from(this.ensureConfigured().geoStates.search(query, countryCode, params));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Geo Cities Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List cities by state or country
+   */
+  listGeoCities(countryCode: string, stateCode?: string, params?: GeoLookupParams): Observable<PageResult<GeoCity>> {
+    return from(this.ensureConfigured().geoCities.list(countryCode, stateCode, params));
+  }
+
+  /**
+   * Get a city by code
+   */
+  getGeoCity(code: string): Observable<GeoCity> {
+    return from(this.ensureConfigured().geoCities.get(code));
+  }
+
+  /**
+   * Search cities by name
+   */
+  searchGeoCities(query: string, countryCode?: string, stateCode?: string, params?: GeoLookupParams): Observable<PageResult<GeoCity>> {
+    return from(this.ensureConfigured().geoCities.search(query, countryCode, stateCode, params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

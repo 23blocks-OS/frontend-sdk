@@ -19,6 +19,11 @@ import {
   type CreateFileSchemaRequest,
   type UpdateFileSchemaRequest,
   type ListFileSchemasParams,
+  // File access request types
+  type FileAccessRequest,
+  type CreateFileAccessRequestInput,
+  type ReviewFileAccessRequestInput,
+  type ListFileAccessRequestsParams,
 } from '@23blocks/block-files';
 import { TRANSPORT, FILES_TRANSPORT, FILES_CONFIG } from '../tokens.js';
 
@@ -178,6 +183,66 @@ export class FilesService {
 
   deleteFileSchema(uniqueId: string): Observable<void> {
     return from(this.ensureConfigured().fileSchemas.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // File Access Requests Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List file access requests
+   */
+  listFileAccessRequests(params?: ListFileAccessRequestsParams): Observable<PageResult<FileAccessRequest>> {
+    return from(this.ensureConfigured().accessRequests.list(params));
+  }
+
+  /**
+   * Get a file access request
+   */
+  getFileAccessRequest(uniqueId: string): Observable<FileAccessRequest> {
+    return from(this.ensureConfigured().accessRequests.get(uniqueId));
+  }
+
+  /**
+   * Create a file access request
+   */
+  createFileAccessRequest(data: CreateFileAccessRequestInput): Observable<FileAccessRequest> {
+    return from(this.ensureConfigured().accessRequests.create(data));
+  }
+
+  /**
+   * Review (approve/reject) a file access request
+   */
+  reviewFileAccessRequest(uniqueId: string, review: ReviewFileAccessRequestInput): Observable<FileAccessRequest> {
+    return from(this.ensureConfigured().accessRequests.review(uniqueId, review));
+  }
+
+  /**
+   * Cancel a file access request
+   */
+  cancelFileAccessRequest(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().accessRequests.cancel(uniqueId));
+  }
+
+  /**
+   * List access requests for a file
+   */
+  listAccessRequestsByFile(fileUniqueId: string, params?: ListFileAccessRequestsParams): Observable<PageResult<FileAccessRequest>> {
+    return from(this.ensureConfigured().accessRequests.listByFile(fileUniqueId, params));
+  }
+
+  /**
+   * List access requests by requester
+   */
+  listAccessRequestsByRequester(requesterUniqueId: string, params?: ListFileAccessRequestsParams): Observable<PageResult<FileAccessRequest>> {
+    return from(this.ensureConfigured().accessRequests.listByRequester(requesterUniqueId, params));
+  }
+
+  /**
+   * Get pending access requests count
+   */
+  getPendingAccessRequestsCount(): Observable<number> {
+    return from(this.ensureConfigured().accessRequests.getPendingCount());
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

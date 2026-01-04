@@ -82,6 +82,17 @@ import {
   type UpdateTenantUserOnboardingRequest,
   type UpdateTenantUserSalesRequest,
   type ResendInvitationRequest,
+  // JWKS types
+  type JwksResponse,
+  type RsaKey,
+  type CreateRsaKeyRequest,
+  type RotateRsaKeyRequest,
+  // OIDC types
+  type OidcDiscovery,
+  type OidcAuthorizeRequest,
+  type OidcTokenRequest,
+  type OidcTokenResponse,
+  type OidcUserInfo,
 } from '@23blocks/block-authentication';
 import { TRANSPORT, AUTHENTICATION_TRANSPORT, AUTHENTICATION_CONFIG } from '../tokens.js';
 import { TOKEN_MANAGER, SIMPLE_CONFIG, type TokenManagerService, type Simple23BlocksConfig } from '../simple-providers.js';
@@ -792,6 +803,81 @@ export class AuthenticationService {
       return null;
     }
     return !!this.tokenManager.getAccessToken();
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // JWKS Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get the JSON Web Key Set (JWKS) for verifying tokens
+   */
+  getJwks(): Observable<JwksResponse> {
+    return from(this.ensureConfigured().jwks.getJwks());
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Admin RSA Keys Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List all RSA keys
+   */
+  listRsaKeys(): Observable<RsaKey[]> {
+    return from(this.ensureConfigured().adminRsaKeys.list());
+  }
+
+  /**
+   * Create a new RSA key
+   */
+  createRsaKey(request: CreateRsaKeyRequest): Observable<RsaKey> {
+    return from(this.ensureConfigured().adminRsaKeys.create(request));
+  }
+
+  /**
+   * Rotate an RSA key (creates new, deactivates old)
+   */
+  rotateRsaKey(kid: string, request?: RotateRsaKeyRequest): Observable<RsaKey> {
+    return from(this.ensureConfigured().adminRsaKeys.rotate(kid, request));
+  }
+
+  /**
+   * Delete an RSA key
+   */
+  deleteRsaKey(kid: string): Observable<void> {
+    return from(this.ensureConfigured().adminRsaKeys.delete(kid));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // OIDC Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get OpenID Connect discovery document
+   */
+  getOidcDiscovery(): Observable<OidcDiscovery> {
+    return from(this.ensureConfigured().oidc.discovery());
+  }
+
+  /**
+   * Get authorization endpoint URL with parameters
+   */
+  getOidcAuthorizeUrl(request: OidcAuthorizeRequest): string {
+    return this.ensureConfigured().oidc.authorize(request);
+  }
+
+  /**
+   * Exchange authorization code for tokens
+   */
+  exchangeOidcToken(request: OidcTokenRequest): Observable<OidcTokenResponse> {
+    return from(this.ensureConfigured().oidc.token(request));
+  }
+
+  /**
+   * Get user info from OIDC userinfo endpoint
+   */
+  getOidcUserInfo(accessToken: string): Observable<OidcUserInfo> {
+    return from(this.ensureConfigured().oidc.userinfo(accessToken));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

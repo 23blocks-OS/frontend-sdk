@@ -54,6 +54,12 @@ import {
   type CreateQuestionRequest,
   type CreateOptionRequest,
   type ListContentTestsParams,
+  // Registration token types
+  type RegistrationToken,
+  type CreateRegistrationTokenRequest,
+  type UpdateRegistrationTokenRequest,
+  type ListRegistrationTokensParams,
+  type TokenValidationResult,
 } from '@23blocks/block-university';
 import { TRANSPORT, UNIVERSITY_TRANSPORT, UNIVERSITY_CONFIG } from '../tokens.js';
 
@@ -588,6 +594,73 @@ export class UniversityService {
 
   addOptionToQuestion(uniqueId: string, questionId: string, optionId: string): Observable<TestQuestion> {
     return from(this.ensureConfigured().tests.addOptionToQuestion(uniqueId, questionId, optionId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Registration Tokens Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List registration tokens
+   */
+  listRegistrationTokens(params?: ListRegistrationTokensParams): Observable<PageResult<RegistrationToken>> {
+    return from(this.ensureConfigured().registrationTokens.list(params));
+  }
+
+  /**
+   * Get a registration token
+   */
+  getRegistrationToken(uniqueId: string): Observable<RegistrationToken> {
+    return from(this.ensureConfigured().registrationTokens.get(uniqueId));
+  }
+
+  /**
+   * Create a registration token
+   */
+  createRegistrationToken(data: CreateRegistrationTokenRequest): Observable<RegistrationToken> {
+    return from(this.ensureConfigured().registrationTokens.create(data));
+  }
+
+  /**
+   * Update a registration token
+   */
+  updateRegistrationToken(uniqueId: string, data: UpdateRegistrationTokenRequest): Observable<RegistrationToken> {
+    return from(this.ensureConfigured().registrationTokens.update(uniqueId, data));
+  }
+
+  /**
+   * Delete a registration token
+   */
+  deleteRegistrationToken(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().registrationTokens.delete(uniqueId));
+  }
+
+  /**
+   * Validate a token code
+   */
+  validateRegistrationToken(tokenCode: string): Observable<TokenValidationResult> {
+    return from(this.ensureConfigured().registrationTokens.validate(tokenCode));
+  }
+
+  /**
+   * Use a token to register a user
+   */
+  useRegistrationToken(tokenCode: string, userUniqueId: string): Observable<{ success: boolean; enrollmentUniqueId?: string; error?: string }> {
+    return from(this.ensureConfigured().registrationTokens.use(tokenCode, userUniqueId));
+  }
+
+  /**
+   * Revoke a registration token
+   */
+  revokeRegistrationToken(uniqueId: string): Observable<RegistrationToken> {
+    return from(this.ensureConfigured().registrationTokens.revoke(uniqueId));
+  }
+
+  /**
+   * Generate a batch of tokens
+   */
+  generateRegistrationTokenBatch(request: CreateRegistrationTokenRequest & { count: number }): Observable<RegistrationToken[]> {
+    return from(this.ensureConfigured().registrationTokens.generateBatch(request));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

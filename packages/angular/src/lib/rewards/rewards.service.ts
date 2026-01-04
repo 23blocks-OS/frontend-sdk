@@ -47,6 +47,18 @@ import {
   type CustomerRewardExpiration,
   type CustomerRewardHistory,
   type ListRewardsCustomersParams,
+  // Loyalty rules types
+  type BadgeCategory,
+  type CreateBadgeCategoryRequest,
+  type MoneyRule,
+  type CreateMoneyRuleRequest,
+  type UpdateMoneyRuleRequest,
+  type ProductRule,
+  type CreateProductRuleRequest,
+  type UpdateProductRuleRequest,
+  type EventRule,
+  type CreateEventRuleRequest,
+  type UpdateEventRuleRequest,
 } from '@23blocks/block-rewards';
 import { TRANSPORT, REWARDS_TRANSPORT, REWARDS_CONFIG } from '../tokens.js';
 
@@ -349,6 +361,162 @@ export class RewardsService {
 
   updateCustomerExpiration(uniqueId: string, expirationDate: Date): Observable<RewardsCustomer> {
     return from(this.ensureConfigured().customers.updateExpiration(uniqueId, expirationDate));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Badge Categories Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List badge categories
+   */
+  listBadgeCategories(): Observable<BadgeCategory[]> {
+    return from(this.ensureConfigured().badgeCategories.list());
+  }
+
+  /**
+   * Get a badge category
+   */
+  getBadgeCategory(uniqueId: string): Observable<BadgeCategory> {
+    return from(this.ensureConfigured().badgeCategories.get(uniqueId));
+  }
+
+  /**
+   * Create a badge category
+   */
+  createBadgeCategory(data: CreateBadgeCategoryRequest): Observable<BadgeCategory> {
+    return from(this.ensureConfigured().badgeCategories.create(data));
+  }
+
+  /**
+   * Update a badge category
+   */
+  updateBadgeCategory(uniqueId: string, data: Partial<CreateBadgeCategoryRequest>): Observable<BadgeCategory> {
+    return from(this.ensureConfigured().badgeCategories.update(uniqueId, data));
+  }
+
+  /**
+   * Delete a badge category
+   */
+  deleteBadgeCategory(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().badgeCategories.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Money Rules Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List money rules for a loyalty program
+   */
+  listMoneyRules(loyaltyUniqueId: string): Observable<MoneyRule[]> {
+    return from(this.ensureConfigured().moneyRules.list(loyaltyUniqueId));
+  }
+
+  /**
+   * Get a money rule
+   */
+  getMoneyRule(uniqueId: string): Observable<MoneyRule> {
+    return from(this.ensureConfigured().moneyRules.get(uniqueId));
+  }
+
+  /**
+   * Create a money rule
+   */
+  createMoneyRule(loyaltyUniqueId: string, data: CreateMoneyRuleRequest): Observable<MoneyRule> {
+    return from(this.ensureConfigured().moneyRules.create(loyaltyUniqueId, data));
+  }
+
+  /**
+   * Update a money rule
+   */
+  updateMoneyRule(uniqueId: string, data: UpdateMoneyRuleRequest): Observable<MoneyRule> {
+    return from(this.ensureConfigured().moneyRules.update(uniqueId, data));
+  }
+
+  /**
+   * Delete a money rule
+   */
+  deleteMoneyRule(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().moneyRules.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Product Rules Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List product rules for a loyalty program
+   */
+  listProductRules(loyaltyUniqueId: string): Observable<ProductRule[]> {
+    return from(this.ensureConfigured().productRules.list(loyaltyUniqueId));
+  }
+
+  /**
+   * Get a product rule
+   */
+  getProductRule(uniqueId: string): Observable<ProductRule> {
+    return from(this.ensureConfigured().productRules.get(uniqueId));
+  }
+
+  /**
+   * Create a product rule
+   */
+  createProductRule(loyaltyUniqueId: string, data: CreateProductRuleRequest): Observable<ProductRule> {
+    return from(this.ensureConfigured().productRules.create(loyaltyUniqueId, data));
+  }
+
+  /**
+   * Update a product rule
+   */
+  updateProductRule(uniqueId: string, data: UpdateProductRuleRequest): Observable<ProductRule> {
+    return from(this.ensureConfigured().productRules.update(uniqueId, data));
+  }
+
+  /**
+   * Delete a product rule
+   */
+  deleteProductRule(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().productRules.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Event Rules Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List event rules for a loyalty program
+   */
+  listEventRules(loyaltyUniqueId: string): Observable<EventRule[]> {
+    return from(this.ensureConfigured().eventRules.list(loyaltyUniqueId));
+  }
+
+  /**
+   * Get an event rule
+   */
+  getEventRule(uniqueId: string): Observable<EventRule> {
+    return from(this.ensureConfigured().eventRules.get(uniqueId));
+  }
+
+  /**
+   * Create an event rule
+   */
+  createEventRule(loyaltyUniqueId: string, data: CreateEventRuleRequest): Observable<EventRule> {
+    return from(this.ensureConfigured().eventRules.create(loyaltyUniqueId, data));
+  }
+
+  /**
+   * Update an event rule
+   */
+  updateEventRule(uniqueId: string, data: UpdateEventRuleRequest): Observable<EventRule> {
+    return from(this.ensureConfigured().eventRules.update(uniqueId, data));
+  }
+
+  /**
+   * Delete an event rule
+   */
+  deleteEventRule(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().eventRules.delete(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

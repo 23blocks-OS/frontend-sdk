@@ -64,6 +64,9 @@ import {
   type AbandonedCartsParams,
   type CreateVisitorRequest,
   type Visitor,
+  // Product vendor types
+  type ProductVendor,
+  type ListProductVendorsParams,
 } from '@23blocks/block-products';
 import { TRANSPORT, PRODUCTS_TRANSPORT, PRODUCTS_CONFIG } from '../tokens.js';
 
@@ -582,6 +585,31 @@ export class ProductsService {
 
   createVisitor(data: CreateVisitorRequest): Observable<Visitor> {
     return from(this.ensureConfigured().visitors.create(data));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Product Vendors Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List vendors for a product
+   */
+  listProductVendors(productUniqueId: string, params?: ListProductVendorsParams): Observable<PageResult<ProductVendor>> {
+    return from(this.ensureConfigured().productVendors.listByProduct(productUniqueId, params));
+  }
+
+  /**
+   * Get the primary vendor for a product
+   */
+  getPrimaryProductVendor(productUniqueId: string): Observable<ProductVendor | null> {
+    return from(this.ensureConfigured().productVendors.getPrimaryVendor(productUniqueId));
+  }
+
+  /**
+   * Get available vendors for a product
+   */
+  getAvailableProductVendors(productUniqueId: string, params?: ListProductVendorsParams): Observable<PageResult<ProductVendor>> {
+    return from(this.ensureConfigured().productVendors.getAvailableVendors(productUniqueId, params));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

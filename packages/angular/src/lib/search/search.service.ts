@@ -23,6 +23,8 @@ import {
   type RegisterIdentityRequest,
   type UpdateIdentityRequest,
   type ListIdentitiesParams,
+  type JarvisSearchQuery,
+  type JarvisSearchResult,
 } from '@23blocks/block-search';
 import { TRANSPORT, SEARCH_TRANSPORT, SEARCH_CONFIG } from '../tokens.js';
 
@@ -209,6 +211,31 @@ export class SearchService {
 
   updateIdentity(uniqueId: string, data: UpdateIdentityRequest): Observable<SearchIdentity> {
     return from(this.ensureConfigured().identities.update(uniqueId, data));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Jarvis AI-Enhanced Search Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Perform AI-enhanced search using Jarvis
+   */
+  jarvisSearch(query: JarvisSearchQuery): Observable<PageResult<JarvisSearchResult>> {
+    return from(this.ensureConfigured().jarvis.search(query));
+  }
+
+  /**
+   * Get semantic suggestions using Jarvis AI
+   */
+  jarvisSuggest(query: string, limit?: number): Observable<string[]> {
+    return from(this.ensureConfigured().jarvis.suggest(query, limit));
+  }
+
+  /**
+   * Get related entities using Jarvis AI
+   */
+  jarvisGetRelated(entityUniqueId: string, entityType: string, limit?: number): Observable<JarvisSearchResult[]> {
+    return from(this.ensureConfigured().jarvis.getRelated(entityUniqueId, entityType, limit));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
