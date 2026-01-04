@@ -1,3 +1,9 @@
+## 6.1.2 (2026-01-04)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-forms to 3.1.2
+
 ## 6.1.1 (2026-01-04)
 
 ### 🧱 Updated Dependencies

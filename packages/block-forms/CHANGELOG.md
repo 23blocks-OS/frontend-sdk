@@ -1,3 +1,14 @@
+## 3.1.2 (2026-01-04)
+
+### 🩹 Fixes
+
+- **block-forms:** export all types, services, and mappers ([d43b143](https://github.com/23blocks-OS/frontend-sdk/commit/d43b143))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.1.1 (2026-01-04)
 
 ### 🚀 Features
