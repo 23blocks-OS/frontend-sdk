@@ -1,3 +1,37 @@
+## 3.1.1 (2026-01-04)
+
+### 🚀 Features
+
+- ⚠️  **block-forms:** complete Forms API with all missing endpoints ([93bd809](https://github.com/23blocks-OS/frontend-sdk/commit/93bd809))
+
+### ⚠️  Breaking Changes
+
+- **block-forms:** complete Forms API with all missing endpoints  ([93bd809](https://github.com/23blocks-OS/frontend-sdk/commit/93bd809))
+  FormInstancesService and FormSchemasService now use
+  nested routes requiring formUniqueId as first parameter
+  New services:
+  - FormSchemaVersionsService: full CRUD + publish for schema versions
+  - CrmSyncService: CRM sync operations (sync, batch, retry, status)
+  Updated services:
+  - FormInstancesService: nested routes /forms/:id/instances/*
+    - Added: start(), submit(), cancel(), resendMagicLink()
+  - FormSchemasService: nested routes /forms/:id/schemas/*
+  - FormSetsService: Added match() and autoAssign()
+  All services now align with the backend API routes:
+  - Forms: /forms/*
+  - Schemas: /forms/:id/schemas/*
+  - Schema Versions: /forms/:id/schemas/:id/versions/*
+  - Instances: /forms/:id/instances/*
+  - Form Sets: /form_sets/* (with match/auto_assign)
+  - CRM Sync: /crm/*
+  🤖 Generated with [Claude Code](https://claude.com/claude-code)
+  Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.1.0 (2026-01-01)
 
 ### 🧱 Updated Dependencies
