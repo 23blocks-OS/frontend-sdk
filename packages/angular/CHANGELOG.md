@@ -1,3 +1,16 @@
+## 6.5.0 (2026-01-04)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 6.3.0
+- Updated @23blocks/block-geolocation to 3.4.0
+- Updated @23blocks/block-university to 3.4.0
+- Updated @23blocks/block-products to 3.4.0
+- Updated @23blocks/block-content to 3.3.0
+- Updated @23blocks/block-rewards to 3.2.0
+- Updated @23blocks/block-search to 4.2.0
+- Updated @23blocks/block-files to 3.4.0
+
 ## 6.4.0 (2026-01-04)
 
 ### 🧱 Updated Dependencies
