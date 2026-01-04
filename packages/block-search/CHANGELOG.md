@@ -1,3 +1,14 @@
+## 4.1.1 (2026-01-04)
+
+### 🩹 Fixes
+
+- export all types, services, and mappers from blocks ([82cc41a](https://github.com/23blocks-OS/frontend-sdk/commit/82cc41a))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 4.1.0 (2026-01-01)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,21 @@
+## 7.1.3 (2026-01-04)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-geolocation to 3.1.1
+- Updated @23blocks/block-onboarding to 3.1.1
+- Updated @23blocks/block-university to 3.1.1
+- Updated @23blocks/block-campaigns to 3.1.1
+- Updated @23blocks/block-products to 3.1.1
+- Updated @23blocks/block-content to 3.1.1
+- Updated @23blocks/block-rewards to 3.1.1
+- Updated @23blocks/block-assets to 3.1.1
+- Updated @23blocks/block-search to 4.1.1
+- Updated @23blocks/block-wallet to 3.1.1
+- Updated @23blocks/block-files to 3.1.1
+- Updated @23blocks/block-sales to 3.1.1
+- Updated @23blocks/block-crm to 3.1.1
+
 ## 7.1.2 (2026-01-04)
 
 ### 🧱 Updated Dependencies

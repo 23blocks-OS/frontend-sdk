@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-products",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Products block for 23blocks SDK - e-commerce, carts, inventory, catalog management",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

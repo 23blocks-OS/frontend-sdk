@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-crm",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "CRM block for 23blocks SDK - accounts, contacts, leads, opportunities, meetings",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
