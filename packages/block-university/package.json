@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/block-university",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "description": "University block for 23blocks SDK - courses, lessons, enrollments, assignments, submissions",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

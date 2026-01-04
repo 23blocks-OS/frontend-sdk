@@ -1,3 +1,12 @@
+## 7.2.0 (2026-01-04)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 6.2.0
+- Updated @23blocks/block-conversations to 3.2.0
+- Updated @23blocks/block-university to 3.2.0
+- Updated @23blocks/block-products to 3.2.0
+
 ## 7.1.3 (2026-01-04)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,14 @@
+## 6.2.0 (2026-01-04)
+
+### 🚀 Features
+
+- implement HIGH priority missing services ([ab6141f](https://github.com/23blocks-OS/frontend-sdk/commit/ab6141f))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 6.1.0 (2026-01-01)
 
 ### 🧱 Updated Dependencies
