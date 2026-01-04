@@ -14,3 +14,4 @@ export * from './location-taxes.service';
 export * from './location-groups.service';
 export * from './geo-identities.service';
 export * from './location-identities.service';
+export * from './geo-lookup.service';

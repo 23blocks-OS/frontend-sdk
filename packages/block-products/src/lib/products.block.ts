@@ -24,6 +24,7 @@ import {
   createMyCartsService,
   createRemarketingService,
   createVisitorsService,
+  createProductVendorsService,
   type ProductsService,
   type CartService,
   type CartDetailsService,
@@ -48,6 +49,7 @@ import {
   type MyCartsService,
   type RemarketingService,
   type VisitorsService,
+  type ProductVendorsService,
 } from './services';
 
 export interface ProductsBlockConfig extends BlockConfig {
@@ -80,6 +82,7 @@ export interface ProductsBlock {
   myCarts: MyCartsService;
   remarketing: RemarketingService;
   visitors: VisitorsService;
+  productVendors: ProductVendorsService;
 }
 
 export function createProductsBlock(
@@ -111,6 +114,7 @@ export function createProductsBlock(
     myCarts: createMyCartsService(transport, config),
     remarketing: createRemarketingService(transport, config),
     visitors: createVisitorsService(transport, config),
+    productVendors: createProductVendorsService(transport, config),
   };
 }
 
@@ -139,5 +143,6 @@ export const productsBlockMetadata: BlockMetadata = {
     'ProductPromotion',
     'ProductPrice',
     'ProductFilter',
+    'ProductVendor',
   ],
 };

@@ -3,3 +3,5 @@ export * from './comment.mapper';
 export * from './category.mapper';
 export * from './tag.mapper';
 export * from './user.mapper';
+export * from './moderation.mapper';
+export * from './activity.mapper';

@@ -147,3 +147,21 @@ export {
   type UpdateTenantUserSalesRequest,
   type ResendInvitationRequest,
 } from './tenant.js';
+
+// JWKS types
+export {
+  type JsonWebKey,
+  type JwksResponse,
+  type RsaKey,
+  type CreateRsaKeyRequest,
+  type RotateRsaKeyRequest,
+} from './jwks.js';
+
+// OIDC types
+export {
+  type OidcDiscovery,
+  type OidcAuthorizeRequest,
+  type OidcTokenRequest,
+  type OidcTokenResponse,
+  type OidcUserInfo,
+} from './oidc.js';

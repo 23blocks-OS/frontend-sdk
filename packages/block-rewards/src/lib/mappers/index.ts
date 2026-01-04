@@ -7,3 +7,4 @@ export * from './coupon-configuration.mapper';
 export * from './offer-code.mapper';
 export * from './expiration-rule.mapper';
 export * from './rewards-customer.mapper';
+export * from './loyalty-rules.mapper';

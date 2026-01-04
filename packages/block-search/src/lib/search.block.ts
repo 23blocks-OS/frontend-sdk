@@ -5,11 +5,13 @@ import {
   createFavoritesService,
   createEntitiesService,
   createIdentitiesService,
+  createJarvisSearchService,
   type SearchService,
   type SearchHistoryService,
   type FavoritesService,
   type EntitiesService,
   type IdentitiesService,
+  type JarvisSearchService,
 } from './services/index.js';
 
 /**
@@ -50,6 +52,11 @@ export interface SearchBlock {
    * Identity management for search users
    */
   identities: IdentitiesService;
+
+  /**
+   * Jarvis AI-enhanced search
+   */
+  jarvis: JarvisSearchService;
 }
 
 /**
@@ -101,6 +108,7 @@ export function createSearchBlock(
     favorites: createFavoritesService(transport, config),
     entities: createEntitiesService(transport, config),
     identities: createIdentitiesService(transport, config),
+    jarvis: createJarvisSearchService(transport, config),
   };
 }
 
@@ -119,5 +127,6 @@ export const searchBlockMetadata = {
     'EntityType',
     'SearchEntity',
     'SearchIdentity',
+    'JarvisSearchResult',
   ],
 };

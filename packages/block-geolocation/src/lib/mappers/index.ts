@@ -14,4 +14,5 @@ export * from './location-tax.mapper';
 export * from './location-group.mapper';
 export * from './geo-identity.mapper';
 export * from './location-identity.mapper';
+export * from './geo-lookup.mapper';
 export * from './utils';

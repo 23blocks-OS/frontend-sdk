@@ -6,3 +6,4 @@ export * from './file-categories.service';
 export * from './file-tags.service';
 export * from './delegations.service';
 export * from './file-access.service';
+export * from './file-access-requests.service';

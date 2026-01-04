@@ -8,6 +8,7 @@ import {
   createFileTagsService,
   createDelegationsService,
   createFileAccessService,
+  createFileAccessRequestsService,
   type StorageFilesService,
   type EntityFilesService,
   type FileSchemasService,
@@ -16,6 +17,7 @@ import {
   type FileTagsService,
   type DelegationsService,
   type FileAccessService,
+  type FileAccessRequestsService,
 } from './services';
 
 export interface FilesBlockConfig extends BlockConfig {
@@ -32,6 +34,7 @@ export interface FilesBlock {
   fileTags: FileTagsService;
   delegations: DelegationsService;
   fileAccess: FileAccessService;
+  fileAccessRequests: FileAccessRequestsService;
 }
 
 export function createFilesBlock(
@@ -47,6 +50,7 @@ export function createFilesBlock(
     fileTags: createFileTagsService(transport, config),
     delegations: createDelegationsService(transport, config),
     fileAccess: createFileAccessService(transport, config),
+    fileAccessRequests: createFileAccessRequestsService(transport, config),
   };
 }
 
@@ -63,5 +67,6 @@ export const filesBlockMetadata: BlockMetadata = {
     'FileTag',
     'FileDelegation',
     'FileAccess',
+    'FileAccessRequest',
   ],
 };

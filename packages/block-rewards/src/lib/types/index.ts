@@ -6,3 +6,4 @@ export * from './coupon-configuration';
 export * from './offer-code';
 export * from './expiration-rule';
 export * from './rewards-customer';
+export * from './loyalty-rules';

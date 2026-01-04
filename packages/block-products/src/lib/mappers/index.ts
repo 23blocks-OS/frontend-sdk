@@ -7,4 +7,5 @@ export * from './product-promotion.mapper';
 export * from './product-price.mapper';
 export * from './product-filter.mapper';
 export * from './product-variation-review.mapper';
+export * from './product-vendor.mapper';
 export * from './utils';

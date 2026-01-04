@@ -16,6 +16,9 @@ import {
   createLocationGroupsService,
   createGeoIdentitiesService,
   createLocationIdentitiesService,
+  createGeoCountriesService,
+  createGeoStatesService,
+  createGeoCitiesService,
   type LocationsService,
   type AddressesService,
   type AreasService,
@@ -32,6 +35,9 @@ import {
   type LocationGroupsService,
   type GeoIdentitiesService,
   type LocationIdentitiesService,
+  type GeoCountriesService,
+  type GeoStatesService,
+  type GeoCitiesService,
 } from './services';
 
 export interface GeolocationBlockConfig extends BlockConfig {
@@ -56,6 +62,9 @@ export interface GeolocationBlock {
   locationGroups: LocationGroupsService;
   identities: GeoIdentitiesService;
   locationIdentities: LocationIdentitiesService;
+  geoCountries: GeoCountriesService;
+  geoStates: GeoStatesService;
+  geoCities: GeoCitiesService;
 }
 
 export function createGeolocationBlock(
@@ -79,6 +88,9 @@ export function createGeolocationBlock(
     locationGroups: createLocationGroupsService(transport, config),
     identities: createGeoIdentitiesService(transport, config),
     locationIdentities: createLocationIdentitiesService(transport, config),
+    geoCountries: createGeoCountriesService(transport, config),
+    geoStates: createGeoStatesService(transport, config),
+    geoCities: createGeoCitiesService(transport, config),
   };
 }
 
@@ -103,5 +115,8 @@ export const geolocationBlockMetadata: BlockMetadata = {
     'LocationGroup',
     'GeoIdentity',
     'LocationIdentity',
+    'GeoCountry',
+    'GeoState',
+    'GeoCity',
   ],
 };

@@ -66,3 +66,14 @@ export { createAvatarsService, type AvatarsService } from './avatars.service.js'
 
 // Tenants
 export { createTenantsService, type TenantsService } from './tenants.service.js';
+
+// JWKS
+export {
+  createJwksService,
+  createAdminRsaKeysService,
+  type JwksService,
+  type AdminRsaKeysService,
+} from './jwks.service.js';
+
+// OIDC
+export { createOidcService, type OidcService } from './oidc.service.js';

@@ -14,4 +14,5 @@ export * from './calendar.mapper';
 export * from './match.mapper';
 export * from './attendance.mapper';
 export * from './note.mapper';
+export * from './registration-token.mapper';
 export * from './utils';

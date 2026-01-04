@@ -8,6 +8,10 @@ import {
   createOfferCodesService,
   createExpirationRulesService,
   createRewardsCustomersService,
+  createBadgeCategoriesService,
+  createMoneyRulesService,
+  createProductRulesService,
+  createEventRulesService,
   type RewardsService,
   type CouponsService,
   type LoyaltyService,
@@ -16,6 +20,10 @@ import {
   type OfferCodesService,
   type ExpirationRulesService,
   type RewardsCustomersService,
+  type BadgeCategoriesService,
+  type MoneyRulesService,
+  type ProductRulesService,
+  type EventRulesService,
 } from './services';
 
 export interface RewardsBlockConfig extends BlockConfig {
@@ -32,6 +40,10 @@ export interface RewardsBlock {
   offerCodes: OfferCodesService;
   expirationRules: ExpirationRulesService;
   customers: RewardsCustomersService;
+  badgeCategories: BadgeCategoriesService;
+  moneyRules: MoneyRulesService;
+  productRules: ProductRulesService;
+  eventRules: EventRulesService;
 }
 
 export function createRewardsBlock(
@@ -47,6 +59,10 @@ export function createRewardsBlock(
     offerCodes: createOfferCodesService(transport, config),
     expirationRules: createExpirationRulesService(transport, config),
     customers: createRewardsCustomersService(transport, config),
+    badgeCategories: createBadgeCategoriesService(transport, config),
+    moneyRules: createMoneyRulesService(transport, config),
+    productRules: createProductRulesService(transport, config),
+    eventRules: createEventRulesService(transport, config),
   };
 }
 
@@ -67,5 +83,9 @@ export const rewardsBlockMetadata: BlockMetadata = {
     'OfferCode',
     'ExpirationRule',
     'RewardsCustomer',
+    'BadgeCategory',
+    'MoneyRule',
+    'ProductRule',
+    'EventRule',
   ],
 };

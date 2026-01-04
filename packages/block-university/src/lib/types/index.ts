@@ -14,3 +14,4 @@ export * from './calendar';
 export * from './match';
 export * from './attendance';
 export * from './note';
+export * from './registration-token';

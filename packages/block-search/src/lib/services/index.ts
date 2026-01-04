@@ -16,3 +16,10 @@ export {
   createIdentitiesService,
   type IdentitiesService,
 } from './identities.service.js';
+
+export {
+  createJarvisSearchService,
+  type JarvisSearchService,
+  type JarvisSearchQuery,
+  type JarvisSearchResult,
+} from './jarvis-search.service.js';

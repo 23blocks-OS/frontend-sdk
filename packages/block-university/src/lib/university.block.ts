@@ -16,6 +16,7 @@ import {
   createMatchesService,
   createAttendanceService,
   createNotesService,
+  createRegistrationTokensService,
   type CoursesService,
   type LessonsService,
   type EnrollmentsService,
@@ -32,6 +33,7 @@ import {
   type MatchesService,
   type AttendanceService,
   type NotesService,
+  type RegistrationTokensService,
 } from './services';
 
 export interface UniversityBlockConfig extends BlockConfig {
@@ -56,6 +58,7 @@ export interface UniversityBlock {
   matches: MatchesService;
   attendance: AttendanceService;
   notes: NotesService;
+  registrationTokens: RegistrationTokensService;
 }
 
 export function createUniversityBlock(
@@ -79,6 +82,7 @@ export function createUniversityBlock(
     matches: createMatchesService(transport, config),
     attendance: createAttendanceService(transport, config),
     notes: createNotesService(transport, config),
+    registrationTokens: createRegistrationTokensService(transport, config),
   };
 }
 
@@ -112,5 +116,6 @@ export const universityBlockMetadata: BlockMetadata = {
     'MatchEvaluation',
     'Attendance',
     'Note',
+    'RegistrationToken',
   ],
 };

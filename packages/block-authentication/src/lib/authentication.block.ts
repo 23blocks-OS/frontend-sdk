@@ -50,6 +50,13 @@ import { createMfaService, type MfaService } from './services/mfa.service.js';
 import { createOAuthService, type OAuthService } from './services/oauth.service.js';
 import { createAvatarsService, type AvatarsService } from './services/avatars.service.js';
 import { createTenantsService, type TenantsService } from './services/tenants.service.js';
+import {
+  createJwksService,
+  createAdminRsaKeysService,
+  type JwksService,
+  type AdminRsaKeysService,
+} from './services/jwks.service.js';
+import { createOidcService, type OidcService } from './services/oidc.service.js';
 
 /**
  * Configuration for the Authentication block
@@ -194,6 +201,21 @@ export interface AuthenticationBlock {
    * Mail template management
    */
   mailTemplates: MailTemplatesService;
+
+  /**
+   * JWKS (JSON Web Key Set) operations
+   */
+  jwks: JwksService;
+
+  /**
+   * Admin RSA key management
+   */
+  adminRsaKeys: AdminRsaKeysService;
+
+  /**
+   * OpenID Connect operations
+   */
+  oidc: OidcService;
 }
 
 /**
@@ -258,6 +280,9 @@ export function createAuthenticationBlock(
     userDevices: createUserDevicesService(transport, config),
     tenantUsers: createTenantUsersService(transport, config),
     mailTemplates: createMailTemplatesService(transport, config),
+    jwks: createJwksService(transport),
+    adminRsaKeys: createAdminRsaKeysService(transport),
+    oidc: createOidcService(transport),
   };
 }
 
@@ -275,5 +300,6 @@ export const authenticationBlockMetadata = {
     'SubscriptionModel', 'UserSubscription', 'CompanySubscription',
     'Country', 'State', 'County', 'City', 'Currency',
     'Guest', 'MagicLink', 'RefreshToken', 'UserDevice', 'TenantUser', 'MailTemplate',
+    'RsaKey', 'JsonWebKey',
   ],
 };
