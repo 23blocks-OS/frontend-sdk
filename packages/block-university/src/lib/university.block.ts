@@ -14,6 +14,8 @@ import {
   createPlacementsService,
   createCalendarsService,
   createMatchesService,
+  createAttendanceService,
+  createNotesService,
   type CoursesService,
   type LessonsService,
   type EnrollmentsService,
@@ -28,6 +30,8 @@ import {
   type PlacementsService,
   type CalendarsService,
   type MatchesService,
+  type AttendanceService,
+  type NotesService,
 } from './services';
 
 export interface UniversityBlockConfig extends BlockConfig {
@@ -50,6 +54,8 @@ export interface UniversityBlock {
   placements: PlacementsService;
   calendars: CalendarsService;
   matches: MatchesService;
+  attendance: AttendanceService;
+  notes: NotesService;
 }
 
 export function createUniversityBlock(
@@ -71,6 +77,8 @@ export function createUniversityBlock(
     placements: createPlacementsService(transport, config),
     calendars: createCalendarsService(transport, config),
     matches: createMatchesService(transport, config),
+    attendance: createAttendanceService(transport, config),
+    notes: createNotesService(transport, config),
   };
 }
 
@@ -102,5 +110,7 @@ export const universityBlockMetadata: BlockMetadata = {
     'CalendarEvent',
     'Match',
     'MatchEvaluation',
+    'Attendance',
+    'Note',
   ],
 };

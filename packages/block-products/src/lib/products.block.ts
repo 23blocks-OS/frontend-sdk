@@ -17,6 +17,7 @@ import {
   createProductImagesService,
   createProductVariationsService,
   createProductReviewsService,
+  createProductVariationReviewsService,
   createStockService,
   createProductSuggestionsService,
   createAddonsService,
@@ -40,6 +41,7 @@ import {
   type ProductImagesService,
   type ProductVariationsService,
   type ProductReviewsService,
+  type ProductVariationReviewsService,
   type StockService,
   type ProductSuggestionsService,
   type AddonsService,
@@ -71,6 +73,7 @@ export interface ProductsBlock {
   images: ProductImagesService;
   variations: ProductVariationsService;
   reviews: ProductReviewsService;
+  variationReviews: ProductVariationReviewsService;
   stock: StockService;
   suggestions: ProductSuggestionsService;
   addons: AddonsService;
@@ -101,6 +104,7 @@ export function createProductsBlock(
     images: createProductImagesService(transport, config),
     variations: createProductVariationsService(transport, config),
     reviews: createProductReviewsService(transport, config),
+    variationReviews: createProductVariationReviewsService(transport, config),
     stock: createStockService(transport, config),
     suggestions: createProductSuggestionsService(transport, config),
     addons: createAddonsService(transport, config),
@@ -120,6 +124,7 @@ export const productsBlockMetadata: BlockMetadata = {
     'ProductImage',
     'ProductStock',
     'ProductReview',
+    'ProductVariationReview',
     'Cart',
     'CartDetail',
     'Category',

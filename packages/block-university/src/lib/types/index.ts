@@ -12,3 +12,5 @@ export * from './content-test';
 export * from './placement';
 export * from './calendar';
 export * from './match';
+export * from './attendance';
+export * from './note';

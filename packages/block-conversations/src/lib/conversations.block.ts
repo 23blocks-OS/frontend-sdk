@@ -13,6 +13,8 @@ import {
   createMessageFilesService,
   createSourcesService,
   createUsersService,
+  createMeetingsService,
+  createWebNotificationsService,
   type MessagesService,
   type DraftMessagesService,
   type GroupsService,
@@ -26,6 +28,8 @@ import {
   type MessageFilesService,
   type SourcesService,
   type UsersService,
+  type MeetingsService,
+  type WebNotificationsService,
 } from './services';
 
 export interface ConversationsBlockConfig extends BlockConfig {
@@ -47,6 +51,8 @@ export interface ConversationsBlock {
   messageFiles: MessageFilesService;
   sources: SourcesService;
   users: UsersService;
+  meetings: MeetingsService;
+  webNotifications: WebNotificationsService;
 }
 
 export function createConversationsBlock(
@@ -67,6 +73,8 @@ export function createConversationsBlock(
     messageFiles: createMessageFilesService(transport, config),
     sources: createSourcesService(transport, config),
     users: createUsersService(transport, config),
+    meetings: createMeetingsService(transport, config),
+    webNotifications: createWebNotificationsService(transport, config),
   };
 }
 
@@ -85,5 +93,7 @@ export const conversationsBlockMetadata: BlockMetadata = {
     'MessageFile',
     'Source',
     'User',
+    'Meeting',
+    'WebNotification',
   ],
 };

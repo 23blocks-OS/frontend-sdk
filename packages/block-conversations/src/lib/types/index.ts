@@ -11,3 +11,5 @@ export * from './availability';
 export * from './message-file';
 export * from './source';
 export * from './user';
+export * from './meeting';
+export * from './web-notification';

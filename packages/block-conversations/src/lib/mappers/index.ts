@@ -7,4 +7,6 @@ export * from './context.mapper';
 export * from './message-file.mapper';
 export * from './source.mapper';
 export * from './user.mapper';
+export * from './meeting.mapper';
+export * from './web-notification.mapper';
 export * from './utils';

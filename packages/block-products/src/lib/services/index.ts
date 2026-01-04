@@ -16,3 +16,4 @@ export * from './addons.service';
 export * from './mycarts.service';
 export * from './remarketing.service';
 export * from './visitors.service';
+export * from './product-variation-reviews.service';

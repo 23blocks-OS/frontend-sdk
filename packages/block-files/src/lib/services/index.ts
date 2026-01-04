@@ -5,3 +5,4 @@ export * from './user-files.service';
 export * from './file-categories.service';
 export * from './file-tags.service';
 export * from './delegations.service';
+export * from './file-access.service';

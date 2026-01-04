@@ -6,3 +6,4 @@ export * from './shopping-list';
 export * from './product-promotion';
 export * from './product-price';
 export * from './product-filter';
+export * from './product-variation-review';

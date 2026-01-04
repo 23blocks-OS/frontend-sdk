@@ -11,3 +11,5 @@ export * from './availabilities.service';
 export * from './message-files.service';
 export * from './sources.service';
 export * from './users.service';
+export * from './meetings.service';
+export * from './web-notifications.service';

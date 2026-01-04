@@ -6,4 +6,5 @@ export * from './shopping-list.mapper';
 export * from './product-promotion.mapper';
 export * from './product-price.mapper';
 export * from './product-filter.mapper';
+export * from './product-variation-review.mapper';
 export * from './utils';

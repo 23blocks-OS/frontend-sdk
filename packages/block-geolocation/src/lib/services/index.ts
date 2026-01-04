@@ -13,3 +13,4 @@ export * from './location-slots.service';
 export * from './location-taxes.service';
 export * from './location-groups.service';
 export * from './geo-identities.service';
+export * from './location-identities.service';

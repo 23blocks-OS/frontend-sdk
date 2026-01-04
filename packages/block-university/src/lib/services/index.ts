@@ -12,3 +12,5 @@ export * from './content-tests.service';
 export * from './placements.service';
 export * from './calendars.service';
 export * from './matches.service';
+export * from './attendance.service';
+export * from './notes.service';
