@@ -122,38 +122,70 @@ The SDK and API are hybrid - JSON:API responses but Rails-style requests. This i
 
 ## Future Enhancements
 
-### Smart Caching for API Requests
+### Request Deduplication
 - **Priority:** Medium
 - **Date Added:** January 2026
-- **Description:** Add intelligent caching layer to reduce API calls and improve perceived performance
+- **Description:** Merge identical in-flight requests to avoid redundant API calls
+- **Why Not Full Caching?** Client-side response caching is risky for transactional data (stock levels, prices, availability). Stale data leads to bad UX (user thinks product is available, but it's sold out). Let frameworks like React Query, SWR, or Angular HttpCache handle caching - they do it well.
 - **Proposed Features:**
-  - [ ] Response caching for GET requests with configurable TTL
-  - [ ] Request deduplication (merge identical in-flight requests)
-  - [ ] Stale-while-revalidate pattern (return cached, fetch fresh in background)
-  - [ ] Automatic cache invalidation on POST/PUT/DELETE
-  - [ ] Multiple storage backends (memory, localStorage, IndexedDB)
-  - [ ] Per-endpoint cache configuration
-  - [ ] Cache key generation based on URL + params
-  - [ ] Manual cache invalidation API
+  - [ ] Dedupe identical GET requests that fire simultaneously
+  - [ ] Key generation based on URL + params + headers
+  - [ ] No storage, no TTL - just avoid hitting API twice for same thing at same moment
+  - [ ] Configurable per-endpoint opt-out
 - **Example API:**
   ```typescript
   const client = create23BlocksClient({
     urls: { ... },
-    cache: {
-      enabled: true,
-      ttl: 60000,                    // Default: 60 seconds
-      staleWhileRevalidate: true,    // Return stale, fetch fresh in background
-      dedupeRequests: true,          // Dedupe identical in-flight requests
-      storage: 'memory',             // 'memory' | 'localStorage' | 'indexedDB'
-      exclude: ['/auth/*'],          // Don't cache auth endpoints
+    deduplication: {
+      enabled: true,  // Default: true
+      exclude: ['/auth/sign_in'],  // Don't dedupe auth mutations
     }
   });
 
-  // Manual cache control
-  client.cache.invalidate('/products');
-  client.cache.clear();
+  // Multiple components request same data simultaneously
+  // Component A
+  const user = await client.auth.getCurrentUser();
+  // Component B (fires at same time)
+  const user = await client.auth.getCurrentUser();
+  // Component C (fires at same time)
+  const user = await client.auth.getCurrentUser();
+
+  // Result: 1 API call, all 3 get same response
   ```
-- **Competitive Advantage:** Firebase and Supabase don't offer this at the SDK level
+- **Benefit:** Reduces API load without stale data risk
+
+### Optimistic UI Helpers
+- **Priority:** Low
+- **Date Added:** January 2026
+- **Description:** Helpers for optimistic updates with automatic rollback on failure
+- **Use Case:** User clicks "Add to Cart" - UI updates instantly, syncs with server in background, rolls back if server fails
+- **Proposed Features:**
+  - [ ] `optimistic()` wrapper for mutations
+  - [ ] Automatic rollback on server error
+  - [ ] Pending state tracking
+  - [ ] Conflict resolution helpers
+- **Example API:**
+  ```typescript
+  // Define optimistic mutation
+  const addToCart = client.optimistic({
+    // Optimistic update (runs immediately)
+    optimistic: (currentCart, product) => ({
+      ...currentCart,
+      items: [...currentCart.items, product],
+      total: currentCart.total + product.price,
+    }),
+
+    // Actual mutation (runs in background)
+    mutate: (product) => client.cart.addItem(product.id),
+
+    // Called if server fails (automatic rollback already done)
+    onError: (error) => toast.error('Failed to add item'),
+  });
+
+  // Usage - UI updates instantly
+  await addToCart(product);
+  ```
+- **Note:** This complements framework tools (React Query's optimistic updates, etc.) rather than replacing them
 
 ### Performance Benchmarks
 - **Priority:** Low
