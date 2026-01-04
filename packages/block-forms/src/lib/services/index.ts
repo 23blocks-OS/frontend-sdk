@@ -1,5 +1,6 @@
 export * from './forms.service';
 export * from './form-schemas.service';
+export * from './form-schema-versions.service';
 export * from './form-instances.service';
 export * from './form-sets.service';
 export * from './landings.service';
@@ -9,3 +10,4 @@ export * from './surveys.service';
 export * from './referrals.service';
 export * from './mail-templates.service';
 export * from './public-forms.service';
+export * from './crm-sync.service';

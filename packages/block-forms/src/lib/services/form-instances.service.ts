@@ -4,25 +4,62 @@ import type {
   FormInstance,
   CreateFormInstanceRequest,
   UpdateFormInstanceRequest,
-  SubmitFormInstanceRequest,
   ListFormInstancesParams,
 } from '../types/form-instance';
 import { formInstanceMapper } from '../mappers/form-instance.mapper';
 
 export interface FormInstancesService {
-  list(params?: ListFormInstancesParams): Promise<PageResult<FormInstance>>;
-  get(uniqueId: string): Promise<FormInstance>;
-  create(data: CreateFormInstanceRequest): Promise<FormInstance>;
-  update(uniqueId: string, data: UpdateFormInstanceRequest): Promise<FormInstance>;
-  delete(uniqueId: string): Promise<void>;
-  submit(data: SubmitFormInstanceRequest): Promise<FormInstance>;
-  listByUser(userUniqueId: string, params?: ListFormInstancesParams): Promise<PageResult<FormInstance>>;
-  listBySchema(formSchemaUniqueId: string, params?: ListFormInstancesParams): Promise<PageResult<FormInstance>>;
+  /**
+   * List all instances for a form
+   */
+  list(formUniqueId: string, params?: ListFormInstancesParams): Promise<PageResult<FormInstance>>;
+
+  /**
+   * Get a specific form instance
+   */
+  get(formUniqueId: string, uniqueId: string): Promise<FormInstance>;
+
+  /**
+   * Create a new form instance
+   */
+  create(formUniqueId: string, data: CreateFormInstanceRequest): Promise<FormInstance>;
+
+  /**
+   * Update a form instance
+   */
+  update(formUniqueId: string, uniqueId: string, data: UpdateFormInstanceRequest): Promise<FormInstance>;
+
+  /**
+   * Delete a form instance
+   */
+  delete(formUniqueId: string, uniqueId: string): Promise<void>;
+
+  /**
+   * Start a form instance (begin filling)
+   */
+  start(formUniqueId: string, uniqueId: string): Promise<FormInstance>;
+
+  /**
+   * Submit a form instance
+   */
+  submit(formUniqueId: string, uniqueId: string): Promise<FormInstance>;
+
+  /**
+   * Cancel a form instance
+   */
+  cancel(formUniqueId: string, uniqueId: string): Promise<FormInstance>;
+
+  /**
+   * Resend magic link for a form instance
+   */
+  resendMagicLink(formUniqueId: string, uniqueId: string): Promise<void>;
 }
 
 export function createFormInstancesService(transport: Transport, _config: { appId: string }): FormInstancesService {
+  const basePath = (formId: string) => `/forms/${formId}/instances`;
+
   return {
-    async list(params?: ListFormInstancesParams): Promise<PageResult<FormInstance>> {
+    async list(formUniqueId: string, params?: ListFormInstancesParams): Promise<PageResult<FormInstance>> {
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -31,78 +68,61 @@ export function createFormInstancesService(transport: Transport, _config: { appI
       if (params?.status) queryParams['status'] = params.status;
       if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
 
-      const response = await transport.get<unknown>('/form_instances', { params: queryParams });
+      const response = await transport.get<unknown>(`${basePath(formUniqueId)}/`, { params: queryParams });
       return decodePageResult(response, formInstanceMapper);
     },
 
-    async get(uniqueId: string): Promise<FormInstance> {
-      const response = await transport.get<unknown>(`/form_instances/${uniqueId}`);
+    async get(formUniqueId: string, uniqueId: string): Promise<FormInstance> {
+      const response = await transport.get<unknown>(`${basePath(formUniqueId)}/${uniqueId}`);
       return decodeOne(response, formInstanceMapper);
     },
 
-    async create(data: CreateFormInstanceRequest): Promise<FormInstance> {
-      const response = await transport.post<unknown>('/form_instances', {
-        form_instance: {
-            form_schema_unique_id: data.formSchemaUniqueId,
-            form_schema_version: data.formSchemaVersion,
-            user_unique_id: data.userUniqueId,
-            data: data.data,
-            payload: data.payload,
-          },
+    async create(formUniqueId: string, data: CreateFormInstanceRequest): Promise<FormInstance> {
+      const response = await transport.post<unknown>(`${basePath(formUniqueId)}/`, {
+        app_form_instance: {
+          form_schema_unique_id: data.formSchemaUniqueId,
+          form_schema_version: data.formSchemaVersion,
+          user_unique_id: data.userUniqueId,
+          data: data.data,
+          payload: data.payload,
+        },
       });
       return decodeOne(response, formInstanceMapper);
     },
 
-    async update(uniqueId: string, data: UpdateFormInstanceRequest): Promise<FormInstance> {
-      const response = await transport.put<unknown>(`/form_instances/${uniqueId}`, {
-        form_instance: {
-            data: data.data,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+    async update(formUniqueId: string, uniqueId: string, data: UpdateFormInstanceRequest): Promise<FormInstance> {
+      const response = await transport.put<unknown>(`${basePath(formUniqueId)}/${uniqueId}`, {
+        app_form_instance: {
+          data: data.data,
+          enabled: data.enabled,
+          status: data.status,
+          payload: data.payload,
+        },
       });
       return decodeOne(response, formInstanceMapper);
     },
 
-    async delete(uniqueId: string): Promise<void> {
-      await transport.delete(`/form_instances/${uniqueId}`);
+    async delete(formUniqueId: string, uniqueId: string): Promise<void> {
+      await transport.delete(`${basePath(formUniqueId)}/${uniqueId}`);
     },
 
-    async submit(data: SubmitFormInstanceRequest): Promise<FormInstance> {
-      const response = await transport.post<unknown>('/form_instances/submit', {
-        form_instance: {
-            form_schema_unique_id: data.formSchemaUniqueId,
-            form_schema_version: data.formSchemaVersion,
-            data: data.data,
-            payload: data.payload,
-          },
-      });
+    async start(formUniqueId: string, uniqueId: string): Promise<FormInstance> {
+      const response = await transport.post<unknown>(`${basePath(formUniqueId)}/${uniqueId}/start`, {});
       return decodeOne(response, formInstanceMapper);
     },
 
-    async listByUser(userUniqueId: string, params?: ListFormInstancesParams): Promise<PageResult<FormInstance>> {
-      const queryParams: Record<string, string> = { user_unique_id: userUniqueId };
-      if (params?.page) queryParams['page'] = String(params.page);
-      if (params?.perPage) queryParams['records'] = String(params.perPage);
-      if (params?.formSchemaUniqueId) queryParams['form_schema_unique_id'] = params.formSchemaUniqueId;
-      if (params?.status) queryParams['status'] = params.status;
-      if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
-
-      const response = await transport.get<unknown>(`/users/${userUniqueId}/form_instances`, { params: queryParams });
-      return decodePageResult(response, formInstanceMapper);
+    async submit(formUniqueId: string, uniqueId: string): Promise<FormInstance> {
+      const response = await transport.post<unknown>(`${basePath(formUniqueId)}/${uniqueId}/submit`, {});
+      return decodeOne(response, formInstanceMapper);
     },
 
-    async listBySchema(formSchemaUniqueId: string, params?: ListFormInstancesParams): Promise<PageResult<FormInstance>> {
-      const queryParams: Record<string, string> = { form_schema_unique_id: formSchemaUniqueId };
-      if (params?.page) queryParams['page'] = String(params.page);
-      if (params?.perPage) queryParams['records'] = String(params.perPage);
-      if (params?.userUniqueId) queryParams['user_unique_id'] = params.userUniqueId;
-      if (params?.status) queryParams['status'] = params.status;
-      if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
+    async cancel(formUniqueId: string, uniqueId: string): Promise<FormInstance> {
+      const response = await transport.post<unknown>(`${basePath(formUniqueId)}/${uniqueId}/cancel`, {});
+      return decodeOne(response, formInstanceMapper);
+    },
 
-      const response = await transport.get<unknown>(`/form_schemas/${formSchemaUniqueId}/instances`, { params: queryParams });
-      return decodePageResult(response, formInstanceMapper);
+    async resendMagicLink(formUniqueId: string, uniqueId: string): Promise<void> {
+      await transport.post<unknown>(`${basePath(formUniqueId)}/${uniqueId}/resend_magic_link`, {});
     },
   };
 }

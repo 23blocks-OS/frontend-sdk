@@ -43,3 +43,25 @@ export interface ListFormSetsParams {
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }
+
+export interface FormSetMatchRequest {
+  /** Criteria to match against form sets */
+  criteria: Record<string, unknown>;
+  /** Optional user context */
+  userUniqueId?: string;
+}
+
+export interface FormSetMatchResult {
+  formSet: FormSet;
+  score: number;
+  matchedCriteria: string[];
+}
+
+export interface FormSetAutoAssignRequest {
+  /** User to assign forms to */
+  userUniqueId: string;
+  /** Criteria to match against form sets */
+  criteria?: Record<string, unknown>;
+  /** Form set unique ID (if known) */
+  formSetUniqueId?: string;
+}
