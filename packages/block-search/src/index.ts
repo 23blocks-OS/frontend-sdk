@@ -1,35 +1,12 @@
-// Block factory and config
-export {
-  createSearchBlock,
-  searchBlockMetadata,
-  type SearchBlock,
-  type SearchBlockConfig,
-} from './lib/search.block.js';
+// Block factory and metadata
+export { createSearchBlock, searchBlockMetadata } from './lib/search.block.js';
+export type { SearchBlock, SearchBlockConfig } from './lib/search.block.js';
 
-// Types
-export type {
-  SearchResult,
-  SearchQuery,
-  LastQuery,
-  FavoriteEntity,
-  EntityType,
-  SearchRequest,
-  SearchResponse,
-  AddFavoriteRequest,
-} from './lib/types/index.js';
+// Types - Re-export all types
+export * from './lib/types/index.js';
 
-// Services
-export type {
-  SearchService,
-  SearchHistoryService,
-  FavoritesService,
-} from './lib/services/index.js';
+// Services - Re-export all services
+export * from './lib/services/index.js';
 
 // Mappers (for advanced use cases)
-export {
-  searchResultMapper,
-  searchQueryMapper,
-  lastQueryMapper,
-  favoriteEntityMapper,
-  entityTypeMapper,
-} from './lib/mappers/index.js';
+export * from './lib/mappers/index.js';

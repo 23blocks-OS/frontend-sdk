@@ -2,49 +2,11 @@
 export { createContentBlock, contentBlockMetadata } from './lib/content.block';
 export type { ContentBlock, ContentBlockConfig } from './lib/content.block';
 
-// Types
-export type {
-  // Post types
-  Post,
-  CreatePostRequest,
-  UpdatePostRequest,
-  ListPostsParams,
-  // Comment types
-  Comment,
-  CreateCommentRequest,
-  UpdateCommentRequest,
-  ListCommentsParams,
-  // Category types
-  Category,
-  CreateCategoryRequest,
-  UpdateCategoryRequest,
-  ListCategoriesParams,
-  // Tag types
-  Tag,
-  CreateTagRequest,
-  UpdateTagRequest,
-  ListTagsParams,
-} from './lib/types';
+// Types - Re-export all types
+export * from './lib/types';
 
-// Services
-export type {
-  PostsService,
-  CommentsService,
-  CategoriesService,
-  TagsService,
-} from './lib/services';
-
-export {
-  createPostsService,
-  createCommentsService,
-  createCategoriesService,
-  createTagsService,
-} from './lib/services';
+// Services - Re-export all services
+export * from './lib/services';
 
 // Mappers (for advanced use cases)
-export {
-  postMapper,
-  commentMapper,
-  categoryMapper,
-  tagMapper,
-} from './lib/mappers';
+export * from './lib/mappers';

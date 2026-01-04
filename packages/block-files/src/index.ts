@@ -2,43 +2,11 @@
 export { createFilesBlock, filesBlockMetadata } from './lib/files.block';
 export type { FilesBlock, FilesBlockConfig } from './lib/files.block';
 
-// Types
-export type {
-  // Storage File types
-  StorageFile,
-  CreateStorageFileRequest,
-  UpdateStorageFileRequest,
-  ListStorageFilesParams,
-  UploadFileRequest,
-  // Entity File types
-  EntityFile,
-  AttachFileRequest,
-  UpdateEntityFileRequest,
-  ListEntityFilesParams,
-  ReorderFilesRequest,
-  // File Schema types
-  FileSchema,
-  CreateFileSchemaRequest,
-  UpdateFileSchemaRequest,
-  ListFileSchemasParams,
-} from './lib/types';
+// Types - Re-export all types
+export * from './lib/types';
 
-// Services
-export type {
-  StorageFilesService,
-  EntityFilesService,
-  FileSchemasService,
-} from './lib/services';
-
-export {
-  createStorageFilesService,
-  createEntityFilesService,
-  createFileSchemasService,
-} from './lib/services';
+// Services - Re-export all services
+export * from './lib/services';
 
 // Mappers (for advanced use cases)
-export {
-  storageFileMapper,
-  entityFileMapper,
-  fileSchemaMapper,
-} from './lib/mappers';
+export * from './lib/mappers';
