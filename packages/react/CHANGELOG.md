@@ -1,3 +1,13 @@
+## 7.4.0 (2026-01-04)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 3.3.0
+- Updated @23blocks/block-geolocation to 3.3.0
+- Updated @23blocks/block-university to 3.3.0
+- Updated @23blocks/block-products to 3.3.0
+- Updated @23blocks/block-files to 3.3.0
+
 ## 7.3.0 (2026-01-04)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,14 @@
+## 3.3.0 (2026-01-04)
+
+### 🚀 Features
+
+- add remaining MEDIUM priority services across SDK blocks ([4fdfc56](https://github.com/23blocks-OS/frontend-sdk/commit/4fdfc56))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.2.0 (2026-01-04)
 
 ### 🚀 Features
