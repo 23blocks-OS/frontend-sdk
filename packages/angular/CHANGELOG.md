@@ -1,3 +1,12 @@
+## 6.3.0 (2026-01-04)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-geolocation to 3.2.0
+- Updated @23blocks/block-company to 3.2.0
+- Updated @23blocks/block-content to 3.2.0
+- Updated @23blocks/block-files to 3.2.0
+
 ## 6.2.0 (2026-01-04)
 
 ### 🧱 Updated Dependencies

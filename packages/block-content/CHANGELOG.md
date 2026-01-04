@@ -1,3 +1,14 @@
+## 3.2.0 (2026-01-04)
+
+### 🚀 Features
+
+- implement MEDIUM priority missing services ([9654f3b](https://github.com/23blocks-OS/frontend-sdk/commit/9654f3b))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.1.1 (2026-01-04)
 
 ### 🩹 Fixes
