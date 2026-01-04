@@ -1,6 +1,7 @@
 export * from './message';
 export * from './draft-message';
 export * from './group';
+export * from './group-invite';
 export * from './notification';
 export * from './conversation';
 export * from './websocket-token';

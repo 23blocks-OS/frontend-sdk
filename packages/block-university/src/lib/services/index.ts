@@ -9,3 +9,6 @@ export * from './students.service';
 export * from './course-groups.service';
 export * from './coaching-sessions.service';
 export * from './content-tests.service';
+export * from './placements.service';
+export * from './calendars.service';
+export * from './matches.service';

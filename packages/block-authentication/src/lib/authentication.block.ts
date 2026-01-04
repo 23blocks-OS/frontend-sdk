@@ -2,6 +2,7 @@ import type { Transport, BlockConfig } from '@23blocks/contracts';
 import { createAuthService, type AuthService } from './services/auth.service.js';
 import { createUsersService, type UsersService } from './services/users.service.js';
 import { createRolesService, type RolesService } from './services/roles.service.js';
+import { createPermissionsService, type PermissionsService } from './services/permissions.service.js';
 import { createApiKeysService, type ApiKeysService } from './services/api-keys.service.js';
 import {
   createAppsService,
@@ -75,9 +76,14 @@ export interface AuthenticationBlock {
   users: UsersService;
 
   /**
-   * Role and permission management
+   * Role management
    */
   roles: RolesService;
+
+  /**
+   * Permission management
+   */
+  permissions: PermissionsService;
 
   /**
    * API key management
@@ -229,6 +235,7 @@ export function createAuthenticationBlock(
     auth: createAuthService(transport, config),
     users: createUsersService(transport, config),
     roles: createRolesService(transport, config),
+    permissions: createPermissionsService(transport, config),
     apiKeys: createApiKeysService(transport, config),
     mfa: createMfaService(transport, config),
     oauth: createOAuthService(transport, config),

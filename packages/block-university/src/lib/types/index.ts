@@ -9,3 +9,6 @@ export * from './student';
 export * from './course-group';
 export * from './coaching-session';
 export * from './content-test';
+export * from './placement';
+export * from './calendar';
+export * from './match';

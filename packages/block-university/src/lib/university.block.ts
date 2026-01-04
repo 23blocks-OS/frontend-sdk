@@ -11,6 +11,9 @@ import {
   createCourseGroupsService,
   createCoachingSessionsService,
   createContentTestsService,
+  createPlacementsService,
+  createCalendarsService,
+  createMatchesService,
   type CoursesService,
   type LessonsService,
   type EnrollmentsService,
@@ -22,6 +25,9 @@ import {
   type CourseGroupsService,
   type CoachingSessionsService,
   type ContentTestsService,
+  type PlacementsService,
+  type CalendarsService,
+  type MatchesService,
 } from './services';
 
 export interface UniversityBlockConfig extends BlockConfig {
@@ -41,6 +47,9 @@ export interface UniversityBlock {
   courseGroups: CourseGroupsService;
   coachingSessions: CoachingSessionsService;
   tests: ContentTestsService;
+  placements: PlacementsService;
+  calendars: CalendarsService;
+  matches: MatchesService;
 }
 
 export function createUniversityBlock(
@@ -59,13 +68,16 @@ export function createUniversityBlock(
     courseGroups: createCourseGroupsService(transport, config),
     coachingSessions: createCoachingSessionsService(transport, config),
     tests: createContentTestsService(transport, config),
+    placements: createPlacementsService(transport, config),
+    calendars: createCalendarsService(transport, config),
+    matches: createMatchesService(transport, config),
   };
 }
 
 export const universityBlockMetadata: BlockMetadata = {
   name: 'university',
   version: '0.1.0',
-  description: 'University and education management - courses, lessons, enrollments, assignments, submissions',
+  description: 'University and education management - courses, lessons, enrollments, assignments, submissions, placements, calendars, and coaching matches',
   resourceTypes: [
     'Course',
     'Lesson',
@@ -80,5 +92,15 @@ export const universityBlockMetadata: BlockMetadata = {
     'ContentTest',
     'TestQuestion',
     'TestOption',
+    'PlacementTest',
+    'PlacementSection',
+    'PlacementQuestion',
+    'PlacementOption',
+    'PlacementRule',
+    'PlacementInstance',
+    'Availability',
+    'CalendarEvent',
+    'Match',
+    'MatchEvaluation',
   ],
 };

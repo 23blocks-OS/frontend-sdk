@@ -1,5 +1,6 @@
 export * from './products.service';
 export * from './cart.service';
+export * from './cart-details.service';
 export * from './catalog.service';
 export * from './product-sets.service';
 export * from './shopping-lists.service';

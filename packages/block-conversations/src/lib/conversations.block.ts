@@ -3,6 +3,7 @@ import {
   createMessagesService,
   createDraftMessagesService,
   createGroupsService,
+  createGroupInvitesService,
   createNotificationsService,
   createConversationsService,
   createWebSocketTokensService,
@@ -15,6 +16,7 @@ import {
   type MessagesService,
   type DraftMessagesService,
   type GroupsService,
+  type GroupInvitesService,
   type NotificationsService,
   type ConversationsService,
   type WebSocketTokensService,
@@ -35,6 +37,7 @@ export interface ConversationsBlock {
   messages: MessagesService;
   draftMessages: DraftMessagesService;
   groups: GroupsService;
+  groupInvites: GroupInvitesService;
   notifications: NotificationsService;
   conversations: ConversationsService;
   websocketTokens: WebSocketTokensService;
@@ -54,6 +57,7 @@ export function createConversationsBlock(
     messages: createMessagesService(transport, config),
     draftMessages: createDraftMessagesService(transport, config),
     groups: createGroupsService(transport, config),
+    groupInvites: createGroupInvitesService(transport, config),
     notifications: createNotificationsService(transport, config),
     conversations: createConversationsService(transport, config),
     websocketTokens: createWebSocketTokensService(transport, config),
@@ -74,6 +78,7 @@ export const conversationsBlockMetadata: BlockMetadata = {
     'Message',
     'DraftMessage',
     'Group',
+    'GroupInvite',
     'Notification',
     'Conversation',
     'Context',

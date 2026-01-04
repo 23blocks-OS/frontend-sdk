@@ -1,6 +1,7 @@
 export { createAuthService, type AuthService } from './auth.service.js';
 export { createUsersService, type UsersService, type UpdateUserRequest, type UpdateProfileRequest } from './users.service.js';
 export { createRolesService, type RolesService, type CreateRoleRequest, type UpdateRoleRequest } from './roles.service.js';
+export { createPermissionsService, type PermissionsService, type CreatePermissionRequest, type UpdatePermissionRequest } from './permissions.service.js';
 export { createApiKeysService, type ApiKeysService, type ApiKeyUsageStats } from './api-keys.service.js';
 
 // Apps and services

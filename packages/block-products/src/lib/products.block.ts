@@ -2,6 +2,7 @@ import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts'
 import {
   createProductsService,
   createCartService,
+  createCartDetailsService,
   createCategoriesService,
   createBrandsService,
   createVendorsService,
@@ -24,6 +25,7 @@ import {
   createVisitorsService,
   type ProductsService,
   type CartService,
+  type CartDetailsService,
   type CategoriesService,
   type BrandsService,
   type VendorsService,
@@ -54,6 +56,7 @@ export interface ProductsBlockConfig extends BlockConfig {
 export interface ProductsBlock {
   products: ProductsService;
   cart: CartService;
+  cartDetails: CartDetailsService;
   categories: CategoriesService;
   brands: BrandsService;
   vendors: VendorsService;
@@ -83,6 +86,7 @@ export function createProductsBlock(
   return {
     products: createProductsService(transport, config),
     cart: createCartService(transport, config),
+    cartDetails: createCartDetailsService(transport, config),
     categories: createCategoriesService(transport, config),
     brands: createBrandsService(transport, config),
     vendors: createVendorsService(transport, config),

@@ -9,4 +9,7 @@ export * from './student.mapper';
 export * from './course-group.mapper';
 export * from './coaching-session.mapper';
 export * from './content-test.mapper';
+export * from './placement.mapper';
+export * from './calendar.mapper';
+export * from './match.mapper';
 export * from './utils';

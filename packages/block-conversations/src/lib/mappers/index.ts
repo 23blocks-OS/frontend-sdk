@@ -1,6 +1,7 @@
 export * from './message.mapper';
 export * from './draft-message.mapper';
 export * from './group.mapper';
+export * from './group-invite.mapper';
 export * from './notification.mapper';
 export * from './context.mapper';
 export * from './message-file.mapper';
