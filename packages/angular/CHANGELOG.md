@@ -1,3 +1,14 @@
+## 6.5.1 (2026-01-04)
+
+### 🚀 Features
+
+- **angular:** add bindings for new LOW priority services ([171f10b](https://github.com/23blocks-OS/frontend-sdk/commit/171f10b))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 6.5.0 (2026-01-04)
 
 ### 🧱 Updated Dependencies
