@@ -5,11 +5,15 @@ import {
   createTeamsService,
   createTeamMembersService,
   createQuartersService,
+  createPositionsService,
+  createEmployeeAssignmentsService,
   type CompaniesService,
   type DepartmentsService,
   type TeamsService,
   type TeamMembersService,
   type QuartersService,
+  type PositionsService,
+  type EmployeeAssignmentsService,
 } from './services';
 
 export interface CompanyBlockConfig extends BlockConfig {
@@ -23,6 +27,8 @@ export interface CompanyBlock {
   teams: TeamsService;
   teamMembers: TeamMembersService;
   quarters: QuartersService;
+  positions: PositionsService;
+  employeeAssignments: EmployeeAssignmentsService;
 }
 
 export function createCompanyBlock(
@@ -35,6 +41,8 @@ export function createCompanyBlock(
     teams: createTeamsService(transport, config),
     teamMembers: createTeamMembersService(transport, config),
     quarters: createQuartersService(transport, config),
+    positions: createPositionsService(transport, config),
+    employeeAssignments: createEmployeeAssignmentsService(transport, config),
   };
 }
 
@@ -48,5 +56,7 @@ export const companyBlockMetadata: BlockMetadata = {
     'Team',
     'TeamMember',
     'Quarter',
+    'Position',
+    'EmployeeAssignment',
   ],
 };

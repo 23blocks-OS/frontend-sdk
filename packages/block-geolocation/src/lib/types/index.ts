@@ -5,6 +5,8 @@ export * from './region';
 export * from './route';
 export * from './booking';
 export * from './premise';
+export * from './premise-event';
+export * from './route-tracker';
 export * from './location-hour';
 export * from './location-image';
 export * from './location-slot';

@@ -7,6 +7,8 @@ import {
   createTravelRoutesService,
   createPremiseBookingsService,
   createPremisesService,
+  createPremiseEventsService,
+  createRouteTrackerService,
   createLocationHoursService,
   createLocationImagesService,
   createLocationSlotsService,
@@ -20,6 +22,8 @@ import {
   type TravelRoutesService,
   type PremiseBookingsService,
   type PremisesService,
+  type PremiseEventsService,
+  type RouteTrackerService,
   type LocationHoursService,
   type LocationImagesService,
   type LocationSlotsService,
@@ -41,6 +45,8 @@ export interface GeolocationBlock {
   routes: TravelRoutesService;
   bookings: PremiseBookingsService;
   premises: PremisesService;
+  premiseEvents: PremiseEventsService;
+  routeTracker: RouteTrackerService;
   locationHours: LocationHoursService;
   locationImages: LocationImagesService;
   locationSlots: LocationSlotsService;
@@ -61,6 +67,8 @@ export function createGeolocationBlock(
     routes: createTravelRoutesService(transport, config),
     bookings: createPremiseBookingsService(transport, config),
     premises: createPremisesService(transport, config),
+    premiseEvents: createPremiseEventsService(transport, config),
+    routeTracker: createRouteTrackerService(transport, config),
     locationHours: createLocationHoursService(transport, config),
     locationImages: createLocationImagesService(transport, config),
     locationSlots: createLocationSlotsService(transport, config),
@@ -82,6 +90,8 @@ export const geolocationBlockMetadata: BlockMetadata = {
     'TravelRoute',
     'PremiseBooking',
     'Premise',
+    'PremiseEvent',
+    'RouteLocation',
     'LocationHour',
     'LocationImage',
     'LocationSlot',

@@ -288,12 +288,12 @@ This block has extensive coverage with 17 services.
 
 ## Priority Action Items
 
-### HIGH Priority (User-facing, frequently used)
-1. **block-authentication**: Add PermissionsService, MagicLinksService
-2. **block-university**: Add PlacementsService, CalendarsService, MatchesService
-3. **block-search**: Add EntityTypesService
-4. **block-products**: Add CartDetailsService
-5. **block-conversations**: Add GroupInvitesService
+### HIGH Priority (User-facing, frequently used) ✅ COMPLETED
+1. ~~**block-authentication**: Add PermissionsService~~ ✅ (MagicLinksService exists in guests.service.ts)
+2. ~~**block-university**: Add PlacementsService, CalendarsService, MatchesService~~ ✅
+3. ~~**block-search**: Add EntityTypesService~~ ✅ (Already exists in EntitiesService)
+4. ~~**block-products**: Add CartDetailsService~~ ✅
+5. ~~**block-conversations**: Add GroupInvitesService~~ ✅
 
 ### MEDIUM Priority (Feature completeness)
 1. **block-company**: Add PositionsService, EmployeeAssignmentsService

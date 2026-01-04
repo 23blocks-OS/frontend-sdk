@@ -4,10 +4,16 @@ import {
   createEntityFilesService,
   createFileSchemasService,
   createUserFilesService,
+  createFileCategoriesService,
+  createFileTagsService,
+  createDelegationsService,
   type StorageFilesService,
   type EntityFilesService,
   type FileSchemasService,
   type UserFilesService,
+  type FileCategoriesService,
+  type FileTagsService,
+  type DelegationsService,
 } from './services';
 
 export interface FilesBlockConfig extends BlockConfig {
@@ -20,6 +26,9 @@ export interface FilesBlock {
   entityFiles: EntityFilesService;
   fileSchemas: FileSchemasService;
   userFiles: UserFilesService;
+  fileCategories: FileCategoriesService;
+  fileTags: FileTagsService;
+  delegations: DelegationsService;
 }
 
 export function createFilesBlock(
@@ -31,6 +40,9 @@ export function createFilesBlock(
     entityFiles: createEntityFilesService(transport, config),
     fileSchemas: createFileSchemasService(transport, config),
     userFiles: createUserFilesService(transport, config),
+    fileCategories: createFileCategoriesService(transport, config),
+    fileTags: createFileTagsService(transport, config),
+    delegations: createDelegationsService(transport, config),
   };
 }
 
@@ -43,5 +55,8 @@ export const filesBlockMetadata: BlockMetadata = {
     'EntityFile',
     'FileSchema',
     'UserFile',
+    'FileCategory',
+    'FileTag',
+    'FileDelegation',
   ],
 };

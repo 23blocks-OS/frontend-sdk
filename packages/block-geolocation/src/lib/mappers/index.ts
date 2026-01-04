@@ -5,6 +5,8 @@ export * from './region.mapper';
 export * from './route.mapper';
 export * from './booking.mapper';
 export * from './premise.mapper';
+export * from './premise-event.mapper';
+export * from './route-tracker.mapper';
 export * from './location-hour.mapper';
 export * from './location-image.mapper';
 export * from './location-slot.mapper';

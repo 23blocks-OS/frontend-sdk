@@ -5,6 +5,8 @@ export * from './regions.service';
 export * from './routes.service';
 export * from './bookings.service';
 export * from './premises.service';
+export * from './premise-events.service';
+export * from './route-tracker.service';
 export * from './location-hours.service';
 export * from './location-images.service';
 export * from './location-slots.service';
