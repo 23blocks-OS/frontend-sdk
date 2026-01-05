@@ -11,7 +11,7 @@ import { landingMapper } from '../mappers/landing.mapper';
 export interface LandingsService {
   list(formUniqueId: string, params?: ListLandingsParams): Promise<PageResult<Landing>>;
   get(formUniqueId: string, uniqueId: string): Promise<Landing>;
-  create(formUniqueId: string, data: CreateLandingRequest): Promise<Landing>;
+  submit(formUniqueId: string, data: CreateLandingRequest): Promise<Landing>;
   update(formUniqueId: string, uniqueId: string, data: UpdateLandingRequest): Promise<Landing>;
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
 }
@@ -34,7 +34,7 @@ export function createLandingsService(transport: Transport, _config: { appId: st
       return decodeOne(response, landingMapper);
     },
 
-    async create(formUniqueId: string, data: CreateLandingRequest): Promise<Landing> {
+    async submit(formUniqueId: string, data: CreateLandingRequest): Promise<Landing> {
       const response = await transport.post<unknown>(`/landings/${formUniqueId}/instances`, {
         landing_instance: {
           email: data.email,

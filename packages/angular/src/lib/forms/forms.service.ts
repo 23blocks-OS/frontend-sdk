@@ -259,8 +259,8 @@ export class FormsService {
     return from(this.ensureConfigured().landings.get(formUniqueId, uniqueId));
   }
 
-  createLanding(formUniqueId: string, data: CreateLandingRequest): Observable<Landing> {
-    return from(this.ensureConfigured().landings.create(formUniqueId, data));
+  submitLanding(formUniqueId: string, data: CreateLandingRequest): Observable<Landing> {
+    return from(this.ensureConfigured().landings.submit(formUniqueId, data));
   }
 
   updateLanding(formUniqueId: string, uniqueId: string, data: UpdateLandingRequest): Observable<Landing> {
@@ -283,8 +283,8 @@ export class FormsService {
     return from(this.ensureConfigured().subscriptions.get(formUniqueId, uniqueId));
   }
 
-  createSubscription(formUniqueId: string, data: CreateSubscriptionRequest): Observable<Subscription> {
-    return from(this.ensureConfigured().subscriptions.create(formUniqueId, data));
+  submitSubscription(formUniqueId: string, data: CreateSubscriptionRequest): Observable<Subscription> {
+    return from(this.ensureConfigured().subscriptions.submit(formUniqueId, data));
   }
 
   updateSubscription(formUniqueId: string, uniqueId: string, data: UpdateSubscriptionRequest): Observable<Subscription> {

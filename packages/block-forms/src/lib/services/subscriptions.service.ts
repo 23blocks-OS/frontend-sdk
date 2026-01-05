@@ -11,7 +11,7 @@ import { subscriptionMapper } from '../mappers/subscription.mapper';
 export interface SubscriptionsService {
   list(formUniqueId: string, params?: ListSubscriptionsParams): Promise<PageResult<Subscription>>;
   get(formUniqueId: string, uniqueId: string): Promise<Subscription>;
-  create(formUniqueId: string, data: CreateSubscriptionRequest): Promise<Subscription>;
+  submit(formUniqueId: string, data: CreateSubscriptionRequest): Promise<Subscription>;
   update(formUniqueId: string, uniqueId: string, data: UpdateSubscriptionRequest): Promise<Subscription>;
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
 }
@@ -34,7 +34,7 @@ export function createSubscriptionsService(transport: Transport, _config: { appI
       return decodeOne(response, subscriptionMapper);
     },
 
-    async create(formUniqueId: string, data: CreateSubscriptionRequest): Promise<Subscription> {
+    async submit(formUniqueId: string, data: CreateSubscriptionRequest): Promise<Subscription> {
       const response = await transport.post<unknown>(`/subscriptions/${formUniqueId}/instances`, {
         subscription: {
           email: data.email,
