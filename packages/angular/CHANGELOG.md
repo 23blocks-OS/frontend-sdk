@@ -1,3 +1,14 @@
+## 6.5.3 (2026-01-05)
+
+### 🚀 Features
+
+- **angular:** complete FormsService with all block services ([56b9177](https://github.com/23blocks-OS/frontend-sdk/commit/56b9177))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 6.5.2 (2026-01-05)
 
 ### 🧱 Updated Dependencies
