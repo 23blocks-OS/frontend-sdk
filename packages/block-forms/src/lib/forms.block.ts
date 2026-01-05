@@ -11,7 +11,7 @@ import {
   createSurveysService,
   createReferralsService,
   createMailTemplatesService,
-  createPublicFormsService,
+  createApplicationFormsService,
   createCrmSyncService,
   type FormsService,
   type FormSchemasService,
@@ -24,7 +24,7 @@ import {
   type SurveysService,
   type ReferralsService,
   type MailTemplatesService,
-  type PublicFormsService,
+  type ApplicationFormsService,
   type CrmSyncService,
 } from './services';
 
@@ -67,8 +67,8 @@ export interface FormsBlock {
   /** Mail templates */
   mailTemplates: MailTemplatesService;
 
-  /** Public forms (magic link access) */
-  publicForms: PublicFormsService;
+  /** Application forms (magic link access) */
+  applicationForms: ApplicationFormsService;
 
   /** CRM sync operations */
   crmSync: CrmSyncService;
@@ -90,7 +90,7 @@ export function createFormsBlock(
     surveys: createSurveysService(transport, config),
     referrals: createReferralsService(transport, config),
     mailTemplates: createMailTemplatesService(transport, config),
-    publicForms: createPublicFormsService(transport, config),
+    applicationForms: createApplicationFormsService(transport, config),
     crmSync: createCrmSyncService(transport, config),
   };
 }
@@ -111,7 +111,7 @@ export const formsBlockMetadata: BlockMetadata = {
     'Survey',
     'Referral',
     'MailTemplate',
-    'PublicForm',
+    'ApplicationForm',
     'CrmSync',
   ],
 };

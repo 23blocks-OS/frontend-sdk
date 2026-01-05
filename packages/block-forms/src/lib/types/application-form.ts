@@ -1,6 +1,6 @@
 import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 
-export interface PublicForm extends IdentityCore {
+export interface ApplicationForm extends IdentityCore {
   formUniqueId: string;
   title?: string;
   description?: string;
@@ -11,17 +11,17 @@ export interface PublicForm extends IdentityCore {
   payload?: Record<string, unknown>;
 }
 
-export interface PublicFormSubmission {
+export interface ApplicationFormSubmission {
   data: Record<string, unknown>;
   payload?: Record<string, unknown>;
 }
 
-export interface PublicFormDraft {
+export interface ApplicationFormDraft {
   data: Record<string, unknown>;
   payload?: Record<string, unknown>;
 }
 
-export interface PublicFormResponse extends IdentityCore {
+export interface ApplicationFormResponse extends IdentityCore {
   formUniqueId: string;
   data: Record<string, unknown>;
   status: EntityStatus;

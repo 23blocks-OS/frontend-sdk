@@ -1,8 +1,8 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { PublicForm, PublicFormResponse } from '../types/public-form';
+import type { ApplicationForm, ApplicationFormResponse } from '../types/application-form';
 import { parseString, parseDate, parseStatus } from './utils';
 
-export const publicFormMapper: ResourceMapper<PublicForm> = {
+export const applicationFormMapper: ResourceMapper<ApplicationForm> = {
   type: 'public_form',
   map: (resource) => ({
     uniqueId: resource.id,
@@ -19,7 +19,7 @@ export const publicFormMapper: ResourceMapper<PublicForm> = {
   }),
 };
 
-export const publicFormResponseMapper: ResourceMapper<PublicFormResponse> = {
+export const applicationFormResponseMapper: ResourceMapper<ApplicationFormResponse> = {
   type: 'form_response',
   map: (resource) => ({
     uniqueId: resource.id,

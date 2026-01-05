@@ -103,13 +103,13 @@ export type {
   ListMailTemplatesParams,
 } from './lib/types/mail-template';
 
-// Public Form types
+// Application Form types
 export type {
-  PublicForm,
-  PublicFormSubmission,
-  SubmitPublicFormRequest,
-  SavePublicFormDraftRequest,
-} from './lib/types/public-form';
+  ApplicationForm,
+  ApplicationFormSubmission,
+  ApplicationFormDraft,
+  ApplicationFormResponse,
+} from './lib/types/application-form';
 
 // CRM Sync types
 export type {
@@ -136,7 +136,7 @@ export type {
   SurveysService,
   ReferralsService,
   MailTemplatesService,
-  PublicFormsService,
+  ApplicationFormsService,
   CrmSyncService,
 } from './lib/services';
 
@@ -152,7 +152,7 @@ export {
   createSurveysService,
   createReferralsService,
   createMailTemplatesService,
-  createPublicFormsService,
+  createApplicationFormsService,
   createCrmSyncService,
 } from './lib/services';
 
@@ -172,5 +172,5 @@ export {
   surveyMapper,
   referralMapper,
   mailTemplateMapper,
-  publicFormMapper,
+  applicationFormMapper,
 } from './lib/mappers';

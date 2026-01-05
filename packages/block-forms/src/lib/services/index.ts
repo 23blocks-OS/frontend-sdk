@@ -9,5 +9,5 @@ export * from './appointments.service';
 export * from './surveys.service';
 export * from './referrals.service';
 export * from './mail-templates.service';
-export * from './public-forms.service';
+export * from './application-forms.service';
 export * from './crm-sync.service';
