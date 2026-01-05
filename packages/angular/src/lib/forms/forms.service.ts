@@ -13,6 +13,10 @@ import {
   type CreateFormSchemaRequest,
   type UpdateFormSchemaRequest,
   type ListFormSchemasParams,
+  type FormSchemaVersion,
+  type CreateFormSchemaVersionRequest,
+  type UpdateFormSchemaVersionRequest,
+  type ListFormSchemaVersionsParams,
   type FormInstance,
   type CreateFormInstanceRequest,
   type UpdateFormInstanceRequest,
@@ -22,6 +26,43 @@ import {
   type CreateFormSetRequest,
   type UpdateFormSetRequest,
   type ListFormSetsParams,
+  type Landing,
+  type CreateLandingRequest,
+  type UpdateLandingRequest,
+  type ListLandingsParams,
+  type Subscription,
+  type CreateSubscriptionRequest,
+  type UpdateSubscriptionRequest,
+  type ListSubscriptionsParams,
+  type Appointment,
+  type CreateAppointmentRequest,
+  type UpdateAppointmentRequest,
+  type ListAppointmentsParams,
+  type AppointmentReportRequest,
+  type AppointmentReportSummary,
+  type Survey,
+  type SurveyStatus,
+  type CreateSurveyRequest,
+  type UpdateSurveyRequest,
+  type UpdateSurveyStatusRequest,
+  type ListSurveysParams,
+  type Referral,
+  type CreateReferralRequest,
+  type UpdateReferralRequest,
+  type ListReferralsParams,
+  type MailTemplate,
+  type CreateMailTemplateRequest,
+  type UpdateMailTemplateRequest,
+  type ListMailTemplatesParams,
+  type ApplicationForm,
+  type ApplicationFormSubmission,
+  type ApplicationFormDraft,
+  type ApplicationFormResponse,
+  type CrmSyncResult,
+  type CrmSyncBatchRequest,
+  type CrmSyncBatchResult,
+  type CrmConnectionStatus,
+  type CrmSyncStatus,
 } from '@23blocks/block-forms';
 import { TRANSPORT, FORMS_TRANSPORT, FORMS_CONFIG } from '../tokens.js';
 
@@ -123,6 +164,30 @@ export class FormsService {
   }
 
   // ───────────────────────────────────────────────────────────────────────────
+  // Form Schema Versions Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listFormSchemaVersions(formSchemaUniqueId: string, params?: ListFormSchemaVersionsParams): Observable<PageResult<FormSchemaVersion>> {
+    return from(this.ensureConfigured().schemaVersions.list(formSchemaUniqueId, params));
+  }
+
+  getFormSchemaVersion(formSchemaUniqueId: string, uniqueId: string): Observable<FormSchemaVersion> {
+    return from(this.ensureConfigured().schemaVersions.get(formSchemaUniqueId, uniqueId));
+  }
+
+  createFormSchemaVersion(formSchemaUniqueId: string, data: CreateFormSchemaVersionRequest): Observable<FormSchemaVersion> {
+    return from(this.ensureConfigured().schemaVersions.create(formSchemaUniqueId, data));
+  }
+
+  updateFormSchemaVersion(formSchemaUniqueId: string, uniqueId: string, data: UpdateFormSchemaVersionRequest): Observable<FormSchemaVersion> {
+    return from(this.ensureConfigured().schemaVersions.update(formSchemaUniqueId, uniqueId, data));
+  }
+
+  deleteFormSchemaVersion(formSchemaUniqueId: string, uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().schemaVersions.delete(formSchemaUniqueId, uniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
   // Form Instances Service
   // ───────────────────────────────────────────────────────────────────────────
 
@@ -183,14 +248,237 @@ export class FormsService {
   }
 
   // ───────────────────────────────────────────────────────────────────────────
-  // Direct Block Access (for advanced usage)
+  // Landings Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listLandings(formUniqueId: string, params?: ListLandingsParams): Observable<PageResult<Landing>> {
+    return from(this.ensureConfigured().landings.list(formUniqueId, params));
+  }
+
+  getLanding(formUniqueId: string, uniqueId: string): Observable<Landing> {
+    return from(this.ensureConfigured().landings.get(formUniqueId, uniqueId));
+  }
+
+  createLanding(formUniqueId: string, data: CreateLandingRequest): Observable<Landing> {
+    return from(this.ensureConfigured().landings.create(formUniqueId, data));
+  }
+
+  updateLanding(formUniqueId: string, uniqueId: string, data: UpdateLandingRequest): Observable<Landing> {
+    return from(this.ensureConfigured().landings.update(formUniqueId, uniqueId, data));
+  }
+
+  deleteLanding(formUniqueId: string, uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().landings.delete(formUniqueId, uniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Subscriptions Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listSubscriptions(formUniqueId: string, params?: ListSubscriptionsParams): Observable<PageResult<Subscription>> {
+    return from(this.ensureConfigured().subscriptions.list(formUniqueId, params));
+  }
+
+  getSubscription(formUniqueId: string, uniqueId: string): Observable<Subscription> {
+    return from(this.ensureConfigured().subscriptions.get(formUniqueId, uniqueId));
+  }
+
+  createSubscription(formUniqueId: string, data: CreateSubscriptionRequest): Observable<Subscription> {
+    return from(this.ensureConfigured().subscriptions.create(formUniqueId, data));
+  }
+
+  updateSubscription(formUniqueId: string, uniqueId: string, data: UpdateSubscriptionRequest): Observable<Subscription> {
+    return from(this.ensureConfigured().subscriptions.update(formUniqueId, uniqueId, data));
+  }
+
+  deleteSubscription(formUniqueId: string, uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().subscriptions.delete(formUniqueId, uniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Appointments Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listAppointments(formUniqueId: string, params?: ListAppointmentsParams): Observable<PageResult<Appointment>> {
+    return from(this.ensureConfigured().appointments.list(formUniqueId, params));
+  }
+
+  getAppointment(formUniqueId: string, uniqueId: string): Observable<Appointment> {
+    return from(this.ensureConfigured().appointments.get(formUniqueId, uniqueId));
+  }
+
+  createAppointment(formUniqueId: string, data: CreateAppointmentRequest): Observable<Appointment> {
+    return from(this.ensureConfigured().appointments.create(formUniqueId, data));
+  }
+
+  updateAppointment(formUniqueId: string, uniqueId: string, data: UpdateAppointmentRequest): Observable<Appointment> {
+    return from(this.ensureConfigured().appointments.update(formUniqueId, uniqueId, data));
+  }
+
+  deleteAppointment(formUniqueId: string, uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().appointments.delete(formUniqueId, uniqueId));
+  }
+
+  confirmAppointment(formUniqueId: string, uniqueId: string): Observable<Appointment> {
+    return from(this.ensureConfigured().appointments.confirm(formUniqueId, uniqueId));
+  }
+
+  cancelAppointment(formUniqueId: string, uniqueId: string): Observable<Appointment> {
+    return from(this.ensureConfigured().appointments.cancel(formUniqueId, uniqueId));
+  }
+
+  getAppointmentReportList(data: AppointmentReportRequest): Observable<Appointment[]> {
+    return from(this.ensureConfigured().appointments.reportList(data));
+  }
+
+  getAppointmentReportSummary(data: AppointmentReportRequest): Observable<AppointmentReportSummary> {
+    return from(this.ensureConfigured().appointments.reportSummary(data));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Surveys Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listSurveys(formUniqueId: string, params?: ListSurveysParams): Observable<PageResult<Survey>> {
+    return from(this.ensureConfigured().surveys.list(formUniqueId, params));
+  }
+
+  listSurveysByStatus(formUniqueId: string, status: SurveyStatus, params?: ListSurveysParams): Observable<PageResult<Survey>> {
+    return from(this.ensureConfigured().surveys.listByStatus(formUniqueId, status, params));
+  }
+
+  getSurvey(formUniqueId: string, uniqueId: string): Observable<Survey> {
+    return from(this.ensureConfigured().surveys.get(formUniqueId, uniqueId));
+  }
+
+  createSurvey(formUniqueId: string, data: CreateSurveyRequest): Observable<Survey> {
+    return from(this.ensureConfigured().surveys.create(formUniqueId, data));
+  }
+
+  updateSurvey(formUniqueId: string, uniqueId: string, data: UpdateSurveyRequest): Observable<Survey> {
+    return from(this.ensureConfigured().surveys.update(formUniqueId, uniqueId, data));
+  }
+
+  deleteSurvey(formUniqueId: string, uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().surveys.delete(formUniqueId, uniqueId));
+  }
+
+  updateSurveyStatus(formUniqueId: string, uniqueId: string, data: UpdateSurveyStatusRequest): Observable<Survey> {
+    return from(this.ensureConfigured().surveys.updateStatus(formUniqueId, uniqueId, data));
+  }
+
+  resendSurveyMagicLink(formUniqueId: string, uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().surveys.resendMagicLink(formUniqueId, uniqueId));
+  }
+
+  listSurveysByUser(userUniqueId: string, params?: ListSurveysParams): Observable<PageResult<Survey>> {
+    return from(this.ensureConfigured().surveys.listByUser(userUniqueId, params));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Referrals Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listReferrals(formUniqueId: string, params?: ListReferralsParams): Observable<PageResult<Referral>> {
+    return from(this.ensureConfigured().referrals.list(formUniqueId, params));
+  }
+
+  getReferral(formUniqueId: string, uniqueId: string): Observable<Referral> {
+    return from(this.ensureConfigured().referrals.get(formUniqueId, uniqueId));
+  }
+
+  createReferral(formUniqueId: string, data: CreateReferralRequest): Observable<Referral> {
+    return from(this.ensureConfigured().referrals.create(formUniqueId, data));
+  }
+
+  updateReferral(formUniqueId: string, uniqueId: string, data: UpdateReferralRequest): Observable<Referral> {
+    return from(this.ensureConfigured().referrals.update(formUniqueId, uniqueId, data));
+  }
+
+  deleteReferral(formUniqueId: string, uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().referrals.delete(formUniqueId, uniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Mail Templates Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  listMailTemplates(params?: ListMailTemplatesParams): Observable<PageResult<MailTemplate>> {
+    return from(this.ensureConfigured().mailTemplates.list(params));
+  }
+
+  getMailTemplate(uniqueId: string): Observable<MailTemplate> {
+    return from(this.ensureConfigured().mailTemplates.get(uniqueId));
+  }
+
+  createMailTemplate(data: CreateMailTemplateRequest): Observable<MailTemplate> {
+    return from(this.ensureConfigured().mailTemplates.create(data));
+  }
+
+  updateMailTemplate(uniqueId: string, data: UpdateMailTemplateRequest): Observable<MailTemplate> {
+    return from(this.ensureConfigured().mailTemplates.update(uniqueId, data));
+  }
+
+  deleteMailTemplate(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().mailTemplates.delete(uniqueId));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Application Forms Service (magic link access)
+  // ───────────────────────────────────────────────────────────────────────────
+
+  getApplicationForm(urlId: string): Observable<ApplicationForm> {
+    return from(this.ensureConfigured().applicationForms.get(urlId));
+  }
+
+  submitApplicationForm(urlId: string, data: ApplicationFormSubmission): Observable<ApplicationFormResponse> {
+    return from(this.ensureConfigured().applicationForms.submit(urlId, data));
+  }
+
+  saveApplicationFormDraft(urlId: string, data: ApplicationFormDraft): Observable<ApplicationFormResponse> {
+    return from(this.ensureConfigured().applicationForms.draft(urlId, data));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // CRM Sync Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  syncLandingToCrm(uniqueId: string): Observable<CrmSyncResult> {
+    return from(this.ensureConfigured().crmSync.syncLanding(uniqueId));
+  }
+
+  syncSubscriptionToCrm(uniqueId: string): Observable<CrmSyncResult> {
+    return from(this.ensureConfigured().crmSync.syncSubscription(uniqueId));
+  }
+
+  syncAppointmentToCrm(uniqueId: string): Observable<CrmSyncResult> {
+    return from(this.ensureConfigured().crmSync.syncAppointment(uniqueId));
+  }
+
+  batchSyncToCrm(data: CrmSyncBatchRequest): Observable<CrmSyncBatchResult> {
+    return from(this.ensureConfigured().crmSync.batchSync(data));
+  }
+
+  retryFailedCrmSync(): Observable<CrmSyncBatchResult> {
+    return from(this.ensureConfigured().crmSync.retryFailed());
+  }
+
+  testCrmConnection(): Observable<CrmConnectionStatus> {
+    return from(this.ensureConfigured().crmSync.testConnection());
+  }
+
+  getCrmSyncStatus(): Observable<CrmSyncStatus> {
+    return from(this.ensureConfigured().crmSync.status());
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Direct Block Access
   // ───────────────────────────────────────────────────────────────────────────
 
   /**
-   * Access the underlying block for advanced operations
-   * Use this when you need access to services not wrapped by this Angular service
+   * Access the underlying FormsBlock for advanced operations
    */
-  get rawBlock(): FormsBlock {
+  get formsBlock(): FormsBlock {
     return this.ensureConfigured();
   }
 }
