@@ -1,3 +1,14 @@
+## 3.1.4 (2026-01-05)
+
+### 🩹 Fixes
+
+- **forms:** rename create to submit for landing and subscription forms ([7c7126f](https://github.com/23blocks-OS/frontend-sdk/commit/7c7126f))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.1.3 (2026-01-05)
 
 ### 🚀 Features
