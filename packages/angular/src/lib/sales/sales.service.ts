@@ -55,6 +55,27 @@ import {
   type CreateVendorPaymentRequest,
   type UpdateVendorPaymentRequest,
   type ListVendorPaymentsParams,
+  // Stripe types
+  type StripeCustomer,
+  type CreateStripeCustomerRequest,
+  type CreateStripeCustomerResponse,
+  type StripeCheckoutSession,
+  type CreateStripeCheckoutSessionRequest,
+  type StripePaymentIntent,
+  type CreateStripePaymentIntentRequest,
+  type StripeSubscription,
+  type CreateStripeSubscriptionRequest,
+  type UpdateStripeSubscriptionRequest,
+  type StripeCustomerPortalSession,
+  type CreateStripeCustomerPortalRequest,
+  type StripeWebhook,
+  type CreateStripeWebhookRequest,
+  type ListStripeSubscriptionsParams,
+  // MercadoPago types
+  type MercadoPagoPaymentMethod,
+  type MercadoPagoPaymentIntent,
+  type CreateMercadoPagoPaymentRequest,
+  type CreateMercadoPagoPSERequest,
 } from '@23blocks/block-sales';
 import { TRANSPORT, SALES_TRANSPORT, SALES_CONFIG } from '../tokens.js';
 
@@ -384,6 +405,105 @@ export class SalesService {
   }
 
   // ───────────────────────────────────────────────────────────────────────────
+  // Stripe Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Create a Stripe customer
+   */
+  createStripeCustomer(data: CreateStripeCustomerRequest): Observable<CreateStripeCustomerResponse> {
+    return from(this.ensureConfigured().stripe.createCustomer(data));
+  }
+
+  /**
+   * Create a Stripe checkout session
+   */
+  createStripeCheckoutSession(data: CreateStripeCheckoutSessionRequest): Observable<StripeCheckoutSession> {
+    return from(this.ensureConfigured().stripe.createCheckoutSession(data));
+  }
+
+  /**
+   * Create a Stripe payment intent
+   */
+  createStripePaymentIntent(data: CreateStripePaymentIntentRequest): Observable<StripePaymentIntent> {
+    return from(this.ensureConfigured().stripe.createPaymentIntent(data));
+  }
+
+  /**
+   * Create a Stripe customer portal session
+   */
+  createStripeCustomerPortal(uniqueId: string, data: CreateStripeCustomerPortalRequest): Observable<StripeCustomerPortalSession> {
+    return from(this.ensureConfigured().stripe.createCustomerPortal(uniqueId, data));
+  }
+
+  /**
+   * List Stripe subscriptions
+   */
+  listStripeSubscriptions(params?: ListStripeSubscriptionsParams): Observable<PageResult<StripeSubscription>> {
+    return from(this.ensureConfigured().stripe.listSubscriptions(params));
+  }
+
+  /**
+   * Create a Stripe subscription
+   */
+  createStripeSubscription(data: CreateStripeSubscriptionRequest): Observable<StripeSubscription> {
+    return from(this.ensureConfigured().stripe.createSubscription(data));
+  }
+
+  /**
+   * Update a Stripe subscription
+   */
+  updateStripeSubscription(stripeSubscriptionId: string, data: UpdateStripeSubscriptionRequest): Observable<StripeSubscription> {
+    return from(this.ensureConfigured().stripe.updateSubscription(stripeSubscriptionId, data));
+  }
+
+  /**
+   * Cancel a Stripe subscription
+   */
+  cancelStripeSubscription(stripeSubscriptionId: string): Observable<void> {
+    return from(this.ensureConfigured().stripe.cancelSubscription(stripeSubscriptionId));
+  }
+
+  /**
+   * List Stripe webhooks
+   */
+  listStripeWebhooks(): Observable<StripeWebhook[]> {
+    return from(this.ensureConfigured().stripe.listWebhooks());
+  }
+
+  /**
+   * Create a Stripe webhook
+   */
+  createStripeWebhook(data: CreateStripeWebhookRequest): Observable<StripeWebhook> {
+    return from(this.ensureConfigured().stripe.createWebhook(data));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // MercadoPago Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List available MercadoPago payment methods
+   */
+  listMercadoPagoPaymentMethods(): Observable<MercadoPagoPaymentMethod[]> {
+    return from(this.ensureConfigured().mercadopago.listPaymentMethods());
+  }
+
+  /**
+   * Create a MercadoPago payment intent
+   */
+  createMercadoPagoPaymentIntent(data: CreateMercadoPagoPaymentRequest): Observable<MercadoPagoPaymentIntent> {
+    return from(this.ensureConfigured().mercadopago.createPaymentIntent(data));
+  }
+
+  /**
+   * Create a MercadoPago PSE payment intent (Colombia bank transfer)
+   */
+  createMercadoPagoPSEIntent(data: CreateMercadoPagoPSERequest): Observable<MercadoPagoPaymentIntent> {
+    return from(this.ensureConfigured().mercadopago.createPSEIntent(data));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
   // Direct Block Access (for advanced usage)
   // ───────────────────────────────────────────────────────────────────────────
 
@@ -391,7 +511,7 @@ export class SalesService {
    * Access the underlying block for advanced operations
    * Use this when you need access to services not wrapped by this Angular service
    */
-  get rawBlock(): SalesBlock {
+  get salesBlock(): SalesBlock {
     return this.ensureConfigured();
   }
 }

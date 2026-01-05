@@ -355,7 +355,7 @@ export class ContentService {
    * Access the underlying block for advanced operations
    * Use this when you need access to services not wrapped by this Angular service
    */
-  get rawBlock(): ContentBlock {
+  get contentBlock(): ContentBlock {
     return this.ensureConfigured();
   }
 }

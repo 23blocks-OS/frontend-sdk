@@ -60,6 +60,49 @@ import {
   type UpdateRegistrationTokenRequest,
   type ListRegistrationTokensParams,
   type TokenValidationResult,
+  // Placement types
+  type PlacementTest,
+  type PlacementSection,
+  type PlacementQuestion,
+  type PlacementOption,
+  type PlacementRule,
+  type PlacementInstance,
+  type CreatePlacementRequest,
+  type CreatePlacementSectionRequest,
+  type CreatePlacementQuestionRequest,
+  type CreatePlacementOptionRequest,
+  type CreatePlacementRuleRequest,
+  type PlacementResponse,
+  type ListPlacementsParams,
+  // Calendar types
+  type Availability,
+  type CalendarEvent,
+  type BulkUpdateAvailabilityRequest,
+  type CreateCalendarEventRequest,
+  type UpdateCalendarEventRequest,
+  type ListCalendarEventsParams,
+  // Match types
+  type Match,
+  type MatchEvaluation,
+  type AvailableCoach,
+  type AvailableCoachee,
+  type CreateMatchRequest,
+  type FindCoachesRequest,
+  type FindCoacheesRequest,
+  type EvaluateMatchesRequest,
+  type EvaluateAvailabilitiesRequest,
+  // Attendance types
+  type Attendance,
+  type CreateAttendanceRequest,
+  type UpdateAttendanceRequest,
+  type ListAttendanceParams,
+  type BulkAttendanceRequest,
+  type AttendanceStats,
+  // Note types
+  type Note,
+  type CreateNoteRequest,
+  type UpdateNoteRequest,
+  type ListNotesParams,
 } from '@23blocks/block-university';
 import { TRANSPORT, UNIVERSITY_TRANSPORT, UNIVERSITY_CONFIG } from '../tokens.js';
 
@@ -600,67 +643,344 @@ export class UniversityService {
   // Registration Tokens Service
   // ─────────────────────────────────────────────────────────────────────────────
 
-  /**
-   * List registration tokens
-   */
   listRegistrationTokens(params?: ListRegistrationTokensParams): Observable<PageResult<RegistrationToken>> {
     return from(this.ensureConfigured().registrationTokens.list(params));
   }
 
-  /**
-   * Get a registration token
-   */
   getRegistrationToken(uniqueId: string): Observable<RegistrationToken> {
     return from(this.ensureConfigured().registrationTokens.get(uniqueId));
   }
 
-  /**
-   * Create a registration token
-   */
   createRegistrationToken(data: CreateRegistrationTokenRequest): Observable<RegistrationToken> {
     return from(this.ensureConfigured().registrationTokens.create(data));
   }
 
-  /**
-   * Update a registration token
-   */
   updateRegistrationToken(uniqueId: string, data: UpdateRegistrationTokenRequest): Observable<RegistrationToken> {
     return from(this.ensureConfigured().registrationTokens.update(uniqueId, data));
   }
 
-  /**
-   * Delete a registration token
-   */
   deleteRegistrationToken(uniqueId: string): Observable<void> {
     return from(this.ensureConfigured().registrationTokens.delete(uniqueId));
   }
 
-  /**
-   * Validate a token code
-   */
   validateRegistrationToken(tokenCode: string): Observable<TokenValidationResult> {
     return from(this.ensureConfigured().registrationTokens.validate(tokenCode));
   }
 
-  /**
-   * Use a token to register a user
-   */
   useRegistrationToken(tokenCode: string, userUniqueId: string): Observable<{ success: boolean; enrollmentUniqueId?: string; error?: string }> {
     return from(this.ensureConfigured().registrationTokens.use(tokenCode, userUniqueId));
   }
 
-  /**
-   * Revoke a registration token
-   */
   revokeRegistrationToken(uniqueId: string): Observable<RegistrationToken> {
     return from(this.ensureConfigured().registrationTokens.revoke(uniqueId));
   }
 
-  /**
-   * Generate a batch of tokens
-   */
   generateRegistrationTokenBatch(request: CreateRegistrationTokenRequest & { count: number }): Observable<RegistrationToken[]> {
     return from(this.ensureConfigured().registrationTokens.generateBatch(request));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Placements Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  getPlacement(uniqueId: string): Observable<PlacementTest> {
+    return from(this.ensureConfigured().placements.get(uniqueId));
+  }
+
+  listPlacementsByCourse(courseUniqueId: string, params?: ListPlacementsParams): Observable<PageResult<PlacementTest>> {
+    return from(this.ensureConfigured().placements.listByCourse(courseUniqueId, params));
+  }
+
+  createPlacement(courseUniqueId: string, data: CreatePlacementRequest): Observable<PlacementTest> {
+    return from(this.ensureConfigured().placements.create(courseUniqueId, data));
+  }
+
+  getPlacementSection(placementUniqueId: string, sectionId: string): Observable<PlacementSection> {
+    return from(this.ensureConfigured().placements.getSection(placementUniqueId, sectionId));
+  }
+
+  createPlacementSection(placementUniqueId: string, data: CreatePlacementSectionRequest): Observable<PlacementSection> {
+    return from(this.ensureConfigured().placements.createSection(placementUniqueId, data));
+  }
+
+  getPlacementQuestion(placementUniqueId: string, questionId: string): Observable<PlacementQuestion> {
+    return from(this.ensureConfigured().placements.getQuestion(placementUniqueId, questionId));
+  }
+
+  createPlacementQuestion(placementUniqueId: string, data: CreatePlacementQuestionRequest): Observable<PlacementQuestion> {
+    return from(this.ensureConfigured().placements.createQuestion(placementUniqueId, data));
+  }
+
+  addQuestionToPlacementSection(placementUniqueId: string, sectionId: string, questionId: string): Observable<void> {
+    return from(this.ensureConfigured().placements.addQuestionToSection(placementUniqueId, sectionId, questionId));
+  }
+
+  listPlacementOptions(): Observable<PlacementOption[]> {
+    return from(this.ensureConfigured().placements.listOptions());
+  }
+
+  createPlacementOption(data: CreatePlacementOptionRequest): Observable<PlacementOption> {
+    return from(this.ensureConfigured().placements.createOption(data));
+  }
+
+  addOptionToPlacementQuestion(placementUniqueId: string, questionId: string, optionId: string): Observable<void> {
+    return from(this.ensureConfigured().placements.addOptionToQuestion(placementUniqueId, questionId, optionId));
+  }
+
+  setPlacementRightOption(placementUniqueId: string, questionId: string, optionId: string): Observable<void> {
+    return from(this.ensureConfigured().placements.setRightOption(placementUniqueId, questionId, optionId));
+  }
+
+  removePlacementOption(placementUniqueId: string, questionId: string, optionId: string): Observable<void> {
+    return from(this.ensureConfigured().placements.removeOption(placementUniqueId, questionId, optionId));
+  }
+
+  createPlacementRule(placementUniqueId: string, data: CreatePlacementRuleRequest): Observable<PlacementRule> {
+    return from(this.ensureConfigured().placements.createRule(placementUniqueId, data));
+  }
+
+  getUserPlacement(userUniqueId: string): Observable<PlacementInstance | null> {
+    return from(this.ensureConfigured().placements.getUserPlacement(userUniqueId));
+  }
+
+  startPlacement(userUniqueId: string, placementUniqueId: string): Observable<PlacementInstance> {
+    return from(this.ensureConfigured().placements.startPlacement(userUniqueId, placementUniqueId));
+  }
+
+  submitPlacementResponse(userUniqueId: string, instanceUniqueId: string, responses: PlacementResponse[]): Observable<PlacementInstance> {
+    return from(this.ensureConfigured().placements.submitResponse(userUniqueId, instanceUniqueId, responses));
+  }
+
+  finishPlacement(userUniqueId: string, instanceUniqueId: string): Observable<PlacementInstance> {
+    return from(this.ensureConfigured().placements.finishPlacement(userUniqueId, instanceUniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Calendars Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  getCalendarStudentAvailability(userUniqueId: string): Observable<Availability[]> {
+    return from(this.ensureConfigured().calendars.getStudentAvailability(userUniqueId));
+  }
+
+  addCalendarStudentAvailability(userUniqueId: string, data: CreateAvailabilityRequest): Observable<Availability> {
+    return from(this.ensureConfigured().calendars.addStudentAvailability(userUniqueId, data));
+  }
+
+  updateCalendarStudentAvailability(userUniqueId: string, availabilityUniqueId: string, data: UpdateAvailabilityRequest): Observable<Availability> {
+    return from(this.ensureConfigured().calendars.updateStudentAvailability(userUniqueId, availabilityUniqueId, data));
+  }
+
+  updateCalendarStudentAvailabilities(userUniqueId: string, data: BulkUpdateAvailabilityRequest): Observable<Availability[]> {
+    return from(this.ensureConfigured().calendars.updateStudentAvailabilities(userUniqueId, data));
+  }
+
+  deleteCalendarStudentAvailability(userUniqueId: string, availabilityUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().calendars.deleteStudentAvailability(userUniqueId, availabilityUniqueId));
+  }
+
+  deleteAllCalendarStudentAvailability(userUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().calendars.deleteAllStudentAvailability(userUniqueId));
+  }
+
+  getCalendarTeacherAvailability(teacherUniqueId: string): Observable<Availability[]> {
+    return from(this.ensureConfigured().calendars.getTeacherAvailability(teacherUniqueId));
+  }
+
+  addCalendarTeacherAvailability(teacherUniqueId: string, data: CreateAvailabilityRequest): Observable<Availability> {
+    return from(this.ensureConfigured().calendars.addTeacherAvailability(teacherUniqueId, data));
+  }
+
+  updateCalendarTeacherAvailability(teacherUniqueId: string, availabilityUniqueId: string, data: UpdateAvailabilityRequest): Observable<Availability> {
+    return from(this.ensureConfigured().calendars.updateTeacherAvailability(teacherUniqueId, availabilityUniqueId, data));
+  }
+
+  deleteCalendarTeacherAvailability(teacherUniqueId: string, availabilityUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().calendars.deleteTeacherAvailability(teacherUniqueId, availabilityUniqueId));
+  }
+
+  deleteAllCalendarTeacherAvailability(teacherUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().calendars.deleteAllTeacherAvailability(teacherUniqueId));
+  }
+
+  listCalendarEvents(params?: ListCalendarEventsParams): Observable<PageResult<CalendarEvent>> {
+    return from(this.ensureConfigured().calendars.listEvents(params));
+  }
+
+  getCalendarEvent(uniqueId: string): Observable<CalendarEvent> {
+    return from(this.ensureConfigured().calendars.getEvent(uniqueId));
+  }
+
+  createCalendarEvent(data: CreateCalendarEventRequest): Observable<CalendarEvent> {
+    return from(this.ensureConfigured().calendars.createEvent(data));
+  }
+
+  updateCalendarEvent(uniqueId: string, data: UpdateCalendarEventRequest): Observable<CalendarEvent> {
+    return from(this.ensureConfigured().calendars.updateEvent(uniqueId, data));
+  }
+
+  deleteCalendarEvent(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().calendars.deleteEvent(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Matches Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  createMatch(data: CreateMatchRequest): Observable<Match> {
+    return from(this.ensureConfigured().matches.create(data));
+  }
+
+  activateMatch(uniqueId: string): Observable<Match> {
+    return from(this.ensureConfigured().matches.activate(uniqueId));
+  }
+
+  deactivateMatch(uniqueId: string): Observable<Match> {
+    return from(this.ensureConfigured().matches.deactivate(uniqueId));
+  }
+
+  deleteMatch(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().matches.delete(uniqueId));
+  }
+
+  getActiveMatchByStudent(studentUniqueId: string): Observable<Match | null> {
+    return from(this.ensureConfigured().matches.getActiveByStudent(studentUniqueId));
+  }
+
+  getAllMatchesByStudent(studentUniqueId: string): Observable<Match[]> {
+    return from(this.ensureConfigured().matches.getAllByStudent(studentUniqueId));
+  }
+
+  getAvailableMatchesByStudent(studentUniqueId: string): Observable<Match[]> {
+    return from(this.ensureConfigured().matches.getAvailableByStudent(studentUniqueId));
+  }
+
+  getActiveMatchByTeacher(teacherUniqueId: string): Observable<Match | null> {
+    return from(this.ensureConfigured().matches.getActiveByTeacher(teacherUniqueId));
+  }
+
+  getAllMatchesByTeacher(teacherUniqueId: string): Observable<Match[]> {
+    return from(this.ensureConfigured().matches.getAllByTeacher(teacherUniqueId));
+  }
+
+  getAvailableMatchesByTeacher(teacherUniqueId: string): Observable<Match[]> {
+    return from(this.ensureConfigured().matches.getAvailableByTeacher(teacherUniqueId));
+  }
+
+  findCoaches(studentUniqueId: string, request?: FindCoachesRequest): Observable<AvailableCoach[]> {
+    return from(this.ensureConfigured().matches.findCoaches(studentUniqueId, request));
+  }
+
+  findCoachees(teacherUniqueId: string, request?: FindCoacheesRequest): Observable<AvailableCoachee[]> {
+    return from(this.ensureConfigured().matches.findCoachees(teacherUniqueId, request));
+  }
+
+  evaluateMatches(request: EvaluateMatchesRequest): Observable<MatchEvaluation[]> {
+    return from(this.ensureConfigured().matches.evaluateMatches(request));
+  }
+
+  evaluateAvailabilities(request: EvaluateAvailabilitiesRequest): Observable<MatchEvaluation[]> {
+    return from(this.ensureConfigured().matches.evaluateAvailabilities(request));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Attendance Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listAttendance(params?: ListAttendanceParams): Observable<PageResult<Attendance>> {
+    return from(this.ensureConfigured().attendance.list(params));
+  }
+
+  getAttendance(uniqueId: string): Observable<Attendance> {
+    return from(this.ensureConfigured().attendance.get(uniqueId));
+  }
+
+  createAttendance(data: CreateAttendanceRequest): Observable<Attendance> {
+    return from(this.ensureConfigured().attendance.create(data));
+  }
+
+  updateAttendance(uniqueId: string, data: UpdateAttendanceRequest): Observable<Attendance> {
+    return from(this.ensureConfigured().attendance.update(uniqueId, data));
+  }
+
+  deleteAttendance(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().attendance.delete(uniqueId));
+  }
+
+  bulkCreateAttendance(data: BulkAttendanceRequest): Observable<Attendance[]> {
+    return from(this.ensureConfigured().attendance.bulkCreate(data));
+  }
+
+  listAttendanceByLesson(lessonUniqueId: string, params?: ListAttendanceParams): Observable<PageResult<Attendance>> {
+    return from(this.ensureConfigured().attendance.listByLesson(lessonUniqueId, params));
+  }
+
+  listAttendanceByStudent(studentUniqueId: string, params?: ListAttendanceParams): Observable<PageResult<Attendance>> {
+    return from(this.ensureConfigured().attendance.listByStudent(studentUniqueId, params));
+  }
+
+  listAttendanceByCourse(courseUniqueId: string, params?: ListAttendanceParams): Observable<PageResult<Attendance>> {
+    return from(this.ensureConfigured().attendance.listByCourse(courseUniqueId, params));
+  }
+
+  getStudentAttendanceStats(studentUniqueId: string, courseUniqueId?: string): Observable<AttendanceStats> {
+    return from(this.ensureConfigured().attendance.getStudentStats(studentUniqueId, courseUniqueId));
+  }
+
+  verifyAttendance(uniqueId: string): Observable<Attendance> {
+    return from(this.ensureConfigured().attendance.verify(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Notes Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listNotes(params?: ListNotesParams): Observable<PageResult<Note>> {
+    return from(this.ensureConfigured().notes.list(params));
+  }
+
+  getNote(uniqueId: string): Observable<Note> {
+    return from(this.ensureConfigured().notes.get(uniqueId));
+  }
+
+  createNote(data: CreateNoteRequest): Observable<Note> {
+    return from(this.ensureConfigured().notes.create(data));
+  }
+
+  updateNote(uniqueId: string, data: UpdateNoteRequest): Observable<Note> {
+    return from(this.ensureConfigured().notes.update(uniqueId, data));
+  }
+
+  deleteNote(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().notes.delete(uniqueId));
+  }
+
+  listNotesByAuthor(authorUniqueId: string, params?: ListNotesParams): Observable<PageResult<Note>> {
+    return from(this.ensureConfigured().notes.listByAuthor(authorUniqueId, params));
+  }
+
+  listNotesByTarget(targetUniqueId: string, targetType: string, params?: ListNotesParams): Observable<PageResult<Note>> {
+    return from(this.ensureConfigured().notes.listByTarget(targetUniqueId, targetType, params));
+  }
+
+  listNotesByCourse(courseUniqueId: string, params?: ListNotesParams): Observable<PageResult<Note>> {
+    return from(this.ensureConfigured().notes.listByCourse(courseUniqueId, params));
+  }
+
+  listNotesByLesson(lessonUniqueId: string, params?: ListNotesParams): Observable<PageResult<Note>> {
+    return from(this.ensureConfigured().notes.listByLesson(lessonUniqueId, params));
+  }
+
+  pinNote(uniqueId: string): Observable<Note> {
+    return from(this.ensureConfigured().notes.pin(uniqueId));
+  }
+
+  unpinNote(uniqueId: string): Observable<Note> {
+    return from(this.ensureConfigured().notes.unpin(uniqueId));
+  }
+
+  getNoteReplies(uniqueId: string): Observable<Note[]> {
+    return from(this.ensureConfigured().notes.getReplies(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -671,7 +991,7 @@ export class UniversityService {
    * Access the underlying block for advanced operations
    * Use this when you need access to services not wrapped by this Angular service
    */
-  get rawBlock(): UniversityBlock {
+  get universityBlock(): UniversityBlock {
     return this.ensureConfigured();
   }
 }

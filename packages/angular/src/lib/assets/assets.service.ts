@@ -11,10 +11,23 @@ import {
   type ListAssetsParams,
   type TransferAssetRequest,
   type AssignAssetRequest,
+  type AddToCategoryRequest,
+  type AddPartsRequest,
+  type RemovePartsRequest,
+  type UpdateMaintenanceRequest,
+  type LendAssetRequest,
+  type CreateOTPRequest,
+  type OTPResponse,
   type AssetEvent,
   type CreateAssetEventRequest,
   type UpdateAssetEventRequest,
   type ListAssetEventsParams,
+  type EventImagePresignResponse,
+  type CreateEventImageRequest,
+  type EventImage,
+  type EventReportParams,
+  type EventReportSummary,
+  type EventReportList,
   type AssetAudit,
   type CreateAssetAuditRequest,
   type UpdateAssetAuditRequest,
@@ -132,6 +145,10 @@ export class AssetsService {
     return from(this.ensureConfigured().assets.delete(uniqueId));
   }
 
+  listAssetsTrash(): Observable<PageResult<Asset>> {
+    return from(this.ensureConfigured().assets.listTrash());
+  }
+
   transferAsset(uniqueId: string, data: TransferAssetRequest): Observable<Asset> {
     return from(this.ensureConfigured().assets.transfer(uniqueId, data));
   }
@@ -152,60 +169,92 @@ export class AssetsService {
     return from(this.ensureConfigured().assets.listByAssignee(assignedToUniqueId, params));
   }
 
+  addAssetToCategory(uniqueId: string, data: AddToCategoryRequest): Observable<Asset> {
+    return from(this.ensureConfigured().assets.addToCategory(uniqueId, data));
+  }
+
+  addAssetParts(uniqueId: string, data: AddPartsRequest): Observable<Asset> {
+    return from(this.ensureConfigured().assets.addParts(uniqueId, data));
+  }
+
+  removeAssetParts(uniqueId: string, data: RemovePartsRequest): Observable<Asset> {
+    return from(this.ensureConfigured().assets.removeParts(uniqueId, data));
+  }
+
+  updateAssetMaintenance(uniqueId: string, data: UpdateMaintenanceRequest): Observable<Asset> {
+    return from(this.ensureConfigured().assets.updateMaintenance(uniqueId, data));
+  }
+
+  lendAsset(uniqueId: string, data: LendAssetRequest): Observable<Asset> {
+    return from(this.ensureConfigured().assets.lend(uniqueId, data));
+  }
+
+  createAssetOTP(uniqueId: string, data?: CreateOTPRequest): Observable<OTPResponse> {
+    return from(this.ensureConfigured().assets.createOTP(uniqueId, data));
+  }
+
   // ───────────────────────────────────────────────────────────────────────────
   // Asset Events Service
   // ───────────────────────────────────────────────────────────────────────────
 
-  listAssetEvents(params?: ListAssetEventsParams): Observable<PageResult<AssetEvent>> {
-    return from(this.ensureConfigured().events.list(params));
+  listAssetEvents(assetUniqueId: string, params?: ListAssetEventsParams): Observable<PageResult<AssetEvent>> {
+    return from(this.ensureConfigured().events.list(assetUniqueId, params));
   }
 
-  getAssetEvent(uniqueId: string): Observable<AssetEvent> {
-    return from(this.ensureConfigured().events.get(uniqueId));
+  getAssetEvent(assetUniqueId: string, eventUniqueId: string): Observable<AssetEvent> {
+    return from(this.ensureConfigured().events.get(assetUniqueId, eventUniqueId));
   }
 
-  createAssetEvent(data: CreateAssetEventRequest): Observable<AssetEvent> {
-    return from(this.ensureConfigured().events.create(data));
+  createAssetEvent(assetUniqueId: string, data: CreateAssetEventRequest): Observable<AssetEvent> {
+    return from(this.ensureConfigured().events.create(assetUniqueId, data));
   }
 
-  updateAssetEvent(uniqueId: string, data: UpdateAssetEventRequest): Observable<AssetEvent> {
-    return from(this.ensureConfigured().events.update(uniqueId, data));
+  updateAssetEvent(assetUniqueId: string, eventUniqueId: string, data: UpdateAssetEventRequest): Observable<AssetEvent> {
+    return from(this.ensureConfigured().events.update(assetUniqueId, eventUniqueId, data));
   }
 
-  deleteAssetEvent(uniqueId: string): Observable<void> {
-    return from(this.ensureConfigured().events.delete(uniqueId));
+  getEventReportList(params: EventReportParams): Observable<EventReportList> {
+    return from(this.ensureConfigured().events.reportList(params));
   }
 
-  listAssetEventsByAsset(assetUniqueId: string, params?: ListAssetEventsParams): Observable<PageResult<AssetEvent>> {
-    return from(this.ensureConfigured().events.listByAsset(assetUniqueId, params));
+  getEventReportSummary(params: EventReportParams): Observable<EventReportSummary> {
+    return from(this.ensureConfigured().events.reportSummary(params));
+  }
+
+  presignEventImage(assetUniqueId: string, eventUniqueId: string): Observable<EventImagePresignResponse> {
+    return from(this.ensureConfigured().events.presignImage(assetUniqueId, eventUniqueId));
+  }
+
+  createEventImage(assetUniqueId: string, eventUniqueId: string, data: CreateEventImageRequest): Observable<EventImage> {
+    return from(this.ensureConfigured().events.createImage(assetUniqueId, eventUniqueId, data));
+  }
+
+  deleteEventImage(assetUniqueId: string, eventUniqueId: string, imageUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().events.deleteImage(assetUniqueId, eventUniqueId, imageUniqueId));
   }
 
   // ───────────────────────────────────────────────────────────────────────────
   // Asset Audits Service
   // ───────────────────────────────────────────────────────────────────────────
 
-  listAssetAudits(params?: ListAssetAuditsParams): Observable<PageResult<AssetAudit>> {
-    return from(this.ensureConfigured().audits.list(params));
+  listAssetAudits(assetUniqueId: string, params?: ListAssetAuditsParams): Observable<PageResult<AssetAudit>> {
+    return from(this.ensureConfigured().audits.list(assetUniqueId, params));
   }
 
-  getAssetAudit(uniqueId: string): Observable<AssetAudit> {
-    return from(this.ensureConfigured().audits.get(uniqueId));
+  getAssetAudit(assetUniqueId: string, auditUniqueId: string): Observable<AssetAudit> {
+    return from(this.ensureConfigured().audits.get(assetUniqueId, auditUniqueId));
   }
 
-  createAssetAudit(data: CreateAssetAuditRequest): Observable<AssetAudit> {
-    return from(this.ensureConfigured().audits.create(data));
+  createAssetAudit(assetUniqueId: string, data: CreateAssetAuditRequest): Observable<AssetAudit> {
+    return from(this.ensureConfigured().audits.create(assetUniqueId, data));
   }
 
-  updateAssetAudit(uniqueId: string, data: UpdateAssetAuditRequest): Observable<AssetAudit> {
-    return from(this.ensureConfigured().audits.update(uniqueId, data));
+  updateAssetAudit(assetUniqueId: string, auditUniqueId: string, data: UpdateAssetAuditRequest): Observable<AssetAudit> {
+    return from(this.ensureConfigured().audits.update(assetUniqueId, auditUniqueId, data));
   }
 
-  deleteAssetAudit(uniqueId: string): Observable<void> {
-    return from(this.ensureConfigured().audits.delete(uniqueId));
-  }
-
-  listAssetAuditsByAsset(assetUniqueId: string, params?: ListAssetAuditsParams): Observable<PageResult<AssetAudit>> {
-    return from(this.ensureConfigured().audits.listByAsset(assetUniqueId, params));
+  deleteAssetAudit(assetUniqueId: string, auditUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().audits.delete(assetUniqueId, auditUniqueId));
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -476,7 +525,7 @@ export class AssetsService {
    * Access the underlying block for advanced operations
    * Use this when you need access to services not wrapped by this Angular service
    */
-  get rawBlock(): AssetsBlock {
+  get assetsBlock(): AssetsBlock {
     return this.ensureConfigured();
   }
 }

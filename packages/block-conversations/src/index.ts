@@ -19,6 +19,12 @@ export type {
   CreateGroupRequest,
   UpdateGroupRequest,
   ListGroupsParams,
+  // Group Invite types
+  GroupInvite,
+  CreateGroupInviteRequest,
+  JoinGroupRequest,
+  QRCodeResponse,
+  ListGroupInvitesParams,
   // Notification types
   Notification,
   CreateNotificationRequest,
@@ -31,6 +37,8 @@ export type {
   GetConversationParams,
   // WebSocket Token types
   WebSocketToken,
+  CreateWebSocketTokenRequest,
+  CreateWebSocketTokenResponse,
   // Context types
   Context,
   CreateContextRequest,
@@ -40,22 +48,32 @@ export type {
   NotificationSettings,
   UpdateNotificationSettingsRequest,
   // Availability types
-  Availability,
-  UpdateAvailabilityRequest,
+  UserAvailability,
+  SetAvailabilityRequest,
   // Message File types
   MessageFile,
-  UploadMessageFileRequest,
+  CreateMessageFileRequest,
+  PresignMessageFileRequest,
+  PresignMessageFileResponse,
   ListMessageFilesParams,
   // Source types
   Source,
-  CreateSourceRequest,
-  UpdateSourceRequest,
-  ListSourcesParams,
   // User types
   ConversationsUser,
   RegisterUserRequest,
   UpdateUserRequest,
   ListUsersParams,
+  // Meeting types
+  Meeting,
+  MeetingSession,
+  CreateMeetingRequest,
+  UpdateMeetingRequest,
+  ListMeetingsParams,
+  // Web Notification types
+  WebNotification,
+  CreateWebNotificationRequest,
+  BulkWebNotificationRequest,
+  ListWebNotificationsParams,
 } from './lib/types';
 
 // Services
@@ -63,6 +81,7 @@ export type {
   MessagesService,
   DraftMessagesService,
   GroupsService,
+  GroupInvitesService,
   NotificationsService,
   ConversationsService,
   WebSocketTokensService,
@@ -72,12 +91,15 @@ export type {
   MessageFilesService,
   SourcesService,
   UsersService,
+  MeetingsService,
+  WebNotificationsService,
 } from './lib/services';
 
 export {
   createMessagesService,
   createDraftMessagesService,
   createGroupsService,
+  createGroupInvitesService,
   createNotificationsService,
   createConversationsService,
   createWebSocketTokensService,
@@ -87,6 +109,8 @@ export {
   createMessageFilesService,
   createSourcesService,
   createUsersService,
+  createMeetingsService,
+  createWebNotificationsService,
 } from './lib/services';
 
 // Mappers (for advanced use cases)
@@ -94,9 +118,12 @@ export {
   messageMapper,
   draftMessageMapper,
   groupMapper,
+  groupInviteMapper,
   notificationMapper,
   contextMapper,
   messageFileMapper,
   sourceMapper,
   conversationsUserMapper,
+  meetingMapper,
+  webNotificationMapper,
 } from './lib/mappers';

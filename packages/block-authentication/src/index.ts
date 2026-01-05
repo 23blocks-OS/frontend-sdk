@@ -103,6 +103,49 @@ export {
   type UpdateTenantUserOnboardingRequest,
   type UpdateTenantUserSalesRequest,
   type ResendInvitationRequest,
+
+  // App types
+  type App,
+  type Block,
+  type Service,
+  type CreateAppRequest,
+  type UpdateAppRequest,
+
+  // Subscription types
+  type SubscriptionModel,
+  type UserSubscription,
+  type CompanySubscription,
+
+  // Geography types
+  type Country,
+  type State,
+  type County,
+  type City,
+  type Currency,
+
+  // Guest and related types
+  type Guest,
+  type MagicLink,
+  type RefreshToken,
+  type UserDevice,
+  type TenantUser,
+  type MailTemplate,
+  type CreateMagicLinkRequest,
+  type RegisterDeviceRequest,
+
+  // JWKS types
+  type JsonWebKey,
+  type JwksResponse,
+  type RsaKey,
+  type CreateRsaKeyRequest,
+  type RotateRsaKeyRequest,
+
+  // OIDC types
+  type OidcDiscovery,
+  type OidcAuthorizeRequest,
+  type OidcTokenRequest,
+  type OidcTokenResponse,
+  type OidcUserInfo,
 } from './lib/types/index.js';
 
 // Services (for advanced usage)
@@ -120,6 +163,37 @@ export {
   type OAuthService,
   type AvatarsService,
   type TenantsService,
+  // Permissions service
+  type PermissionsService,
+  type CreatePermissionRequest,
+  type UpdatePermissionRequest,
+  // Apps and services
+  type AppsService,
+  type BlocksService,
+  type ServicesRegistryService,
+  // Subscriptions
+  type SubscriptionModelsService,
+  type UserSubscriptionsService,
+  type CompanySubscriptionsService,
+  type SubscribeRequest,
+  // Geography
+  type CountriesService,
+  type StatesService,
+  type CountiesService,
+  type CitiesService,
+  type CurrenciesService,
+  // Guests and related
+  type GuestsService,
+  type MagicLinksService,
+  type RefreshTokensService,
+  type UserDevicesService,
+  type TenantUsersService,
+  type MailTemplatesService,
+  // JWKS
+  type JwksService,
+  type AdminRsaKeysService,
+  // OIDC
+  type OidcService,
 } from './lib/services/index.js';
 
 // Mappers (for custom decoding)

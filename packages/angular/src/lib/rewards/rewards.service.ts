@@ -368,21 +368,21 @@ export class RewardsService {
   // ─────────────────────────────────────────────────────────────────────────────
 
   /**
-   * List badge categories
+   * List badge categories with optional pagination
    */
-  listBadgeCategories(): Observable<BadgeCategory[]> {
-    return from(this.ensureConfigured().badgeCategories.list());
+  listBadgeCategories(page?: number, perPage?: number): Observable<PageResult<BadgeCategory>> {
+    return from(this.ensureConfigured().badgeCategories.list(page, perPage));
   }
 
   /**
-   * Get a badge category
+   * Get a badge category by unique ID
    */
   getBadgeCategory(uniqueId: string): Observable<BadgeCategory> {
     return from(this.ensureConfigured().badgeCategories.get(uniqueId));
   }
 
   /**
-   * Create a badge category
+   * Create a new badge category
    */
   createBadgeCategory(data: CreateBadgeCategoryRequest): Observable<BadgeCategory> {
     return from(this.ensureConfigured().badgeCategories.create(data));
@@ -414,14 +414,14 @@ export class RewardsService {
   }
 
   /**
-   * Get a money rule
+   * Get a money rule by unique ID
    */
-  getMoneyRule(uniqueId: string): Observable<MoneyRule> {
-    return from(this.ensureConfigured().moneyRules.get(uniqueId));
+  getMoneyRule(loyaltyUniqueId: string, ruleUniqueId: string): Observable<MoneyRule> {
+    return from(this.ensureConfigured().moneyRules.get(loyaltyUniqueId, ruleUniqueId));
   }
 
   /**
-   * Create a money rule
+   * Create a new money rule
    */
   createMoneyRule(loyaltyUniqueId: string, data: CreateMoneyRuleRequest): Observable<MoneyRule> {
     return from(this.ensureConfigured().moneyRules.create(loyaltyUniqueId, data));
@@ -430,15 +430,15 @@ export class RewardsService {
   /**
    * Update a money rule
    */
-  updateMoneyRule(uniqueId: string, data: UpdateMoneyRuleRequest): Observable<MoneyRule> {
-    return from(this.ensureConfigured().moneyRules.update(uniqueId, data));
+  updateMoneyRule(loyaltyUniqueId: string, ruleUniqueId: string, data: UpdateMoneyRuleRequest): Observable<MoneyRule> {
+    return from(this.ensureConfigured().moneyRules.update(loyaltyUniqueId, ruleUniqueId, data));
   }
 
   /**
    * Delete a money rule
    */
-  deleteMoneyRule(uniqueId: string): Observable<void> {
-    return from(this.ensureConfigured().moneyRules.delete(uniqueId));
+  deleteMoneyRule(loyaltyUniqueId: string, ruleUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().moneyRules.delete(loyaltyUniqueId, ruleUniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -453,14 +453,14 @@ export class RewardsService {
   }
 
   /**
-   * Get a product rule
+   * Get a product rule by unique ID
    */
-  getProductRule(uniqueId: string): Observable<ProductRule> {
-    return from(this.ensureConfigured().productRules.get(uniqueId));
+  getProductRule(loyaltyUniqueId: string, ruleUniqueId: string): Observable<ProductRule> {
+    return from(this.ensureConfigured().productRules.get(loyaltyUniqueId, ruleUniqueId));
   }
 
   /**
-   * Create a product rule
+   * Create a new product rule
    */
   createProductRule(loyaltyUniqueId: string, data: CreateProductRuleRequest): Observable<ProductRule> {
     return from(this.ensureConfigured().productRules.create(loyaltyUniqueId, data));
@@ -469,15 +469,15 @@ export class RewardsService {
   /**
    * Update a product rule
    */
-  updateProductRule(uniqueId: string, data: UpdateProductRuleRequest): Observable<ProductRule> {
-    return from(this.ensureConfigured().productRules.update(uniqueId, data));
+  updateProductRule(loyaltyUniqueId: string, ruleUniqueId: string, data: UpdateProductRuleRequest): Observable<ProductRule> {
+    return from(this.ensureConfigured().productRules.update(loyaltyUniqueId, ruleUniqueId, data));
   }
 
   /**
    * Delete a product rule
    */
-  deleteProductRule(uniqueId: string): Observable<void> {
-    return from(this.ensureConfigured().productRules.delete(uniqueId));
+  deleteProductRule(loyaltyUniqueId: string, ruleUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().productRules.delete(loyaltyUniqueId, ruleUniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -492,14 +492,14 @@ export class RewardsService {
   }
 
   /**
-   * Get an event rule
+   * Get an event rule by unique ID
    */
-  getEventRule(uniqueId: string): Observable<EventRule> {
-    return from(this.ensureConfigured().eventRules.get(uniqueId));
+  getEventRule(loyaltyUniqueId: string, ruleUniqueId: string): Observable<EventRule> {
+    return from(this.ensureConfigured().eventRules.get(loyaltyUniqueId, ruleUniqueId));
   }
 
   /**
-   * Create an event rule
+   * Create a new event rule
    */
   createEventRule(loyaltyUniqueId: string, data: CreateEventRuleRequest): Observable<EventRule> {
     return from(this.ensureConfigured().eventRules.create(loyaltyUniqueId, data));
@@ -508,15 +508,15 @@ export class RewardsService {
   /**
    * Update an event rule
    */
-  updateEventRule(uniqueId: string, data: UpdateEventRuleRequest): Observable<EventRule> {
-    return from(this.ensureConfigured().eventRules.update(uniqueId, data));
+  updateEventRule(loyaltyUniqueId: string, ruleUniqueId: string, data: UpdateEventRuleRequest): Observable<EventRule> {
+    return from(this.ensureConfigured().eventRules.update(loyaltyUniqueId, ruleUniqueId, data));
   }
 
   /**
    * Delete an event rule
    */
-  deleteEventRule(uniqueId: string): Observable<void> {
-    return from(this.ensureConfigured().eventRules.delete(uniqueId));
+  deleteEventRule(loyaltyUniqueId: string, ruleUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().eventRules.delete(loyaltyUniqueId, ruleUniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -527,7 +527,7 @@ export class RewardsService {
    * Access the underlying block for advanced operations
    * Use this when you need access to services not wrapped by this Angular service
    */
-  get rawBlock(): RewardsBlock {
+  get rewardsBlock(): RewardsBlock {
     return this.ensureConfigured();
   }
 }

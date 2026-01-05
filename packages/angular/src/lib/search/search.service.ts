@@ -245,7 +245,7 @@ export class SearchService {
   /**
    * Access the underlying block for advanced operations
    */
-  get rawBlock(): SearchBlock {
+  get searchBlock(): SearchBlock {
     return this.ensureConfigured();
   }
 }

@@ -93,6 +93,34 @@ import {
   type OidcTokenRequest,
   type OidcTokenResponse,
   type OidcUserInfo,
+  // Permissions types
+  type CreatePermissionRequest,
+  type UpdatePermissionRequest,
+  // App types
+  type App,
+  type Block,
+  type Service,
+  type CreateAppRequest,
+  type UpdateAppRequest,
+  // Subscription types
+  type SubscriptionModel,
+  type CompanySubscription,
+  type SubscribeRequest,
+  // Geography types
+  type Country,
+  type State,
+  type County,
+  type City,
+  type Currency,
+  // Guest and related types
+  type Guest,
+  type MagicLink,
+  type RefreshToken,
+  type UserDevice,
+  type TenantUser,
+  type MailTemplate,
+  type CreateMagicLinkRequest,
+  type RegisterDeviceRequest,
 } from '@23blocks/block-authentication';
 import { TRANSPORT, AUTHENTICATION_TRANSPORT, AUTHENTICATION_CONFIG } from '../tokens.js';
 import { TOKEN_MANAGER, SIMPLE_CONFIG, type TokenManagerService, type Simple23BlocksConfig } from '../simple-providers.js';
@@ -487,6 +515,45 @@ export class AuthenticationService {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
+  // Permissions Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List all permissions with pagination
+   */
+  listPermissionsPaginated(params?: ListParams): Observable<PageResult<Permission>> {
+    return from(this.ensureConfigured().permissions.list(params));
+  }
+
+  /**
+   * Get a permission by ID
+   */
+  getPermission(id: string): Observable<Permission> {
+    return from(this.ensureConfigured().permissions.get(id));
+  }
+
+  /**
+   * Create a new permission
+   */
+  createPermission(request: CreatePermissionRequest): Observable<Permission> {
+    return from(this.ensureConfigured().permissions.create(request));
+  }
+
+  /**
+   * Update a permission
+   */
+  updatePermission(id: string, request: UpdatePermissionRequest): Observable<Permission> {
+    return from(this.ensureConfigured().permissions.update(id, request));
+  }
+
+  /**
+   * Delete a permission
+   */
+  deletePermission(id: string): Observable<void> {
+    return from(this.ensureConfigured().permissions.delete(id));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
   // API Keys Service
   // ─────────────────────────────────────────────────────────────────────────────
 
@@ -759,6 +826,606 @@ export class AuthenticationService {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
+  // Apps Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List apps with pagination
+   */
+  listApps(params?: ListParams): Observable<PageResult<App>> {
+    return from(this.ensureConfigured().apps.list(params));
+  }
+
+  /**
+   * Get an app by ID
+   */
+  getApp(id: string): Observable<App> {
+    return from(this.ensureConfigured().apps.get(id));
+  }
+
+  /**
+   * Create a new app
+   */
+  createApp(request: CreateAppRequest): Observable<App> {
+    return from(this.ensureConfigured().apps.create(request));
+  }
+
+  /**
+   * Update an app
+   */
+  updateApp(id: string, request: UpdateAppRequest): Observable<App> {
+    return from(this.ensureConfigured().apps.update(id, request));
+  }
+
+  /**
+   * Delete an app
+   */
+  deleteApp(id: string): Observable<void> {
+    return from(this.ensureConfigured().apps.delete(id));
+  }
+
+  /**
+   * Regenerate webhook secret for an app
+   */
+  regenerateAppWebhookSecret(id: string): Observable<App> {
+    return from(this.ensureConfigured().apps.regenerateWebhookSecret(id));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Blocks Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List blocks for a company
+   */
+  listBlocks(companyId: string, params?: ListParams): Observable<PageResult<Block>> {
+    return from(this.ensureConfigured().blocks.list(companyId, params));
+  }
+
+  /**
+   * Get a block by ID
+   */
+  getBlock(id: string): Observable<Block> {
+    return from(this.ensureConfigured().blocks.get(id));
+  }
+
+  /**
+   * Add a block to a company
+   */
+  addBlock(companyId: string, blockCode: string): Observable<Block> {
+    return from(this.ensureConfigured().blocks.add(companyId, blockCode));
+  }
+
+  /**
+   * Remove a block from a company
+   */
+  removeBlock(id: string): Observable<void> {
+    return from(this.ensureConfigured().blocks.remove(id));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Services Registry Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List registered services
+   */
+  listServices(params?: ListParams): Observable<PageResult<Service>> {
+    return from(this.ensureConfigured().services.list(params));
+  }
+
+  /**
+   * Get a service by ID
+   */
+  getService(id: string): Observable<Service> {
+    return from(this.ensureConfigured().services.get(id));
+  }
+
+  /**
+   * Get a service by code
+   */
+  getServiceByCode(code: string): Observable<Service> {
+    return from(this.ensureConfigured().services.getByCode(code));
+  }
+
+  /**
+   * Health check all services
+   */
+  healthCheckServices(): Observable<Service[]> {
+    return from(this.ensureConfigured().services.healthCheck());
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Subscription Models Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List subscription models
+   */
+  listSubscriptionModels(params?: ListParams): Observable<PageResult<SubscriptionModel>> {
+    return from(this.ensureConfigured().subscriptionModels.list(params));
+  }
+
+  /**
+   * Get a subscription model by ID
+   */
+  getSubscriptionModel(id: string): Observable<SubscriptionModel> {
+    return from(this.ensureConfigured().subscriptionModels.get(id));
+  }
+
+  /**
+   * Get a subscription model by code
+   */
+  getSubscriptionModelByCode(code: string): Observable<SubscriptionModel> {
+    return from(this.ensureConfigured().subscriptionModels.getByCode(code));
+  }
+
+  /**
+   * List promotional subscription models
+   */
+  listPromotionalSubscriptionModels(): Observable<SubscriptionModel[]> {
+    return from(this.ensureConfigured().subscriptionModels.promotional());
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // User Subscriptions Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List user subscriptions
+   */
+  listUserSubscriptions(params?: ListParams): Observable<PageResult<UserSubscription>> {
+    return from(this.ensureConfigured().userSubscriptions.list(params));
+  }
+
+  /**
+   * Get a user subscription by ID
+   */
+  getUserSubscription(id: string): Observable<UserSubscription> {
+    return from(this.ensureConfigured().userSubscriptions.get(id));
+  }
+
+  /**
+   * Get subscriptions for a user
+   */
+  getSubscriptionsForUser(userUniqueId: string): Observable<UserSubscription[]> {
+    return from(this.ensureConfigured().userSubscriptions.forUser(userUniqueId));
+  }
+
+  /**
+   * Subscribe a user to a plan
+   */
+  subscribeUser(userUniqueId: string, request: SubscribeRequest): Observable<UserSubscription> {
+    return from(this.ensureConfigured().userSubscriptions.subscribe(userUniqueId, request));
+  }
+
+  /**
+   * Cancel a user subscription
+   */
+  cancelUserSubscription(id: string): Observable<UserSubscription> {
+    return from(this.ensureConfigured().userSubscriptions.cancel(id));
+  }
+
+  /**
+   * Reactivate a user subscription
+   */
+  reactivateUserSubscription(id: string): Observable<UserSubscription> {
+    return from(this.ensureConfigured().userSubscriptions.reactivate(id));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Company Subscriptions Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List company subscriptions
+   */
+  listCompanySubscriptions(params?: ListParams): Observable<PageResult<CompanySubscription>> {
+    return from(this.ensureConfigured().companySubscriptions.list(params));
+  }
+
+  /**
+   * Get a company subscription by ID
+   */
+  getCompanySubscription(id: string): Observable<CompanySubscription> {
+    return from(this.ensureConfigured().companySubscriptions.get(id));
+  }
+
+  /**
+   * Get subscriptions for a company
+   */
+  getSubscriptionsForCompany(companyUniqueId: string): Observable<CompanySubscription[]> {
+    return from(this.ensureConfigured().companySubscriptions.forCompany(companyUniqueId));
+  }
+
+  /**
+   * Subscribe a company to a plan
+   */
+  subscribeCompany(companyUniqueId: string, request: SubscribeRequest): Observable<CompanySubscription> {
+    return from(this.ensureConfigured().companySubscriptions.subscribe(companyUniqueId, request));
+  }
+
+  /**
+   * Cancel a company subscription
+   */
+  cancelCompanySubscription(id: string): Observable<CompanySubscription> {
+    return from(this.ensureConfigured().companySubscriptions.cancel(id));
+  }
+
+  /**
+   * Reactivate a company subscription
+   */
+  reactivateCompanySubscription(id: string): Observable<CompanySubscription> {
+    return from(this.ensureConfigured().companySubscriptions.reactivate(id));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Countries Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List countries with pagination
+   */
+  listCountries(params?: ListParams): Observable<PageResult<Country>> {
+    return from(this.ensureConfigured().countries.list(params));
+  }
+
+  /**
+   * Get a country by ID
+   */
+  getCountry(id: string): Observable<Country> {
+    return from(this.ensureConfigured().countries.get(id));
+  }
+
+  /**
+   * Get a country by ISO code
+   */
+  getCountryByIsoCode(isoCode: string): Observable<Country> {
+    return from(this.ensureConfigured().countries.getByIsoCode(isoCode));
+  }
+
+  /**
+   * Get all countries (no pagination)
+   */
+  getAllCountries(): Observable<Country[]> {
+    return from(this.ensureConfigured().countries.all());
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // States Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List states with pagination
+   */
+  listStates(params?: ListParams): Observable<PageResult<State>> {
+    return from(this.ensureConfigured().states.list(params));
+  }
+
+  /**
+   * Get a state by ID
+   */
+  getState(id: string): Observable<State> {
+    return from(this.ensureConfigured().states.get(id));
+  }
+
+  /**
+   * Get states for a country
+   */
+  getStatesForCountry(countryId: string): Observable<State[]> {
+    return from(this.ensureConfigured().states.forCountry(countryId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Counties Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List counties with pagination
+   */
+  listCounties(params?: ListParams): Observable<PageResult<County>> {
+    return from(this.ensureConfigured().counties.list(params));
+  }
+
+  /**
+   * Get a county by ID
+   */
+  getCounty(id: string): Observable<County> {
+    return from(this.ensureConfigured().counties.get(id));
+  }
+
+  /**
+   * Get counties for a state
+   */
+  getCountiesForState(stateId: string): Observable<County[]> {
+    return from(this.ensureConfigured().counties.forState(stateId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Cities Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List cities with pagination
+   */
+  listCities(params?: ListParams): Observable<PageResult<City>> {
+    return from(this.ensureConfigured().cities.list(params));
+  }
+
+  /**
+   * Get a city by ID
+   */
+  getCity(id: string): Observable<City> {
+    return from(this.ensureConfigured().cities.get(id));
+  }
+
+  /**
+   * Get cities for a state
+   */
+  getCitiesForState(stateId: string): Observable<City[]> {
+    return from(this.ensureConfigured().cities.forState(stateId));
+  }
+
+  /**
+   * Get cities for a county
+   */
+  getCitiesForCounty(countyId: string): Observable<City[]> {
+    return from(this.ensureConfigured().cities.forCounty(countyId));
+  }
+
+  /**
+   * Search cities by name
+   */
+  searchCities(query: string, params?: ListParams): Observable<PageResult<City>> {
+    return from(this.ensureConfigured().cities.search(query, params));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Currencies Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List currencies with pagination
+   */
+  listCurrencies(params?: ListParams): Observable<PageResult<Currency>> {
+    return from(this.ensureConfigured().currencies.list(params));
+  }
+
+  /**
+   * Get a currency by ID
+   */
+  getCurrency(id: string): Observable<Currency> {
+    return from(this.ensureConfigured().currencies.get(id));
+  }
+
+  /**
+   * Get a currency by code
+   */
+  getCurrencyByCode(code: string): Observable<Currency> {
+    return from(this.ensureConfigured().currencies.getByCode(code));
+  }
+
+  /**
+   * Get all currencies (no pagination)
+   */
+  getAllCurrencies(): Observable<Currency[]> {
+    return from(this.ensureConfigured().currencies.all());
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Guests Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List guests with pagination
+   */
+  listGuests(params?: ListParams): Observable<PageResult<Guest>> {
+    return from(this.ensureConfigured().guests.list(params));
+  }
+
+  /**
+   * Get a guest by ID
+   */
+  getGuest(id: string): Observable<Guest> {
+    return from(this.ensureConfigured().guests.get(id));
+  }
+
+  /**
+   * Track a guest visit
+   */
+  trackGuest(): Observable<Guest> {
+    return from(this.ensureConfigured().guests.track());
+  }
+
+  /**
+   * Convert guest to user (registration)
+   */
+  convertGuest(id: string): Observable<Guest> {
+    return from(this.ensureConfigured().guests.convert(id));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Magic Links Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List magic links with pagination
+   */
+  listMagicLinks(params?: ListParams): Observable<PageResult<MagicLink>> {
+    return from(this.ensureConfigured().magicLinks.list(params));
+  }
+
+  /**
+   * Get a magic link by ID
+   */
+  getMagicLink(id: string): Observable<MagicLink> {
+    return from(this.ensureConfigured().magicLinks.get(id));
+  }
+
+  /**
+   * Create a magic link
+   */
+  createMagicLink(request: CreateMagicLinkRequest): Observable<MagicLink> {
+    return from(this.ensureConfigured().magicLinks.create(request));
+  }
+
+  /**
+   * Validate a magic link token
+   */
+  validateMagicLink(token: string): Observable<MagicLink> {
+    return from(this.ensureConfigured().magicLinks.validate(token));
+  }
+
+  /**
+   * Expire a magic link
+   */
+  expireMagicLink(id: string): Observable<MagicLink> {
+    return from(this.ensureConfigured().magicLinks.expire(id));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Refresh Tokens Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List refresh tokens for the current user
+   */
+  listRefreshTokens(params?: ListParams): Observable<PageResult<RefreshToken>> {
+    return from(this.ensureConfigured().refreshTokens.list(params));
+  }
+
+  /**
+   * Get a refresh token by ID
+   */
+  getRefreshToken(id: string): Observable<RefreshToken> {
+    return from(this.ensureConfigured().refreshTokens.get(id));
+  }
+
+  /**
+   * Revoke a refresh token
+   */
+  revokeRefreshToken(id: string): Observable<RefreshToken> {
+    return from(this.ensureConfigured().refreshTokens.revoke(id));
+  }
+
+  /**
+   * Revoke all refresh tokens for current user
+   */
+  revokeAllRefreshTokens(): Observable<void> {
+    return from(this.ensureConfigured().refreshTokens.revokeAll());
+  }
+
+  /**
+   * Revoke all refresh tokens except current
+   */
+  revokeOtherRefreshTokens(): Observable<void> {
+    return from(this.ensureConfigured().refreshTokens.revokeOthers());
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // User Devices Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List devices for current user
+   */
+  listDevices(params?: ListParams): Observable<PageResult<UserDevice>> {
+    return from(this.ensureConfigured().userDevices.list(params));
+  }
+
+  /**
+   * Get a device by ID
+   */
+  getDevice(id: string): Observable<UserDevice> {
+    return from(this.ensureConfigured().userDevices.get(id));
+  }
+
+  /**
+   * Register a new device
+   */
+  registerDevice(request: RegisterDeviceRequest): Observable<UserDevice> {
+    return from(this.ensureConfigured().userDevices.register(request));
+  }
+
+  /**
+   * Update device settings
+   */
+  updateDevice(id: string, request: Partial<RegisterDeviceRequest>): Observable<UserDevice> {
+    return from(this.ensureConfigured().userDevices.update(id, request));
+  }
+
+  /**
+   * Unregister a device
+   */
+  unregisterDevice(id: string): Observable<void> {
+    return from(this.ensureConfigured().userDevices.unregister(id));
+  }
+
+  /**
+   * Set default device
+   */
+  setDefaultDevice(id: string): Observable<UserDevice> {
+    return from(this.ensureConfigured().userDevices.setDefault(id));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Tenant Users Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Get current tenant user context
+   */
+  getCurrentTenantUser(): Observable<TenantUser> {
+    return from(this.ensureConfigured().tenantUsers.current());
+  }
+
+  /**
+   * Get tenant user by user ID
+   */
+  getTenantUser(userUniqueId: string): Observable<TenantUser> {
+    return from(this.ensureConfigured().tenantUsers.get(userUniqueId));
+  }
+
+  /**
+   * List tenant users
+   */
+  listTenantUsers(params?: ListParams): Observable<TenantUser[]> {
+    return from(this.ensureConfigured().tenantUsers.list(params));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Mail Templates Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List mail templates with pagination
+   */
+  listMailTemplates(params?: ListParams): Observable<PageResult<MailTemplate>> {
+    return from(this.ensureConfigured().mailTemplates.list(params));
+  }
+
+  /**
+   * Get a mail template by ID
+   */
+  getMailTemplate(id: string): Observable<MailTemplate> {
+    return from(this.ensureConfigured().mailTemplates.get(id));
+  }
+
+  /**
+   * Get a mail template by event name
+   */
+  getMailTemplateByEvent(eventName: string): Observable<MailTemplate> {
+    return from(this.ensureConfigured().mailTemplates.getByEvent(eventName));
+  }
+
+  /**
+   * Update a mail template
+   */
+  updateMailTemplate(id: string, template: Partial<MailTemplate>): Observable<MailTemplate> {
+    return from(this.ensureConfigured().mailTemplates.update(id, template));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
   // Token Management (only applicable with provideBlocks23)
   // ─────────────────────────────────────────────────────────────────────────────
 
@@ -888,7 +1555,7 @@ export class AuthenticationService {
    * Access the underlying block for advanced operations
    * Use this when you need access to services not wrapped by this Angular service
    */
-  get rawBlock(): AuthenticationBlock {
+  get authenticationBlock(): AuthenticationBlock {
     return this.ensureConfigured();
   }
 }

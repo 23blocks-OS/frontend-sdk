@@ -214,7 +214,7 @@ export class WalletService {
    * Access the underlying block for advanced operations
    * Use this when you need access to services not wrapped by this Angular service
    */
-  get rawBlock(): WalletBlock {
+  get walletBlock(): WalletBlock {
     return this.ensureConfigured();
   }
 }

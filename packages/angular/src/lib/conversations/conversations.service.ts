@@ -5,24 +5,72 @@ import {
   createConversationsBlock,
   type ConversationsBlock,
   type ConversationsBlockConfig,
+  // Message types
   type Message,
   type CreateMessageRequest,
   type UpdateMessageRequest,
   type ListMessagesParams,
+  // Draft Message types
   type DraftMessage,
   type CreateDraftMessageRequest,
   type UpdateDraftMessageRequest,
   type ListDraftMessagesParams,
+  // Group types
   type Group,
   type CreateGroupRequest,
   type UpdateGroupRequest,
   type ListGroupsParams,
+  // Group Invite types
+  type GroupInvite,
+  type CreateGroupInviteRequest,
+  type JoinGroupRequest,
+  type QRCodeResponse,
+  type ListGroupInvitesParams,
+  // Notification types
   type Notification,
   type CreateNotificationRequest,
   type UpdateNotificationRequest,
   type ListNotificationsParams,
+  // Conversation types
   type Conversation,
   type GetConversationParams,
+  // WebSocket Token types
+  type CreateWebSocketTokenRequest,
+  type CreateWebSocketTokenResponse,
+  // Context types
+  type Context,
+  type CreateContextRequest,
+  type UpdateContextRequest,
+  type ListContextsParams,
+  // Notification Settings types
+  type NotificationSettings,
+  type UpdateNotificationSettingsRequest,
+  // Availability types
+  type UserAvailability,
+  type SetAvailabilityRequest,
+  // Message File types
+  type MessageFile,
+  type CreateMessageFileRequest,
+  type PresignMessageFileRequest,
+  type PresignMessageFileResponse,
+  // Source types
+  type Source,
+  // User types
+  type ConversationsUser,
+  type RegisterUserRequest,
+  type UpdateUserRequest,
+  type ListUsersParams,
+  // Meeting types
+  type Meeting,
+  type MeetingSession,
+  type CreateMeetingRequest,
+  type UpdateMeetingRequest,
+  type ListMeetingsParams,
+  // Web Notification types
+  type WebNotification,
+  type CreateWebNotificationRequest,
+  type BulkWebNotificationRequest,
+  type ListWebNotificationsParams,
 } from '@23blocks/block-conversations';
 import { TRANSPORT, CONVERSATIONS_TRANSPORT, CONVERSATIONS_CONFIG } from '../tokens.js';
 
@@ -188,6 +236,30 @@ export class ConversationsService {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
+  // Group Invites Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listGroupInvites(groupUniqueId: string, params?: ListGroupInvitesParams): Observable<PageResult<GroupInvite>> {
+    return from(this.ensureConfigured().groupInvites.list(groupUniqueId, params));
+  }
+
+  createGroupInvite(groupUniqueId: string, data?: CreateGroupInviteRequest): Observable<GroupInvite> {
+    return from(this.ensureConfigured().groupInvites.create(groupUniqueId, data));
+  }
+
+  revokeGroupInvite(groupUniqueId: string, code: string): Observable<void> {
+    return from(this.ensureConfigured().groupInvites.revoke(groupUniqueId, code));
+  }
+
+  getGroupInviteQRCode(groupUniqueId: string, code: string): Observable<QRCodeResponse> {
+    return from(this.ensureConfigured().groupInvites.getQRCode(groupUniqueId, code));
+  }
+
+  joinGroupByInvite(code: string, data?: JoinGroupRequest): Observable<Group> {
+    return from(this.ensureConfigured().groupInvites.join(code, data));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
   // Notifications Service
   // ─────────────────────────────────────────────────────────────────────────────
 
@@ -235,12 +307,208 @@ export class ConversationsService {
     return from(this.ensureConfigured().conversations.get(params));
   }
 
-  listContexts(): Observable<string[]> {
+  listConversationContexts(): Observable<string[]> {
     return from(this.ensureConfigured().conversations.listContexts());
   }
 
-  deleteContext(context: string): Observable<void> {
+  deleteConversationContext(context: string): Observable<void> {
     return from(this.ensureConfigured().conversations.deleteContext(context));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // WebSocket Tokens Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  createWebSocketToken(data?: CreateWebSocketTokenRequest): Observable<CreateWebSocketTokenResponse> {
+    return from(this.ensureConfigured().websocketTokens.create(data));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Contexts Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listContexts(params?: ListContextsParams): Observable<PageResult<Context>> {
+    return from(this.ensureConfigured().contexts.list(params));
+  }
+
+  getContext(uniqueId: string): Observable<Context> {
+    return from(this.ensureConfigured().contexts.get(uniqueId));
+  }
+
+  createContext(data: CreateContextRequest): Observable<Context> {
+    return from(this.ensureConfigured().contexts.create(data));
+  }
+
+  updateContext(uniqueId: string, data: UpdateContextRequest): Observable<Context> {
+    return from(this.ensureConfigured().contexts.update(uniqueId, data));
+  }
+
+  listContextGroups(contextUniqueId: string): Observable<PageResult<Group>> {
+    return from(this.ensureConfigured().contexts.listGroups(contextUniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Notification Settings Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  getNotificationSettings(userUniqueId: string): Observable<NotificationSettings> {
+    return from(this.ensureConfigured().notificationSettings.get(userUniqueId));
+  }
+
+  updateNotificationSettings(userUniqueId: string, data: UpdateNotificationSettingsRequest): Observable<NotificationSettings> {
+    return from(this.ensureConfigured().notificationSettings.update(userUniqueId, data));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Availabilities Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  getUserAvailability(userUniqueId: string): Observable<UserAvailability> {
+    return from(this.ensureConfigured().availabilities.get(userUniqueId));
+  }
+
+  goOnline(data?: SetAvailabilityRequest): Observable<UserAvailability> {
+    return from(this.ensureConfigured().availabilities.goOnline(data));
+  }
+
+  goOffline(): Observable<void> {
+    return from(this.ensureConfigured().availabilities.goOffline());
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Message Files Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  getMessageFile(conversationUniqueId: string, fileUniqueId: string): Observable<MessageFile> {
+    return from(this.ensureConfigured().messageFiles.get(conversationUniqueId, fileUniqueId));
+  }
+
+  createMessageFile(conversationUniqueId: string, data: CreateMessageFileRequest): Observable<MessageFile> {
+    return from(this.ensureConfigured().messageFiles.create(conversationUniqueId, data));
+  }
+
+  deleteMessageFile(conversationUniqueId: string, fileUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().messageFiles.delete(conversationUniqueId, fileUniqueId));
+  }
+
+  presignMessageFile(conversationUniqueId: string, data: PresignMessageFileRequest): Observable<PresignMessageFileResponse> {
+    return from(this.ensureConfigured().messageFiles.presign(conversationUniqueId, data));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Sources Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  getSource(uniqueId: string): Observable<Source> {
+    return from(this.ensureConfigured().sources.get(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Users Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listConversationsUsers(params?: ListUsersParams): Observable<PageResult<ConversationsUser>> {
+    return from(this.ensureConfigured().users.list(params));
+  }
+
+  getConversationsUser(uniqueId: string): Observable<ConversationsUser> {
+    return from(this.ensureConfigured().users.get(uniqueId));
+  }
+
+  registerConversationsUser(uniqueId: string, data?: RegisterUserRequest): Observable<ConversationsUser> {
+    return from(this.ensureConfigured().users.register(uniqueId, data));
+  }
+
+  updateConversationsUser(uniqueId: string, data: UpdateUserRequest): Observable<ConversationsUser> {
+    return from(this.ensureConfigured().users.update(uniqueId, data));
+  }
+
+  listUserGroups(uniqueId: string): Observable<PageResult<Group>> {
+    return from(this.ensureConfigured().users.listGroups(uniqueId));
+  }
+
+  listUserConversations(uniqueId: string, params?: { page?: number; perPage?: number }): Observable<PageResult<Conversation>> {
+    return from(this.ensureConfigured().users.listConversations(uniqueId, params));
+  }
+
+  listUserGroupConversations(uniqueId: string, params?: { page?: number; perPage?: number }): Observable<PageResult<Conversation>> {
+    return from(this.ensureConfigured().users.listGroupConversations(uniqueId, params));
+  }
+
+  listUserContextGroups(uniqueId: string, contextUniqueId: string): Observable<PageResult<Group>> {
+    return from(this.ensureConfigured().users.listContextGroups(uniqueId, contextUniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Meetings Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listMeetings(params?: ListMeetingsParams): Observable<PageResult<Meeting>> {
+    return from(this.ensureConfigured().meetings.list(params));
+  }
+
+  getMeeting(uniqueId: string): Observable<Meeting> {
+    return from(this.ensureConfigured().meetings.get(uniqueId));
+  }
+
+  createMeeting(data: CreateMeetingRequest): Observable<Meeting> {
+    return from(this.ensureConfigured().meetings.create(data));
+  }
+
+  updateMeeting(uniqueId: string, data: UpdateMeetingRequest): Observable<Meeting> {
+    return from(this.ensureConfigured().meetings.update(uniqueId, data));
+  }
+
+  deleteMeeting(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().meetings.delete(uniqueId));
+  }
+
+  createMeetingSession(uniqueId: string): Observable<MeetingSession> {
+    return from(this.ensureConfigured().meetings.createSession(uniqueId));
+  }
+
+  startMeeting(uniqueId: string): Observable<Meeting> {
+    return from(this.ensureConfigured().meetings.start(uniqueId));
+  }
+
+  endMeeting(uniqueId: string): Observable<Meeting> {
+    return from(this.ensureConfigured().meetings.end(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Web Notifications Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listWebNotifications(params?: ListWebNotificationsParams): Observable<PageResult<WebNotification>> {
+    return from(this.ensureConfigured().webNotifications.list(params));
+  }
+
+  getWebNotification(uniqueId: string): Observable<WebNotification> {
+    return from(this.ensureConfigured().webNotifications.get(uniqueId));
+  }
+
+  sendWebNotification(data: CreateWebNotificationRequest): Observable<WebNotification> {
+    return from(this.ensureConfigured().webNotifications.send(data));
+  }
+
+  sendBulkWebNotifications(data: BulkWebNotificationRequest): Observable<{ sent: number; failed: number }> {
+    return from(this.ensureConfigured().webNotifications.sendBulk(data));
+  }
+
+  markWebNotificationAsRead(uniqueId: string): Observable<WebNotification> {
+    return from(this.ensureConfigured().webNotifications.markAsRead(uniqueId));
+  }
+
+  markWebNotificationAsClicked(uniqueId: string): Observable<WebNotification> {
+    return from(this.ensureConfigured().webNotifications.markAsClicked(uniqueId));
+  }
+
+  markAllWebNotificationsAsRead(recipientUniqueId: string): Observable<{ updated: number }> {
+    return from(this.ensureConfigured().webNotifications.markAllAsRead(recipientUniqueId));
+  }
+
+  deleteWebNotification(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().webNotifications.delete(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -251,7 +519,7 @@ export class ConversationsService {
    * Access the underlying block for advanced operations
    * Use this when you need access to services not wrapped by this Angular service
    */
-  get rawBlock(): ConversationsBlock {
+  get conversationsBlock(): ConversationsBlock {
     return this.ensureConfigured();
   }
 }

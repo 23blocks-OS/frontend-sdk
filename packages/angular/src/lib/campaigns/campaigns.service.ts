@@ -56,6 +56,10 @@ import {
   type CreateCampaignMediaResultRequest,
   type UpdateCampaignMediaResultRequest,
   type ListCampaignMediaResultsParams,
+  type Media,
+  type CreateMediaRequest,
+  type UpdateMediaRequest,
+  type ListMediaParams,
 } from '@23blocks/block-campaigns';
 import { TRANSPORT, CAMPAIGNS_TRANSPORT, CAMPAIGNS_CONFIG } from '../tokens.js';
 
@@ -148,32 +152,32 @@ export class CampaignsService {
   // Campaign Media Service
   // ─────────────────────────────────────────────────────────────────────────────
 
-  listMedia(params?: ListCampaignMediaParams): Observable<PageResult<CampaignMedia>> {
-    return from(this.ensureConfigured().media.list(params));
+  listCampaignMedia(params?: ListCampaignMediaParams): Observable<PageResult<CampaignMedia>> {
+    return from(this.ensureConfigured().campaignMedia.list(params));
   }
 
-  getMedia(uniqueId: string): Observable<CampaignMedia> {
-    return from(this.ensureConfigured().media.get(uniqueId));
+  getCampaignMedia(uniqueId: string): Observable<CampaignMedia> {
+    return from(this.ensureConfigured().campaignMedia.get(uniqueId));
   }
 
-  createMedia(data: CreateCampaignMediaRequest): Observable<CampaignMedia> {
-    return from(this.ensureConfigured().media.create(data));
+  createCampaignMedia(data: CreateCampaignMediaRequest): Observable<CampaignMedia> {
+    return from(this.ensureConfigured().campaignMedia.create(data));
   }
 
-  updateMedia(uniqueId: string, data: UpdateCampaignMediaRequest): Observable<CampaignMedia> {
-    return from(this.ensureConfigured().media.update(uniqueId, data));
+  updateCampaignMedia(uniqueId: string, data: UpdateCampaignMediaRequest): Observable<CampaignMedia> {
+    return from(this.ensureConfigured().campaignMedia.update(uniqueId, data));
   }
 
-  deleteMedia(uniqueId: string): Observable<void> {
-    return from(this.ensureConfigured().media.delete(uniqueId));
+  deleteCampaignMedia(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().campaignMedia.delete(uniqueId));
   }
 
-  listMediaByCampaign(campaignUniqueId: string): Observable<CampaignMedia[]> {
-    return from(this.ensureConfigured().media.listByCampaign(campaignUniqueId));
+  listCampaignMediaByCampaign(campaignUniqueId: string): Observable<CampaignMedia[]> {
+    return from(this.ensureConfigured().campaignMedia.listByCampaign(campaignUniqueId));
   }
 
-  getMediaResults(uniqueId: string): Observable<CampaignMediaResults> {
-    return from(this.ensureConfigured().media.getResults(uniqueId));
+  getCampaignMediaResults(uniqueId: string): Observable<CampaignMediaResults> {
+    return from(this.ensureConfigured().campaignMedia.getResults(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -292,7 +296,7 @@ export class CampaignsService {
   // Campaign Results Service
   // ─────────────────────────────────────────────────────────────────────────────
 
-  listCampaignResults(params?: ListCampaignResultsParams): Observable<PageResult<CampaignResult>> {
+  listCampaignResultsData(params?: ListCampaignResultsParams): Observable<PageResult<CampaignResult>> {
     return from(this.ensureConfigured().results.list(params));
   }
 
@@ -408,24 +412,48 @@ export class CampaignsService {
   // Campaign Media Results Service
   // ─────────────────────────────────────────────────────────────────────────────
 
-  listCampaignMediaResults(params?: ListCampaignMediaResultsParams): Observable<PageResult<CampaignMediaResult>> {
+  listCampaignMediaResultsData(params?: ListCampaignMediaResultsParams): Observable<PageResult<CampaignMediaResult>> {
     return from(this.ensureConfigured().mediaResults.list(params));
   }
 
-  getCampaignMediaResult(uniqueId: string): Observable<CampaignMediaResult> {
+  getCampaignMediaResultData(uniqueId: string): Observable<CampaignMediaResult> {
     return from(this.ensureConfigured().mediaResults.get(uniqueId));
   }
 
-  createCampaignMediaResult(data: CreateCampaignMediaResultRequest): Observable<CampaignMediaResult> {
+  createCampaignMediaResultData(data: CreateCampaignMediaResultRequest): Observable<CampaignMediaResult> {
     return from(this.ensureConfigured().mediaResults.create(data));
   }
 
-  updateCampaignMediaResult(uniqueId: string, data: UpdateCampaignMediaResultRequest): Observable<CampaignMediaResult> {
+  updateCampaignMediaResultData(uniqueId: string, data: UpdateCampaignMediaResultRequest): Observable<CampaignMediaResult> {
     return from(this.ensureConfigured().mediaResults.update(uniqueId, data));
   }
 
-  deleteCampaignMediaResult(uniqueId: string): Observable<void> {
+  deleteCampaignMediaResultData(uniqueId: string): Observable<void> {
     return from(this.ensureConfigured().mediaResults.delete(uniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Media Service (Medium entities - TV, Radio, Digital channels)
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  listMedia(params?: ListMediaParams): Observable<PageResult<Media>> {
+    return from(this.ensureConfigured().media.list(params));
+  }
+
+  getMedia(uniqueId: string): Observable<Media> {
+    return from(this.ensureConfigured().media.get(uniqueId));
+  }
+
+  createMedia(data: CreateMediaRequest): Observable<Media> {
+    return from(this.ensureConfigured().media.create(data));
+  }
+
+  updateMedia(uniqueId: string, data: UpdateMediaRequest): Observable<Media> {
+    return from(this.ensureConfigured().media.update(uniqueId, data));
+  }
+
+  deleteMedia(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().media.delete(uniqueId));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -436,7 +464,7 @@ export class CampaignsService {
    * Access the underlying block for advanced operations
    * Use this when you need access to services not wrapped by this Angular service
    */
-  get rawBlock(): CampaignsBlock {
+  get campaignsBlock(): CampaignsBlock {
     return this.ensureConfigured();
   }
 }

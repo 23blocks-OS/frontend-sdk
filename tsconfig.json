@@ -35,6 +35,9 @@
     },
     {
       "path": "./packages/block-conversations"
+    },
+    {
+      "path": "./packages/testing"
     }
   ]
 }

@@ -26,6 +26,14 @@ import {
   type CreateQuarterRequest,
   type UpdateQuarterRequest,
   type ListQuartersParams,
+  type Position,
+  type CreatePositionRequest,
+  type UpdatePositionRequest,
+  type ListPositionsParams,
+  type EmployeeAssignment,
+  type CreateEmployeeAssignmentRequest,
+  type UpdateEmployeeAssignmentRequest,
+  type ListEmployeeAssignmentsParams,
 } from '@23blocks/block-company';
 import { TRANSPORT, COMPANY_TRANSPORT, COMPANY_CONFIG } from '../tokens.js';
 
@@ -211,6 +219,105 @@ export class CompanyService {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
+  // Positions Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List positions with optional filtering and pagination
+   */
+  listPositions(params?: ListPositionsParams): Observable<PageResult<Position>> {
+    return from(this.ensureConfigured().positions.list(params));
+  }
+
+  /**
+   * Get a position by unique ID
+   */
+  getPosition(uniqueId: string): Observable<Position> {
+    return from(this.ensureConfigured().positions.get(uniqueId));
+  }
+
+  /**
+   * Create a new position
+   */
+  createPosition(request: CreatePositionRequest): Observable<Position> {
+    return from(this.ensureConfigured().positions.create(request));
+  }
+
+  /**
+   * Update an existing position
+   */
+  updatePosition(uniqueId: string, request: UpdatePositionRequest): Observable<Position> {
+    return from(this.ensureConfigured().positions.update(uniqueId, request));
+  }
+
+  /**
+   * Delete a position
+   */
+  deletePosition(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().positions.delete(uniqueId));
+  }
+
+  /**
+   * List positions by department
+   */
+  listPositionsByDepartment(departmentUniqueId: string): Observable<Position[]> {
+    return from(this.ensureConfigured().positions.listByDepartment(departmentUniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Employee Assignments Service
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List employee assignments with optional filtering and pagination
+   */
+  listEmployeeAssignments(params?: ListEmployeeAssignmentsParams): Observable<PageResult<EmployeeAssignment>> {
+    return from(this.ensureConfigured().employeeAssignments.list(params));
+  }
+
+  /**
+   * Get an employee assignment by unique ID
+   */
+  getEmployeeAssignment(uniqueId: string): Observable<EmployeeAssignment> {
+    return from(this.ensureConfigured().employeeAssignments.get(uniqueId));
+  }
+
+  /**
+   * Create a new employee assignment
+   */
+  createEmployeeAssignment(request: CreateEmployeeAssignmentRequest): Observable<EmployeeAssignment> {
+    return from(this.ensureConfigured().employeeAssignments.create(request));
+  }
+
+  /**
+   * Update an existing employee assignment
+   */
+  updateEmployeeAssignment(uniqueId: string, request: UpdateEmployeeAssignmentRequest): Observable<EmployeeAssignment> {
+    return from(this.ensureConfigured().employeeAssignments.update(uniqueId, request));
+  }
+
+  /**
+   * Delete an employee assignment
+   */
+  deleteEmployeeAssignment(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().employeeAssignments.delete(uniqueId));
+  }
+
+  /**
+   * List employee assignments by user
+   */
+  listEmployeeAssignmentsByUser(userUniqueId: string): Observable<EmployeeAssignment[]> {
+    return from(this.ensureConfigured().employeeAssignments.listByUser(userUniqueId));
+  }
+
+  /**
+   * List employee assignments by position
+   */
+  listEmployeeAssignmentsByPosition(positionUniqueId: string): Observable<EmployeeAssignment[]> {
+    return from(this.ensureConfigured().employeeAssignments.listByPosition(positionUniqueId));
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
   // Direct Block Access (for advanced usage)
   // ─────────────────────────────────────────────────────────────────────────────
 
@@ -218,7 +325,7 @@ export class CompanyService {
    * Access the underlying block for advanced operations
    * Use this when you need access to services not wrapped by this Angular service
    */
-  get rawBlock(): CompanyBlock {
+  get companyBlock(): CompanyBlock {
     return this.ensureConfigured();
   }
 }
