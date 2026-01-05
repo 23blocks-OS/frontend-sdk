@@ -1,3 +1,21 @@
+## 3.1.3 (2026-01-05)
+
+### 🚀 Features
+
+- ⚠️  **forms:** rename publicForms to applicationForms ([0c5cad6](https://github.com/23blocks-OS/frontend-sdk/commit/0c5cad6))
+
+### ⚠️  Breaking Changes
+
+- **forms:** rename publicForms to applicationForms  ([0c5cad6](https://github.com/23blocks-OS/frontend-sdk/commit/0c5cad6))
+  publicForms renamed to applicationForms
+  🤖 Generated with [Claude Code](https://claude.com/claude-code)
+  Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.1.2 (2026-01-04)
 
 ### 🩹 Fixes
