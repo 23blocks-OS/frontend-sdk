@@ -1,6 +1,7 @@
 export * from './account.mapper';
 export * from './account-document.mapper';
 export * from './contact.mapper';
+export * from './contact-document.mapper';
 export * from './contact-event.mapper';
 export * from './lead.mapper';
 export * from './lead-follow.mapper';

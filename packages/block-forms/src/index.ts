@@ -109,6 +109,12 @@ export type {
   ApplicationFormSubmission,
   ApplicationFormDraft,
   ApplicationFormResponse,
+  // OTP Verification types
+  VerificationStatus,
+  SendOtpResponse,
+  VerifyOtpRequest,
+  OtpErrorCode,
+  OtpError,
 } from './lib/types/application-form';
 
 // CRM Sync types
@@ -173,4 +179,5 @@ export {
   referralMapper,
   mailTemplateMapper,
   applicationFormMapper,
+  mapSendOtpResponse,
 } from './lib/mappers';

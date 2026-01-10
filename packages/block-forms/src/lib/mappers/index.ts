@@ -9,5 +9,5 @@ export * from './appointment.mapper';
 export * from './survey.mapper';
 export * from './referral.mapper';
 export * from './mail-template.mapper';
-export * from './application-form.mapper';
+export { applicationFormMapper, applicationFormResponseMapper, mapSendOtpResponse } from './application-form.mapper';
 export * from './utils';

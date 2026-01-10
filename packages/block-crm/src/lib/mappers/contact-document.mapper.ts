@@ -1,5 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { AccountDocument, DocumentCategory } from '../types/account-document';
+import type { ContactDocument } from '../types/contact-document';
+import type { DocumentCategory } from '../types/account-document';
 import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils';
 
 /**
@@ -13,14 +14,14 @@ function parseDocumentCategory(value: unknown): DocumentCategory | undefined {
   return undefined;
 }
 
-export const accountDocumentMapper: JsonApiMapper<AccountDocument> = {
-  type: 'account_document',
-  map(resource: JsonApiResource): AccountDocument {
+export const contactDocumentMapper: JsonApiMapper<ContactDocument> = {
+  type: 'contact_document',
+  map(resource: JsonApiResource): ContactDocument {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
       uniqueId: parseString(attrs['unique_id']) || resource.id,
-      accountUniqueId: parseString(attrs['account_unique_id']) || '',
+      contactUniqueId: parseString(attrs['contact_unique_id']) || '',
       name: parseString(attrs['name']) || '',
       originalName: parseString(attrs['original_name']),
       description: parseString(attrs['description']),

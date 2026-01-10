@@ -1,15 +1,11 @@
 import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
+import type { DocumentCategory } from './account-document';
 
 /**
- * Document category types
+ * Document attached to a contact
  */
-export type DocumentCategory = 'license' | 'certification' | 'insurance' | 'credential';
-
-/**
- * Document attached to an account
- */
-export interface AccountDocument extends IdentityCore {
-  accountUniqueId: string;
+export interface ContactDocument extends IdentityCore {
+  contactUniqueId: string;
   name: string;
   originalName?: string;
   description?: string;
@@ -40,7 +36,7 @@ export interface AccountDocument extends IdentityCore {
 }
 
 // Request types
-export interface AddAccountDocumentRequest {
+export interface AddContactDocumentRequest {
   name: string;
   originalName?: string;
   description?: string;
@@ -64,38 +60,4 @@ export interface AddAccountDocumentRequest {
   issuedBy?: string;
   /** Flexible metadata for additional data */
   metadata?: Record<string, unknown>;
-}
-
-export interface PresignDocumentRequest {
-  filename: string;
-  contentType?: string;
-}
-
-export interface PresignDocumentResponse {
-  uploadUrl: string;
-  publicUrl: string;
-  key: string;
-}
-
-export interface MultipartPresignRequest {
-  filename: string;
-  contentType: string;
-  partCount: number;
-}
-
-export interface MultipartPresignResponse {
-  uploadId: string;
-  key: string;
-  partUrls: string[];
-}
-
-export interface MultipartCompleteRequest {
-  uploadId: string;
-  key: string;
-  parts: Array<{ partNumber: number; etag: string }>;
-}
-
-export interface MultipartCompleteResponse {
-  url: string;
-  publicUrl: string;
 }

@@ -1,6 +1,7 @@
 export * from './account';
 export * from './account-document';
 export * from './contact';
+export * from './contact-document';
 export * from './contact-event';
 export * from './lead';
 export * from './lead-follow';

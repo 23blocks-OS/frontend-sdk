@@ -58,6 +58,8 @@ import {
   type ApplicationFormSubmission,
   type ApplicationFormDraft,
   type ApplicationFormResponse,
+  type SendOtpResponse,
+  type VerifyOtpRequest,
   type CrmSyncResult,
   type CrmSyncBatchRequest,
   type CrmSyncBatchResult,
@@ -427,6 +429,11 @@ export class FormsService {
   // Application Forms Service (magic link access)
   // ───────────────────────────────────────────────────────────────────────────
 
+  /**
+   * Get public form via magic link.
+   * If OTP verification is required, returns form with verificationStatus: 'pending'
+   * and limited fields (no schema/uiSchema until verified).
+   */
   getApplicationForm(urlId: string): Observable<ApplicationForm> {
     return from(this.ensureConfigured().applicationForms.get(urlId));
   }
@@ -437,6 +444,27 @@ export class FormsService {
 
   saveApplicationFormDraft(urlId: string, data: ApplicationFormDraft): Observable<ApplicationFormResponse> {
     return from(this.ensureConfigured().applicationForms.draft(urlId, data));
+  }
+
+  /**
+   * Send OTP verification code to user's email.
+   * @throws Error with code RATE_LIMITED if called too frequently (60s cooldown)
+   * @throws Error with code ALREADY_VERIFIED if form is already verified
+   * @throws Error with code OTP_NOT_REQUIRED if form doesn't require OTP
+   */
+  sendApplicationFormOtp(urlId: string): Observable<SendOtpResponse> {
+    return from(this.ensureConfigured().applicationForms.sendOtp(urlId));
+  }
+
+  /**
+   * Verify OTP code and get full form access.
+   * On success, returns full form with schema and fields.
+   * @throws Error with code INVALID_CODE if code is wrong (includes attemptsRemaining)
+   * @throws Error with code CODE_EXPIRED if code has expired (10 min lifetime)
+   * @throws Error with code ATTEMPTS_EXCEEDED if max attempts (5) reached
+   */
+  verifyApplicationFormOtp(urlId: string, data: VerifyOtpRequest): Observable<ApplicationForm> {
+    return from(this.ensureConfigured().applicationForms.verifyOtp(urlId, data));
   }
 
   // ───────────────────────────────────────────────────────────────────────────
