@@ -1,3 +1,10 @@
+## 7.5.3 (2026-01-13)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-forms to 3.1.5
+- Updated @23blocks/block-crm to 3.1.2
+
 ## 7.5.2 (2026-01-05)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,19 @@
+## 6.5.5 (2026-01-13)
+
+### 🚀 Features
+
+- **forms,crm:** add OTP verification for public forms and document expiration tracking ([426b87d](https://github.com/23blocks-OS/frontend-sdk/commit/426b87d))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-forms to 3.1.5
+- Updated @23blocks/block-crm to 3.1.2
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 6.5.4 (2026-01-05)
 
 ### 🚀 Features

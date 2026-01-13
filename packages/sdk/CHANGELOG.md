@@ -1,3 +1,38 @@
+## 6.5.3 (2026-01-13)
+
+### 🩹 Fixes
+
+- ⚠️  **sdk:** use namespaced exports to prevent type conflicts ([8beff61](https://github.com/23blocks-OS/frontend-sdk/commit/8beff61))
+
+### ⚠️  Breaking Changes
+
+- **sdk:** use namespaced exports to prevent type conflicts  ([8beff61](https://github.com/23blocks-OS/frontend-sdk/commit/8beff61))
+  Block types are now accessed via namespace imports.
+  Multiple blocks export types with the same name (Category, Tag,
+  Subscription, MailTemplate, Meeting, Conversation, Referral),
+  causing TypeScript conflicts with `export *`.
+  Before:
+    import { Category, User } from '@23blocks/sdk'; // Error: ambiguous
+  After:
+    import { crm, authentication } from '@23blocks/sdk';
+    const cat: crm.Category = ...;
+    const user: authentication.User = ...;
+  Or import directly from individual packages:
+    import { Category } from '@23blocks/block-crm';
+    import { User } from '@23blocks/block-authentication';
+  Fixes: Conflicting star exports bug reported by Prima Climatica
+  Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-forms to 3.1.5
+- Updated @23blocks/block-crm to 3.1.2
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 6.5.2 (2026-01-05)
 
 ### 🧱 Updated Dependencies
