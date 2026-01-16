@@ -1,3 +1,9 @@
+## 6.5.7 (2026-01-16)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 3.1.2
+
 ## 6.5.6 (2026-01-16)
 
 ### 🧱 Updated Dependencies
