@@ -1,3 +1,24 @@
+## 7.5.4 (2026-01-16)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 3.3.2
+- Updated @23blocks/block-geolocation to 3.4.1
+- Updated @23blocks/block-onboarding to 3.1.2
+- Updated @23blocks/block-university to 3.4.1
+- Updated @23blocks/block-campaigns to 3.1.2
+- Updated @23blocks/block-products to 3.4.1
+- Updated @23blocks/block-company to 3.2.2
+- Updated @23blocks/block-content to 3.3.1
+- Updated @23blocks/block-rewards to 3.2.1
+- Updated @23blocks/block-assets to 3.1.2
+- Updated @23blocks/block-jarvis to 3.1.1
+- Updated @23blocks/block-wallet to 3.1.2
+- Updated @23blocks/block-files to 3.4.1
+- Updated @23blocks/block-forms to 3.1.6
+- Updated @23blocks/block-sales to 3.1.2
+- Updated @23blocks/block-crm to 3.1.3
+
 ## 7.5.3 (2026-01-13)
 
 ### 🧱 Updated Dependencies

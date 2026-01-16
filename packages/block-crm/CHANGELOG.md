@@ -1,3 +1,14 @@
+## 3.1.3 (2026-01-16)
+
+### 🩹 Fixes
+
+- **mappers:** remove dangerous uniqueId fallback to resource.id ([e96c555](https://github.com/23blocks-OS/frontend-sdk/commit/e96c555))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.1.2 (2026-01-13)
 
 ### 🚀 Features
