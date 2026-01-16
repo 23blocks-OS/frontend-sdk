@@ -284,7 +284,16 @@ class MemoryStorage {
  * Create a sync token manager for web (localStorage, sessionStorage, memory)
  */
 function createSyncTokenManager(apiKey: string, storageType: StorageType, tenantId?: string): TokenManager {
-  const isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  // Detect browser environment with try/catch for edge runtimes (Lambda@Edge, Cloudflare Workers)
+  let isBrowser = false;
+  try {
+    isBrowser = typeof window !== 'undefined'
+      && typeof window.localStorage !== 'undefined'
+      && typeof window.localStorage.getItem === 'function';
+  } catch {
+    // Some edge runtimes throw on property access
+    isBrowser = false;
+  }
 
   const accessTokenKey = getStorageKey('access', apiKey, tenantId);
   const refreshTokenKey = getStorageKey('refresh', apiKey, tenantId);

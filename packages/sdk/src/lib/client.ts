@@ -345,10 +345,19 @@ export interface Blocks23Client {
 }
 
 /**
- * Detect browser environment
+ * Detect browser environment.
+ * Uses try/catch to handle edge runtimes (Lambda@Edge, Cloudflare Workers)
+ * that may throw on property access.
  */
 function isBrowser(): boolean {
-  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  try {
+    return typeof window !== 'undefined'
+      && typeof window.localStorage !== 'undefined'
+      && typeof window.localStorage.getItem === 'function';
+  } catch {
+    // Some edge runtimes (Lambda@Edge, Cloudflare Workers) throw on property access
+    return false;
+  }
 }
 
 /**
