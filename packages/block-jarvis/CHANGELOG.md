@@ -1,3 +1,14 @@
+## 3.1.3 (2026-01-16)
+
+### 🚀 Features
+
+- **jarvis:** add prompt template system and render endpoint ([22fa1a4](https://github.com/23blocks-OS/frontend-sdk/commit/22fa1a4))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.1.2 (2026-01-16)
 
 ### 🚀 Features

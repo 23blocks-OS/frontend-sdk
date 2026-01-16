@@ -1,3 +1,18 @@
+## 7.5.6 (2026-01-16)
+
+### 🩹 Fixes
+
+- **sdk,react:** add robust browser detection for edge runtimes ([64d3dd6](https://github.com/23blocks-OS/frontend-sdk/commit/64d3dd6))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 3.1.3
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 7.5.5 (2026-01-16)
 
 ### 🧱 Updated Dependencies
