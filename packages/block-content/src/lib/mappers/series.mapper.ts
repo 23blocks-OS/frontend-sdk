@@ -1,28 +1,40 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Post } from '../types/post';
+import type { Series, SeriesVisibility, SeriesCompletionStatus } from '../types/series';
 import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils';
 
-export const postMapper: ResourceMapper<Post> = {
-  type: 'Post',
+function parseVisibility(value: unknown): SeriesVisibility | undefined {
+  const str = parseString(value);
+  if (str === 'public' || str === 'private' || str === 'unlisted') {
+    return str;
+  }
+  return undefined;
+}
+
+function parseCompletionStatus(value: unknown): SeriesCompletionStatus | undefined {
+  const str = parseString(value);
+  if (str === 'ongoing' || str === 'completed' || str === 'hiatus' || str === 'cancelled') {
+    return str;
+  }
+  return undefined;
+}
+
+export const seriesMapper: ResourceMapper<Series> = {
+  type: 'Series',
   map: (resource) => ({
     id: resource.id,
     uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
-    postVersionUniqueId: parseString(resource.attributes['post_version_unique_id']),
     title: parseString(resource.attributes['title']) || '',
-    abstract: parseString(resource.attributes['abstract']),
-    keywords: parseString(resource.attributes['keywords']),
-    content: parseString(resource.attributes['content']),
+    description: parseString(resource.attributes['description']),
+    slug: parseString(resource.attributes['slug']),
     thumbnailUrl: parseString(resource.attributes['thumbnail_url']),
     imageUrl: parseString(resource.attributes['image_url']),
-    mediaUrl: parseString(resource.attributes['media_url']),
-    payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
     status: parseStatus(resource.attributes['status']),
     enabled: parseBoolean(resource.attributes['enabled']),
-    publishAt: parseDate(resource.attributes['publish_at']),
-    publishUntil: parseDate(resource.attributes['publish_until']),
+    visibility: parseVisibility(resource.attributes['visibility']),
+    completionStatus: parseCompletionStatus(resource.attributes['completion_status']),
 
     // User
     userUniqueId: parseString(resource.attributes['user_unique_id']),
@@ -30,21 +42,12 @@ export const postMapper: ResourceMapper<Post> = {
     userAlias: parseString(resource.attributes['user_alias']),
     userAvatarUrl: parseString(resource.attributes['user_avatar_url']),
 
-    // Visibility
-    isPublic: parseBoolean(resource.attributes['is_public']),
-
-    // Versioning
-    version: parseOptionalNumber(resource.attributes['version']),
-
     // Engagement
+    postsCount: parseOptionalNumber(resource.attributes['posts_count']),
     likes: parseOptionalNumber(resource.attributes['likes']),
     dislikes: parseOptionalNumber(resource.attributes['dislikes']),
-    comments: parseOptionalNumber(resource.attributes['comments']),
     followers: parseOptionalNumber(resource.attributes['followers']),
     savers: parseOptionalNumber(resource.attributes['savers']),
-
-    // SEO
-    slug: parseString(resource.attributes['slug']),
 
     // AI
     aiGenerated: parseBoolean(resource.attributes['ai_generated']),
@@ -52,14 +55,8 @@ export const postMapper: ResourceMapper<Post> = {
 
     // Moderation
     moderated: parseBoolean(resource.attributes['moderated']),
-    moderatedBy: parseString(resource.attributes['moderated_by']),
-    moderatedAt: parseDate(resource.attributes['moderated_at']),
-    moderationReason: parseString(resource.attributes['moderation_reason']),
-    moderationDecision: parseString(resource.attributes['moderation_decision']),
 
-    // Series
-    seriesId: parseOptionalNumber(resource.attributes['series_id']),
-    seriesUniqueId: parseString(resource.attributes['series_unique_id']),
-    seriesSequence: parseOptionalNumber(resource.attributes['series_sequence']),
+    // Metadata
+    payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
   }),
 };

@@ -8,6 +8,7 @@ import {
   createContentUsersService,
   createModerationService,
   createActivityService,
+  createSeriesService,
   type PostsService,
   type PostVersionsService,
   type CommentsService,
@@ -16,6 +17,7 @@ import {
   type ContentUsersService,
   type ModerationService,
   type ActivityService,
+  type SeriesService,
 } from './services';
 
 export interface ContentBlockConfig extends BlockConfig {
@@ -32,6 +34,7 @@ export interface ContentBlock {
   users: ContentUsersService;
   moderation: ModerationService;
   activity: ActivityService;
+  series: SeriesService;
 }
 
 export function createContentBlock(
@@ -47,6 +50,7 @@ export function createContentBlock(
     users: createContentUsersService(transport, config),
     moderation: createModerationService(transport, config),
     activity: createActivityService(transport, config),
+    series: createSeriesService(transport, config),
   };
 }
 
@@ -64,5 +68,6 @@ export const contentBlockMetadata: BlockMetadata = {
     'Following',
     'ContentFlag',
     'Activity',
+    'Series',
   ],
 };

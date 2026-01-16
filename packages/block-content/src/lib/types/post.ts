@@ -48,6 +48,11 @@ export interface Post extends IdentityCore {
   moderatedAt?: Date;
   moderationReason?: string;
   moderationDecision?: string;
+
+  // Series
+  seriesId?: number;
+  seriesUniqueId?: string;
+  seriesSequence?: number;
 }
 
 // Request types

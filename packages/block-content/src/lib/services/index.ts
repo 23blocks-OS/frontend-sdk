@@ -6,3 +6,4 @@ export * from './tags.service';
 export * from './users.service';
 export * from './moderation.service';
 export * from './activity.service';
+export * from './series.service';

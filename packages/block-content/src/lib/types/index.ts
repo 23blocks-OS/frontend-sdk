@@ -6,3 +6,4 @@ export * from './tag';
 export * from './user';
 export * from './moderation';
 export * from './activity';
+export * from './series';
