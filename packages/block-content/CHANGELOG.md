@@ -1,3 +1,14 @@
+## 3.3.3 (2026-01-16)
+
+### 🚀 Features
+
+- **content:** add Series feature with 16 API endpoints ([e5f54df](https://github.com/23blocks-OS/frontend-sdk/commit/e5f54df))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.3.2 (2026-01-16)
 
 ### 🚀 Features
