@@ -1,3 +1,14 @@
+## 3.3.2 (2026-01-16)
+
+### 🚀 Features
+
+- **content:** align SDK with Content API serializers and routes ([16002aa](https://github.com/23blocks-OS/frontend-sdk/commit/16002aa))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.3.1 (2026-01-16)
 
 ### 🩹 Fixes
