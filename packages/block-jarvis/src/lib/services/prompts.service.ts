@@ -9,6 +9,8 @@ import type {
   ExecutePromptResponse,
   TestPromptRequest,
   TestPromptResponse,
+  RenderPromptRequest,
+  RenderPromptResponse,
 } from '../types/prompt';
 import { promptMapper } from '../mappers/prompt.mapper';
 
@@ -20,6 +22,7 @@ export interface PromptsService {
   delete(uniqueId: string): Promise<void>;
   execute(uniqueId: string, data: ExecutePromptRequest): Promise<ExecutePromptResponse>;
   test(data: TestPromptRequest): Promise<TestPromptResponse>;
+  render(uniqueId: string, data: RenderPromptRequest): Promise<RenderPromptResponse>;
 }
 
 export function createPromptsService(transport: Transport, _config: { appId: string }): PromptsService {
@@ -51,6 +54,11 @@ export function createPromptsService(transport: Transport, _config: { appId: str
             description: data.description,
             template: data.template,
             variables: data.variables,
+            template_data: data.templateData,
+            template_schema: data.templateSchema,
+            template_info: data.templateInfo,
+            placeholders: data.placeholders,
+            provider: data.provider,
             payload: data.payload,
           },
       });
@@ -64,6 +72,11 @@ export function createPromptsService(transport: Transport, _config: { appId: str
             description: data.description,
             template: data.template,
             variables: data.variables,
+            template_data: data.templateData,
+            template_schema: data.templateSchema,
+            template_info: data.templateInfo,
+            placeholders: data.placeholders,
+            provider: data.provider,
             enabled: data.enabled,
             status: data.status,
             payload: data.payload,
@@ -103,6 +116,33 @@ export function createPromptsService(transport: Transport, _config: { appId: str
         renderedPrompt: response.rendered_prompt,
         isValid: response.is_valid,
         errors: response.errors,
+      };
+    },
+
+    async render(uniqueId: string, data: RenderPromptRequest): Promise<RenderPromptResponse> {
+      const response = await transport.post<any>(`/prompts/${uniqueId}/render`, {
+        placeholders: data.placeholders,
+      });
+
+      // Parse JSON:API response - the rendered prompt comes in data.attributes
+      const attributes = response.data?.attributes || response;
+
+      return {
+        renderedContent: attributes.rendered_content || attributes.renderedContent,
+        promptUniqueId: attributes.prompt_unique_id || attributes.promptUniqueId,
+        versionUniqueId: attributes.version_unique_id || attributes.versionUniqueId,
+        name: attributes.name,
+        promptType: attributes.prompt_type || attributes.promptType,
+        model: attributes.model,
+        temperature: attributes.temperature,
+        maxTokens: attributes.max_tokens || attributes.maxTokens,
+        provider: attributes.provider,
+        meta: {
+          placeholdersProvided: response.data?.meta?.placeholders_provided || response.meta?.placeholders_provided || [],
+          placeholdersMissing: response.data?.meta?.placeholders_missing || response.meta?.placeholders_missing || [],
+          allPlaceholders: response.data?.meta?.all_placeholders || response.meta?.all_placeholders || [],
+          renderedAt: response.data?.meta?.rendered_at || response.meta?.rendered_at || new Date().toISOString(),
+        },
       };
     },
   };

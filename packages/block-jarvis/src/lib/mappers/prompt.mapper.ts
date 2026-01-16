@@ -1,6 +1,18 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Prompt } from '../types/prompt';
+import type { Prompt, TemplateInfo } from '../types/prompt';
 import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils';
+
+function parseTemplateInfo(value: unknown): TemplateInfo | undefined {
+  if (value && typeof value === 'object') {
+    const obj = value as Record<string, unknown>;
+    return {
+      name: parseString(obj['name']),
+      type: parseString(obj['type']),
+      description: parseString(obj['description']),
+    };
+  }
+  return undefined;
+}
 
 export const promptMapper: ResourceMapper<Prompt> = {
   type: 'Prompt',
@@ -26,6 +38,13 @@ export const promptMapper: ResourceMapper<Prompt> = {
     content: parseString(resource.attributes['content']),
     template: parseString(resource.attributes['template']),
     variables: parseStringArray(resource.attributes['variables']),
+
+    // Template system
+    templateData: resource.attributes['template_data'] as Record<string, unknown> | undefined,
+    templateSchema: resource.attributes['template_schema'] as Record<string, unknown> | undefined,
+    templateInfo: parseTemplateInfo(resource.attributes['template_info']),
+    placeholders: parseStringArray(resource.attributes['placeholders']),
+    provider: parseString(resource.attributes['provider']),
 
     // Media
     thumbnailUrl: parseString(resource.attributes['thumbnail_url']),

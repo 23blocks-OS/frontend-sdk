@@ -6,9 +6,23 @@ import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 export type PromptType = 'openai' | 'claude' | 'gemini' | 'custom' | string;
 
 /**
+ * AI Provider
+ */
+export type AIProvider = 'openai' | 'anthropic' | 'google' | 'perplexity' | string;
+
+/**
  * Prompt source
  */
 export type PromptSource = 'draft' | 'published' | 'archived' | string;
+
+/**
+ * Template info metadata
+ */
+export interface TemplateInfo {
+  name?: string;
+  type?: string;
+  description?: string;
+}
 
 export interface Prompt extends IdentityCore {
   // Core identifiers
@@ -26,6 +40,13 @@ export interface Prompt extends IdentityCore {
   content?: string;
   template?: string;
   variables?: string[];
+
+  // Template system
+  templateData?: Record<string, unknown>;
+  templateSchema?: Record<string, unknown>;
+  templateInfo?: TemplateInfo;
+  placeholders?: string[];
+  provider?: AIProvider;
 
   // Media
   thumbnailUrl?: string;
@@ -95,6 +116,11 @@ export interface CreatePromptRequest {
   content?: string;
   template?: string;
   variables?: string[];
+  templateData?: Record<string, unknown>;
+  templateSchema?: Record<string, unknown>;
+  templateInfo?: TemplateInfo;
+  placeholders?: string[];
+  provider?: AIProvider;
   thumbnailUrl?: string;
   imageUrl?: string;
   mediaUrl?: string;
@@ -132,6 +158,11 @@ export interface UpdatePromptRequest {
   content?: string;
   template?: string;
   variables?: string[];
+  templateData?: Record<string, unknown>;
+  templateSchema?: Record<string, unknown>;
+  templateInfo?: TemplateInfo;
+  placeholders?: string[];
+  provider?: AIProvider;
   thumbnailUrl?: string;
   imageUrl?: string;
   mediaUrl?: string;
@@ -195,4 +226,29 @@ export interface TestPromptResponse {
   renderedPrompt: string;
   isValid: boolean;
   errors?: string[];
+}
+
+// Render endpoint types
+export interface RenderPromptRequest {
+  placeholders: Record<string, string>;
+}
+
+export interface RenderPromptMeta {
+  placeholdersProvided: string[];
+  placeholdersMissing: string[];
+  allPlaceholders: string[];
+  renderedAt: string;
+}
+
+export interface RenderPromptResponse {
+  renderedContent: string;
+  promptUniqueId: string;
+  versionUniqueId?: string;
+  name: string;
+  promptType?: PromptType;
+  model?: string;
+  temperature?: number;
+  maxTokens?: number;
+  provider?: AIProvider;
+  meta: RenderPromptMeta;
 }
