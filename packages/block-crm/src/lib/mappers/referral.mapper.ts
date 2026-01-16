@@ -8,7 +8,7 @@ export const referralMapper: JsonApiMapper<Referral> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']) || resource.id,
+      uniqueId: parseString(attrs['unique_id']),
       referrerUniqueId: parseString(attrs['referrer_unique_id']),
       referredUniqueId: parseString(attrs['referred_unique_id']),
       referralCode: parseString(attrs['referral_code']),

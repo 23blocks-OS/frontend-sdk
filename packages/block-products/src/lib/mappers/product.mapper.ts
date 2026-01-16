@@ -6,7 +6,7 @@ export const productMapper: ResourceMapper<Product> = {
   type: 'Product',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
@@ -72,7 +72,7 @@ export const productVariationMapper: ResourceMapper<ProductVariation> = {
   type: 'Variation',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
@@ -142,7 +142,7 @@ export const productImageMapper: ResourceMapper<ProductImage> = {
   type: 'ProductImage',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
@@ -160,7 +160,7 @@ export const productStockMapper: ResourceMapper<ProductStock> = {
   type: 'ProductStock',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
@@ -182,7 +182,7 @@ export const productReviewMapper: ResourceMapper<ProductReview> = {
   type: 'ProductReview',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 

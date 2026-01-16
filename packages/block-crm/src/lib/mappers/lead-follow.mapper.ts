@@ -8,7 +8,7 @@ export const leadFollowMapper: JsonApiMapper<LeadFollow> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']) || resource.id,
+      uniqueId: parseString(attrs['unique_id']),
       leadUniqueId: parseString(attrs['lead_unique_id']) || '',
       userUniqueId: parseString(attrs['user_unique_id']),
       followType: parseString(attrs['follow_type']),

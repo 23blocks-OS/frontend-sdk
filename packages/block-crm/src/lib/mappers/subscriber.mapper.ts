@@ -8,7 +8,7 @@ export const subscriberMapper: JsonApiMapper<Subscriber> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']) || resource.id,
+      uniqueId: parseString(attrs['unique_id']),
       email: parseString(attrs['email']) || '',
       firstName: parseString(attrs['first_name']),
       lastName: parseString(attrs['last_name']),

@@ -22,7 +22,7 @@ export const noteMapper: ResourceMapper<Note> = {
   type: 'Note',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 

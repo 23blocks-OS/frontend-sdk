@@ -8,7 +8,7 @@ export const meetingBillingMapper: JsonApiMapper<MeetingBilling> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']) || resource.id,
+      uniqueId: parseString(attrs['unique_id']),
       meetingUniqueId: parseString(attrs['meeting_unique_id']) || '',
       participantUniqueId: parseString(attrs['participant_unique_id']),
       participantEmail: parseString(attrs['participant_email']),

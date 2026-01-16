@@ -19,7 +19,7 @@ export const accountDocumentMapper: JsonApiMapper<AccountDocument> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']) || resource.id,
+      uniqueId: parseString(attrs['unique_id']),
       accountUniqueId: parseString(attrs['account_unique_id']) || '',
       name: parseString(attrs['name']) || '',
       originalName: parseString(attrs['original_name']),

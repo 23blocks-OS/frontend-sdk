@@ -8,7 +8,7 @@ export const categoryMapper: JsonApiMapper<Category> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']) || resource.id,
+      uniqueId: parseString(attrs['unique_id']),
       name: parseString(attrs['name']) || '',
       code: parseString(attrs['code']),
       description: parseString(attrs['description']),
@@ -31,7 +31,7 @@ export const accountCategoryMapper: JsonApiMapper<AccountCategory> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']) || resource.id,
+      uniqueId: parseString(attrs['unique_id']),
       accountUniqueId: parseString(attrs['account_unique_id']) || '',
       categoryUniqueId: parseString(attrs['category_unique_id']) || '',
       order: parseOptionalNumber(attrs['order']),

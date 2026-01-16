@@ -6,7 +6,7 @@ export const audienceMapper: ResourceMapper<Audience> = {
   type: 'Audience',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
@@ -24,7 +24,7 @@ export const audienceMapper: ResourceMapper<Audience> = {
 export const audienceMemberMapper: ResourceMapper<AudienceMember> = {
   type: 'AudienceMember',
   map: (resource) => ({
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     audienceUniqueId: parseString(resource.attributes['audience_unique_id']) || '',
     userUniqueId: parseString(resource.attributes['user_unique_id']),
     email: parseString(resource.attributes['email']),

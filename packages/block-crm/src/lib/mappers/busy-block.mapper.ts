@@ -8,7 +8,7 @@ export const busyBlockMapper: JsonApiMapper<BusyBlock> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']) || resource.id,
+      uniqueId: parseString(attrs['unique_id']),
       userUniqueId: parseString(attrs['user_unique_id']) || '',
       title: parseString(attrs['title']),
       description: parseString(attrs['description']),

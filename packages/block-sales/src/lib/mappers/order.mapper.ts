@@ -6,11 +6,11 @@ export const orderMapper: ResourceMapper<Order> = {
   type: 'Order',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
-    displayId: parseString(resource.attributes['display_id']) || resource.id,
+    displayId: parseString(resource.attributes['display_id']),
     userUniqueId: parseString(resource.attributes['user_unique_id']) || '',
     status: parseOrderStatus(resource.attributes['status']),
     subtotal: parseNumber(resource.attributes['subtotal']),

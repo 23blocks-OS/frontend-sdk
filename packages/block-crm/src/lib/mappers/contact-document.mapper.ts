@@ -20,7 +20,7 @@ export const contactDocumentMapper: JsonApiMapper<ContactDocument> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']) || resource.id,
+      uniqueId: parseString(attrs['unique_id']),
       contactUniqueId: parseString(attrs['contact_unique_id']) || '',
       name: parseString(attrs['name']) || '',
       originalName: parseString(attrs['original_name']),

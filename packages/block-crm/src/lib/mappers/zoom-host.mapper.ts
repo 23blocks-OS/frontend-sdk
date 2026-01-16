@@ -8,7 +8,7 @@ export const zoomHostMapper: JsonApiMapper<ZoomHost> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']) || resource.id,
+      uniqueId: parseString(attrs['unique_id']),
       userUniqueId: parseString(attrs['user_unique_id']),
       zoomUserId: parseString(attrs['zoom_user_id']),
       email: parseString(attrs['email']),

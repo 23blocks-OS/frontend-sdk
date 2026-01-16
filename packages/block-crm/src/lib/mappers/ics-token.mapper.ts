@@ -8,7 +8,7 @@ export const icsTokenMapper: JsonApiMapper<IcsToken> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']) || resource.id,
+      uniqueId: parseString(attrs['unique_id']),
       userUniqueId: parseString(attrs['user_unique_id']) || '',
       token: parseString(attrs['token']) || '',
       name: parseString(attrs['name']),

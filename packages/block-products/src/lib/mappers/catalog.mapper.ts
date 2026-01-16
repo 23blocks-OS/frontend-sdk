@@ -6,7 +6,7 @@ export const categoryMapper: ResourceMapper<Category> = {
   type: 'Category',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
@@ -48,7 +48,7 @@ export const brandMapper: ResourceMapper<Brand> = {
   type: 'Brand',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
@@ -85,7 +85,7 @@ export const vendorMapper: ResourceMapper<Vendor> = {
   type: 'Vendor',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
@@ -127,7 +127,7 @@ export const warehouseMapper: ResourceMapper<Warehouse> = {
   type: 'Warehouse',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
@@ -171,7 +171,7 @@ export const channelMapper: ResourceMapper<Channel> = {
   type: 'Channel',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
@@ -188,7 +188,7 @@ export const collectionMapper: ResourceMapper<Collection> = {
   type: 'Collection',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
@@ -208,7 +208,7 @@ export const productCatalogMapper: ResourceMapper<ProductCatalog> = {
   type: 'ProductCatalog',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']) || resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
