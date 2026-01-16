@@ -15,6 +15,8 @@ export type {
   CompleteResponse,
   // Prompt types
   Prompt,
+  PromptType,
+  PromptSource,
   CreatePromptRequest,
   UpdatePromptRequest,
   ListPromptsParams,
