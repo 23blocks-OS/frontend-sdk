@@ -1,4 +1,5 @@
 export * from './post';
+export * from './post-version';
 export * from './comment';
 export * from './category';
 export * from './tag';

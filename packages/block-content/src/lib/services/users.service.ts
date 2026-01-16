@@ -2,6 +2,7 @@ import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   ContentUser,
+  Following,
   RegisterContentUserRequest,
   UpdateContentUserRequest,
   ListContentUsersParams,
@@ -9,7 +10,7 @@ import type {
 } from '../types/user';
 import type { Post } from '../types/post';
 import type { Comment } from '../types/comment';
-import { contentUserMapper } from '../mappers/user.mapper';
+import { contentUserMapper, followingMapper } from '../mappers/user.mapper';
 import { postMapper } from '../mappers/post.mapper';
 import { commentMapper } from '../mappers/comment.mapper';
 
@@ -29,9 +30,9 @@ export interface ContentUsersService {
   addTag(uniqueId: string, tagUniqueId: string): Promise<ContentUser>;
   removeTag(uniqueId: string, tagUniqueId: string): Promise<void>;
 
-  // Social
-  getFollowers(uniqueId: string): Promise<ContentUser[]>;
-  getFollowing(uniqueId: string): Promise<ContentUser[]>;
+  // Social - returns Following[] with full relationship data
+  getFollowers(uniqueId: string): Promise<Following[]>;
+  getFollowing(uniqueId: string): Promise<Following[]>;
   followUser(uniqueId: string, targetUserUniqueId: string): Promise<void>;
   unfollowUser(uniqueId: string, targetUserUniqueId: string): Promise<void>;
 }
@@ -59,8 +60,13 @@ export function createContentUsersService(transport: Transport, _config: { appId
         user: {
           email: data.email,
           name: data.name,
+          first_name: data.firstName,
+          last_name: data.lastName,
           avatar_url: data.avatarUrl,
           bio: data.bio,
+          phone: data.phone,
+          time_zone: data.timeZone,
+          preferred_language: data.preferredLanguage,
           payload: data.payload,
         },
       });
@@ -71,8 +77,17 @@ export function createContentUsersService(transport: Transport, _config: { appId
       const response = await transport.put<unknown>(`/identities/${uniqueId}`, {
         user: {
           name: data.name,
+          first_name: data.firstName,
+          last_name: data.lastName,
           avatar_url: data.avatarUrl,
           bio: data.bio,
+          phone: data.phone,
+          time_zone: data.timeZone,
+          preferred_language: data.preferredLanguage,
+          email_notifications: data.emailNotifications,
+          sms_notifications: data.smsNotifications,
+          whatsapp_notifications: data.whatsappNotifications,
+          other_notifications: data.otherNotifications,
           payload: data.payload,
         },
       });
@@ -118,14 +133,14 @@ export function createContentUsersService(transport: Transport, _config: { appId
       await transport.delete(`/identities/${uniqueId}/tags/${tagUniqueId}`);
     },
 
-    async getFollowers(uniqueId: string): Promise<ContentUser[]> {
+    async getFollowers(uniqueId: string): Promise<Following[]> {
       const response = await transport.get<unknown>(`/identities/${uniqueId}/followers`);
-      return decodeMany(response, contentUserMapper);
+      return decodeMany(response, followingMapper);
     },
 
-    async getFollowing(uniqueId: string): Promise<ContentUser[]> {
+    async getFollowing(uniqueId: string): Promise<Following[]> {
       const response = await transport.get<unknown>(`/identities/${uniqueId}/following`);
-      return decodeMany(response, contentUserMapper);
+      return decodeMany(response, followingMapper);
     },
 
     async followUser(uniqueId: string, targetUserUniqueId: string): Promise<void> {

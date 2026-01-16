@@ -1,6 +1,7 @@
 import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
 import {
   createPostsService,
+  createPostVersionsService,
   createCommentsService,
   createCategoriesService,
   createTagsService,
@@ -8,6 +9,7 @@ import {
   createModerationService,
   createActivityService,
   type PostsService,
+  type PostVersionsService,
   type CommentsService,
   type CategoriesService,
   type TagsService,
@@ -23,6 +25,7 @@ export interface ContentBlockConfig extends BlockConfig {
 
 export interface ContentBlock {
   posts: PostsService;
+  postVersions: PostVersionsService;
   comments: CommentsService;
   categories: CategoriesService;
   tags: TagsService;
@@ -37,6 +40,7 @@ export function createContentBlock(
 ): ContentBlock {
   return {
     posts: createPostsService(transport, config),
+    postVersions: createPostVersionsService(transport, config),
     comments: createCommentsService(transport, config),
     categories: createCategoriesService(transport, config),
     tags: createTagsService(transport, config),
@@ -52,10 +56,12 @@ export const contentBlockMetadata: BlockMetadata = {
   description: 'Content management for posts, comments, categories, tags, and users',
   resourceTypes: [
     'Post',
+    'PostVersion',
     'Comment',
     'Category',
     'Tag',
     'ContentUser',
+    'Following',
     'ContentFlag',
     'Activity',
   ],

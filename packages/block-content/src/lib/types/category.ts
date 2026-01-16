@@ -1,67 +1,62 @@
 import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 
 export interface Category extends IdentityCore {
-  code: string;
+  uniqueId: string;
+
+  // Core fields from API
+  code?: string;
   name: string;
   description?: string;
+
+  // Hierarchy
   parentId?: string;
-  parentUniqueId?: string;
 
   // Display
   displayOrder?: number;
-  iconUrl?: string;
   imageUrl?: string;
   contentUrl?: string;
-  slug?: string;
 
   // Business Logic
   status: EntityStatus;
   enabled: boolean;
 
-  // SEO
-  metaTitle?: string;
-  metaDescription?: string;
-  metaKeywords?: string;
-
-  // Source tracking
-  source?: string;
-  sourceAlias?: string;
-  sourceId?: string;
-  sourceType?: string;
-
   // Extra
   payload?: Record<string, unknown>;
 
-  // Nested
+  // Nested (populated by includes)
   children?: Category[];
   postCount?: number;
 }
 
 // Request types
 export interface CreateCategoryRequest {
+  code?: string;
   name: string;
   description?: string;
-  parentUniqueId?: string;
+  parentId?: string;
   displayOrder?: number;
   imageUrl?: string;
-  iconUrl?: string;
+  contentUrl?: string;
+  payload?: Record<string, unknown>;
 }
 
 export interface UpdateCategoryRequest {
+  code?: string;
   name?: string;
   description?: string;
-  parentUniqueId?: string;
+  parentId?: string;
   displayOrder?: number;
   imageUrl?: string;
-  iconUrl?: string;
+  contentUrl?: string;
   enabled?: boolean;
   status?: EntityStatus;
+  payload?: Record<string, unknown>;
 }
 
 export interface ListCategoriesParams {
   page?: number;
   perPage?: number;
-  parentUniqueId?: string;
+  parentId?: string;
   withChildren?: boolean;
   withPosts?: boolean;
 }

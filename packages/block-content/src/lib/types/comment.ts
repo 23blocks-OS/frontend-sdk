@@ -33,17 +33,19 @@ export interface Comment extends IdentityCore {
   aiGenerated?: boolean;
   aiModel?: string;
 
-  // Moderation
+  // Moderation (admin only)
   moderated?: boolean;
   moderatedBy?: string;
   moderatedAt?: Date;
   moderationReason?: string;
   moderationDecision?: string;
+
+  // Nested replies
+  replies?: Comment[];
 }
 
 // Request types
 export interface CreateCommentRequest {
-  postUniqueId: string;
   content: string;
   thumbnailUrl?: string;
   imageUrl?: string;
@@ -67,7 +69,6 @@ export interface UpdateCommentRequest {
 export interface ListCommentsParams {
   page?: number;
   perPage?: number;
-  postUniqueId?: string;
   userUniqueId?: string;
   parentId?: string;
   status?: EntityStatus;

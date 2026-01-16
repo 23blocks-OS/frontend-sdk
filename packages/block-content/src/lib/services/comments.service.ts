@@ -9,48 +9,67 @@ import type {
 import { commentMapper } from '../mappers/comment.mapper';
 
 export interface CommentsService {
-  list(params?: ListCommentsParams): Promise<PageResult<Comment>>;
-  get(uniqueId: string): Promise<Comment>;
-  create(data: CreateCommentRequest): Promise<Comment>;
-  update(uniqueId: string, data: UpdateCommentRequest): Promise<Comment>;
-  delete(uniqueId: string): Promise<void>;
+  /**
+   * List comments for a post
+   */
+  list(postUniqueId: string, params?: ListCommentsParams): Promise<PageResult<Comment>>;
 
-  // Reply to a comment (creates a nested comment)
-  reply(parentCommentUniqueId: string, data: Omit<CreateCommentRequest, 'parentId'>): Promise<Comment>;
+  /**
+   * Get a specific comment
+   */
+  get(postUniqueId: string, uniqueId: string): Promise<Comment>;
+
+  /**
+   * Create a new comment on a post
+   */
+  create(postUniqueId: string, data: CreateCommentRequest): Promise<Comment>;
+
+  /**
+   * Update a comment
+   */
+  update(postUniqueId: string, uniqueId: string, data: UpdateCommentRequest): Promise<Comment>;
+
+  /**
+   * Delete a comment
+   */
+  delete(postUniqueId: string, uniqueId: string): Promise<void>;
+
+  /**
+   * Reply to a comment (creates a nested comment)
+   */
+  reply(postUniqueId: string, parentCommentUniqueId: string, data: Omit<CreateCommentRequest, 'parentId'>): Promise<Comment>;
 
   // Engagement
-  like(uniqueId: string): Promise<Comment>;
-  dislike(uniqueId: string): Promise<Comment>;
-  save(uniqueId: string): Promise<Comment>;
-  unsave(uniqueId: string): Promise<Comment>;
-  follow(uniqueId: string): Promise<Comment>;
-  unfollow(uniqueId: string): Promise<Comment>;
+  like(postUniqueId: string, uniqueId: string): Promise<Comment>;
+  dislike(postUniqueId: string, uniqueId: string): Promise<Comment>;
+  save(postUniqueId: string, uniqueId: string): Promise<Comment>;
+  unsave(postUniqueId: string, uniqueId: string): Promise<Comment>;
+  follow(postUniqueId: string, uniqueId: string): Promise<Comment>;
+  unfollow(postUniqueId: string, uniqueId: string): Promise<Comment>;
 }
 
 export function createCommentsService(transport: Transport, _config: { appId: string }): CommentsService {
   return {
-    async list(params?: ListCommentsParams): Promise<PageResult<Comment>> {
+    async list(postUniqueId: string, params?: ListCommentsParams): Promise<PageResult<Comment>> {
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
-      if (params?.postUniqueId) queryParams['post_unique_id'] = params.postUniqueId;
       if (params?.userUniqueId) queryParams['user_unique_id'] = params.userUniqueId;
       if (params?.parentId) queryParams['parent_id'] = params.parentId;
       if (params?.status) queryParams['status'] = params.status;
 
-      const response = await transport.get<unknown>('/comments', { params: queryParams });
+      const response = await transport.get<unknown>(`/posts/${postUniqueId}/comments`, { params: queryParams });
       return decodePageResult(response, commentMapper);
     },
 
-    async get(uniqueId: string): Promise<Comment> {
-      const response = await transport.get<unknown>(`/comments/${uniqueId}`);
+    async get(postUniqueId: string, uniqueId: string): Promise<Comment> {
+      const response = await transport.get<unknown>(`/posts/${postUniqueId}/comments/${uniqueId}`);
       return decodeOne(response, commentMapper);
     },
 
-    async create(data: CreateCommentRequest): Promise<Comment> {
-      const response = await transport.post<unknown>('/comments', {
+    async create(postUniqueId: string, data: CreateCommentRequest): Promise<Comment> {
+      const response = await transport.post<unknown>(`/posts/${postUniqueId}/comments`, {
         comment: {
-          post_unique_id: data.postUniqueId,
           content: data.content,
           thumbnail_url: data.thumbnailUrl,
           image_url: data.imageUrl,
@@ -63,8 +82,8 @@ export function createCommentsService(transport: Transport, _config: { appId: st
       return decodeOne(response, commentMapper);
     },
 
-    async update(uniqueId: string, data: UpdateCommentRequest): Promise<Comment> {
-      const response = await transport.put<unknown>(`/comments/${uniqueId}`, {
+    async update(postUniqueId: string, uniqueId: string, data: UpdateCommentRequest): Promise<Comment> {
+      const response = await transport.put<unknown>(`/posts/${postUniqueId}/comments/${uniqueId}`, {
         comment: {
           content: data.content,
           thumbnail_url: data.thumbnailUrl,
@@ -79,20 +98,18 @@ export function createCommentsService(transport: Transport, _config: { appId: st
       return decodeOne(response, commentMapper);
     },
 
-    async delete(uniqueId: string): Promise<void> {
-      await transport.delete(`/comments/${uniqueId}`);
+    async delete(postUniqueId: string, uniqueId: string): Promise<void> {
+      await transport.delete(`/posts/${postUniqueId}/comments/${uniqueId}`);
     },
 
-    async reply(parentCommentUniqueId: string, data: Omit<CreateCommentRequest, 'parentId'>): Promise<Comment> {
-      const response = await transport.post<unknown>('/comments', {
+    async reply(postUniqueId: string, parentCommentUniqueId: string, data: Omit<CreateCommentRequest, 'parentId'>): Promise<Comment> {
+      const response = await transport.post<unknown>(`/posts/${postUniqueId}/comments/${parentCommentUniqueId}/reply`, {
         comment: {
-          post_unique_id: data.postUniqueId,
           content: data.content,
           thumbnail_url: data.thumbnailUrl,
           image_url: data.imageUrl,
           content_url: data.contentUrl,
           media_url: data.mediaUrl,
-          parent_id: parentCommentUniqueId,
           payload: data.payload,
         },
       });
@@ -100,33 +117,33 @@ export function createCommentsService(transport: Transport, _config: { appId: st
     },
 
     // Engagement
-    async like(uniqueId: string): Promise<Comment> {
-      const response = await transport.post<unknown>(`/comments/${uniqueId}/like`, {});
+    async like(postUniqueId: string, uniqueId: string): Promise<Comment> {
+      const response = await transport.put<unknown>(`/posts/${postUniqueId}/comments/${uniqueId}/like`, {});
       return decodeOne(response, commentMapper);
     },
 
-    async dislike(uniqueId: string): Promise<Comment> {
-      const response = await transport.post<unknown>(`/comments/${uniqueId}/dislike`, {});
+    async dislike(postUniqueId: string, uniqueId: string): Promise<Comment> {
+      const response = await transport.put<unknown>(`/posts/${postUniqueId}/comments/${uniqueId}/dislike`, {});
       return decodeOne(response, commentMapper);
     },
 
-    async save(uniqueId: string): Promise<Comment> {
-      const response = await transport.put<unknown>(`/comments/${uniqueId}/save`, {});
+    async save(postUniqueId: string, uniqueId: string): Promise<Comment> {
+      const response = await transport.put<unknown>(`/posts/${postUniqueId}/comments/${uniqueId}/save`, {});
       return decodeOne(response, commentMapper);
     },
 
-    async unsave(uniqueId: string): Promise<Comment> {
-      const response = await transport.delete<unknown>(`/comments/${uniqueId}/unsave`);
+    async unsave(postUniqueId: string, uniqueId: string): Promise<Comment> {
+      const response = await transport.delete<unknown>(`/posts/${postUniqueId}/comments/${uniqueId}/unsave`);
       return decodeOne(response, commentMapper);
     },
 
-    async follow(uniqueId: string): Promise<Comment> {
-      const response = await transport.put<unknown>(`/comments/${uniqueId}/follow`, {});
+    async follow(postUniqueId: string, uniqueId: string): Promise<Comment> {
+      const response = await transport.put<unknown>(`/posts/${postUniqueId}/comments/${uniqueId}/follow`, {});
       return decodeOne(response, commentMapper);
     },
 
-    async unfollow(uniqueId: string): Promise<Comment> {
-      const response = await transport.delete<unknown>(`/comments/${uniqueId}/unfollow`);
+    async unfollow(postUniqueId: string, uniqueId: string): Promise<Comment> {
+      const response = await transport.delete<unknown>(`/posts/${postUniqueId}/comments/${uniqueId}/unfollow`);
       return decodeOne(response, commentMapper);
     },
   };
