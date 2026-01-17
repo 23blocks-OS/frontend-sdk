@@ -224,6 +224,7 @@ export function ProductList() {
 |------|-------------|
 | `useSearch()` | Search with state management |
 | `useFavorites()` | Favorites management |
+| `useContentSeries()` | Content series management |
 | `useUsers()` | User management (admin) |
 | `useMfa()` | Multi-factor authentication |
 | `useOAuth()` | OAuth operations |
@@ -446,6 +447,194 @@ export function FavoriteButton({ itemId, itemType }: Props) {
       {isFavorited ? 'Favorited' : 'Add to Favorites'}
     </button>
   );
+}
+```
+
+### useContentSeries
+
+Manage content series (collections of ordered posts like tutorials or courses).
+
+```tsx
+'use client';
+
+import { useContentSeries } from '@23blocks/react';
+import { useEffect } from 'react';
+
+export function SeriesList() {
+  const {
+    series,
+    totalRecords,
+    isLoading,
+    error,
+    listSeries,
+    createSeries,
+    likeSeries,
+  } = useContentSeries();
+
+  useEffect(() => {
+    listSeries({ page: 1, perPage: 10 });
+  }, [listSeries]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  return (
+    <div>
+      <p>Total: {totalRecords} series</p>
+      <ul>
+        {series.map((s) => (
+          <li key={s.uniqueId}>
+            <h3>{s.title}</h3>
+            <p>{s.description}</p>
+            <span>Posts: {s.postsCount} | Likes: {s.likes}</span>
+            <button onClick={() => likeSeries(s.uniqueId)}>Like</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+#### Create a Series
+
+```tsx
+'use client';
+
+import { useContentSeries } from '@23blocks/react';
+
+export function CreateSeriesForm() {
+  const { createSeries, isLoading, error } = useContentSeries();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const newSeries = await createSeries({
+      title: formData.get('title') as string,
+      description: formData.get('description') as string,
+      visibility: 'public',
+      completionStatus: 'ongoing',
+    });
+
+    console.log('Created series:', newSeries.uniqueId);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input name="title" placeholder="Series Title" required />
+      <textarea name="description" placeholder="Description" />
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? 'Creating...' : 'Create Series'}
+      </button>
+      {error && <p>Error: {error.message}</p>}
+    </form>
+  );
+}
+```
+
+#### Manage Series Posts
+
+```tsx
+'use client';
+
+import { useContentSeries } from '@23blocks/react';
+import { useEffect } from 'react';
+
+export function SeriesPostManager({ seriesId }: { seriesId: string }) {
+  const {
+    posts,
+    currentSeries,
+    getSeries,
+    getSeriesPosts,
+    addSeriesPost,
+    removeSeriesPost,
+    reorderSeriesPosts,
+    isLoading,
+  } = useContentSeries();
+
+  useEffect(() => {
+    getSeries(seriesId);
+    getSeriesPosts(seriesId);
+  }, [seriesId, getSeries, getSeriesPosts]);
+
+  const handleAddPost = async (postId: string) => {
+    await addSeriesPost(seriesId, postId);
+    await getSeriesPosts(seriesId); // Refresh
+  };
+
+  const handleRemovePost = async (postId: string) => {
+    await removeSeriesPost(seriesId, postId);
+  };
+
+  const handleReorder = async () => {
+    await reorderSeriesPosts(seriesId, {
+      posts: posts.map((p, idx) => ({
+        postUniqueId: p.uniqueId,
+        sequence: idx + 1,
+      })),
+    });
+  };
+
+  return (
+    <div>
+      <h2>{currentSeries?.title}</h2>
+      <p>{posts.length} posts in this series</p>
+      <ul>
+        {posts.map((post, idx) => (
+          <li key={post.uniqueId}>
+            {idx + 1}. {post.title}
+            <button onClick={() => handleRemovePost(post.uniqueId)}>
+              Remove
+            </button>
+          </li>
+        ))}
+      </ul>
+      <button onClick={handleReorder} disabled={isLoading}>
+        Save Order
+      </button>
+    </div>
+  );
+}
+```
+
+#### useContentSeries Return Type
+
+```typescript
+interface UseContentSeriesReturn {
+  // State
+  series: Series[];           // List of series
+  currentSeries: Series | null; // Currently loaded series
+  posts: Post[];              // Posts in current series
+  totalRecords: number;       // Total series count
+  isLoading: boolean;         // Loading state
+  error: Error | null;        // Error state
+
+  // CRUD Operations
+  listSeries(params?: ListSeriesParams): Promise<PageResult<Series>>;
+  querySeries(params: QuerySeriesParams): Promise<PageResult<Series>>;
+  getSeries(uniqueId: string): Promise<Series>;
+  createSeries(data: CreateSeriesRequest): Promise<Series>;
+  updateSeries(uniqueId: string, data: UpdateSeriesRequest): Promise<Series>;
+  deleteSeries(uniqueId: string): Promise<void>;
+
+  // Social Actions
+  likeSeries(uniqueId: string): Promise<Series>;
+  dislikeSeries(uniqueId: string): Promise<Series>;
+  followSeries(uniqueId: string): Promise<Series>;
+  unfollowSeries(uniqueId: string): Promise<void>;
+  saveSeries(uniqueId: string): Promise<Series>;
+  unsaveSeries(uniqueId: string): Promise<void>;
+
+  // Post Management
+  getSeriesPosts(uniqueId: string): Promise<Post[]>;
+  addSeriesPost(seriesId: string, postId: string, sequence?: number): Promise<void>;
+  removeSeriesPost(seriesId: string, postId: string): Promise<void>;
+  reorderSeriesPosts(uniqueId: string, data: ReorderPostsRequest): Promise<Series>;
+
+  // State Management
+  clearSeries(): void;
+  clearError(): void;
 }
 ```
 

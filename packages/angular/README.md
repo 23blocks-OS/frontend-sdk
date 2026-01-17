@@ -432,6 +432,183 @@ export class ProductsComponent implements OnInit {
 }
 ```
 
+## ContentService Example
+
+The ContentService provides access to posts, comments, categories, tags, and **series** (collections of posts).
+
+### Basic Content Operations
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { ContentService } from '@23blocks/angular';
+
+@Component({ ... })
+export class BlogComponent {
+  private content = inject(ContentService);
+
+  // List posts with pagination
+  posts$ = this.content.listPosts({ page: 1, perPage: 10 });
+
+  // Get a single post
+  loadPost(uniqueId: string) {
+    this.content.getPost(uniqueId).subscribe({
+      next: (post) => console.log('Post:', post.title),
+    });
+  }
+
+  // Create a new post
+  createPost() {
+    this.content.createPost({
+      title: 'My New Post',
+      body: 'Post content here...',
+      status: 'published',
+    }).subscribe();
+  }
+}
+```
+
+### Series Operations
+
+Series allow you to group posts into ordered collections (e.g., tutorials, courses, article series).
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { ContentService } from '@23blocks/angular';
+
+@Component({ ... })
+export class SeriesComponent {
+  private content = inject(ContentService);
+
+  // List all series
+  series$ = this.content.listSeries({ page: 1, perPage: 10 });
+
+  // Query series with filters
+  loadPublicSeries() {
+    this.content.querySeries({
+      visibility: 'public',
+      completionStatus: 'ongoing',
+      page: 1,
+      perPage: 20,
+    }).subscribe({
+      next: (result) => console.log('Series:', result.data),
+    });
+  }
+
+  // Get a single series
+  loadSeries(uniqueId: string) {
+    this.content.getSeries(uniqueId).subscribe({
+      next: (series) => console.log('Series:', series.title),
+    });
+  }
+
+  // Create a new series
+  createSeries() {
+    this.content.createSeries({
+      title: 'TypeScript Fundamentals',
+      description: 'A complete guide to TypeScript',
+      visibility: 'public',
+      completionStatus: 'ongoing',
+    }).subscribe({
+      next: (series) => console.log('Created:', series.uniqueId),
+    });
+  }
+
+  // Update a series
+  updateSeries(uniqueId: string) {
+    this.content.updateSeries(uniqueId, {
+      completionStatus: 'completed',
+    }).subscribe();
+  }
+
+  // Delete a series
+  deleteSeries(uniqueId: string) {
+    this.content.deleteSeries(uniqueId).subscribe();
+  }
+}
+```
+
+### Series Social Actions
+
+```typescript
+// Like/dislike a series
+likeSeries(uniqueId: string) {
+  this.content.likeSeries(uniqueId).subscribe({
+    next: (series) => console.log('Likes:', series.likes),
+  });
+}
+
+dislikeSeries(uniqueId: string) {
+  this.content.dislikeSeries(uniqueId).subscribe();
+}
+
+// Follow/unfollow a series
+followSeries(uniqueId: string) {
+  this.content.followSeries(uniqueId).subscribe({
+    next: (series) => console.log('Followers:', series.followers),
+  });
+}
+
+unfollowSeries(uniqueId: string) {
+  this.content.unfollowSeries(uniqueId).subscribe();
+}
+
+// Save/unsave a series (bookmarking)
+saveSeries(uniqueId: string) {
+  this.content.saveSeries(uniqueId).subscribe();
+}
+
+unsaveSeries(uniqueId: string) {
+  this.content.unsaveSeries(uniqueId).subscribe();
+}
+```
+
+### Series Post Management
+
+```typescript
+// Get posts in a series (ordered)
+loadSeriesPosts(seriesUniqueId: string) {
+  this.content.getSeriesPosts(seriesUniqueId).subscribe({
+    next: (posts) => console.log('Posts in series:', posts.length),
+  });
+}
+
+// Add a post to a series with optional sequence
+addPostToSeries(seriesUniqueId: string, postUniqueId: string) {
+  this.content.addSeriesPost(seriesUniqueId, postUniqueId, 1).subscribe();
+}
+
+// Remove a post from a series
+removePostFromSeries(seriesUniqueId: string, postUniqueId: string) {
+  this.content.removeSeriesPost(seriesUniqueId, postUniqueId).subscribe();
+}
+
+// Reorder posts in a series
+reorderPosts(seriesUniqueId: string) {
+  this.content.reorderSeriesPosts(seriesUniqueId, {
+    posts: [
+      { postUniqueId: 'post-1', sequence: 1 },
+      { postUniqueId: 'post-2', sequence: 2 },
+      { postUniqueId: 'post-3', sequence: 3 },
+    ],
+  }).subscribe();
+}
+```
+
+### Series Types
+
+```typescript
+import type {
+  Series,
+  CreateSeriesRequest,
+  UpdateSeriesRequest,
+  ListSeriesParams,
+  QuerySeriesParams,
+  ReorderPostsRequest,
+  SeriesVisibility,      // 'public' | 'private' | 'unlisted'
+  SeriesCompletionStatus // 'ongoing' | 'completed' | 'hiatus' | 'cancelled'
+} from '@23blocks/block-content';
+```
+
 ## RxJS Patterns
 
 ### Combining Multiple Services
