@@ -1,3 +1,14 @@
+## 7.5.9 (2026-01-17)
+
+### 🚀 Features
+
+- **angular,react:** add Series bindings to framework packages ([2179374](https://github.com/23blocks-OS/frontend-sdk/commit/2179374))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 7.5.8 (2026-01-16)
 
 ### 🧱 Updated Dependencies
