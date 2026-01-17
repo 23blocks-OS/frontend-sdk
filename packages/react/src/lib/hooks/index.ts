@@ -9,3 +9,6 @@ export { useTenants, type UseTenantsReturn, type UseTenantsState, type UseTenant
 // Search hooks
 export { useSearch, type UseSearchReturn, type UseSearchState, type UseSearchActions } from './use-search.js';
 export { useFavorites, type UseFavoritesReturn, type UseFavoritesState, type UseFavoritesActions } from './use-favorites.js';
+
+// Content hooks
+export { useContentSeries, type UseContentSeriesReturn, type UseContentSeriesState, type UseContentSeriesActions } from './use-content-series.js';

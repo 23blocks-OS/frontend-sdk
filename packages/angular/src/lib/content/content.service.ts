@@ -35,6 +35,13 @@ import {
   // Activity types
   type Activity,
   type ListActivitiesParams,
+  // Series types
+  type Series,
+  type CreateSeriesRequest,
+  type UpdateSeriesRequest,
+  type ListSeriesParams,
+  type QuerySeriesParams,
+  type ReorderPostsRequest,
 } from '@23blocks/block-content';
 import { TRANSPORT, CONTENT_TRANSPORT, CONTENT_CONFIG } from '../tokens.js';
 
@@ -345,6 +352,122 @@ export class ContentService {
    */
   getActivityFeed(userUniqueId: string, params?: ListActivitiesParams): Observable<PageResult<Activity>> {
     return from(this.ensureConfigured().activities.getFeed(userUniqueId, params));
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Series Service
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * List all series with pagination
+   */
+  listSeries(params?: ListSeriesParams): Observable<PageResult<Series>> {
+    return from(this.ensureConfigured().series.list(params));
+  }
+
+  /**
+   * Query series with filters
+   */
+  querySeries(params: QuerySeriesParams): Observable<PageResult<Series>> {
+    return from(this.ensureConfigured().series.query(params));
+  }
+
+  /**
+   * Get a series by unique ID
+   */
+  getSeries(uniqueId: string): Observable<Series> {
+    return from(this.ensureConfigured().series.get(uniqueId));
+  }
+
+  /**
+   * Create a new series
+   */
+  createSeries(data: CreateSeriesRequest): Observable<Series> {
+    return from(this.ensureConfigured().series.create(data));
+  }
+
+  /**
+   * Update a series
+   */
+  updateSeries(uniqueId: string, data: UpdateSeriesRequest): Observable<Series> {
+    return from(this.ensureConfigured().series.update(uniqueId, data));
+  }
+
+  /**
+   * Delete a series
+   */
+  deleteSeries(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().series.delete(uniqueId));
+  }
+
+  /**
+   * Like a series
+   */
+  likeSeries(uniqueId: string): Observable<Series> {
+    return from(this.ensureConfigured().series.like(uniqueId));
+  }
+
+  /**
+   * Dislike a series
+   */
+  dislikeSeries(uniqueId: string): Observable<Series> {
+    return from(this.ensureConfigured().series.dislike(uniqueId));
+  }
+
+  /**
+   * Follow a series
+   */
+  followSeries(uniqueId: string): Observable<Series> {
+    return from(this.ensureConfigured().series.follow(uniqueId));
+  }
+
+  /**
+   * Unfollow a series
+   */
+  unfollowSeries(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().series.unfollow(uniqueId));
+  }
+
+  /**
+   * Save a series
+   */
+  saveSeries(uniqueId: string): Observable<Series> {
+    return from(this.ensureConfigured().series.save(uniqueId));
+  }
+
+  /**
+   * Unsave a series
+   */
+  unsaveSeries(uniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().series.unsave(uniqueId));
+  }
+
+  /**
+   * Get posts in a series
+   */
+  getSeriesPosts(uniqueId: string): Observable<Post[]> {
+    return from(this.ensureConfigured().series.getPosts(uniqueId));
+  }
+
+  /**
+   * Add a post to a series
+   */
+  addSeriesPost(seriesUniqueId: string, postUniqueId: string, sequence?: number): Observable<void> {
+    return from(this.ensureConfigured().series.addPost(seriesUniqueId, postUniqueId, sequence));
+  }
+
+  /**
+   * Remove a post from a series
+   */
+  removeSeriesPost(seriesUniqueId: string, postUniqueId: string): Observable<void> {
+    return from(this.ensureConfigured().series.removePost(seriesUniqueId, postUniqueId));
+  }
+
+  /**
+   * Reorder posts in a series
+   */
+  reorderSeriesPosts(uniqueId: string, data: ReorderPostsRequest): Observable<Series> {
+    return from(this.ensureConfigured().series.reorderPosts(uniqueId, data));
   }
 
   // ───────────────────────────────────────────────────────────────────────────

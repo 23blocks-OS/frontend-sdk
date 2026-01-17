@@ -94,4 +94,10 @@ export {
   type UseFavoritesReturn,
   type UseFavoritesState,
   type UseFavoritesActions,
+
+  // Content
+  useContentSeries,
+  type UseContentSeriesReturn,
+  type UseContentSeriesState,
+  type UseContentSeriesActions,
 } from './hooks/index.js';
