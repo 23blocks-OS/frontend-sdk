@@ -229,8 +229,38 @@ export interface TestPromptResponse {
 }
 
 // Render endpoint types
+
+/**
+ * Placeholder value type supporting nested objects and arrays.
+ *
+ * Supported template syntax:
+ * - `{{variable}}` - simple key
+ * - `{{object.field}}` - nested object access
+ * - `{{array[0]}}` - array index
+ * - `{{array[0].field}}` - combined access
+ * - `{{deep.nested[0].path.value}}` - deep nesting
+ *
+ * Array pipe transforms:
+ * - `{{array}}` - smart default (strings join with newline)
+ * - `{{array|bullets}}` - bullet list format
+ * - `{{array|numbered}}` - numbered list format
+ * - `{{array|join:, }}` - custom delimiter
+ * - `{{array|length}}` - array length
+ * - `{{array|first}}` - first element
+ * - `{{array|last}}` - last element
+ * - `{{objects|field:name}}` - extract field from each object
+ */
+export type PlaceholderValue =
+  | string
+  | number
+  | boolean
+  | string[]
+  | number[]
+  | Record<string, unknown>
+  | Array<Record<string, unknown>>;
+
 export interface RenderPromptRequest {
-  placeholders: Record<string, string>;
+  placeholders: Record<string, PlaceholderValue>;
 }
 
 export interface RenderPromptMeta {
@@ -241,6 +271,8 @@ export interface RenderPromptMeta {
 }
 
 export interface RenderPromptResponse {
+  /** Integer ID (note: changed from UUID in recent API update) */
+  id: number;
   renderedContent: string;
   promptUniqueId: string;
   versionUniqueId?: string;

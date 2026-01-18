@@ -128,6 +128,7 @@ export function createPromptsService(transport: Transport, _config: { appId: str
       const attributes = response.data?.attributes || response;
 
       return {
+        id: response.data?.id ?? response.id,
         renderedContent: attributes.rendered_content || attributes.renderedContent,
         promptUniqueId: attributes.prompt_unique_id || attributes.promptUniqueId,
         versionUniqueId: attributes.version_unique_id || attributes.versionUniqueId,

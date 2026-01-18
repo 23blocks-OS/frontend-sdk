@@ -23,6 +23,8 @@ import {
   type ExecutePromptResponse,
   type TestPromptRequest,
   type TestPromptResponse,
+  type RenderPromptRequest,
+  type RenderPromptResponse,
   // Workflows
   type Workflow,
   type CreateWorkflowRequest,
@@ -240,6 +242,10 @@ export class JarvisService {
 
   testPrompt(data: TestPromptRequest): Observable<TestPromptResponse> {
     return from(this.ensureConfigured().prompts.test(data));
+  }
+
+  renderPrompt(uniqueId: string, data: RenderPromptRequest): Observable<RenderPromptResponse> {
+    return from(this.ensureConfigured().prompts.render(uniqueId, data));
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

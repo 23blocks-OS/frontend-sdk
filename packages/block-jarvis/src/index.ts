@@ -24,6 +24,10 @@ export type {
   ExecutePromptResponse,
   TestPromptRequest,
   TestPromptResponse,
+  RenderPromptRequest,
+  RenderPromptResponse,
+  RenderPromptMeta,
+  PlaceholderValue,
   // Workflow types
   Workflow,
   WorkflowTrigger,
