@@ -1,3 +1,14 @@
+## 3.1.4 (2026-01-18)
+
+### 🚀 Features
+
+- **jarvis:** add nested placeholder support and pipe transforms for prompt rendering ([e1b1999](https://github.com/23blocks-OS/frontend-sdk/commit/e1b1999))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.1.3 (2026-01-16)
 
 ### 🚀 Features
