@@ -1,3 +1,9 @@
+## 6.5.13 (2026-01-19)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-content to 3.3.4
+
 ## 6.5.12 (2026-01-18)
 
 ### 🚀 Features

@@ -1,3 +1,14 @@
+## 3.3.4 (2026-01-19)
+
+### 🚀 Features
+
+- **content:** add series association to post create/update endpoints ([a4c4ccd](https://github.com/23blocks-OS/frontend-sdk/commit/a4c4ccd))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.3.3 (2026-01-16)
 
 ### 🚀 Features
