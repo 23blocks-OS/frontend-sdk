@@ -88,6 +88,8 @@ export function createPostsService(transport: Transport, _config: { appId: strin
           publish_at: data.publishAt,
           publish_until: data.publishUntil,
           payload: data.payload,
+          series_unique_id: data.seriesUniqueId,
+          series_sequence: data.seriesSequence,
         },
       });
       return decodeOne(response, postMapper);
@@ -111,6 +113,8 @@ export function createPostsService(transport: Transport, _config: { appId: strin
           enabled: data.enabled,
           status: data.status,
           payload: data.payload,
+          series_unique_id: data.seriesUniqueId,
+          series_sequence: data.seriesSequence,
         },
       });
       return decodeOne(response, postMapper);
@@ -134,6 +138,8 @@ export function createPostsService(transport: Transport, _config: { appId: strin
           enabled: data.enabled,
           status: data.status,
           payload: data.payload,
+          series_unique_id: data.seriesUniqueId,
+          series_sequence: data.seriesSequence,
         },
       });
       return decodeOne(response, postMapper);

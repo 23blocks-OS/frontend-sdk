@@ -70,6 +70,10 @@ export interface CreatePostRequest {
   publishAt?: Date;
   publishUntil?: Date;
   payload?: Record<string, unknown>;
+  /** Associate post with a series. Use empty string to remove from series. */
+  seriesUniqueId?: string;
+  /** Position within the series. Auto-increments if not provided. */
+  seriesSequence?: number;
 }
 
 export interface UpdatePostRequest {
@@ -88,6 +92,10 @@ export interface UpdatePostRequest {
   enabled?: boolean;
   status?: EntityStatus;
   payload?: Record<string, unknown>;
+  /** Associate post with a series. Use empty string to remove from series. */
+  seriesUniqueId?: string;
+  /** Position within the series. Auto-increments if not provided. */
+  seriesSequence?: number;
 }
 
 export interface ListPostsParams {
