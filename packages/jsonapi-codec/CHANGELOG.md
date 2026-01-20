@@ -1,3 +1,18 @@
+## 3.1.1 (2026-01-20)
+
+### 🩹 Fixes
+
+- resolve TypeScript errors and add PostTemplate validation support ([250d284](https://github.com/23blocks-OS/frontend-sdk/commit/250d284))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/contracts to 2.1.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 3.1.0 (2026-01-01)
 
 ### 🧱 Updated Dependencies

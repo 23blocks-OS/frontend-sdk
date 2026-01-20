@@ -1,3 +1,37 @@
+## 7.5.12 (2026-01-20)
+
+### 🩹 Fixes
+
+- resolve TypeScript errors and add PostTemplate validation support ([250d284](https://github.com/23blocks-OS/frontend-sdk/commit/250d284))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 6.3.2
+- Updated @23blocks/block-conversations to 3.3.3
+- Updated @23blocks/block-geolocation to 3.4.2
+- Updated @23blocks/block-onboarding to 3.1.3
+- Updated @23blocks/block-university to 3.4.2
+- Updated @23blocks/block-campaigns to 3.1.3
+- Updated @23blocks/block-products to 3.4.2
+- Updated @23blocks/transport-http to 3.1.1
+- Updated @23blocks/block-company to 3.2.3
+- Updated @23blocks/block-content to 3.3.5
+- Updated @23blocks/block-rewards to 3.2.2
+- Updated @23blocks/block-assets to 3.1.3
+- Updated @23blocks/block-jarvis to 3.1.5
+- Updated @23blocks/block-search to 4.2.1
+- Updated @23blocks/block-wallet to 3.1.3
+- Updated @23blocks/block-files to 3.4.2
+- Updated @23blocks/block-forms to 3.1.7
+- Updated @23blocks/block-sales to 3.1.3
+- Updated @23blocks/block-crm to 3.1.4
+- Updated @23blocks/contracts to 2.1.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 7.5.11 (2026-01-19)
 
 ### 🧱 Updated Dependencies
