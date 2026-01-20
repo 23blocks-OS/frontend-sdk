@@ -1,6 +1,6 @@
 import type { ResourceMapper, JsonApiResource, IncludedMap } from '@23blocks/jsonapi-codec';
-import type { Availability, CalendarEvent } from '../types/calendar';
-import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils';
+import type { Availability, CalendarEvent } from '../types/calendar.js';
+import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils.js';
 
 export const availabilityMapper: ResourceMapper<Availability> = {
   type: 'Availability',

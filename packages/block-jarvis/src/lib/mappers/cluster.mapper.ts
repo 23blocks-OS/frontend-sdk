@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Cluster, ClusterMember } from '../types/cluster';
-import { parseDate } from './utils';
+import type { Cluster, ClusterMember } from '../types/cluster.js';
+import { parseDate } from './utils.js';
 
 export const clusterMapper: ResourceMapper<Cluster> = {
   type: 'cluster',

@@ -6,12 +6,12 @@ import type {
   UpdateAssetsUserRequest,
   ListAssetsUsersParams,
   UserOwnership,
-} from '../types/user';
-import type { Asset } from '../types/asset';
-import type { AssetsEntity } from '../types/entity';
-import { assetsUserMapper } from '../mappers/user.mapper';
-import { assetMapper } from '../mappers/asset.mapper';
-import { assetsEntityMapper } from '../mappers/entity.mapper';
+} from '../types/user.js';
+import type { Asset } from '../types/asset.js';
+import type { AssetsEntity } from '../types/entity.js';
+import { assetsUserMapper } from '../mappers/user.mapper.js';
+import { assetMapper } from '../mappers/asset.mapper.js';
+import { assetsEntityMapper } from '../mappers/entity.mapper.js';
 
 export interface AssetsUsersService {
   list(params?: ListAssetsUsersParams): Promise<PageResult<AssetsUser>>;

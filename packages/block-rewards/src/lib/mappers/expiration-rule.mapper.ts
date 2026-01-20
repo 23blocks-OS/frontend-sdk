@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { ExpirationRule } from '../types/expiration-rule';
-import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils';
+import type { ExpirationRule } from '../types/expiration-rule.js';
+import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils.js';
 
 export const expirationRuleMapper: ResourceMapper<ExpirationRule> = {
   type: 'expiration_rule',

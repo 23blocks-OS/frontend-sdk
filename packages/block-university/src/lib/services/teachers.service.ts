@@ -6,12 +6,12 @@ import type {
   TeacherAvailability,
   CreateAvailabilityRequest,
   UpdateAvailabilityRequest,
-} from '../types/teacher';
-import type { Course } from '../types/course';
-import type { CourseGroup } from '../types/course-group';
-import { teacherMapper } from '../mappers/teacher.mapper';
-import { courseMapper } from '../mappers/course.mapper';
-import { courseGroupMapper } from '../mappers/course-group.mapper';
+} from '../types/teacher.js';
+import type { Course } from '../types/course.js';
+import type { CourseGroup } from '../types/course-group.js';
+import { teacherMapper } from '../mappers/teacher.mapper.js';
+import { courseMapper } from '../mappers/course.mapper.js';
+import { courseGroupMapper } from '../mappers/course-group.mapper.js';
 
 export interface TeachersService {
   list(params?: ListTeachersParams): Promise<PageResult<Teacher>>;

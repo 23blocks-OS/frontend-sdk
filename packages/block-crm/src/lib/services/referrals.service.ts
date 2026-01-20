@@ -5,8 +5,8 @@ import type {
   CreateReferralRequest,
   UpdateReferralRequest,
   ListReferralsParams,
-} from '../types/referral';
-import { referralMapper } from '../mappers/referral.mapper';
+} from '../types/referral.js';
+import { referralMapper } from '../mappers/referral.mapper.js';
 
 export interface ReferralsService {
   list(params?: ListReferralsParams): Promise<PageResult<Referral>>;

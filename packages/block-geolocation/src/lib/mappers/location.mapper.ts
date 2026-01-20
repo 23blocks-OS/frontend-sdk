@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Location } from '../types/location';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils';
+import type { Location } from '../types/location.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const locationMapper: ResourceMapper<Location> = {
   type: 'Location',

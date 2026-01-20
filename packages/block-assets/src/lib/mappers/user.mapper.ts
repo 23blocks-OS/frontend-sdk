@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { AssetsUser } from '../types/user';
-import { parseDate, parseStatus } from './utils';
+import type { AssetsUser } from '../types/user.js';
+import { parseDate, parseStatus } from './utils.js';
 
 export const assetsUserMapper: ResourceMapper<AssetsUser> = {
   type: 'user',

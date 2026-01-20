@@ -5,8 +5,8 @@ import type {
   CreateVariationReviewRequest,
   UpdateVariationReviewRequest,
   ListVariationReviewsParams,
-} from '../types/product-variation-review';
-import { productVariationReviewMapper } from '../mappers/product-variation-review.mapper';
+} from '../types/product-variation-review.js';
+import { productVariationReviewMapper } from '../mappers/product-variation-review.mapper.js';
 
 export interface ProductVariationReviewsService {
   list(variationUniqueId: string, params?: ListVariationReviewsParams): Promise<PageResult<ProductVariationReview>>;

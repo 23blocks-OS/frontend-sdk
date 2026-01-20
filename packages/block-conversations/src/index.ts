@@ -1,6 +1,6 @@
 // Block factory and metadata
-export { createConversationsBlock, conversationsBlockMetadata } from './lib/conversations.block';
-export type { ConversationsBlock, ConversationsBlockConfig } from './lib/conversations.block';
+export { createConversationsBlock, conversationsBlockMetadata } from './lib/conversations.block.js';
+export type { ConversationsBlock, ConversationsBlockConfig } from './lib/conversations.block.js';
 
 // Types
 export type {
@@ -74,7 +74,7 @@ export type {
   CreateWebNotificationRequest,
   BulkWebNotificationRequest,
   ListWebNotificationsParams,
-} from './lib/types';
+} from './lib/types/index.js';
 
 // Services
 export type {
@@ -93,7 +93,7 @@ export type {
   UsersService,
   MeetingsService,
   WebNotificationsService,
-} from './lib/services';
+} from './lib/services/index.js';
 
 export {
   createMessagesService,
@@ -111,7 +111,7 @@ export {
   createUsersService,
   createMeetingsService,
   createWebNotificationsService,
-} from './lib/services';
+} from './lib/services/index.js';
 
 // Mappers (for advanced use cases)
 export {
@@ -126,4 +126,4 @@ export {
   conversationsUserMapper,
   meetingMapper,
   webNotificationMapper,
-} from './lib/mappers';
+} from './lib/mappers/index.js';

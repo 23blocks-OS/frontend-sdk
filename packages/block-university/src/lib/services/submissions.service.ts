@@ -5,8 +5,8 @@ import type {
   SubmitAssignmentRequest,
   GradeSubmissionRequest,
   ListSubmissionsParams,
-} from '../types/submission';
-import { submissionMapper } from '../mappers/submission.mapper';
+} from '../types/submission.js';
+import { submissionMapper } from '../mappers/submission.mapper.js';
 
 export interface SubmissionsService {
   list(params?: ListSubmissionsParams): Promise<PageResult<Submission>>;

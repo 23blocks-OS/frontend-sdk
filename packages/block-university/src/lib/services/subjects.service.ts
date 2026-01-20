@@ -1,12 +1,12 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Subject,
   CreateSubjectRequest,
   UpdateSubjectRequest,
   ListSubjectsParams,
-} from '../types/subject';
-import { subjectMapper } from '../mappers/subject.mapper';
+} from '../types/subject.js';
+import { subjectMapper } from '../mappers/subject.mapper.js';
 
 export interface SubjectsService {
   list(params?: ListSubjectsParams): Promise<PageResult<Subject>>;

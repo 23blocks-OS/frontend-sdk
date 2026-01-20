@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { CrmMailTemplate } from '../types/mail-template';
-import { parseDate, parseStatus } from './utils';
+import type { CrmMailTemplate } from '../types/mail-template.js';
+import { parseDate, parseStatus } from './utils.js';
 
 export const crmMailTemplateMapper: ResourceMapper<CrmMailTemplate> = {
   type: 'mail_template',

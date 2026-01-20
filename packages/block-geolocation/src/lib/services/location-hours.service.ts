@@ -4,8 +4,8 @@ import type {
   LocationHour,
   CreateLocationHourRequest,
   UpdateLocationHourRequest,
-} from '../types/location-hour';
-import { locationHourMapper } from '../mappers/location-hour.mapper';
+} from '../types/location-hour.js';
+import { locationHourMapper } from '../mappers/location-hour.mapper.js';
 
 export interface LocationHoursService {
   list(locationUniqueId: string): Promise<LocationHour[]>;

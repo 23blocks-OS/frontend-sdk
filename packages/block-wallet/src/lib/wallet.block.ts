@@ -8,7 +8,7 @@ import {
   type TransactionsService,
   type AuthorizationCodesService,
   type WebhooksService,
-} from './services';
+} from './services/index.js';
 
 export interface WalletBlockConfig extends BlockConfig {
   appId: string;

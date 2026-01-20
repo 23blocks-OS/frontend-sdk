@@ -5,8 +5,8 @@ import type {
   CreateOfferCodeRequest,
   SendOfferCodeRequest,
   RedeemOfferCodeRequest,
-} from '../types/offer-code';
-import { offerCodeMapper } from '../mappers/offer-code.mapper';
+} from '../types/offer-code.js';
+import { offerCodeMapper } from '../mappers/offer-code.mapper.js';
 
 export interface OfferCodesService {
   get(code: string): Promise<OfferCode>;

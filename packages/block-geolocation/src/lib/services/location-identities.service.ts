@@ -5,8 +5,8 @@ import type {
   CreateLocationIdentityRequest,
   UpdateLocationIdentityRequest,
   ListLocationIdentitiesParams,
-} from '../types/location-identity';
-import { locationIdentityMapper } from '../mappers/location-identity.mapper';
+} from '../types/location-identity.js';
+import { locationIdentityMapper } from '../mappers/location-identity.mapper.js';
 
 export interface LocationIdentitiesService {
   list(params?: ListLocationIdentitiesParams): Promise<PageResult<LocationIdentity>>;

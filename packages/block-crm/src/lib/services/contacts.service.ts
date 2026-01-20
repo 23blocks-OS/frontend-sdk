@@ -1,12 +1,12 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Contact,
   CreateContactRequest,
   UpdateContactRequest,
   ListContactsParams,
-} from '../types/contact';
-import { contactMapper } from '../mappers/contact.mapper';
+} from '../types/contact.js';
+import { contactMapper } from '../mappers/contact.mapper.js';
 
 export interface ContactsService {
   list(params?: ListContactsParams): Promise<PageResult<Contact>>;

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Tag } from '../types/tag';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { Tag } from '../types/tag.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const tagMapper: ResourceMapper<Tag> = {
   type: 'Tag',

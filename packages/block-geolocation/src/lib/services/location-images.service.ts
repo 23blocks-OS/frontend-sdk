@@ -5,8 +5,8 @@ import type {
   CreateLocationImageRequest,
   PresignLocationImageRequest,
   PresignLocationImageResponse,
-} from '../types/location-image';
-import { locationImageMapper } from '../mappers/location-image.mapper';
+} from '../types/location-image.js';
+import { locationImageMapper } from '../mappers/location-image.mapper.js';
 
 export interface LocationImagesService {
   presign(locationUniqueId: string, data: PresignLocationImageRequest): Promise<PresignLocationImageResponse>;

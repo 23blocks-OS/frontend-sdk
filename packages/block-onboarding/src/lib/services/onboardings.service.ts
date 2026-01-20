@@ -5,10 +5,10 @@ import type {
   CreateOnboardingRequest,
   UpdateOnboardingRequest,
   ListOnboardingsParams,
-} from '../types/onboarding';
-import type { OnboardingStep, AddStepRequest, UpdateStepRequest } from '../types/step';
-import { onboardingMapper } from '../mappers/onboarding.mapper';
-import { onboardingStepMapper } from '../mappers/step.mapper';
+} from '../types/onboarding.js';
+import type { OnboardingStep, AddStepRequest, UpdateStepRequest } from '../types/step.js';
+import { onboardingMapper } from '../mappers/onboarding.mapper.js';
+import { onboardingStepMapper } from '../mappers/step.mapper.js';
 
 export interface OnboardingsService {
   list(params?: ListOnboardingsParams): Promise<PageResult<Onboarding>>;

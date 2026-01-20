@@ -48,7 +48,7 @@ import {
   type CrmUsersService,
   type BillingReportsService,
   type CalendarSyncService,
-} from './services';
+} from './services/index.js';
 
 export interface CrmBlockConfig extends BlockConfig {
   appId: string;

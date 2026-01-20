@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Team } from '../types/team';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { Team } from '../types/team.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const teamMapper: ResourceMapper<Team> = {
   type: 'Team',

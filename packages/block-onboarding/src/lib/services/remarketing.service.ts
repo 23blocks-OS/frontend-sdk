@@ -2,7 +2,7 @@ import type { Transport, PageResult } from '@23blocks/contracts';
 import type {
   AbandonedJourney,
   ListAbandonedJourneysParams,
-} from '../types/remarketing';
+} from '../types/remarketing.js';
 
 export interface RemarketingService {
   listAbandonedJourneys(params?: ListAbandonedJourneysParams): Promise<PageResult<AbandonedJourney>>;
@@ -45,7 +45,7 @@ export function createRemarketingService(transport: Transport, _config: { appId:
         })),
         meta: {
           totalCount: response.meta?.total_count || data.length,
-          page: response.meta?.page || 1,
+          currentPage: response.meta?.current_page || 1,
           perPage: response.meta?.per_page || data.length,
           totalPages: response.meta?.total_pages || 1,
         },

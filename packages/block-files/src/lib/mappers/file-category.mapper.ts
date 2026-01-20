@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { FileCategory } from '../types/file-category';
-import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils';
+import type { FileCategory } from '../types/file-category.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils.js';
 
 export const fileCategoryMapper: ResourceMapper<FileCategory> = {
   type: 'FileCategory',

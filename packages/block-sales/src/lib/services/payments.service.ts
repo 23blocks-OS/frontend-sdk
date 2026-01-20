@@ -1,7 +1,7 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
-import type { Payment, CreatePaymentRequest, ListPaymentsParams } from '../types/payment';
-import { paymentMapper } from '../mappers/payment.mapper';
+import type { Payment, CreatePaymentRequest, ListPaymentsParams } from '../types/payment.js';
+import { paymentMapper } from '../mappers/payment.mapper.js';
 
 export interface PaymentsService {
   list(params?: ListPaymentsParams): Promise<PageResult<Payment>>;

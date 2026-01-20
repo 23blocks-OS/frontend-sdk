@@ -1,12 +1,12 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Lead,
   CreateLeadRequest,
   UpdateLeadRequest,
   ListLeadsParams,
-} from '../types/lead';
-import { leadMapper } from '../mappers/lead.mapper';
+} from '../types/lead.js';
+import { leadMapper } from '../mappers/lead.mapper.js';
 
 export interface LeadsService {
   list(params?: ListLeadsParams): Promise<PageResult<Lead>>;

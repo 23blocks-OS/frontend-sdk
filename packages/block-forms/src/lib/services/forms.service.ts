@@ -5,8 +5,8 @@ import type {
   CreateFormRequest,
   UpdateFormRequest,
   ListFormsParams,
-} from '../types/form';
-import { formMapper } from '../mappers/form.mapper';
+} from '../types/form.js';
+import { formMapper } from '../mappers/form.mapper.js';
 
 export interface FormsService {
   list(params?: ListFormsParams): Promise<PageResult<Form>>;

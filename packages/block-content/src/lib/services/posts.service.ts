@@ -5,8 +5,10 @@ import type {
   CreatePostRequest,
   UpdatePostRequest,
   ListPostsParams,
-} from '../types/post';
-import { postMapper } from '../mappers/post.mapper';
+} from '../types/post.js';
+import type { PostValidationResult } from '../types/post-template.js';
+import { postMapper } from '../mappers/post.mapper.js';
+import { parseValidationResult } from '../mappers/post-template.mapper.js';
 
 export interface PostsService {
   // Posts
@@ -34,6 +36,9 @@ export interface PostsService {
   unsave(uniqueId: string): Promise<Post>;
   follow(uniqueId: string): Promise<Post>;
   unfollow(uniqueId: string): Promise<Post>;
+
+  // Validation
+  validate(uniqueId: string, templateUniqueId: string): Promise<PostValidationResult>;
 }
 
 export function createPostsService(transport: Transport, _config: { appId: string }): PostsService {
@@ -215,6 +220,14 @@ export function createPostsService(transport: Transport, _config: { appId: strin
     async unfollow(uniqueId: string): Promise<Post> {
       const response = await transport.delete<unknown>(`/posts/${uniqueId}/unfollow`);
       return decodeOne(response, postMapper);
+    },
+
+    // Validation
+    async validate(uniqueId: string, templateUniqueId: string): Promise<PostValidationResult> {
+      const response = await transport.put<unknown>(`/posts/${uniqueId}/validate`, {}, {
+        params: { template_unique_id: templateUniqueId },
+      });
+      return parseValidationResult(response);
     },
   };
 }

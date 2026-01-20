@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { GeoIdentity } from '../types/geo-identity';
-import { parseString, parseDate, parseStatus } from './utils';
+import type { GeoIdentity } from '../types/geo-identity.js';
+import { parseString, parseDate, parseStatus } from './utils.js';
 
 export const geoIdentityMapper: ResourceMapper<GeoIdentity> = {
   type: 'user',

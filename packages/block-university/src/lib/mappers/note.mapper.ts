@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Note } from '../types/note';
-import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils';
+import type { Note } from '../types/note.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils.js';
 
 function parseNoteType(value: unknown): 'general' | 'private' | 'shared' | 'feedback' | 'comment' {
   const type = parseString(value);

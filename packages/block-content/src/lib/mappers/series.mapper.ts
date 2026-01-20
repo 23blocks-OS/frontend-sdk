@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Series, SeriesVisibility, SeriesCompletionStatus } from '../types/series';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils';
+import type { Series, SeriesVisibility, SeriesCompletionStatus } from '../types/series.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils.js';
 
 function parseVisibility(value: unknown): SeriesVisibility | undefined {
   const str = parseString(value);

@@ -5,8 +5,8 @@ import type {
   CreateCoachingSessionRequest,
   UpdateCoachingSessionRequest,
   ListCoachingSessionsParams,
-} from '../types/coaching-session';
-import { coachingSessionMapper } from '../mappers/coaching-session.mapper';
+} from '../types/coaching-session.js';
+import { coachingSessionMapper } from '../mappers/coaching-session.mapper.js';
 
 export interface CoachingSessionsService {
   list(params?: ListCoachingSessionsParams): Promise<PageResult<CoachingSession>>;

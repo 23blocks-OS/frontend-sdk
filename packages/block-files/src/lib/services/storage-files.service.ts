@@ -1,13 +1,13 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   StorageFile,
   CreateStorageFileRequest,
   UpdateStorageFileRequest,
   ListStorageFilesParams,
   UploadFileRequest,
-} from '../types/storage-file';
-import { storageFileMapper } from '../mappers/storage-file.mapper';
+} from '../types/storage-file.js';
+import { storageFileMapper } from '../mappers/storage-file.mapper.js';
 
 export interface StorageFilesService {
   list(params?: ListStorageFilesParams): Promise<PageResult<StorageFile>>;

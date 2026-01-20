@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { CampaignMediaResult } from '../types/campaign-media-result';
-import { parseString, parseDate, parseOptionalNumber, parseStatus } from './utils';
+import type { CampaignMediaResult } from '../types/campaign-media-result.js';
+import { parseString, parseDate, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const campaignMediaResultMapper: ResourceMapper<CampaignMediaResult> = {
   type: 'CampaignMediaResult',

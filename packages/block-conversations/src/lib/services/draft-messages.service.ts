@@ -1,12 +1,12 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   DraftMessage,
   CreateDraftMessageRequest,
   UpdateDraftMessageRequest,
   ListDraftMessagesParams,
-} from '../types/draft-message';
-import { draftMessageMapper } from '../mappers/draft-message.mapper';
+} from '../types/draft-message.js';
+import { draftMessageMapper } from '../mappers/draft-message.mapper.js';
 
 export interface DraftMessagesService {
   list(params?: ListDraftMessagesParams): Promise<PageResult<DraftMessage>>;

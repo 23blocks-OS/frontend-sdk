@@ -1,11 +1,11 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne } from '@23blocks/jsonapi-codec';
 import type {
   CourseGroup,
   CreateCourseGroupRequest,
   ListCourseGroupsParams,
-} from '../types/course-group';
-import { courseGroupMapper } from '../mappers/course-group.mapper';
+} from '../types/course-group.js';
+import { courseGroupMapper } from '../mappers/course-group.mapper.js';
 
 export interface CourseGroupsService {
   get(uniqueId: string): Promise<CourseGroup>;

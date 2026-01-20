@@ -1,5 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Reward,
   RewardRedemption,
@@ -7,8 +7,8 @@ import type {
   UpdateRewardRequest,
   ListRewardsParams,
   RedeemRewardRequest,
-} from '../types/reward';
-import { rewardMapper, rewardRedemptionMapper } from '../mappers/reward.mapper';
+} from '../types/reward.js';
+import { rewardMapper, rewardRedemptionMapper } from '../mappers/reward.mapper.js';
 
 export interface RewardsService {
   list(params?: ListRewardsParams): Promise<PageResult<Reward>>;

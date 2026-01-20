@@ -5,8 +5,8 @@ import type {
   CreateUserIdentityRequest,
   VerifyUserIdentityRequest,
   ListUserIdentitiesParams,
-} from '../types/user-identity';
-import { userIdentityMapper } from '../mappers/user-identity.mapper';
+} from '../types/user-identity.js';
+import { userIdentityMapper } from '../mappers/user-identity.mapper.js';
 
 export interface UserIdentitiesService {
   list(params?: ListUserIdentitiesParams): Promise<PageResult<UserIdentity>>;

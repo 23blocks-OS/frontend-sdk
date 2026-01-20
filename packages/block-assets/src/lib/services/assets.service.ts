@@ -1,5 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Asset,
   CreateAssetRequest,
@@ -7,7 +7,7 @@ import type {
   ListAssetsParams,
   TransferAssetRequest,
   AssignAssetRequest,
-} from '../types/asset';
+} from '../types/asset.js';
 import type {
   AddToCategoryRequest,
   AddPartsRequest,
@@ -16,8 +16,8 @@ import type {
   LendAssetRequest,
   CreateOTPRequest,
   OTPResponse,
-} from '../types/asset-image';
-import { assetMapper } from '../mappers/asset.mapper';
+} from '../types/asset-image.js';
+import { assetMapper } from '../mappers/asset.mapper.js';
 
 export interface AssetsService {
   list(params?: ListAssetsParams): Promise<PageResult<Asset>>;

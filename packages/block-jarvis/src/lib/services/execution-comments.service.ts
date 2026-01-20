@@ -6,8 +6,8 @@ import type {
   UpdateExecutionCommentRequest,
   ListExecutionCommentsParams,
   ReplyToCommentRequest,
-} from '../types/comment';
-import { executionCommentMapper } from '../mappers/comment.mapper';
+} from '../types/comment.js';
+import { executionCommentMapper } from '../mappers/comment.mapper.js';
 
 export interface ExecutionCommentsService {
   list(promptUniqueId: string, executionUniqueId: string, params?: ListExecutionCommentsParams): Promise<PageResult<ExecutionComment>>;

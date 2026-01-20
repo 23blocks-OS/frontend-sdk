@@ -5,8 +5,8 @@ import type {
   CreateRegionRequest,
   UpdateRegionRequest,
   ListRegionsParams,
-} from '../types/region';
-import { regionMapper } from '../mappers/region.mapper';
+} from '../types/region.js';
+import { regionMapper } from '../mappers/region.mapper.js';
 
 export interface RegionsService {
   list(params?: ListRegionsParams): Promise<PageResult<Region>>;

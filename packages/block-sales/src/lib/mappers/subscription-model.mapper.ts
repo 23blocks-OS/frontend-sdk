@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { SubscriptionModel } from '../types/subscription-model';
-import { parseDate } from './utils';
+import type { SubscriptionModel } from '../types/subscription-model.js';
+import { parseDate } from './utils.js';
 
 export const subscriptionModelMapper: ResourceMapper<SubscriptionModel> = {
   type: 'subscription_model',

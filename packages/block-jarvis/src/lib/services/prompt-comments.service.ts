@@ -6,8 +6,8 @@ import type {
   UpdatePromptCommentRequest,
   ListPromptCommentsParams,
   ReplyToCommentRequest,
-} from '../types/comment';
-import { promptCommentMapper } from '../mappers/comment.mapper';
+} from '../types/comment.js';
+import { promptCommentMapper } from '../mappers/comment.mapper.js';
 
 export interface PromptCommentsService {
   list(promptUniqueId: string, params?: ListPromptCommentsParams): Promise<PageResult<PromptComment>>;

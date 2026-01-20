@@ -6,10 +6,10 @@ import type {
   JoinGroupRequest,
   QRCodeResponse,
   ListGroupInvitesParams,
-} from '../types/group-invite';
-import type { Group } from '../types/group';
-import { groupInviteMapper } from '../mappers/group-invite.mapper';
-import { groupMapper } from '../mappers/group.mapper';
+} from '../types/group-invite.js';
+import type { Group } from '../types/group.js';
+import { groupInviteMapper } from '../mappers/group-invite.mapper.js';
+import { groupMapper } from '../mappers/group.mapper.js';
 
 /**
  * Group Invites Service - manages group invitation links

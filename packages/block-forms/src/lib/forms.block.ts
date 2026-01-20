@@ -26,7 +26,7 @@ import {
   type MailTemplatesService,
   type ApplicationFormsService,
   type CrmSyncService,
-} from './services';
+} from './services/index.js';
 
 export interface FormsBlockConfig extends BlockConfig {
   appId: string;

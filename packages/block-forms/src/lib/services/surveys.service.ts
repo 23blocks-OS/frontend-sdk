@@ -7,8 +7,8 @@ import type {
   UpdateSurveyRequest,
   UpdateSurveyStatusRequest,
   ListSurveysParams,
-} from '../types/survey';
-import { surveyMapper } from '../mappers/survey.mapper';
+} from '../types/survey.js';
+import { surveyMapper } from '../mappers/survey.mapper.js';
 
 export interface SurveysService {
   list(formUniqueId: string, params?: ListSurveysParams): Promise<PageResult<Survey>>;

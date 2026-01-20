@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { AssetAlert } from '../types/alert';
-import { parseDate } from './utils';
+import type { AssetAlert } from '../types/alert.js';
+import { parseDate } from './utils.js';
 
 export const assetAlertMapper: ResourceMapper<AssetAlert> = {
   type: 'asset_alert',

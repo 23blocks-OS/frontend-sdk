@@ -5,12 +5,12 @@ import type {
   RegisterUserRequest,
   UpdateUserRequest,
   ListUsersParams,
-} from '../types/user';
-import type { Group } from '../types/group';
-import type { Conversation } from '../types/conversation';
-import { conversationsUserMapper } from '../mappers/user.mapper';
-import { groupMapper } from '../mappers/group.mapper';
-import { messageMapper } from '../mappers/message.mapper';
+} from '../types/user.js';
+import type { Group } from '../types/group.js';
+import type { Conversation } from '../types/conversation.js';
+import { conversationsUserMapper } from '../mappers/user.mapper.js';
+import { groupMapper } from '../mappers/group.mapper.js';
+import { messageMapper } from '../mappers/message.mapper.js';
 
 export interface UsersService {
   list(params?: ListUsersParams): Promise<PageResult<ConversationsUser>>;

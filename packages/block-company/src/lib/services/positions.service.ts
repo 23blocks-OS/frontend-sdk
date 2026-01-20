@@ -5,8 +5,8 @@ import type {
   CreatePositionRequest,
   UpdatePositionRequest,
   ListPositionsParams,
-} from '../types/position';
-import { positionMapper } from '../mappers/position.mapper';
+} from '../types/position.js';
+import { positionMapper } from '../mappers/position.mapper.js';
 
 export interface PositionsService {
   list(params?: ListPositionsParams): Promise<PageResult<Position>>;

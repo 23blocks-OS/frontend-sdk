@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { ProductSet } from '../types/product-set';
-import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils';
+import type { ProductSet } from '../types/product-set.js';
+import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils.js';
 
 export const productSetMapper: ResourceMapper<ProductSet> = {
   type: 'product_set',

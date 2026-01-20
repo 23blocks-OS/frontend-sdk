@@ -5,8 +5,8 @@ import type {
   CreateAssetAuditRequest,
   UpdateAssetAuditRequest,
   ListAssetAuditsParams,
-} from '../types/asset-audit';
-import { assetAuditMapper } from '../mappers/asset-audit.mapper';
+} from '../types/asset-audit.js';
+import { assetAuditMapper } from '../mappers/asset-audit.mapper.js';
 
 export interface AssetAuditsService {
   list(assetUniqueId: string, params?: ListAssetAuditsParams): Promise<PageResult<AssetAudit>>;

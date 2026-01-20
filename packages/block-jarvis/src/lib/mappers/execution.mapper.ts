@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Execution } from '../types/execution';
-import { parseString, parseDate, parseOptionalNumber, parseExecutionStatus } from './utils';
+import type { Execution } from '../types/execution.js';
+import { parseString, parseDate, parseOptionalNumber, parseExecutionStatus } from './utils.js';
 
 export const executionMapper: ResourceMapper<Execution> = {
   type: 'Execution',

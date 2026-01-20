@@ -11,8 +11,8 @@ import type {
   BillingRevenueReport,
   BillingAgingReport,
   BillingParticipantReport,
-} from '../types/meeting-billing';
-import { meetingBillingMapper } from '../mappers/meeting-billing.mapper';
+} from '../types/meeting-billing.js';
+import { meetingBillingMapper } from '../mappers/meeting-billing.mapper.js';
 
 export interface MeetingBillingsService {
   list(meetingUniqueId: string, params?: ListMeetingBillingsParams): Promise<PageResult<MeetingBilling>>;

@@ -6,8 +6,8 @@ import type {
   UpdateEntityFileRequest,
   ListEntityFilesParams,
   ReorderFilesRequest,
-} from '../types/entity-file';
-import { entityFileMapper } from '../mappers/entity-file.mapper';
+} from '../types/entity-file.js';
+import { entityFileMapper } from '../mappers/entity-file.mapper.js';
 
 export interface EntityFilesService {
   list(params?: ListEntityFilesParams): Promise<PageResult<EntityFile>>;

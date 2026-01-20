@@ -5,8 +5,8 @@ import type {
   CreateNoteRequest,
   UpdateNoteRequest,
   ListNotesParams,
-} from '../types/note';
-import { noteMapper } from '../mappers/note.mapper';
+} from '../types/note.js';
+import { noteMapper } from '../mappers/note.mapper.js';
 
 export interface NotesService {
   list(params?: ListNotesParams): Promise<PageResult<Note>>;

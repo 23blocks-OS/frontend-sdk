@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Entity } from '../types/entity';
-import { parseDate } from './utils';
+import type { Entity } from '../types/entity.js';
+import { parseDate } from './utils.js';
 
 export const entityMapper: ResourceMapper<Entity> = {
   type: 'entity',

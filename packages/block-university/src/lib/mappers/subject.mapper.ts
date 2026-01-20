@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Subject } from '../types/subject';
-import { parseString, parseDate, parseStatus, parseOptionalNumber } from './utils';
+import type { Subject } from '../types/subject.js';
+import { parseString, parseDate, parseStatus, parseOptionalNumber } from './utils.js';
 
 export const subjectMapper: ResourceMapper<Subject> = {
   type: 'subject',

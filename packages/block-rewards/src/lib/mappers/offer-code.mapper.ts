@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { OfferCode } from '../types/offer-code';
-import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils';
+import type { OfferCode } from '../types/offer-code.js';
+import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils.js';
 
 export const offerCodeMapper: ResourceMapper<OfferCode> = {
   type: 'offer_code',

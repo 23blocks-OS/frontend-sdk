@@ -1,5 +1,5 @@
 import type { Transport } from '@23blocks/contracts';
-import type { UnsubscribeRequest, UnsubscribeResponse } from '../types/communication';
+import type { UnsubscribeRequest, UnsubscribeResponse } from '../types/communication.js';
 
 export interface CommunicationsService {
   unsubscribe(data: UnsubscribeRequest): Promise<UnsubscribeResponse>;

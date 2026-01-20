@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { WorkflowParticipant } from '../types/workflow-participant';
-import { parseDate } from './utils';
+import type { WorkflowParticipant } from '../types/workflow-participant.js';
+import { parseDate } from './utils.js';
 
 export const workflowParticipantMapper: ResourceMapper<WorkflowParticipant> = {
   type: 'workflow_participant',

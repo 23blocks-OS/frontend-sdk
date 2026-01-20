@@ -6,8 +6,8 @@ import type {
   UpdateCampaignMediaRequest,
   ListCampaignMediaParams,
   CampaignMediaResults,
-} from '../types/campaign-media';
-import { campaignMediaMapper } from '../mappers/campaign-media.mapper';
+} from '../types/campaign-media.js';
+import { campaignMediaMapper } from '../mappers/campaign-media.mapper.js';
 
 export interface CampaignMediaService {
   list(params?: ListCampaignMediaParams): Promise<PageResult<CampaignMedia>>;

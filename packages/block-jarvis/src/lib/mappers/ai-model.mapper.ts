@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { AIModel } from '../types/ai-model';
-import { parseDate } from './utils';
+import type { AIModel } from '../types/ai-model.js';
+import { parseDate } from './utils.js';
 
 export const aiModelMapper: ResourceMapper<AIModel> = {
   type: 'ai_model',

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { WebNotification } from '../types/web-notification';
-import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils';
+import type { WebNotification } from '../types/web-notification.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils.js';
 
 function parsePriority(value: unknown): 'low' | 'normal' | 'high' | 'urgent' {
   const priority = parseString(value);

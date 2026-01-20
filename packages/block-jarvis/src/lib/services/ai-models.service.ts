@@ -5,8 +5,8 @@ import type {
   CreateAIModelRequest,
   UpdateAIModelRequest,
   ListAIModelsParams,
-} from '../types/ai-model';
-import { aiModelMapper } from '../mappers/ai-model.mapper';
+} from '../types/ai-model.js';
+import { aiModelMapper } from '../mappers/ai-model.mapper.js';
 
 export interface AIModelsService {
   list(params?: ListAIModelsParams): Promise<PageResult<AIModel>>;

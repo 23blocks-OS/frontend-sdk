@@ -24,7 +24,7 @@ import {
   type CampaignTemplatesService,
   type CampaignMediaResultsService,
   type MediaService,
-} from './services';
+} from './services/index.js';
 
 export interface CampaignsBlockConfig extends BlockConfig {
   appId: string;

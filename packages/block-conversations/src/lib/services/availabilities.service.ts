@@ -2,7 +2,7 @@ import type { Transport } from '@23blocks/contracts';
 import type {
   UserAvailability,
   SetAvailabilityRequest,
-} from '../types/availability';
+} from '../types/availability.js';
 
 export interface AvailabilitiesService {
   get(userUniqueId: string): Promise<UserAvailability>;

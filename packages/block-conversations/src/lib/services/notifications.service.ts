@@ -1,12 +1,12 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Notification,
   CreateNotificationRequest,
   UpdateNotificationRequest,
   ListNotificationsParams,
-} from '../types/notification';
-import { notificationMapper } from '../mappers/notification.mapper';
+} from '../types/notification.js';
+import { notificationMapper } from '../mappers/notification.mapper.js';
 
 export interface NotificationsService {
   list(params?: ListNotificationsParams): Promise<PageResult<Notification>>;

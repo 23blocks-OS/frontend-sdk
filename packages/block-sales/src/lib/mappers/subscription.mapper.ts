@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Subscription } from '../types/subscription';
-import { parseString, parseDate, parseNumber, parseSubscriptionStatus, parseSubscriptionInterval } from './utils';
+import type { Subscription } from '../types/subscription.js';
+import { parseString, parseDate, parseNumber, parseSubscriptionStatus, parseSubscriptionInterval } from './utils.js';
 
 export const subscriptionMapper: ResourceMapper<Subscription> = {
   type: 'Subscription',

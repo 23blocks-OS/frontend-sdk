@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { Referral } from '../types/referral';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { Referral } from '../types/referral.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const referralMapper: JsonApiMapper<Referral> = {
   type: 'referral',

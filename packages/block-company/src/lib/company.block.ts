@@ -14,7 +14,7 @@ import {
   type QuartersService,
   type PositionsService,
   type EmployeeAssignmentsService,
-} from './services';
+} from './services/index.js';
 
 export interface CompanyBlockConfig extends BlockConfig {
   appId: string;

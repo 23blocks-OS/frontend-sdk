@@ -1,12 +1,12 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Account,
   CreateAccountRequest,
   UpdateAccountRequest,
   ListAccountsParams,
-} from '../types/account';
-import { accountMapper } from '../mappers/account.mapper';
+} from '../types/account.js';
+import { accountMapper } from '../mappers/account.mapper.js';
 
 export interface AccountsService {
   list(params?: ListAccountsParams): Promise<PageResult<Account>>;

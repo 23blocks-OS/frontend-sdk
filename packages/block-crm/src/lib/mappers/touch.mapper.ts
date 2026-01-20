@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { Touch } from '../types/touch';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { Touch } from '../types/touch.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const touchMapper: JsonApiMapper<Touch> = {
   type: 'touch',

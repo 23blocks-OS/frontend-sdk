@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { ProductPrice } from '../types/product-price';
-import { parseString, parseDate, parseStatus, parseNumber, parseOptionalNumber } from './utils';
+import type { ProductPrice } from '../types/product-price.js';
+import { parseString, parseDate, parseStatus, parseNumber, parseOptionalNumber } from './utils.js';
 
 export const productPriceMapper: ResourceMapper<ProductPrice> = {
   type: 'product_price',

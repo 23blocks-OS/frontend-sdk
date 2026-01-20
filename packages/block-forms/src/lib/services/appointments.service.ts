@@ -7,8 +7,8 @@ import type {
   ListAppointmentsParams,
   AppointmentReportRequest,
   AppointmentReportSummary,
-} from '../types/appointment';
-import { appointmentMapper } from '../mappers/appointment.mapper';
+} from '../types/appointment.js';
+import { appointmentMapper } from '../mappers/appointment.mapper.js';
 
 export interface AppointmentsService {
   list(formUniqueId: string, params?: ListAppointmentsParams): Promise<PageResult<Appointment>>;

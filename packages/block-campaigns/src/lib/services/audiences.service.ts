@@ -6,8 +6,8 @@ import type {
   CreateAudienceRequest,
   UpdateAudienceRequest,
   ListAudiencesParams,
-} from '../types/audience';
-import { audienceMapper, audienceMemberMapper } from '../mappers/audience.mapper';
+} from '../types/audience.js';
+import { audienceMapper, audienceMemberMapper } from '../mappers/audience.mapper.js';
 
 export interface AudiencesService {
   list(params?: ListAudiencesParams): Promise<PageResult<Audience>>;

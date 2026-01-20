@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { MeetingParticipant } from '../types/meeting-participant';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { MeetingParticipant } from '../types/meeting-participant.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const meetingParticipantMapper: JsonApiMapper<MeetingParticipant> = {
   type: 'meeting_participant',

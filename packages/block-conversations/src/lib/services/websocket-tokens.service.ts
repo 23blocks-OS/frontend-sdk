@@ -2,7 +2,7 @@ import type { Transport } from '@23blocks/contracts';
 import type {
   CreateWebSocketTokenRequest,
   CreateWebSocketTokenResponse,
-} from '../types/websocket-token';
+} from '../types/websocket-token.js';
 
 export interface WebSocketTokensService {
   create(data?: CreateWebSocketTokenRequest): Promise<CreateWebSocketTokenResponse>;

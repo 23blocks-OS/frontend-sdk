@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Loyalty, LoyaltyTier, LoyaltyTransaction } from '../types/loyalty';
-import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils';
+import type { Loyalty, LoyaltyTier, LoyaltyTransaction } from '../types/loyalty.js';
+import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils.js';
 
 function parseLoyaltyTier(value: unknown): LoyaltyTier | undefined {
   const tier = parseString(value);

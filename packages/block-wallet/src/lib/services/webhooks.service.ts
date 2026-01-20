@@ -2,7 +2,7 @@ import type { Transport } from '@23blocks/contracts';
 import type {
   TransactionWebhookRequest,
   TransactionWebhookResponse,
-} from '../types/wallet';
+} from '../types/wallet.js';
 
 export interface WebhooksService {
   /**

@@ -5,8 +5,8 @@ import type {
   CreateCampaignMarketRequest,
   UpdateCampaignMarketRequest,
   ListCampaignMarketsParams,
-} from '../types/campaign-market';
-import { campaignMarketMapper } from '../mappers/campaign-market.mapper';
+} from '../types/campaign-market.js';
+import { campaignMarketMapper } from '../mappers/campaign-market.mapper.js';
 
 export interface CampaignMarketsService {
   list(params?: ListCampaignMarketsParams): Promise<PageResult<CampaignMarket>>;

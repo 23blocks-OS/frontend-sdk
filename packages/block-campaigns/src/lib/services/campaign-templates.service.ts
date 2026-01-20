@@ -9,8 +9,8 @@ import type {
   CreateTemplateDetailRequest,
   UpdateTemplateDetailRequest,
   ListTemplateDetailsParams,
-} from '../types/campaign-template';
-import { campaignTemplateMapper, templateDetailMapper } from '../mappers/campaign-template.mapper';
+} from '../types/campaign-template.js';
+import { campaignTemplateMapper, templateDetailMapper } from '../mappers/campaign-template.mapper.js';
 
 export interface CampaignTemplatesService {
   list(params?: ListCampaignTemplatesParams): Promise<PageResult<CampaignTemplate>>;

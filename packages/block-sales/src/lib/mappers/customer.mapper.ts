@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { SalesCustomer } from '../types/customer';
-import { parseDate } from './utils';
+import type { SalesCustomer } from '../types/customer.js';
+import { parseDate } from './utils.js';
 
 export const salesCustomerMapper: ResourceMapper<SalesCustomer> = {
   type: 'customer',

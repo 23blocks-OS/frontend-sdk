@@ -4,8 +4,8 @@ import type {
   LocationSlot,
   CreateLocationSlotRequest,
   UpdateLocationSlotRequest,
-} from '../types/location-slot';
-import { locationSlotMapper } from '../mappers/location-slot.mapper';
+} from '../types/location-slot.js';
+import { locationSlotMapper } from '../mappers/location-slot.mapper.js';
 
 export interface LocationSlotsService {
   list(locationUniqueId: string): Promise<LocationSlot[]>;

@@ -5,8 +5,8 @@ import type {
   CreateProductFilterRequest,
   UpdateProductFilterRequest,
   ListProductFiltersParams,
-} from '../types/product-filter';
-import { productFilterMapper } from '../mappers/product-filter.mapper';
+} from '../types/product-filter.js';
+import { productFilterMapper } from '../mappers/product-filter.mapper.js';
 
 export interface ProductFiltersService {
   list(params?: ListProductFiltersParams): Promise<PageResult<ProductFilter>>;

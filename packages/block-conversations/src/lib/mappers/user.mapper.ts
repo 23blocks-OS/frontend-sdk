@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { ConversationsUser } from '../types/user';
-import { parseString, parseDate } from './utils';
+import type { ConversationsUser } from '../types/user.js';
+import { parseString, parseDate } from './utils.js';
 
 export const conversationsUserMapper: ResourceMapper<ConversationsUser> = {
   type: 'User',

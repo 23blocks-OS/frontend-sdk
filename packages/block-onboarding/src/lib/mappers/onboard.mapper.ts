@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { OnboardJourney } from '../types/onboard';
-import { parseDate } from './utils';
+import type { OnboardJourney } from '../types/onboard.js';
+import { parseDate } from './utils.js';
 
 export const onboardJourneyMapper: ResourceMapper<OnboardJourney> = {
   type: 'onboard_journey',

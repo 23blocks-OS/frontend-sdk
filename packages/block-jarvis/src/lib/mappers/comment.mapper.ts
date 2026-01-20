@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { PromptComment, ExecutionComment } from '../types/comment';
-import { parseDate } from './utils';
+import type { PromptComment, ExecutionComment } from '../types/comment.js';
+import { parseDate } from './utils.js';
 
 export const promptCommentMapper: ResourceMapper<PromptComment> = {
   type: 'comment',

@@ -1,7 +1,7 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
-import type { Transaction, ListTransactionsParams } from '../types/transaction';
-import { transactionMapper } from '../mappers/transaction.mapper';
+import type { Transaction, ListTransactionsParams } from '../types/transaction.js';
+import { transactionMapper } from '../mappers/transaction.mapper.js';
 
 export interface TransactionsService {
   list(params?: ListTransactionsParams): Promise<PageResult<Transaction>>;

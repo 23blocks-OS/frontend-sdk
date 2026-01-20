@@ -2,6 +2,7 @@ import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts'
 import {
   createPostsService,
   createPostVersionsService,
+  createPostTemplatesService,
   createCommentsService,
   createCategoriesService,
   createTagsService,
@@ -11,6 +12,7 @@ import {
   createSeriesService,
   type PostsService,
   type PostVersionsService,
+  type PostTemplatesService,
   type CommentsService,
   type CategoriesService,
   type TagsService,
@@ -18,7 +20,7 @@ import {
   type ModerationService,
   type ActivityService,
   type SeriesService,
-} from './services';
+} from './services/index.js';
 
 export interface ContentBlockConfig extends BlockConfig {
   appId: string;
@@ -28,6 +30,7 @@ export interface ContentBlockConfig extends BlockConfig {
 export interface ContentBlock {
   posts: PostsService;
   postVersions: PostVersionsService;
+  postTemplates: PostTemplatesService;
   comments: CommentsService;
   categories: CategoriesService;
   tags: TagsService;
@@ -44,6 +47,7 @@ export function createContentBlock(
   return {
     posts: createPostsService(transport, config),
     postVersions: createPostVersionsService(transport, config),
+    postTemplates: createPostTemplatesService(transport, config),
     comments: createCommentsService(transport, config),
     categories: createCategoriesService(transport, config),
     tags: createTagsService(transport, config),
@@ -61,6 +65,7 @@ export const contentBlockMetadata: BlockMetadata = {
   resourceTypes: [
     'Post',
     'PostVersion',
+    'PostTemplate',
     'Comment',
     'Category',
     'Tag',

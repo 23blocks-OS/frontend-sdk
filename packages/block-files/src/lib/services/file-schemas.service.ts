@@ -5,8 +5,8 @@ import type {
   CreateFileSchemaRequest,
   UpdateFileSchemaRequest,
   ListFileSchemasParams,
-} from '../types/file-schema';
-import { fileSchemaMapper } from '../mappers/file-schema.mapper';
+} from '../types/file-schema.js';
+import { fileSchemaMapper } from '../mappers/file-schema.mapper.js';
 
 export interface FileSchemasService {
   list(params?: ListFileSchemasParams): Promise<PageResult<FileSchema>>;

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { ShoppingList } from '../types/shopping-list';
-import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils';
+import type { ShoppingList } from '../types/shopping-list.js';
+import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils.js';
 
 export const shoppingListMapper: ResourceMapper<ShoppingList> = {
   type: 'shopping_list',

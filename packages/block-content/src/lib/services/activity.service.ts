@@ -1,9 +1,9 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodePageResult } from '@23blocks/jsonapi-codec';
-import type { Activity, ListActivitiesParams } from '../types/activity';
-import type { Comment, ListCommentsParams } from '../types/comment';
-import { activityMapper } from '../mappers/activity.mapper';
-import { commentMapper } from '../mappers/comment.mapper';
+import type { Activity, ListActivitiesParams } from '../types/activity.js';
+import type { Comment, ListCommentsParams } from '../types/comment.js';
+import { activityMapper } from '../mappers/activity.mapper.js';
+import { commentMapper } from '../mappers/comment.mapper.js';
 
 /**
  * Activity Service Interface - User activity feed operations

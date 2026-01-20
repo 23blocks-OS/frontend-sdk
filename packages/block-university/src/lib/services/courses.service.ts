@@ -5,8 +5,8 @@ import type {
   CreateCourseRequest,
   UpdateCourseRequest,
   ListCoursesParams,
-} from '../types/course';
-import { courseMapper } from '../mappers/course.mapper';
+} from '../types/course.js';
+import { courseMapper } from '../mappers/course.mapper.js';
 
 export interface CoursesService {
   list(params?: ListCoursesParams): Promise<PageResult<Course>>;

@@ -5,8 +5,8 @@ import type {
   CreateExpirationRuleRequest,
   UpdateExpirationRuleRequest,
   ListExpirationRulesParams,
-} from '../types/expiration-rule';
-import { expirationRuleMapper } from '../mappers/expiration-rule.mapper';
+} from '../types/expiration-rule.js';
+import { expirationRuleMapper } from '../mappers/expiration-rule.mapper.js';
 
 export interface ExpirationRulesService {
   list(params?: ListExpirationRulesParams): Promise<PageResult<ExpirationRule>>;

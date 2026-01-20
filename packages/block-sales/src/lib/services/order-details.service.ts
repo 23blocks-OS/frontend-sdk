@@ -1,7 +1,7 @@
 import type { Transport } from '@23blocks/contracts';
 import { decodeOne, decodeMany } from '@23blocks/jsonapi-codec';
-import type { OrderDetail, UpdateOrderDetailRequest } from '../types/order-detail';
-import { orderDetailMapper } from '../mappers/order-detail.mapper';
+import type { OrderDetail, UpdateOrderDetailRequest } from '../types/order-detail.js';
+import { orderDetailMapper } from '../mappers/order-detail.mapper.js';
 
 export interface OrderDetailsService {
   list(): Promise<OrderDetail[]>;

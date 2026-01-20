@@ -1,7 +1,7 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
-import type { Execution, ListExecutionsParams } from '../types/execution';
-import { executionMapper } from '../mappers/execution.mapper';
+import type { Execution, ListExecutionsParams } from '../types/execution.js';
+import { executionMapper } from '../mappers/execution.mapper.js';
 
 export interface ExecutionsService {
   list(params?: ListExecutionsParams): Promise<PageResult<Execution>>;

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { FileAccess } from '../types/file-access';
-import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from './utils';
+import type { FileAccess } from '../types/file-access.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from './utils.js';
 
 function parseAccessLevel(value: unknown): 'read' | 'write' | 'admin' {
   const level = parseString(value);

@@ -5,8 +5,8 @@ import type {
   CreatePremiseEventRequest,
   UpdatePremiseEventRequest,
   ListPremiseEventsParams,
-} from '../types/premise-event';
-import { premiseEventMapper } from '../mappers/premise-event.mapper';
+} from '../types/premise-event.js';
+import { premiseEventMapper } from '../mappers/premise-event.mapper.js';
 
 export interface PremiseEventsService {
   list(locationUniqueId: string, premiseUniqueId: string, params?: ListPremiseEventsParams): Promise<PageResult<PremiseEvent>>;

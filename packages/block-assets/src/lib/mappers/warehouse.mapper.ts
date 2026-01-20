@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Warehouse } from '../types/warehouse';
-import { parseDate, parseStatus } from './utils';
+import type { Warehouse } from '../types/warehouse.js';
+import { parseDate, parseStatus } from './utils.js';
 
 export const warehouseMapper: ResourceMapper<Warehouse> = {
   type: 'warehouse',

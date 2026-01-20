@@ -7,8 +7,8 @@ import type {
   ListCalendarAccountsParams,
   SyncCalendarRequest,
   SyncCalendarResponse,
-} from '../types/calendar-account';
-import { calendarAccountMapper } from '../mappers/calendar-account.mapper';
+} from '../types/calendar-account.js';
+import { calendarAccountMapper } from '../mappers/calendar-account.mapper.js';
 
 export interface CalendarAccountsService {
   list(userUniqueId: string, params?: ListCalendarAccountsParams): Promise<PageResult<CalendarAccount>>;

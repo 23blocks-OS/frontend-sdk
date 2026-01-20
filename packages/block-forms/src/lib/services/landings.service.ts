@@ -5,8 +5,8 @@ import type {
   CreateLandingRequest,
   UpdateLandingRequest,
   ListLandingsParams,
-} from '../types/landing';
-import { landingMapper } from '../mappers/landing.mapper';
+} from '../types/landing.js';
+import { landingMapper } from '../mappers/landing.mapper.js';
 
 export interface LandingsService {
   list(formUniqueId: string, params?: ListLandingsParams): Promise<PageResult<Landing>>;

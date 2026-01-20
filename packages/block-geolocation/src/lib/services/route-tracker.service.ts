@@ -5,8 +5,8 @@ import type {
   CreateRouteLocationRequest,
   RouteTrackerStatus,
   ListRouteLocationsParams,
-} from '../types/route-tracker';
-import { routeLocationMapper } from '../mappers/route-tracker.mapper';
+} from '../types/route-tracker.js';
+import { routeLocationMapper } from '../mappers/route-tracker.mapper.js';
 
 export interface RouteTrackerService {
   /**

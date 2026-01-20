@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { BusyBlock } from '../types/busy-block';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { BusyBlock } from '../types/busy-block.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const busyBlockMapper: JsonApiMapper<BusyBlock> = {
   type: 'busy_block',

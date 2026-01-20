@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { LandingPage } from '../types/landing-page';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils';
+import type { LandingPage } from '../types/landing-page.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const landingPageMapper: ResourceMapper<LandingPage> = {
   type: 'LandingPage',

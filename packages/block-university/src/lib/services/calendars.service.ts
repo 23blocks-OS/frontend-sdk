@@ -9,8 +9,8 @@ import type {
   CreateCalendarEventRequest,
   UpdateCalendarEventRequest,
   ListCalendarEventsParams,
-} from '../types/calendar';
-import { availabilityMapper, calendarEventMapper } from '../mappers/calendar.mapper';
+} from '../types/calendar.js';
+import { availabilityMapper, calendarEventMapper } from '../mappers/calendar.mapper.js';
 
 export interface CalendarsService {
   // Student Availability

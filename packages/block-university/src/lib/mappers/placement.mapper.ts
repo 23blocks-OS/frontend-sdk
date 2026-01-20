@@ -6,8 +6,8 @@ import type {
   PlacementOption,
   PlacementRule,
   PlacementInstance,
-} from '../types/placement';
-import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils';
+} from '../types/placement.js';
+import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils.js';
 
 export const placementOptionMapper: ResourceMapper<PlacementOption> = {
   type: 'PlacementOption',

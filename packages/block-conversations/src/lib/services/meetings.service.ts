@@ -6,8 +6,8 @@ import type {
   CreateMeetingRequest,
   UpdateMeetingRequest,
   ListMeetingsParams,
-} from '../types/meeting';
-import { meetingMapper } from '../mappers/meeting.mapper';
+} from '../types/meeting.js';
+import { meetingMapper } from '../mappers/meeting.mapper.js';
 
 export interface MeetingsService {
   list(params?: ListMeetingsParams): Promise<PageResult<Meeting>>;

@@ -12,13 +12,13 @@ import type {
   EventRule,
   CreateEventRuleRequest,
   UpdateEventRuleRequest,
-} from '../types/loyalty-rules';
+} from '../types/loyalty-rules.js';
 import {
   badgeCategoryMapper,
   moneyRuleMapper,
   productRuleMapper,
   eventRuleMapper,
-} from '../mappers/loyalty-rules.mapper';
+} from '../mappers/loyalty-rules.mapper.js';
 
 /**
  * Badge Categories Service

@@ -7,8 +7,8 @@ import type {
   StartWorkflowResponse,
   StepWorkflowRequest,
   LogWorkflowStepRequest,
-} from '../types/workflow-instance';
-import { workflowInstanceMapper } from '../mappers/workflow-instance.mapper';
+} from '../types/workflow-instance.js';
+import { workflowInstanceMapper } from '../mappers/workflow-instance.mapper.js';
 
 export interface WorkflowInstancesService {
   start(workflowUniqueId: string, data?: StartWorkflowRequest): Promise<StartWorkflowResponse>;

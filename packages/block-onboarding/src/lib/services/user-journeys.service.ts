@@ -5,13 +5,13 @@ import type {
   StartJourneyRequest,
   CompleteStepRequest,
   ListUserJourneysParams,
-} from '../types/user-journey';
+} from '../types/user-journey.js';
 import type {
   UserJourneyReportParams,
   UserJourneyReportSummary,
   UserJourneyReportList,
-} from '../types/report';
-import { userJourneyMapper } from '../mappers/user-journey.mapper';
+} from '../types/report.js';
+import { userJourneyMapper } from '../mappers/user-journey.mapper.js';
 
 export interface UserJourneysService {
   list(params?: ListUserJourneysParams): Promise<PageResult<UserJourney>>;
@@ -130,7 +130,7 @@ export function createUserJourneysService(transport: Transport, _config: { appId
         },
         meta: {
           totalCount: response.meta.total_count,
-          page: response.meta.page,
+          currentPage: response.meta.current_page,
           perPage: response.meta.per_page,
           totalPages: response.meta.total_pages,
         },

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { PostVersion } from '../types/post-version';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils';
+import type { PostVersion } from '../types/post-version.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const postVersionMapper: ResourceMapper<PostVersion> = {
   type: 'PostVersion',

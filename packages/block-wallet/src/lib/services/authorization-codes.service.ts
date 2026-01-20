@@ -6,10 +6,10 @@ import type {
   ValidateAuthorizationCodeRequest,
   UseAuthorizationCodeRequest,
   ListAuthorizationCodesParams,
-} from '../types/authorization-code';
-import type { Transaction } from '../types/transaction';
-import { authorizationCodeMapper } from '../mappers/authorization-code.mapper';
-import { transactionMapper } from '../mappers/transaction.mapper';
+} from '../types/authorization-code.js';
+import type { Transaction } from '../types/transaction.js';
+import { authorizationCodeMapper } from '../mappers/authorization-code.mapper.js';
+import { transactionMapper } from '../mappers/transaction.mapper.js';
 
 export interface AuthorizationCodesService {
   list(params?: ListAuthorizationCodesParams): Promise<PageResult<AuthorizationCode>>;

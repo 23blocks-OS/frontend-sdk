@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Student } from '../types/student';
-import { parseString, parseDate, parseStatus } from './utils';
+import type { Student } from '../types/student.js';
+import { parseString, parseDate, parseStatus } from './utils.js';
 
 export const studentMapper: ResourceMapper<Student> = {
   type: 'user',

@@ -1,12 +1,12 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Meeting,
   CreateMeetingRequest,
   UpdateMeetingRequest,
   ListMeetingsParams,
-} from '../types/meeting';
-import { meetingMapper } from '../mappers/meeting.mapper';
+} from '../types/meeting.js';
+import { meetingMapper } from '../mappers/meeting.mapper.js';
 
 export interface MeetingsService {
   list(params?: ListMeetingsParams): Promise<PageResult<Meeting>>;

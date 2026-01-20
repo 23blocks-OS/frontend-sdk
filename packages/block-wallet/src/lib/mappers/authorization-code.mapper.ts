@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { AuthorizationCode } from '../types/authorization-code';
-import { parseString, parseDate, parseNumber, parseStatus } from './utils';
+import type { AuthorizationCode } from '../types/authorization-code.js';
+import { parseString, parseDate, parseNumber, parseStatus } from './utils.js';
 
 export const authorizationCodeMapper: ResourceMapper<AuthorizationCode> = {
   type: 'AuthorizationCode',

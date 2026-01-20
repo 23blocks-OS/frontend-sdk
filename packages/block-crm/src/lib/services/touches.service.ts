@@ -5,8 +5,8 @@ import type {
   CreateTouchRequest,
   UpdateTouchRequest,
   ListTouchesParams,
-} from '../types/touch';
-import { touchMapper } from '../mappers/touch.mapper';
+} from '../types/touch.js';
+import { touchMapper } from '../mappers/touch.mapper.js';
 
 export interface TouchesService {
   list(params?: ListTouchesParams): Promise<PageResult<Touch>>;

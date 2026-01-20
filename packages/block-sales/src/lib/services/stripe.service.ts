@@ -15,7 +15,7 @@ import type {
   StripeWebhook,
   CreateStripeWebhookRequest,
   ListStripeSubscriptionsParams,
-} from '../types/stripe';
+} from '../types/stripe.js';
 
 export interface StripeService {
   createCustomer(data: CreateStripeCustomerRequest): Promise<CreateStripeCustomerResponse>;
@@ -135,7 +135,7 @@ export function createStripeService(transport: Transport, _config: { appId: stri
         })),
         meta: {
           totalCount: response.meta?.total_count || data.length,
-          page: response.meta?.page || 1,
+          currentPage: response.meta?.current_page || 1,
           perPage: response.meta?.per_page || data.length,
           totalPages: response.meta?.total_pages || 1,
         },

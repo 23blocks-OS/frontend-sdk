@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { UserJourney } from '../types/user-journey';
-import { parseString, parseDate, parseOptionalNumber, parseNumberArray, parseJourneyStatus } from './utils';
+import type { UserJourney } from '../types/user-journey.js';
+import { parseString, parseDate, parseOptionalNumber, parseNumberArray, parseJourneyStatus } from './utils.js';
 
 export const userJourneyMapper: ResourceMapper<UserJourney> = {
   type: 'UserJourney',

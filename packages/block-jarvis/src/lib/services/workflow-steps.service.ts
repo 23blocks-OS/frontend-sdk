@@ -6,8 +6,8 @@ import type {
   UpdateWorkflowStepRequest,
   AddStepPromptRequest,
   AddStepAgentRequest,
-} from '../types/workflow-step';
-import { workflowStepMapper } from '../mappers/workflow-step.mapper';
+} from '../types/workflow-step.js';
+import { workflowStepMapper } from '../mappers/workflow-step.mapper.js';
 
 export interface WorkflowStepsService {
   get(workflowUniqueId: string, stepUniqueId: string): Promise<WorkflowStep>;

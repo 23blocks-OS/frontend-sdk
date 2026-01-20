@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { CourseGroup } from '../types/course-group';
-import { parseString, parseDate, parseStatus, parseOptionalNumber } from './utils';
+import type { CourseGroup } from '../types/course-group.js';
+import { parseString, parseDate, parseStatus, parseOptionalNumber } from './utils.js';
 
 export const courseGroupMapper: ResourceMapper<CourseGroup> = {
   type: 'course_group',

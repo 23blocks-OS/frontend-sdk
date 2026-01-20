@@ -6,12 +6,12 @@ import type {
   RegisterStudentRequest,
   UpdateStudentRequest,
   StudentAvailability,
-} from '../types/student';
-import type { Course } from '../types/course';
-import type { CourseGroup } from '../types/course-group';
-import { studentMapper } from '../mappers/student.mapper';
-import { courseMapper } from '../mappers/course.mapper';
-import { courseGroupMapper } from '../mappers/course-group.mapper';
+} from '../types/student.js';
+import type { Course } from '../types/course.js';
+import type { CourseGroup } from '../types/course-group.js';
+import { studentMapper } from '../mappers/student.mapper.js';
+import { courseMapper } from '../mappers/course.mapper.js';
+import { courseGroupMapper } from '../mappers/course-group.mapper.js';
 
 export interface StudentsService {
   list(params?: ListStudentsParams): Promise<PageResult<Student>>;

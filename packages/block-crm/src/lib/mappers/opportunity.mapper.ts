@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Opportunity } from '../types/opportunity';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils';
+import type { Opportunity } from '../types/opportunity.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils.js';
 
 export const opportunityMapper: ResourceMapper<Opportunity> = {
   type: 'Opportunity',

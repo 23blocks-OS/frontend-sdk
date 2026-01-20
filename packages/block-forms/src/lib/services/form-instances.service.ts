@@ -5,8 +5,8 @@ import type {
   CreateFormInstanceRequest,
   UpdateFormInstanceRequest,
   ListFormInstancesParams,
-} from '../types/form-instance';
-import { formInstanceMapper } from '../mappers/form-instance.mapper';
+} from '../types/form-instance.js';
+import { formInstanceMapper } from '../mappers/form-instance.mapper.js';
 
 export interface FormInstancesService {
   /**

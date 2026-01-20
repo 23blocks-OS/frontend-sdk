@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { ProductPromotion } from '../types/product-promotion';
-import { parseString, parseDate, parseStatus, parseNumber, parseOptionalNumber, parseBoolean } from './utils';
+import type { ProductPromotion } from '../types/product-promotion.js';
+import { parseString, parseDate, parseStatus, parseNumber, parseOptionalNumber, parseBoolean } from './utils.js';
 
 export const productPromotionMapper: ResourceMapper<ProductPromotion> = {
   type: 'product_promotion',

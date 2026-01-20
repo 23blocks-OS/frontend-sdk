@@ -5,10 +5,10 @@ import type {
   CreateCouponConfigurationRequest,
   UpdateCouponConfigurationRequest,
   ListCouponConfigurationsParams,
-} from '../types/coupon-configuration';
-import type { Coupon } from '../types/coupon';
-import { couponConfigurationMapper } from '../mappers/coupon-configuration.mapper';
-import { couponMapper } from '../mappers/coupon.mapper';
+} from '../types/coupon-configuration.js';
+import type { Coupon } from '../types/coupon.js';
+import { couponConfigurationMapper } from '../mappers/coupon-configuration.mapper.js';
+import { couponMapper } from '../mappers/coupon.mapper.js';
 
 export interface CouponConfigurationsService {
   list(params?: ListCouponConfigurationsParams): Promise<PageResult<CouponConfiguration>>;

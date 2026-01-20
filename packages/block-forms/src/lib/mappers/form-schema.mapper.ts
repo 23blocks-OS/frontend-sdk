@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { FormSchema } from '../types/form-schema';
-import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils';
+import type { FormSchema } from '../types/form-schema.js';
+import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils.js';
 
 export const formSchemaMapper: ResourceMapper<FormSchema> = {
   type: 'FormSchema',

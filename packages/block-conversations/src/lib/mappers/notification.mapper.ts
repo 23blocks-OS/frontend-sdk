@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Notification } from '../types/notification';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { Notification } from '../types/notification.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const notificationMapper: ResourceMapper<Notification> = {
   type: 'Notification',

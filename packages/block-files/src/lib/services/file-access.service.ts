@@ -5,8 +5,8 @@ import type {
   CreateFileAccessRequest,
   UpdateFileAccessRequest,
   ListFileAccessParams,
-} from '../types/file-access';
-import { fileAccessMapper } from '../mappers/file-access.mapper';
+} from '../types/file-access.js';
+import { fileAccessMapper } from '../mappers/file-access.mapper.js';
 
 export interface FileAccessService {
   list(params?: ListFileAccessParams): Promise<PageResult<FileAccess>>;

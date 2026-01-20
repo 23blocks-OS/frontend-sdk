@@ -5,8 +5,8 @@ import type {
   CreateCampaignResultRequest,
   UpdateCampaignResultRequest,
   ListCampaignResultsParams,
-} from '../types/campaign-result';
-import { campaignResultMapper } from '../mappers/campaign-result.mapper';
+} from '../types/campaign-result.js';
+import { campaignResultMapper } from '../mappers/campaign-result.mapper.js';
 
 export interface CampaignResultsService {
   list(params?: ListCampaignResultsParams): Promise<PageResult<CampaignResult>>;

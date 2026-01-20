@@ -26,7 +26,7 @@ import {
   type StripeService,
   type MercadoPagoService,
   type VendorPaymentsService,
-} from './services';
+} from './services/index.js';
 
 export interface SalesBlockConfig extends BlockConfig {
   appId: string;

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { ContentFlag } from '../types/moderation';
-import { parseString, parseDate, parseStatus } from './utils';
+import type { ContentFlag } from '../types/moderation.js';
+import { parseString, parseDate, parseStatus } from './utils.js';
 
 export const contentFlagMapper: ResourceMapper<ContentFlag> = {
   type: 'content_flag',

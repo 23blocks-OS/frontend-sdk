@@ -5,8 +5,8 @@ import type {
   CreateTeamRequest,
   UpdateTeamRequest,
   ListTeamsParams,
-} from '../types/team';
-import { teamMapper } from '../mappers/team.mapper';
+} from '../types/team.js';
+import { teamMapper } from '../mappers/team.mapper.js';
 
 export interface TeamsService {
   list(params?: ListTeamsParams): Promise<PageResult<Team>>;

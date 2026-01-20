@@ -6,8 +6,8 @@ import type {
   CreateDepartmentRequest,
   UpdateDepartmentRequest,
   ListDepartmentsParams,
-} from '../types/department';
-import { departmentMapper } from '../mappers/department.mapper';
+} from '../types/department.js';
+import { departmentMapper } from '../mappers/department.mapper.js';
 
 export interface DepartmentsService {
   list(params?: ListDepartmentsParams): Promise<PageResult<Department>>;

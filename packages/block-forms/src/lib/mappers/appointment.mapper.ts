@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Appointment } from '../types/appointment';
-import { parseString, parseDate, parseStatus, parseOptionalNumber } from './utils';
+import type { Appointment } from '../types/appointment.js';
+import { parseString, parseDate, parseStatus, parseOptionalNumber } from './utils.js';
 
 export const appointmentMapper: ResourceMapper<Appointment> = {
   type: 'appointment',

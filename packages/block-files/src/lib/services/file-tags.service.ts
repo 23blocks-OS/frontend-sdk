@@ -5,8 +5,8 @@ import type {
   CreateFileTagRequest,
   UpdateFileTagRequest,
   ListFileTagsParams,
-} from '../types/file-tag';
-import { fileTagMapper } from '../mappers/file-tag.mapper';
+} from '../types/file-tag.js';
+import { fileTagMapper } from '../mappers/file-tag.mapper.js';
 
 export interface FileTagsService {
   list(params?: ListFileTagsParams): Promise<PageResult<FileTag>>;

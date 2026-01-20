@@ -18,7 +18,7 @@ import {
   type DelegationsService,
   type FileAccessService,
   type FileAccessRequestsService,
-} from './services';
+} from './services/index.js';
 
 export interface FilesBlockConfig extends BlockConfig {
   appId: string;

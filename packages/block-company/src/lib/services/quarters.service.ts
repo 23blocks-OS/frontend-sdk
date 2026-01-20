@@ -5,8 +5,8 @@ import type {
   CreateQuarterRequest,
   UpdateQuarterRequest,
   ListQuartersParams,
-} from '../types/quarter';
-import { quarterMapper } from '../mappers/quarter.mapper';
+} from '../types/quarter.js';
+import { quarterMapper } from '../mappers/quarter.mapper.js';
 
 export interface QuartersService {
   list(params?: ListQuartersParams): Promise<PageResult<Quarter>>;

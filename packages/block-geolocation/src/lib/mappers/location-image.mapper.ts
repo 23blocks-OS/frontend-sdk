@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { LocationImage } from '../types/location-image';
-import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils';
+import type { LocationImage } from '../types/location-image.js';
+import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils.js';
 
 export const locationImageMapper: ResourceMapper<LocationImage> = {
   type: 'location_image',

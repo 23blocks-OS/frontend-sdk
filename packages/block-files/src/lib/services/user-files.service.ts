@@ -1,5 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   UserFile,
   ListUserFilesParams,
@@ -14,8 +14,8 @@ import type {
   FileAccessRequest,
   FileDelegation,
   CreateDelegationRequest,
-} from '../types/user-file';
-import { userFileMapper } from '../mappers/user-file.mapper';
+} from '../types/user-file.js';
+import { userFileMapper } from '../mappers/user-file.mapper.js';
 
 export interface UserFilesService {
   // File CRUD

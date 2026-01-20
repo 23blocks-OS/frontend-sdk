@@ -1,6 +1,6 @@
 // Block factory and metadata
-export { createJarvisBlock, jarvisBlockMetadata } from './lib/jarvis.block';
-export type { JarvisBlock, JarvisBlockConfig } from './lib/jarvis.block';
+export { createJarvisBlock, jarvisBlockMetadata } from './lib/jarvis.block.js';
+export type { JarvisBlock, JarvisBlockConfig } from './lib/jarvis.block.js';
 
 // Types
 export type {
@@ -148,7 +148,7 @@ export type {
   CreateExecutionCommentRequest,
   UpdateExecutionCommentRequest,
   ListExecutionCommentsParams,
-} from './lib/types';
+} from './lib/types/index.js';
 
 // Services
 export type {
@@ -169,7 +169,7 @@ export type {
   MarvinChatService,
   PromptCommentsService,
   ExecutionCommentsService,
-} from './lib/services';
+} from './lib/services/index.js';
 
 export {
   createAgentsService,
@@ -189,7 +189,7 @@ export {
   createMarvinChatService,
   createPromptCommentsService,
   createExecutionCommentsService,
-} from './lib/services';
+} from './lib/services/index.js';
 
 // Mappers (for advanced use cases)
 export {
@@ -208,4 +208,4 @@ export {
   mailTemplateMapper,
   promptCommentMapper,
   executionCommentMapper,
-} from './lib/mappers';
+} from './lib/mappers/index.js';

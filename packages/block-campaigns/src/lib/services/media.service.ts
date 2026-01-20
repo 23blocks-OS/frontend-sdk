@@ -5,8 +5,8 @@ import type {
   CreateMediaRequest,
   UpdateMediaRequest,
   ListMediaParams,
-} from '../types/media';
-import { mediaMapper } from '../mappers/media.mapper';
+} from '../types/media.js';
+import { mediaMapper } from '../mappers/media.mapper.js';
 
 export interface MediaService {
   list(params?: ListMediaParams): Promise<PageResult<Media>>;

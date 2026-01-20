@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Enrollment } from '../types/enrollment';
-import { parseString, parseDate, parseOptionalNumber, parseEnrollmentStatus } from './utils';
+import type { Enrollment } from '../types/enrollment.js';
+import { parseString, parseDate, parseOptionalNumber, parseEnrollmentStatus } from './utils.js';
 
 export const enrollmentMapper: ResourceMapper<Enrollment> = {
   type: 'Enrollment',

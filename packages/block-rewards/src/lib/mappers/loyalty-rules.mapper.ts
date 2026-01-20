@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { BadgeCategory, MoneyRule, ProductRule, EventRule } from '../types/loyalty-rules';
-import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from './utils';
+import type { BadgeCategory, MoneyRule, ProductRule, EventRule } from '../types/loyalty-rules.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from './utils.js';
 
 export const badgeCategoryMapper: ResourceMapper<BadgeCategory> = {
   type: 'badge_category',

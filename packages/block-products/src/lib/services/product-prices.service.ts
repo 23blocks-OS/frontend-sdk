@@ -5,8 +5,8 @@ import type {
   CreateProductPriceRequest,
   UpdateProductPriceRequest,
   ListProductPricesParams,
-} from '../types/product-price';
-import { productPriceMapper } from '../mappers/product-price.mapper';
+} from '../types/product-price.js';
+import { productPriceMapper } from '../mappers/product-price.mapper.js';
 
 export interface ProductPricesService {
   list(params?: ListProductPricesParams): Promise<PageResult<ProductPrice>>;

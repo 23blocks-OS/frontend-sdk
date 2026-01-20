@@ -5,8 +5,8 @@ import type {
   CreateWebNotificationRequest,
   BulkWebNotificationRequest,
   ListWebNotificationsParams,
-} from '../types/web-notification';
-import { webNotificationMapper } from '../mappers/web-notification.mapper';
+} from '../types/web-notification.js';
+import { webNotificationMapper } from '../mappers/web-notification.mapper.js';
 
 export interface WebNotificationsService {
   list(params?: ListWebNotificationsParams): Promise<PageResult<WebNotification>>;

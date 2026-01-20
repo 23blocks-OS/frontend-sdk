@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Lead } from '../types/lead';
-import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils';
+import type { Lead } from '../types/lead.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils.js';
 
 export const leadMapper: ResourceMapper<Lead> = {
   type: 'Lead',

@@ -6,8 +6,8 @@ import type {
   CustomerSubscription,
   CreateCustomerSubscriptionRequest,
   UpdateCustomerSubscriptionRequest,
-} from '../types/customer';
-import { salesCustomerMapper } from '../mappers/customer.mapper';
+} from '../types/customer.js';
+import { salesCustomerMapper } from '../mappers/customer.mapper.js';
 
 export interface SalesCustomersService {
   get(uniqueId: string): Promise<SalesCustomer>;

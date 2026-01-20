@@ -10,10 +10,10 @@ import type {
   UpdateUserSubscriptionRequest,
   AddSubscriptionConsumptionRequest,
   ListUserSubscriptionsParams,
-} from '../types/user';
-import type { Order } from '../types/order';
-import { salesUserMapper } from '../mappers/user.mapper';
-import { orderMapper } from '../mappers/order.mapper';
+} from '../types/user.js';
+import type { Order } from '../types/order.js';
+import { salesUserMapper } from '../mappers/user.mapper.js';
+import { orderMapper } from '../mappers/order.mapper.js';
 
 export interface SalesUsersService {
   list(params?: ListSalesUsersParams): Promise<PageResult<SalesUser>>;
@@ -120,7 +120,7 @@ export function createSalesUsersService(transport: Transport, _config: { appId: 
         })),
         meta: {
           totalCount: response.meta?.total_count || data.length,
-          page: response.meta?.page || 1,
+          currentPage: response.meta?.current_page || 1,
           perPage: response.meta?.per_page || data.length,
           totalPages: response.meta?.total_pages || 1,
         },

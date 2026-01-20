@@ -5,8 +5,8 @@ import type {
   CreateEmployeeAssignmentRequest,
   UpdateEmployeeAssignmentRequest,
   ListEmployeeAssignmentsParams,
-} from '../types/employee-assignment';
-import { employeeAssignmentMapper } from '../mappers/employee-assignment.mapper';
+} from '../types/employee-assignment.js';
+import { employeeAssignmentMapper } from '../mappers/employee-assignment.mapper.js';
 
 export interface EmployeeAssignmentsService {
   list(params?: ListEmployeeAssignmentsParams): Promise<PageResult<EmployeeAssignment>>;

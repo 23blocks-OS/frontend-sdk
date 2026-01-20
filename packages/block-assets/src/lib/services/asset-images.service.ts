@@ -3,7 +3,7 @@ import type {
   AssetPresignResponse,
   CreateAssetImageRequest,
   AssetImage,
-} from '../types/asset-image';
+} from '../types/asset-image.js';
 
 export interface AssetImagesService {
   presign(assetUniqueId: string): Promise<AssetPresignResponse>;

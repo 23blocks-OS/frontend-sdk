@@ -3,8 +3,8 @@ import { decodeMany } from '@23blocks/jsonapi-codec';
 import type {
   Conversation,
   GetConversationParams,
-} from '../types/conversation';
-import { messageMapper } from '../mappers/message.mapper';
+} from '../types/conversation.js';
+import { messageMapper } from '../mappers/message.mapper.js';
 
 export interface ConversationsService {
   get(params: GetConversationParams): Promise<Conversation>;

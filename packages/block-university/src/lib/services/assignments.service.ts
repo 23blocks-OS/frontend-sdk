@@ -5,8 +5,8 @@ import type {
   CreateAssignmentRequest,
   UpdateAssignmentRequest,
   ListAssignmentsParams,
-} from '../types/assignment';
-import { assignmentMapper } from '../mappers/assignment.mapper';
+} from '../types/assignment.js';
+import { assignmentMapper } from '../mappers/assignment.mapper.js';
 
 export interface AssignmentsService {
   list(params?: ListAssignmentsParams): Promise<PageResult<Assignment>>;

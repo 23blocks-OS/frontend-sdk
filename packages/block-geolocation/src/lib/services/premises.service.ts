@@ -5,8 +5,8 @@ import type {
   CreatePremiseRequest,
   UpdatePremiseRequest,
   ListPremisesParams,
-} from '../types/premise';
-import { premiseMapper } from '../mappers/premise.mapper';
+} from '../types/premise.js';
+import { premiseMapper } from '../mappers/premise.mapper.js';
 
 export interface PremisesService {
   list(params?: ListPremisesParams): Promise<PageResult<Premise>>;

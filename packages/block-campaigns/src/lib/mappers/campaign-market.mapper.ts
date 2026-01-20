@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { CampaignMarket } from '../types/campaign-market';
-import { parseString, parseDate, parseOptionalNumber, parseStatus } from './utils';
+import type { CampaignMarket } from '../types/campaign-market.js';
+import { parseString, parseDate, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const campaignMarketMapper: ResourceMapper<CampaignMarket> = {
   type: 'CampaignMarket',

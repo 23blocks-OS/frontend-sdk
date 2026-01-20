@@ -5,8 +5,8 @@ import type {
   CreateFormSchemaRequest,
   UpdateFormSchemaRequest,
   ListFormSchemasParams,
-} from '../types/form-schema';
-import { formSchemaMapper } from '../mappers/form-schema.mapper';
+} from '../types/form-schema.js';
+import { formSchemaMapper } from '../mappers/form-schema.mapper.js';
 
 export interface FormSchemasService {
   /**

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Submission } from '../types/submission';
-import { parseString, parseDate, parseOptionalNumber, parseSubmissionStatus } from './utils';
+import type { Submission } from '../types/submission.js';
+import { parseString, parseDate, parseOptionalNumber, parseSubmissionStatus } from './utils.js';
 
 export const submissionMapper: ResourceMapper<Submission> = {
   type: 'Submission',

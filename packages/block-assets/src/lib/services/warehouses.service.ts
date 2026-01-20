@@ -5,8 +5,8 @@ import type {
   CreateWarehouseRequest,
   UpdateWarehouseRequest,
   ListWarehousesParams,
-} from '../types/warehouse';
-import { warehouseMapper } from '../mappers/warehouse.mapper';
+} from '../types/warehouse.js';
+import { warehouseMapper } from '../mappers/warehouse.mapper.js';
 
 export interface WarehousesService {
   list(params?: ListWarehousesParams): Promise<PageResult<Warehouse>>;

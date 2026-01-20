@@ -1,7 +1,7 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
-import type { PostVersion, ListPostVersionsParams } from '../types/post-version';
-import { postVersionMapper } from '../mappers/post-version.mapper';
+import { decodeOne } from '@23blocks/jsonapi-codec';
+import type { PostVersion, ListPostVersionsParams } from '../types/post-version.js';
+import { postVersionMapper } from '../mappers/post-version.mapper.js';
 
 export interface PostVersionsService {
   /**
@@ -43,11 +43,11 @@ export function createPostVersionsService(transport: Transport, _config: { appId
         });
         return {
           data: versions.map((v) => postVersionMapper.map(v as { id: string; attributes: Record<string, unknown> })),
-          meta: { total: versions.length, page: 1, perPage: versions.length },
+          meta: { totalCount: versions.length, currentPage: 1, perPage: versions.length, totalPages: 1 },
         };
       }
 
-      return { data: [], meta: { total: 0, page: 1, perPage: 10 } };
+      return { data: [], meta: { totalCount: 0, currentPage: 1, perPage: 10, totalPages: 0 } };
     },
 
     async get(postUniqueId: string, versionUniqueId: string): Promise<PostVersion> {

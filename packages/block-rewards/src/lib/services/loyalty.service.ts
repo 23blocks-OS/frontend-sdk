@@ -1,13 +1,13 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Loyalty,
   LoyaltyTransaction,
   AddPointsRequest,
   RedeemPointsRequest,
   ListTransactionsParams,
-} from '../types/loyalty';
-import { loyaltyMapper, loyaltyTransactionMapper } from '../mappers/loyalty.mapper';
+} from '../types/loyalty.js';
+import { loyaltyMapper, loyaltyTransactionMapper } from '../mappers/loyalty.mapper.js';
 
 export interface LoyaltyService {
   get(uniqueId: string): Promise<Loyalty>;

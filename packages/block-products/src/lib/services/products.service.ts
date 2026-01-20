@@ -11,14 +11,14 @@ import type {
   ListProductsParams,
   CreateVariationRequest,
   UpdateVariationRequest,
-} from '../types/product';
+} from '../types/product.js';
 import {
   productMapper,
   productVariationMapper,
   productImageMapper,
   productStockMapper,
   productReviewMapper,
-} from '../mappers/product.mapper';
+} from '../mappers/product.mapper.js';
 
 export interface ProductsService {
   // Products

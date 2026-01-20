@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Contact, ContactProfile } from '../types/contact';
-import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils';
+import type { Contact, ContactProfile } from '../types/contact.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils.js';
 
 export const contactMapper: ResourceMapper<Contact> = {
   type: 'Contact',

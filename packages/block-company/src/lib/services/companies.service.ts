@@ -5,8 +5,8 @@ import type {
   CreateCompanyRequest,
   UpdateCompanyRequest,
   ListCompaniesParams,
-} from '../types/company';
-import { companyMapper } from '../mappers/company.mapper';
+} from '../types/company.js';
+import { companyMapper } from '../mappers/company.mapper.js';
 
 export interface CompaniesService {
   list(params?: ListCompaniesParams): Promise<PageResult<Company>>;

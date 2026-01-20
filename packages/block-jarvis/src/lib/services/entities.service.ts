@@ -11,8 +11,8 @@ import type {
   SendEntityMessageResponse,
   QueryEntityFileRequest,
   QueryEntityFileResponse,
-} from '../types/entity';
-import { entityMapper } from '../mappers/entity.mapper';
+} from '../types/entity.js';
+import { entityMapper } from '../mappers/entity.mapper.js';
 
 export interface EntitiesService {
   list(params?: ListEntitiesParams): Promise<PageResult<Entity>>;

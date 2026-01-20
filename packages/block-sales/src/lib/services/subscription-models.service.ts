@@ -5,8 +5,8 @@ import type {
   CreateSubscriptionModelRequest,
   UpdateSubscriptionModelRequest,
   ListSubscriptionModelsParams,
-} from '../types/subscription-model';
-import { subscriptionModelMapper } from '../mappers/subscription-model.mapper';
+} from '../types/subscription-model.js';
+import { subscriptionModelMapper } from '../mappers/subscription-model.mapper.js';
 
 export interface SubscriptionModelsService {
   list(params?: ListSubscriptionModelsParams): Promise<PageResult<SubscriptionModel>>;

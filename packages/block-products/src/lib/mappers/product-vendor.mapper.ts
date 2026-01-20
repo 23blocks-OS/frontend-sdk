@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { ProductVendor } from '../types/product-vendor';
-import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from './utils';
+import type { ProductVendor } from '../types/product-vendor.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from './utils.js';
 
 export const productVendorMapper: ResourceMapper<ProductVendor> = {
   type: 'product_vendor',

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Audience, AudienceMember } from '../types/audience';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils';
+import type { Audience, AudienceMember } from '../types/audience.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const audienceMapper: ResourceMapper<Audience> = {
   type: 'Audience',

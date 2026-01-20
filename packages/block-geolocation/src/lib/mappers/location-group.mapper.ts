@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { LocationGroup } from '../types/location-group';
-import { parseString, parseDate, parseStatus } from './utils';
+import type { LocationGroup } from '../types/location-group.js';
+import { parseString, parseDate, parseStatus } from './utils.js';
 
 export const locationGroupMapper: ResourceMapper<LocationGroup> = {
   type: 'location_group',

@@ -1,7 +1,7 @@
 import type { Transport } from '@23blocks/contracts';
 import { decodeOne } from '@23blocks/jsonapi-codec';
-import type { CartDetail } from '../types/cart';
-import { cartDetailMapper } from '../mappers/cart.mapper';
+import type { CartDetail } from '../types/cart.js';
+import { cartDetailMapper } from '../mappers/cart.mapper.js';
 
 /**
  * Cart Details Service - manages individual cart item lifecycle

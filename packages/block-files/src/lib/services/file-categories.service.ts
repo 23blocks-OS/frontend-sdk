@@ -5,8 +5,8 @@ import type {
   CreateFileCategoryRequest,
   UpdateFileCategoryRequest,
   ListFileCategoriesParams,
-} from '../types/file-category';
-import { fileCategoryMapper } from '../mappers/file-category.mapper';
+} from '../types/file-category.js';
+import { fileCategoryMapper } from '../mappers/file-category.mapper.js';
 
 export interface FileCategoriesService {
   list(params?: ListFileCategoriesParams): Promise<PageResult<FileCategory>>;

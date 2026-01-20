@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { AssetOperation } from '../types/asset-operation';
-import { parseDate } from './utils';
+import type { AssetOperation } from '../types/asset-operation.js';
+import { parseDate } from './utils.js';
 
 export const assetOperationMapper: ResourceMapper<AssetOperation> = {
   type: 'asset_operation',

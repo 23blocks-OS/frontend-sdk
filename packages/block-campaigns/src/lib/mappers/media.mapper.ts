@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Media } from '../types/media';
-import { parseString, parseDate, parseStatus } from './utils';
+import type { Media } from '../types/media.js';
+import { parseString, parseDate, parseStatus } from './utils.js';
 
 export const mediaMapper: ResourceMapper<Media> = {
   type: 'Medium',

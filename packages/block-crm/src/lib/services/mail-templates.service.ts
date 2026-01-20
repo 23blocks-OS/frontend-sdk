@@ -8,8 +8,8 @@ import type {
   CreateMandrillTemplateRequest,
   UpdateMandrillTemplateRequest,
   MandrillTemplateStats,
-} from '../types/mail-template';
-import { crmMailTemplateMapper } from '../mappers/mail-template.mapper';
+} from '../types/mail-template.js';
+import { crmMailTemplateMapper } from '../mappers/mail-template.mapper.js';
 
 export interface CrmMailTemplatesService {
   list(params?: ListCrmMailTemplatesParams): Promise<PageResult<CrmMailTemplate>>;

@@ -4,7 +4,7 @@ import type {
   MercadoPagoPaymentIntent,
   CreateMercadoPagoPaymentRequest,
   CreateMercadoPagoPSERequest,
-} from '../types/mercadopago';
+} from '../types/mercadopago.js';
 
 export interface MercadoPagoService {
   listPaymentMethods(): Promise<MercadoPagoPaymentMethod[]>;

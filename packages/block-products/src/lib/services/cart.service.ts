@@ -7,8 +7,8 @@ import type {
   UpdateCartItemRequest,
   UpdateCartRequest,
   CheckoutRequest,
-} from '../types/cart';
-import { cartMapper, cartDetailMapper } from '../mappers/cart.mapper';
+} from '../types/cart.js';
+import { cartMapper, cartDetailMapper } from '../mappers/cart.mapper.js';
 
 export interface CartService {
   get(userUniqueId: string): Promise<Cart>;

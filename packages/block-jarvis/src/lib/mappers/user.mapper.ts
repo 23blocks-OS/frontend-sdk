@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { JarvisUser } from '../types/user';
-import { parseDate } from './utils';
+import type { JarvisUser } from '../types/user.js';
+import { parseDate } from './utils.js';
 
 export const jarvisUserMapper: ResourceMapper<JarvisUser> = {
   type: 'user',

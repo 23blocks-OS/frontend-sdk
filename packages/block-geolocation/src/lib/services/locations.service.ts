@@ -5,8 +5,8 @@ import type {
   CreateLocationRequest,
   UpdateLocationRequest,
   ListLocationsParams,
-} from '../types/location';
-import { locationMapper } from '../mappers/location.mapper';
+} from '../types/location.js';
+import { locationMapper } from '../mappers/location.mapper.js';
 
 export interface LocationsService {
   list(params?: ListLocationsParams): Promise<PageResult<Location>>;

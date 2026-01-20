@@ -8,10 +8,10 @@ import type {
   FormSetMatchRequest,
   FormSetMatchResult,
   FormSetAutoAssignRequest,
-} from '../types/form-set';
-import { formSetMapper } from '../mappers/form-set.mapper';
-import { formInstanceMapper } from '../mappers/form-instance.mapper';
-import type { FormInstance } from '../types/form-instance';
+} from '../types/form-set.js';
+import { formSetMapper } from '../mappers/form-set.mapper.js';
+import { formInstanceMapper } from '../mappers/form-instance.mapper.js';
+import type { FormInstance } from '../types/form-instance.js';
 
 export interface FormSetsService {
   /**

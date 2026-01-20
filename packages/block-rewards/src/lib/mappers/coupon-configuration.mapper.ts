@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { CouponConfiguration } from '../types/coupon-configuration';
-import { parseString, parseDate, parseStatus, parseNumber, parseOptionalNumber, parseBoolean } from './utils';
+import type { CouponConfiguration } from '../types/coupon-configuration.js';
+import { parseString, parseDate, parseStatus, parseNumber, parseOptionalNumber, parseBoolean } from './utils.js';
 
 export const couponConfigurationMapper: ResourceMapper<CouponConfiguration> = {
   type: 'coupon_configuration',

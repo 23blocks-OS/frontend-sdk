@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { Subscriber } from '../types/subscriber';
-import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils';
+import type { Subscriber } from '../types/subscriber.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils.js';
 
 export const subscriberMapper: JsonApiMapper<Subscriber> = {
   type: 'subscriber',

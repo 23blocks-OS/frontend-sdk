@@ -5,8 +5,8 @@ import type {
   CreateCampaignLocationRequest,
   UpdateCampaignLocationRequest,
   ListCampaignLocationsParams,
-} from '../types/campaign-location';
-import { campaignLocationMapper } from '../mappers/campaign-location.mapper';
+} from '../types/campaign-location.js';
+import { campaignLocationMapper } from '../mappers/campaign-location.mapper.js';
 
 export interface CampaignLocationsService {
   list(params?: ListCampaignLocationsParams): Promise<PageResult<CampaignLocation>>;

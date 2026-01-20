@@ -5,8 +5,8 @@ import type {
   CreateLandingTemplateRequest,
   UpdateLandingTemplateRequest,
   ListLandingTemplatesParams,
-} from '../types/landing-template';
-import { landingTemplateMapper } from '../mappers/landing-template.mapper';
+} from '../types/landing-template.js';
+import { landingTemplateMapper } from '../mappers/landing-template.mapper.js';
 
 export interface LandingTemplatesService {
   list(params?: ListLandingTemplatesParams): Promise<PageResult<LandingTemplate>>;

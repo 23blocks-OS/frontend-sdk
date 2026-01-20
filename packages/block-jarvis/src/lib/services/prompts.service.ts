@@ -11,8 +11,8 @@ import type {
   TestPromptResponse,
   RenderPromptRequest,
   RenderPromptResponse,
-} from '../types/prompt';
-import { promptMapper } from '../mappers/prompt.mapper';
+} from '../types/prompt.js';
+import { promptMapper } from '../mappers/prompt.mapper.js';
 
 export interface PromptsService {
   list(params?: ListPromptsParams): Promise<PageResult<Prompt>>;

@@ -5,8 +5,8 @@ import type {
   CreateTagRequest,
   UpdateTagRequest,
   ListTagsParams,
-} from '../types/tag';
-import { tagMapper } from '../mappers/tag.mapper';
+} from '../types/tag.js';
+import { tagMapper } from '../mappers/tag.mapper.js';
 
 export interface TagsService {
   list(params?: ListTagsParams): Promise<PageResult<Tag>>;

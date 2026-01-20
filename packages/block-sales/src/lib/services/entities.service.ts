@@ -8,8 +8,8 @@ import type {
   EntitySubscription,
   CreateEntitySubscriptionRequest,
   UpdateEntitySubscriptionRequest,
-} from '../types/entity';
-import { salesEntityMapper } from '../mappers/entity.mapper';
+} from '../types/entity.js';
+import { salesEntityMapper } from '../mappers/entity.mapper.js';
 
 export interface SalesEntitiesService {
   list(params?: ListSalesEntitiesParams): Promise<PageResult<SalesEntity>>;

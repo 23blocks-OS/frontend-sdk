@@ -5,8 +5,8 @@ import type {
   CreateAddressRequest,
   UpdateAddressRequest,
   ListAddressesParams,
-} from '../types/address';
-import { addressMapper } from '../mappers/address.mapper';
+} from '../types/address.js';
+import { addressMapper } from '../mappers/address.mapper.js';
 
 export interface AddressesService {
   list(params?: ListAddressesParams): Promise<PageResult<Address>>;

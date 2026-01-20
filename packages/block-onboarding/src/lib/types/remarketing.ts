@@ -1,4 +1,4 @@
-import type { OnboardJourney } from './onboard';
+import type { OnboardJourney } from './onboard.js';
 
 export interface AbandonedJourney extends OnboardJourney {
   userEmail?: string;

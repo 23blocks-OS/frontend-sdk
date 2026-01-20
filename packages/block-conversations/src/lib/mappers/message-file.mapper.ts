@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { MessageFile } from '../types/message-file';
-import { parseString, parseDate, parseOptionalNumber } from './utils';
+import type { MessageFile } from '../types/message-file.js';
+import { parseString, parseDate, parseOptionalNumber } from './utils.js';
 
 export const messageFileMapper: ResourceMapper<MessageFile> = {
   type: 'MessageFile',

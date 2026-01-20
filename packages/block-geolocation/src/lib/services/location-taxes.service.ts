@@ -4,8 +4,8 @@ import type {
   LocationTax,
   CreateLocationTaxRequest,
   UpdateLocationTaxRequest,
-} from '../types/location-tax';
-import { locationTaxMapper } from '../mappers/location-tax.mapper';
+} from '../types/location-tax.js';
+import { locationTaxMapper } from '../mappers/location-tax.mapper.js';
 
 export interface LocationTaxesService {
   create(locationUniqueId: string, data: CreateLocationTaxRequest): Promise<LocationTax>;

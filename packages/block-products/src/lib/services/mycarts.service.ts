@@ -1,7 +1,7 @@
 import type { Transport } from '@23blocks/contracts';
 import { decodeOne } from '@23blocks/jsonapi-codec';
-import type { Cart } from '../types/cart';
-import { cartMapper } from '../mappers/cart.mapper';
+import type { Cart } from '../types/cart.js';
+import { cartMapper } from '../mappers/cart.mapper.js';
 
 export interface AddToMyCartRequest {
   productUniqueId: string;

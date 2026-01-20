@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { PremiseEvent } from '../types/premise-event';
-import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber, parseStringArray } from './utils';
+import type { PremiseEvent } from '../types/premise-event.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber, parseStringArray } from './utils.js';
 
 export const premiseEventMapper: ResourceMapper<PremiseEvent> = {
   type: 'PremiseEvent',

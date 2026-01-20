@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Area } from '../types/area';
-import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils';
+import type { Area } from '../types/area.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils.js';
 
 export const areaMapper: ResourceMapper<Area> = {
   type: 'Area',

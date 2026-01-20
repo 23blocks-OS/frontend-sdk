@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { FormInstance } from '../types/form-instance';
-import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils';
+import type { FormInstance } from '../types/form-instance.js';
+import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils.js';
 
 export const formInstanceMapper: ResourceMapper<FormInstance> = {
   type: 'FormInstance',

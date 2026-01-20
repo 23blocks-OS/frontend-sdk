@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { ContentTest, TestQuestion, TestOption } from '../types/content-test';
-import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils';
+import type { ContentTest, TestQuestion, TestOption } from '../types/content-test.js';
+import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils.js';
 
 export const contentTestMapper: ResourceMapper<ContentTest> = {
   type: 'content_test',

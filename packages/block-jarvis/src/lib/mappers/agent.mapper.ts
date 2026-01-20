@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Agent } from '../types/agent';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils';
+import type { Agent } from '../types/agent.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils.js';
 
 export const agentMapper: ResourceMapper<Agent> = {
   type: 'Agent',

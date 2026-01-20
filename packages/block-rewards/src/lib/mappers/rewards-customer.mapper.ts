@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { RewardsCustomer } from '../types/rewards-customer';
-import { parseString, parseDate, parseStatus, parseOptionalNumber } from './utils';
+import type { RewardsCustomer } from '../types/rewards-customer.js';
+import { parseString, parseDate, parseStatus, parseOptionalNumber } from './utils.js';
 
 export const rewardsCustomerMapper: ResourceMapper<RewardsCustomer> = {
   type: 'customer',

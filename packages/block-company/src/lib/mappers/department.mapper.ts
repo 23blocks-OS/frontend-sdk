@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Department } from '../types/department';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { Department } from '../types/department.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const departmentMapper: ResourceMapper<Department> = {
   type: 'Department',

@@ -1,7 +1,7 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
-import type { Subscription, CreateSubscriptionRequest, UpdateSubscriptionRequest, ListSubscriptionsParams } from '../types/subscription';
-import { subscriptionMapper } from '../mappers/subscription.mapper';
+import type { Subscription, CreateSubscriptionRequest, UpdateSubscriptionRequest, ListSubscriptionsParams } from '../types/subscription.js';
+import { subscriptionMapper } from '../mappers/subscription.mapper.js';
 
 export interface SubscriptionsService {
   list(params?: ListSubscriptionsParams): Promise<PageResult<Subscription>>;

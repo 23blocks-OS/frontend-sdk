@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { CampaignTarget } from '../types/campaign-target';
-import { parseString, parseDate, parseOptionalNumber, parseStatus } from './utils';
+import type { CampaignTarget } from '../types/campaign-target.js';
+import { parseString, parseDate, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const campaignTargetMapper: ResourceMapper<CampaignTarget> = {
   type: 'CampaignTarget',

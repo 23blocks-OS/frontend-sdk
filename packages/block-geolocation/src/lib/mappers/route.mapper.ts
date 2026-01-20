@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { TravelRoute } from '../types/route';
-import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils';
+import type { TravelRoute } from '../types/route.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils.js';
 
 export const travelRouteMapper: ResourceMapper<TravelRoute> = {
   type: 'TravelRoute',

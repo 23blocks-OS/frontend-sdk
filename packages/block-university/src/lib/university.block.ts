@@ -34,7 +34,7 @@ import {
   type AttendanceService,
   type NotesService,
   type RegistrationTokensService,
-} from './services';
+} from './services/index.js';
 
 export interface UniversityBlockConfig extends BlockConfig {
   appId: string;

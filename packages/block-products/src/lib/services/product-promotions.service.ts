@@ -5,8 +5,8 @@ import type {
   CreateProductPromotionRequest,
   UpdateProductPromotionRequest,
   ListProductPromotionsParams,
-} from '../types/product-promotion';
-import { productPromotionMapper } from '../mappers/product-promotion.mapper';
+} from '../types/product-promotion.js';
+import { productPromotionMapper } from '../mappers/product-promotion.mapper.js';
 
 export interface ProductPromotionsService {
   list(params?: ListProductPromotionsParams): Promise<PageResult<ProductPromotion>>;

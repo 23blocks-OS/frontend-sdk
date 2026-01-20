@@ -5,10 +5,10 @@ import type {
   CreateContextRequest,
   UpdateContextRequest,
   ListContextsParams,
-} from '../types/context';
-import type { Group } from '../types/group';
-import { contextMapper } from '../mappers/context.mapper';
-import { groupMapper } from '../mappers/group.mapper';
+} from '../types/context.js';
+import type { Group } from '../types/group.js';
+import { contextMapper } from '../mappers/context.mapper.js';
+import { groupMapper } from '../mappers/group.mapper.js';
 
 export interface ContextsService {
   list(params?: ListContextsParams): Promise<PageResult<Context>>;

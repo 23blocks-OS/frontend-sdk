@@ -1,7 +1,7 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
-import type { ProductStock } from '../types/product';
-import { productStockMapper } from '../mappers/product.mapper';
+import type { ProductStock } from '../types/product.js';
+import { productStockMapper } from '../mappers/product.mapper.js';
 
 export interface CreateStockRequest {
   vendorUniqueId: string;

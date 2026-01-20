@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { EntityFile } from '../types/entity-file';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils';
+import type { EntityFile } from '../types/entity-file.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const entityFileMapper: ResourceMapper<EntityFile> = {
   type: 'EntityFile',

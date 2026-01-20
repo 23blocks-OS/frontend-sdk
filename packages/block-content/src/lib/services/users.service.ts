@@ -7,12 +7,12 @@ import type {
   UpdateContentUserRequest,
   ListContentUsersParams,
   UserActivity,
-} from '../types/user';
-import type { Post } from '../types/post';
-import type { Comment } from '../types/comment';
-import { contentUserMapper, followingMapper } from '../mappers/user.mapper';
-import { postMapper } from '../mappers/post.mapper';
-import { commentMapper } from '../mappers/comment.mapper';
+} from '../types/user.js';
+import type { Post } from '../types/post.js';
+import type { Comment } from '../types/comment.js';
+import { contentUserMapper, followingMapper } from '../mappers/user.mapper.js';
+import { postMapper } from '../mappers/post.mapper.js';
+import { commentMapper } from '../mappers/comment.mapper.js';
 
 export interface ContentUsersService {
   list(params?: ListContentUsersParams): Promise<PageResult<ContentUser>>;

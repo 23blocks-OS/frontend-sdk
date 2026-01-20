@@ -8,8 +8,8 @@ import type {
   EntityAccess,
   AccessRequest,
   CreateAccessRequestRequest,
-} from '../types/entity';
-import { assetsEntityMapper } from '../mappers/entity.mapper';
+} from '../types/entity.js';
+import { assetsEntityMapper } from '../mappers/entity.mapper.js';
 
 export interface AssetsEntitiesService {
   list(params?: ListAssetsEntitiesParams): Promise<PageResult<AssetsEntity>>;

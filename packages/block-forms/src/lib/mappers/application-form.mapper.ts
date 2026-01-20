@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { ApplicationForm, ApplicationFormResponse, VerificationStatus, SendOtpResponse } from '../types/application-form';
-import { parseString, parseDate, parseStatus, parseBoolean, parseNumber } from './utils';
+import type { ApplicationForm, ApplicationFormResponse, VerificationStatus, SendOtpResponse } from '../types/application-form.js';
+import { parseString, parseDate, parseStatus, parseBoolean, parseNumber } from './utils.js';
 
 /**
  * Parse verification status from API response

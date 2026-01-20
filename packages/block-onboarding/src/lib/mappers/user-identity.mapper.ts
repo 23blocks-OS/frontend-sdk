@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { UserIdentity } from '../types/user-identity';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { UserIdentity } from '../types/user-identity.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const userIdentityMapper: ResourceMapper<UserIdentity> = {
   type: 'UserIdentity',

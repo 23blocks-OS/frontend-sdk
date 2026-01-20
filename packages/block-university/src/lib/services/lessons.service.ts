@@ -6,8 +6,8 @@ import type {
   UpdateLessonRequest,
   ListLessonsParams,
   ReorderLessonsRequest,
-} from '../types/lesson';
-import { lessonMapper } from '../mappers/lesson.mapper';
+} from '../types/lesson.js';
+import { lessonMapper } from '../mappers/lesson.mapper.js';
 
 export interface LessonsService {
   list(params?: ListLessonsParams): Promise<PageResult<Lesson>>;

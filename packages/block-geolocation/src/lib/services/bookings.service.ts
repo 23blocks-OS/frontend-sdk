@@ -5,8 +5,8 @@ import type {
   CreatePremiseBookingRequest,
   UpdatePremiseBookingRequest,
   ListPremiseBookingsParams,
-} from '../types/booking';
-import { premiseBookingMapper } from '../mappers/booking.mapper';
+} from '../types/booking.js';
+import { premiseBookingMapper } from '../mappers/booking.mapper.js';
 
 export interface PremiseBookingsService {
   list(params?: ListPremiseBookingsParams): Promise<PageResult<PremiseBooking>>;

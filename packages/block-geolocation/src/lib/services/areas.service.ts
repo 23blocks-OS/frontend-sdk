@@ -5,8 +5,8 @@ import type {
   CreateAreaRequest,
   UpdateAreaRequest,
   ListAreasParams,
-} from '../types/area';
-import { areaMapper } from '../mappers/area.mapper';
+} from '../types/area.js';
+import { areaMapper } from '../mappers/area.mapper.js';
 
 export interface AreasService {
   list(params?: ListAreasParams): Promise<PageResult<Area>>;

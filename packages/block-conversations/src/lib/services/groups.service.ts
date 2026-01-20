@@ -1,12 +1,12 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Group,
   CreateGroupRequest,
   UpdateGroupRequest,
   ListGroupsParams,
-} from '../types/group';
-import { groupMapper } from '../mappers/group.mapper';
+} from '../types/group.js';
+import { groupMapper } from '../mappers/group.mapper.js';
 
 export interface GroupsService {
   list(params?: ListGroupsParams): Promise<PageResult<Group>>;

@@ -5,8 +5,8 @@ import type {
   CreateFlowRequest,
   UpdateFlowRequest,
   ListFlowsParams,
-} from '../types/flow';
-import { flowMapper } from '../mappers/flow.mapper';
+} from '../types/flow.js';
+import { flowMapper } from '../mappers/flow.mapper.js';
 
 export interface FlowsService {
   list(params?: ListFlowsParams): Promise<PageResult<Flow>>;

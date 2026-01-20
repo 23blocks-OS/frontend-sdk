@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { Category, AccountCategory } from '../types/category';
-import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils';
+import type { Category, AccountCategory } from '../types/category.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils.js';
 
 export const categoryMapper: JsonApiMapper<Category> = {
   type: 'category',

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { CoachingSession } from '../types/coaching-session';
-import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils';
+import type { CoachingSession } from '../types/coaching-session.js';
+import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean } from './utils.js';
 
 export const coachingSessionMapper: ResourceMapper<CoachingSession> = {
   type: 'coaching_session',

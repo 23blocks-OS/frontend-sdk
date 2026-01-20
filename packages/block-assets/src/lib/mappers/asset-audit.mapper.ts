@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { AssetAudit } from '../types/asset-audit';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { AssetAudit } from '../types/asset-audit.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const assetAuditMapper: ResourceMapper<AssetAudit> = {
   type: 'AssetAudit',

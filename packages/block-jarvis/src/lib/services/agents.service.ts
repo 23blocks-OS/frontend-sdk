@@ -9,8 +9,8 @@ import type {
   ChatResponse,
   CompleteRequest,
   CompleteResponse,
-} from '../types/agent';
-import { agentMapper } from '../mappers/agent.mapper';
+} from '../types/agent.js';
+import { agentMapper } from '../mappers/agent.mapper.js';
 
 export interface AgentsService {
   list(params?: ListAgentsParams): Promise<PageResult<Agent>>;

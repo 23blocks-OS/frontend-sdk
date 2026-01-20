@@ -14,7 +14,7 @@ import {
   type OnboardService,
   type MailTemplatesService,
   type RemarketingService,
-} from './services';
+} from './services/index.js';
 
 export interface OnboardingBlockConfig extends BlockConfig {
   appId: string;

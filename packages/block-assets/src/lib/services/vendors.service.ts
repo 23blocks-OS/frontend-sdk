@@ -5,8 +5,8 @@ import type {
   CreateVendorRequest,
   UpdateVendorRequest,
   ListVendorsParams,
-} from '../types/vendor';
-import { vendorMapper } from '../mappers/vendor.mapper';
+} from '../types/vendor.js';
+import { vendorMapper } from '../mappers/vendor.mapper.js';
 
 export interface VendorsService {
   list(params?: ListVendorsParams): Promise<PageResult<Vendor>>;

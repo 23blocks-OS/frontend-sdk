@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { LocationIdentity } from '../types/location-identity';
-import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils';
+import type { LocationIdentity } from '../types/location-identity.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils.js';
 
 export const locationIdentityMapper: ResourceMapper<LocationIdentity> = {
   type: 'LocationIdentity',

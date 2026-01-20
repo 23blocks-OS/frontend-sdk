@@ -1,6 +1,6 @@
 import type { ResourceMapper, JsonApiResource, IncludedMap } from '@23blocks/jsonapi-codec';
-import type { GroupInvite } from '../types/group-invite';
-import { parseString, parseDate, parseNumber, parseStatus } from './utils';
+import type { GroupInvite } from '../types/group-invite.js';
+import { parseString, parseDate, parseNumber, parseStatus } from './utils.js';
 
 export const groupInviteMapper: ResourceMapper<GroupInvite> = {
   type: 'GroupInvite',

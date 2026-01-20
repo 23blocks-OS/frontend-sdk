@@ -1,6 +1,6 @@
 import type { IdentityCore, PageResult } from '@23blocks/contracts';
-import type { Group } from './group';
-import type { Conversation } from './conversation';
+import type { Group } from './group.js';
+import type { Conversation } from './conversation.js';
 
 export interface ConversationsUser extends IdentityCore {
   email?: string;

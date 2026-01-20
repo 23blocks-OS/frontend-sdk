@@ -7,8 +7,8 @@ import type {
   ListGeoIdentitiesParams,
   LocationIdentityRequest,
   UserLocationRequest,
-} from '../types/geo-identity';
-import { geoIdentityMapper } from '../mappers/geo-identity.mapper';
+} from '../types/geo-identity.js';
+import { geoIdentityMapper } from '../mappers/geo-identity.mapper.js';
 
 export interface GeoIdentitiesService {
   list(params?: ListGeoIdentitiesParams): Promise<PageResult<GeoIdentity>>;

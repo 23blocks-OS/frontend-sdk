@@ -1,12 +1,12 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Message,
   CreateMessageRequest,
   UpdateMessageRequest,
   ListMessagesParams,
-} from '../types/message';
-import { messageMapper } from '../mappers/message.mapper';
+} from '../types/message.js';
+import { messageMapper } from '../mappers/message.mapper.js';
 
 export interface MessagesService {
   list(params?: ListMessagesParams): Promise<PageResult<Message>>;

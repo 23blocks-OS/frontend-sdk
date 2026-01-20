@@ -9,8 +9,8 @@ import type {
   CheckinRequest,
   CheckoutRequest,
   EventNotesRequest,
-} from '../types/contact-event';
-import { contactEventMapper } from '../mappers/contact-event.mapper';
+} from '../types/contact-event.js';
+import { contactEventMapper } from '../mappers/contact-event.mapper.js';
 
 export interface ContactEventsService {
   list(params?: ListContactEventsParams): Promise<PageResult<ContactEvent>>;

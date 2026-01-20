@@ -12,7 +12,7 @@ import type {
   RunAgentThreadResponse,
   AgentRunExecution,
   ListAgentRunExecutionsParams,
-} from '../types/agent-runtime';
+} from '../types/agent-runtime.js';
 
 export interface AgentRuntimeService {
   getContext(agentUniqueId: string, contextUniqueId: string): Promise<AgentContext>;
@@ -270,7 +270,7 @@ export function createAgentRuntimeService(transport: Transport, _config: { appId
         })),
         meta: {
           totalCount: response.meta?.total_count || data.length,
-          page: response.meta?.page || 1,
+          currentPage: response.meta?.current_page || 1,
           perPage: response.meta?.per_page || data.length,
           totalPages: response.meta?.total_pages || 1,
         },

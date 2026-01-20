@@ -8,8 +8,8 @@ import type {
   CategoryPresignResponse,
   CreateCategoryImageRequest,
   CategoryImage,
-} from '../types/category';
-import { categoryMapper } from '../mappers/category.mapper';
+} from '../types/category.js';
+import { categoryMapper } from '../mappers/category.mapper.js';
 
 export interface CategoriesService {
   list(params?: ListCategoriesParams): Promise<PageResult<Category>>;

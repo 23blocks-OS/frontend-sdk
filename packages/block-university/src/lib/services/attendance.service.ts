@@ -7,8 +7,8 @@ import type {
   ListAttendanceParams,
   BulkAttendanceRequest,
   AttendanceStats,
-} from '../types/attendance';
-import { attendanceMapper } from '../mappers/attendance.mapper';
+} from '../types/attendance.js';
+import { attendanceMapper } from '../mappers/attendance.mapper.js';
 
 export interface AttendanceService {
   list(params?: ListAttendanceParams): Promise<PageResult<Attendance>>;

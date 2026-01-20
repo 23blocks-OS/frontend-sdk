@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Wallet } from '../types/wallet';
-import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils';
+import type { Wallet } from '../types/wallet.js';
+import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils.js';
 
 export const walletMapper: ResourceMapper<Wallet> = {
   type: 'Wallet',

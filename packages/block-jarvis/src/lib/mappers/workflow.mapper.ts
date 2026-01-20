@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Workflow, WorkflowStep, WorkflowTrigger } from '../types/workflow';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { Workflow, WorkflowStep, WorkflowTrigger } from '../types/workflow.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const workflowMapper: ResourceMapper<Workflow> = {
   type: 'Workflow',

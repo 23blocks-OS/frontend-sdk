@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { WorkflowInstance, WorkflowStepLog } from '../types/workflow-instance';
-import { parseDate } from './utils';
+import type { WorkflowInstance, WorkflowStepLog } from '../types/workflow-instance.js';
+import { parseDate } from './utils.js';
 
 export const workflowInstanceMapper: ResourceMapper<WorkflowInstance> = {
   type: 'workflow_instance',

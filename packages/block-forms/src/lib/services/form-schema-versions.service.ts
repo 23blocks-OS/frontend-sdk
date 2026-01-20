@@ -5,8 +5,8 @@ import type {
   CreateFormSchemaVersionRequest,
   UpdateFormSchemaVersionRequest,
   ListFormSchemaVersionsParams,
-} from '../types/form-schema-version';
-import { formSchemaVersionMapper } from '../mappers/form-schema-version.mapper';
+} from '../types/form-schema-version.js';
+import { formSchemaVersionMapper } from '../mappers/form-schema-version.mapper.js';
 
 export interface FormSchemaVersionsService {
   /**

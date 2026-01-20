@@ -6,7 +6,7 @@ import type {
   CreateMarvinContextRequest,
   SendMarvinMessageRequest,
   SendMarvinMessageResponse,
-} from '../types/marvin-chat';
+} from '../types/marvin-chat.js';
 
 export interface MarvinChatService {
   chat(data: MarvinChatRequest): Promise<MarvinChatResponse>;

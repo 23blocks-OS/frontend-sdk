@@ -1,7 +1,7 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
-import type { ProductVariation, CreateVariationRequest, UpdateVariationRequest } from '../types/product';
-import { productVariationMapper, productReviewMapper } from '../mappers/product.mapper';
+import type { ProductVariation, CreateVariationRequest, UpdateVariationRequest } from '../types/product.js';
+import { productVariationMapper, productReviewMapper } from '../mappers/product.mapper.js';
 
 export interface ProductVariationsService {
   list(productUniqueId: string): Promise<ProductVariation[]>;

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { ProductFilter } from '../types/product-filter';
-import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean, parseStringArray } from './utils';
+import type { ProductFilter } from '../types/product-filter.js';
+import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean, parseStringArray } from './utils.js';
 
 export const productFilterMapper: ResourceMapper<ProductFilter> = {
   type: 'product_filter',

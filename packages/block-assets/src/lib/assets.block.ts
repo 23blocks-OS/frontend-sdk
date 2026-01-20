@@ -24,7 +24,7 @@ import {
   type AlertsService,
   type AssetsUsersService,
   type AssetImagesService,
-} from './services';
+} from './services/index.js';
 
 export interface AssetsBlockConfig extends BlockConfig {
   appId: string;

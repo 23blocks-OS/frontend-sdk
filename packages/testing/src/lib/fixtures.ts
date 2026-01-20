@@ -79,7 +79,7 @@ export function jsonApiListResponse<T extends { id?: string; type?: string }>(
   meta?: { total?: number; page?: number; perPage?: number }
 ): {
   data: Array<{ type: string; id: string; attributes: Omit<T, 'id' | 'type'> }>;
-  meta?: { total: number; page: number; perPage: number };
+  meta?: { totalCount: number; currentPage: number; perPage: number; totalPages?: number };
 } {
   return {
     data: items.map((item) => ({
@@ -89,8 +89,8 @@ export function jsonApiListResponse<T extends { id?: string; type?: string }>(
     })),
     meta: meta
       ? {
-          total: meta.total ?? items.length,
-          page: meta.page ?? 1,
+          totalCount: meta.total ?? items.length,
+          currentPage: meta.page ?? 1,
           perPage: meta.perPage ?? items.length,
         }
       : undefined,

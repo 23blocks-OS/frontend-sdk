@@ -1,11 +1,11 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
-import type { CrmUser, RegisterCrmUserRequest, ListCrmUsersParams } from '../types/user';
-import type { Contact } from '../types/contact';
-import type { Meeting } from '../types/meeting';
-import { crmUserMapper } from '../mappers/user.mapper';
-import { contactMapper } from '../mappers/contact.mapper';
-import { meetingMapper } from '../mappers/meeting.mapper';
+import type { CrmUser, RegisterCrmUserRequest, ListCrmUsersParams } from '../types/user.js';
+import type { Contact } from '../types/contact.js';
+import type { Meeting } from '../types/meeting.js';
+import { crmUserMapper } from '../mappers/user.mapper.js';
+import { contactMapper } from '../mappers/contact.mapper.js';
+import { meetingMapper } from '../mappers/meeting.mapper.js';
 
 export interface CrmUsersService {
   list(params?: ListCrmUsersParams): Promise<PageResult<CrmUser>>;

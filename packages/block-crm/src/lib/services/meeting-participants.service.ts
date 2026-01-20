@@ -5,8 +5,8 @@ import type {
   CreateMeetingParticipantRequest,
   UpdateMeetingParticipantRequest,
   ListMeetingParticipantsParams,
-} from '../types/meeting-participant';
-import { meetingParticipantMapper } from '../mappers/meeting-participant.mapper';
+} from '../types/meeting-participant.js';
+import { meetingParticipantMapper } from '../mappers/meeting-participant.mapper.js';
 
 export interface MeetingParticipantsService {
   list(meetingUniqueId: string, params?: ListMeetingParticipantsParams): Promise<PageResult<MeetingParticipant>>;

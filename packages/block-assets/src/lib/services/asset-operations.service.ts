@@ -6,8 +6,8 @@ import type {
   ListAssetOperationsParams,
   OperationReportParams,
   OperationReportSummary,
-} from '../types/asset-operation';
-import { assetOperationMapper } from '../mappers/asset-operation.mapper';
+} from '../types/asset-operation.js';
+import { assetOperationMapper } from '../mappers/asset-operation.mapper.js';
 
 export interface AssetOperationsService {
   list(assetUniqueId: string, params?: ListAssetOperationsParams): Promise<PageResult<AssetOperation>>;

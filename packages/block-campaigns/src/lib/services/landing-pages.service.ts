@@ -5,8 +5,8 @@ import type {
   CreateLandingPageRequest,
   UpdateLandingPageRequest,
   ListLandingPagesParams,
-} from '../types/landing-page';
-import { landingPageMapper } from '../mappers/landing-page.mapper';
+} from '../types/landing-page.js';
+import { landingPageMapper } from '../mappers/landing-page.mapper.js';
 
 export interface LandingPagesService {
   list(params?: ListLandingPagesParams): Promise<PageResult<LandingPage>>;

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Coupon, DiscountType, CouponApplication } from '../types/coupon';
-import { parseString, parseDate, parseBoolean, parseNumber, parseOptionalNumber, parseStatus } from './utils';
+import type { Coupon, DiscountType, CouponApplication } from '../types/coupon.js';
+import { parseString, parseDate, parseBoolean, parseNumber, parseOptionalNumber, parseStatus } from './utils.js';
 
 function parseDiscountType(value: unknown): DiscountType {
   const type = parseString(value);

@@ -7,8 +7,8 @@ import type {
   CreateContentFlagRequest,
   ListContentFlagsParams,
   ModerationAction,
-} from '../types/moderation';
-import { contentFlagMapper } from '../mappers/moderation.mapper';
+} from '../types/moderation.js';
+import { contentFlagMapper } from '../mappers/moderation.mapper.js';
 
 /**
  * Moderation Service Interface - Content moderation operations

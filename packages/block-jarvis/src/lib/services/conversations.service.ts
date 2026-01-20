@@ -6,8 +6,8 @@ import type {
   SendMessageRequest,
   SendMessageResponse,
   ListConversationsParams,
-} from '../types/conversation';
-import { conversationMapper } from '../mappers/conversation.mapper';
+} from '../types/conversation.js';
+import { conversationMapper } from '../mappers/conversation.mapper.js';
 
 export interface ConversationsService {
   list(params?: ListConversationsParams): Promise<PageResult<Conversation>>;

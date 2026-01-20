@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { MeetingBilling } from '../types/meeting-billing';
-import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils';
+import type { MeetingBilling } from '../types/meeting-billing.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils.js';
 
 export const meetingBillingMapper: JsonApiMapper<MeetingBilling> = {
   type: 'meeting_billing',

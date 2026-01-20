@@ -5,8 +5,8 @@ import type {
   CreateCampaignTargetRequest,
   UpdateCampaignTargetRequest,
   ListCampaignTargetsParams,
-} from '../types/campaign-target';
-import { campaignTargetMapper } from '../mappers/campaign-target.mapper';
+} from '../types/campaign-target.js';
+import { campaignTargetMapper } from '../mappers/campaign-target.mapper.js';
 
 export interface CampaignTargetsService {
   list(params?: ListCampaignTargetsParams): Promise<PageResult<CampaignTarget>>;

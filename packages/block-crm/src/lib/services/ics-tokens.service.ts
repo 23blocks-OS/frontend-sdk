@@ -4,8 +4,8 @@ import type {
   IcsToken,
   CreateIcsTokenRequest,
   ListIcsTokensParams,
-} from '../types/ics-token';
-import { icsTokenMapper } from '../mappers/ics-token.mapper';
+} from '../types/ics-token.js';
+import { icsTokenMapper } from '../mappers/ics-token.mapper.js';
 
 export interface IcsTokensService {
   list(userUniqueId: string, params?: ListIcsTokensParams): Promise<PageResult<IcsToken>>;

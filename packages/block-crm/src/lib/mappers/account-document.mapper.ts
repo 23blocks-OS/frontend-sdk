@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { AccountDocument, DocumentCategory } from '../types/account-document';
-import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils';
+import type { AccountDocument, DocumentCategory } from '../types/account-document.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils.js';
 
 /**
  * Parse document category from API response

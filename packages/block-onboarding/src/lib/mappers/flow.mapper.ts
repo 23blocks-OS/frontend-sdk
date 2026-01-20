@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Flow } from '../types/flow';
-import { parseString, parseDate, parseBoolean, parseStatus, parseObjectArray, parseObject } from './utils';
+import type { Flow } from '../types/flow.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseObjectArray, parseObject } from './utils.js';
 
 export const flowMapper: ResourceMapper<Flow> = {
   type: 'Flow',

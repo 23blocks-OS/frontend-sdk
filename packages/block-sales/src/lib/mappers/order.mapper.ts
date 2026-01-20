@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Order } from '../types/order';
-import { parseString, parseDate, parseNumber, parseOrderStatus } from './utils';
+import type { Order } from '../types/order.js';
+import { parseString, parseDate, parseNumber, parseOrderStatus } from './utils.js';
 
 export const orderMapper: ResourceMapper<Order> = {
   type: 'Order',

@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { LeadFollow } from '../types/lead-follow';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { LeadFollow } from '../types/lead-follow.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const leadFollowMapper: JsonApiMapper<LeadFollow> = {
   type: 'lead_follow',

@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { ContactEvent } from '../types/contact-event';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { ContactEvent } from '../types/contact-event.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const contactEventMapper: JsonApiMapper<ContactEvent> = {
   type: 'contact_event',

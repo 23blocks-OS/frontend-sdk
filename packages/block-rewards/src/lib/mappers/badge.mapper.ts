@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Badge, UserBadge } from '../types/badge';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { Badge, UserBadge } from '../types/badge.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const badgeMapper: ResourceMapper<Badge> = {
   type: 'Badge',

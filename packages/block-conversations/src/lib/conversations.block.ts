@@ -30,7 +30,7 @@ import {
   type UsersService,
   type MeetingsService,
   type WebNotificationsService,
-} from './services';
+} from './services/index.js';
 
 export interface ConversationsBlockConfig extends BlockConfig {
   appId: string;

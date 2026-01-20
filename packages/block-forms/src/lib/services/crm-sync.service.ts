@@ -5,7 +5,7 @@ import type {
   CrmSyncBatchResult,
   CrmConnectionStatus,
   CrmSyncStatus,
-} from '../types/crm-sync';
+} from '../types/crm-sync.js';
 
 export interface CrmSyncService {
   /**

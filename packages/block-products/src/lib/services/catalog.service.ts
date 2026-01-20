@@ -18,7 +18,7 @@ import type {
   ListCategoriesParams,
   ListVendorsParams,
   ListWarehousesParams,
-} from '../types/catalog';
+} from '../types/catalog.js';
 import {
   categoryMapper,
   brandMapper,
@@ -26,7 +26,7 @@ import {
   warehouseMapper,
   channelMapper,
   collectionMapper,
-} from '../mappers/catalog.mapper';
+} from '../mappers/catalog.mapper.js';
 
 export interface CategoriesService {
   list(params?: ListCategoriesParams): Promise<PageResult<Category>>;

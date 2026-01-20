@@ -7,8 +7,8 @@ export interface JsonApiResource<TAttributes = Record<string, unknown>> {
   type: string;
   /** Resource ID */
   id: string;
-  /** Resource attributes */
-  attributes?: TAttributes;
+  /** Resource attributes (defaults to empty object if not provided) */
+  attributes: TAttributes;
   /** Resource relationships */
   relationships?: Record<string, JsonApiRelationship>;
   /** Resource links */

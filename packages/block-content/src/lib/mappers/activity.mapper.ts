@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Activity, ActivityType } from '../types/activity';
-import { parseString, parseDate, parseStatus, parseBoolean } from './utils';
+import type { Activity, ActivityType } from '../types/activity.js';
+import { parseString, parseDate, parseStatus, parseBoolean } from './utils.js';
 
 export const activityMapper: ResourceMapper<Activity> = {
   type: 'activity',

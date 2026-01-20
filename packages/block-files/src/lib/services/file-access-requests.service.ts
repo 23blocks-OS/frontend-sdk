@@ -5,8 +5,8 @@ import type {
   CreateFileAccessRequestInput,
   ReviewFileAccessRequestInput,
   ListFileAccessRequestsParams,
-} from '../types/file-access-request';
-import { fileAccessRequestMapper } from '../mappers/file-access-request.mapper';
+} from '../types/file-access-request.js';
+import { fileAccessRequestMapper } from '../mappers/file-access-request.mapper.js';
 
 /**
  * File Access Requests Service Interface - Manage access requests to files

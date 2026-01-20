@@ -5,8 +5,8 @@ import type {
   CreateCommentRequest,
   UpdateCommentRequest,
   ListCommentsParams,
-} from '../types/comment';
-import { commentMapper } from '../mappers/comment.mapper';
+} from '../types/comment.js';
+import { commentMapper } from '../mappers/comment.mapper.js';
 
 export interface CommentsService {
   /**

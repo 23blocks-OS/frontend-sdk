@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Onboarding } from '../types/onboarding';
-import { parseString, parseDate, parseBoolean, parseStatus, parseObjectArray } from './utils';
+import type { Onboarding } from '../types/onboarding.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseObjectArray } from './utils.js';
 
 export const onboardingMapper: ResourceMapper<Onboarding> = {
   type: 'Onboarding',

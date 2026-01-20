@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { CrmUser } from '../types/user';
-import { parseDate, parseStatus } from './utils';
+import type { CrmUser } from '../types/user.js';
+import { parseDate, parseStatus } from './utils.js';
 
 export const crmUserMapper: ResourceMapper<CrmUser> = {
   type: 'user',

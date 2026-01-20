@@ -1,7 +1,7 @@
 import type { Transport } from '@23blocks/contracts';
 import { decodeOne } from '@23blocks/jsonapi-codec';
-import type { AssetAlert, CreateAssetAlertRequest } from '../types/alert';
-import { assetAlertMapper } from '../mappers/alert.mapper';
+import type { AssetAlert, CreateAssetAlertRequest } from '../types/alert.js';
+import { assetAlertMapper } from '../mappers/alert.mapper.js';
 
 export interface AlertsService {
   get(uniqueId: string): Promise<AssetAlert>;

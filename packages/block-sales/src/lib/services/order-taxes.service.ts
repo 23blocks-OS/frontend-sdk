@@ -1,7 +1,7 @@
 import type { Transport } from '@23blocks/contracts';
 import { decodeOne, decodeMany } from '@23blocks/jsonapi-codec';
-import type { OrderTax, CreateOrderTaxRequest, UpdateOrderTaxRequest } from '../types/order-tax';
-import { orderTaxMapper } from '../mappers/order-tax.mapper';
+import type { OrderTax, CreateOrderTaxRequest, UpdateOrderTaxRequest } from '../types/order-tax.js';
+import { orderTaxMapper } from '../mappers/order-tax.mapper.js';
 
 export interface OrderTaxesService {
   list(orderUniqueId: string): Promise<OrderTax[]>;

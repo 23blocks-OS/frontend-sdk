@@ -14,7 +14,7 @@ import type {
   CreatePlacementRuleRequest,
   PlacementResponse,
   ListPlacementsParams,
-} from '../types/placement';
+} from '../types/placement.js';
 import {
   placementTestMapper,
   placementSectionMapper,
@@ -22,7 +22,7 @@ import {
   placementOptionMapper,
   placementRuleMapper,
   placementInstanceMapper,
-} from '../mappers/placement.mapper';
+} from '../mappers/placement.mapper.js';
 
 export interface PlacementsService {
   // Placement Tests

@@ -24,7 +24,7 @@ import {
   type MoneyRulesService,
   type ProductRulesService,
   type EventRulesService,
-} from './services';
+} from './services/index.js';
 
 export interface RewardsBlockConfig extends BlockConfig {
   appId: string;

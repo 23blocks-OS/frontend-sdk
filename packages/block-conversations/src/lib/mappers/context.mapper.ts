@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Context } from '../types/context';
-import { parseString, parseDate } from './utils';
+import type { Context } from '../types/context.js';
+import { parseString, parseDate } from './utils.js';
 
 export const contextMapper: ResourceMapper<Context> = {
   type: 'Context',

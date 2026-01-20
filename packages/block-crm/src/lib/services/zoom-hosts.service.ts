@@ -8,8 +8,8 @@ import type {
   CreateZoomHostRequest,
   UpdateZoomHostRequest,
   ListZoomHostsParams,
-} from '../types/zoom-host';
-import { zoomHostMapper } from '../mappers/zoom-host.mapper';
+} from '../types/zoom-host.js';
+import { zoomHostMapper } from '../mappers/zoom-host.mapper.js';
 
 export interface ZoomHostsService {
   list(params?: ListZoomHostsParams): Promise<PageResult<ZoomHost>>;

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Lesson } from '../types/lesson';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseLessonContentType } from './utils';
+import type { Lesson } from '../types/lesson.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseLessonContentType } from './utils.js';
 
 export const lessonMapper: ResourceMapper<Lesson> = {
   type: 'Lesson',

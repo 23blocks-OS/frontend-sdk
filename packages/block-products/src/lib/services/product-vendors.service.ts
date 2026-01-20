@@ -1,7 +1,7 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodePageResult } from '@23blocks/jsonapi-codec';
-import type { ProductVendor, ListProductVendorsParams } from '../types/product-vendor';
-import { productVendorMapper } from '../mappers/product-vendor.mapper';
+import type { ProductVendor, ListProductVendorsParams } from '../types/product-vendor.js';
+import { productVendorMapper } from '../mappers/product-vendor.mapper.js';
 
 /**
  * Product Vendors Service - Get vendors that sell a specific product

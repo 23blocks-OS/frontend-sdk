@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { FileSchema } from '../types/file-schema';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils';
+import type { FileSchema } from '../types/file-schema.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils.js';
 
 export const fileSchemaMapper: ResourceMapper<FileSchema> = {
   type: 'FileSchema',

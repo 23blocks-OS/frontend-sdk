@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Survey } from '../types/survey';
-import { parseString, parseDate, parseStatus } from './utils';
+import type { Survey } from '../types/survey.js';
+import { parseString, parseDate, parseStatus } from './utils.js';
 
 export const surveyMapper: ResourceMapper<Survey> = {
   type: 'survey_instance',

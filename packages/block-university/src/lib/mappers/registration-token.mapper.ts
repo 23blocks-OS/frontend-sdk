@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { RegistrationToken } from '../types/registration-token';
-import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from './utils';
+import type { RegistrationToken } from '../types/registration-token.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from './utils.js';
 
 export const registrationTokenMapper: ResourceMapper<RegistrationToken> = {
   type: 'registration_token',

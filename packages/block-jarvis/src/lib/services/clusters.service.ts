@@ -9,8 +9,8 @@ import type {
   CreateClusterContextRequest,
   SendClusterMessageRequest,
   SendClusterMessageResponse,
-} from '../types/cluster';
-import { clusterMapper } from '../mappers/cluster.mapper';
+} from '../types/cluster.js';
+import { clusterMapper } from '../mappers/cluster.mapper.js';
 
 export interface ClustersService {
   list(userUniqueId: string, params?: ListClustersParams): Promise<PageResult<Cluster>>;

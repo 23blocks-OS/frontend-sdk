@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Source } from '../types/source';
-import { parseString, parseDate } from './utils';
+import type { Source } from '../types/source.js';
+import { parseString, parseDate } from './utils.js';
 
 export const sourceMapper: ResourceMapper<Source> = {
   type: 'Source',

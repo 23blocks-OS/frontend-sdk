@@ -1,5 +1,5 @@
 import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
-import type { DocumentCategory } from './account-document';
+import type { DocumentCategory } from './account-document.js';
 
 /**
  * Document attached to a contact

@@ -5,8 +5,8 @@ import type {
   CreateTravelRouteRequest,
   UpdateTravelRouteRequest,
   ListTravelRoutesParams,
-} from '../types/route';
-import { travelRouteMapper } from '../mappers/route.mapper';
+} from '../types/route.js';
+import { travelRouteMapper } from '../mappers/route.mapper.js';
 
 export interface TravelRoutesService {
   list(params?: ListTravelRoutesParams): Promise<PageResult<TravelRoute>>;

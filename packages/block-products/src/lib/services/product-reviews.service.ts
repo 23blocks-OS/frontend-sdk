@@ -1,7 +1,7 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
-import type { ProductReview } from '../types/product';
-import { productReviewMapper } from '../mappers/product.mapper';
+import type { ProductReview } from '../types/product.js';
+import { productReviewMapper } from '../mappers/product.mapper.js';
 
 export interface CreateReviewRequest {
   rating: number;

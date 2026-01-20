@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Quarter } from '../types/quarter';
-import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils';
+import type { Quarter } from '../types/quarter.js';
+import { parseString, parseDate, parseBoolean, parseNumber, parseStatus } from './utils.js';
 
 export const quarterMapper: ResourceMapper<Quarter> = {
   type: 'Quarter',

@@ -8,13 +8,13 @@ import type {
   EventImagePresignResponse,
   CreateEventImageRequest,
   EventImage,
-} from '../types/asset-event';
+} from '../types/asset-event.js';
 import type {
   EventReportParams,
   EventReportSummary,
   EventReportList,
-} from '../types/report';
-import { assetEventMapper } from '../mappers/asset-event.mapper';
+} from '../types/report.js';
+import { assetEventMapper } from '../mappers/asset-event.mapper.js';
 
 export interface AssetEventsService {
   list(assetUniqueId: string, params?: ListAssetEventsParams): Promise<PageResult<AssetEvent>>;
@@ -109,7 +109,7 @@ export function createAssetEventsService(transport: Transport, _config: { appId:
         },
         meta: {
           totalCount: response.meta.total_count,
-          page: response.meta.page,
+          currentPage: response.meta.current_page,
           perPage: response.meta.per_page,
           totalPages: response.meta.total_pages,
         },

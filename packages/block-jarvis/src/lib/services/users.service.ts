@@ -10,8 +10,8 @@ import type {
   SendUserMessageRequest,
   SendUserMessageResponse,
   CreateUserContentContextRequest,
-} from '../types/user';
-import { jarvisUserMapper } from '../mappers/user.mapper';
+} from '../types/user.js';
+import { jarvisUserMapper } from '../mappers/user.mapper.js';
 
 export interface JarvisUsersService {
   list(params?: ListJarvisUsersParams): Promise<PageResult<JarvisUser>>;

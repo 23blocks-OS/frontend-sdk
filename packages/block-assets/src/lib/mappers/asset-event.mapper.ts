@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { AssetEvent, AssetEventType } from '../types/asset-event';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils';
+import type { AssetEvent, AssetEventType } from '../types/asset-event.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils.js';
 
 function parseEventType(value: unknown): AssetEventType {
   const eventType = parseString(value);

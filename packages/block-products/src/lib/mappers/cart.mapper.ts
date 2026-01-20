@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Cart, CartDetail } from '../types/cart';
-import { parseString, parseDate, parseBoolean, parseNumber, parseOptionalNumber, parseStatus } from './utils';
+import type { Cart, CartDetail } from '../types/cart.js';
+import { parseString, parseDate, parseBoolean, parseNumber, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const cartMapper: ResourceMapper<Cart> = {
   type: 'Cart',

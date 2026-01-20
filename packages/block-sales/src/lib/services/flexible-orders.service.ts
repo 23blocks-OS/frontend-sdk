@@ -10,10 +10,10 @@ import type {
   AddFlexibleOrderPaymentRequest,
   UpdateFlexibleOrderLogisticsRequest,
   ListFlexibleOrdersParams,
-} from '../types/flexible-order';
-import type { Payment } from '../types/payment';
-import { flexibleOrderMapper } from '../mappers/flexible-order.mapper';
-import { paymentMapper } from '../mappers/payment.mapper';
+} from '../types/flexible-order.js';
+import type { Payment } from '../types/payment.js';
+import { flexibleOrderMapper } from '../mappers/flexible-order.mapper.js';
+import { paymentMapper } from '../mappers/payment.mapper.js';
 
 export interface FlexibleOrdersService {
   list(params?: ListFlexibleOrdersParams): Promise<PageResult<FlexibleOrder>>;

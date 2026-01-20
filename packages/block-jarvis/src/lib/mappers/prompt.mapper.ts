@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Prompt, TemplateInfo } from '../types/prompt';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils';
+import type { Prompt, TemplateInfo } from '../types/prompt.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils.js';
 
 function parseTemplateInfo(value: unknown): TemplateInfo | undefined {
   if (value && typeof value === 'object') {

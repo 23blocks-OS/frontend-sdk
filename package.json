@@ -64,6 +64,7 @@
     "prepare": "nx run-many -t build"
   },
   "devDependencies": {
+    "@angular/core": "^17.3.12",
     "@nx/js": "22.2.3",
     "@nx/rollup": "^22.2.3",
     "@nx/vitest": "22.2.3",
@@ -72,9 +73,12 @@
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
     "@types/node": "20.19.9",
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
     "@vitest/coverage-v8": "^2.1.8",
     "nx": "22.2.3",
     "prettier": "^3.1.0",
+    "rxjs": "^7.8.2",
     "tslib": "^2.3.0",
     "typescript": "~5.9.2",
     "verdaccio": "^6.0.5",

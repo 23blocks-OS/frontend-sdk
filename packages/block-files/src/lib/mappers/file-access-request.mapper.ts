@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { FileAccessRequest, AccessRequestStatus } from '../types/file-access-request';
-import { parseString, parseDate, parseStatus, parseBoolean } from './utils';
+import type { FileAccessRequest, AccessRequestStatus } from '../types/file-access-request.js';
+import { parseString, parseDate, parseStatus, parseBoolean } from './utils.js';
 
 export const fileAccessRequestMapper: ResourceMapper<FileAccessRequest> = {
   type: 'file_access_request',

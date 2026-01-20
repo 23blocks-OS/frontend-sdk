@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { CalendarAccount } from '../types/calendar-account';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { CalendarAccount } from '../types/calendar-account.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const calendarAccountMapper: JsonApiMapper<CalendarAccount> = {
   type: 'calendar_account',

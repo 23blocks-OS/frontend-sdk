@@ -2,7 +2,7 @@ import type { Transport } from '@23blocks/contracts';
 import type {
   NotificationSettings,
   UpdateNotificationSettingsRequest,
-} from '../types/notification-settings';
+} from '../types/notification-settings.js';
 
 export interface NotificationSettingsService {
   get(userUniqueId: string): Promise<NotificationSettings>;

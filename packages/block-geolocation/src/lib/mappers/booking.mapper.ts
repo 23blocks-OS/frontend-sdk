@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { PremiseBooking } from '../types/booking';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { PremiseBooking } from '../types/booking.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const premiseBookingMapper: ResourceMapper<PremiseBooking> = {
   type: 'PremiseBooking',

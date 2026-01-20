@@ -6,11 +6,13 @@ import { buildIncludedMap } from './mapper.js';
 
 /**
  * Decode a single resource from a JSON:API document
+ * Accepts unknown to handle transport layer responses that return unknown
  */
 export function decodeOne<T>(
-  document: JsonApiDocument,
+  response: unknown,
   mapper: ResourceMapper<T>
 ): T {
+  const document = response as JsonApiDocument;
   if (!isSingleResourceDocument(document)) {
     throw new Error('Expected single resource document');
   }
@@ -21,11 +23,13 @@ export function decodeOne<T>(
 
 /**
  * Decode a single resource from a JSON:API document, returning null if not found
+ * Accepts unknown to handle transport layer responses that return unknown
  */
 export function decodeOneOrNull<T>(
-  document: JsonApiDocument,
+  response: unknown,
   mapper: ResourceMapper<T>
 ): T | null {
+  const document = response as JsonApiDocument;
   if (!document.data || Array.isArray(document.data)) {
     return null;
   }
@@ -36,11 +40,13 @@ export function decodeOneOrNull<T>(
 
 /**
  * Decode multiple resources from a JSON:API document
+ * Accepts unknown to handle transport layer responses that return unknown
  */
 export function decodeMany<T>(
-  document: JsonApiDocument,
+  response: unknown,
   mapper: ResourceMapper<T>
 ): T[] {
+  const document = response as JsonApiDocument;
   if (!isCollectionDocument(document)) {
     throw new Error('Expected collection document');
   }
@@ -63,11 +69,13 @@ export function extractPageMeta(meta?: JsonApiMeta): PageMeta {
 
 /**
  * Decode a paginated collection from a JSON:API document
+ * Accepts unknown to handle transport layer responses that return unknown
  */
 export function decodePageResult<T>(
-  document: JsonApiDocument,
+  response: unknown,
   mapper: ResourceMapper<T>
 ): PageResult<T> {
+  const document = response as JsonApiDocument;
   const data = isCollectionDocument(document)
     ? decodeMany(document, mapper)
     : [];
@@ -80,11 +88,13 @@ export function decodePageResult<T>(
 
 /**
  * Decode with a custom decoder function
+ * Accepts unknown to handle transport layer responses that return unknown
  */
 export function decodeWith<T>(
-  document: JsonApiDocument,
+  response: unknown,
   decoder: (doc: JsonApiDocument, included: IncludedMap) => T
 ): T {
+  const document = response as JsonApiDocument;
   const included = buildIncludedMap(document.included);
   return decoder(document, included);
 }

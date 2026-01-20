@@ -6,8 +6,8 @@ import type {
   UpdateRegistrationTokenRequest,
   ListRegistrationTokensParams,
   TokenValidationResult,
-} from '../types/registration-token';
-import { registrationTokenMapper } from '../mappers/registration-token.mapper';
+} from '../types/registration-token.js';
+import { registrationTokenMapper } from '../mappers/registration-token.mapper.js';
 
 /**
  * Registration Tokens Service - Manage enrollment tokens

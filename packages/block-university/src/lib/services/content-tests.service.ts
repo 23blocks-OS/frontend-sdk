@@ -9,8 +9,8 @@ import type {
   CreateQuestionRequest,
   CreateOptionRequest,
   ListContentTestsParams,
-} from '../types/content-test';
-import { contentTestMapper, testQuestionMapper, testOptionMapper } from '../mappers/content-test.mapper';
+} from '../types/content-test.js';
+import { contentTestMapper, testQuestionMapper, testOptionMapper } from '../mappers/content-test.mapper.js';
 
 export interface ContentTestsService {
   list(params?: ListContentTestsParams): Promise<PageResult<ContentTest>>;

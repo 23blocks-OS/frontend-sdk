@@ -1,7 +1,7 @@
 import type { Transport } from '@23blocks/contracts';
 import { decodeOne } from '@23blocks/jsonapi-codec';
-import type { Source } from '../types/source';
-import { sourceMapper } from '../mappers/source.mapper';
+import type { Source } from '../types/source.js';
+import { sourceMapper } from '../mappers/source.mapper.js';
 
 export interface SourcesService {
   get(uniqueId: string): Promise<Source>;

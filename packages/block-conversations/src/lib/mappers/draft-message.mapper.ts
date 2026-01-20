@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { DraftMessage } from '../types/draft-message';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils';
+import type { DraftMessage } from '../types/draft-message.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils.js';
 
 export const draftMessageMapper: ResourceMapper<DraftMessage> = {
   type: 'DraftMessage',

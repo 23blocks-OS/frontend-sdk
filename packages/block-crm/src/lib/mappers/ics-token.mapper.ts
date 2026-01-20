@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { IcsToken } from '../types/ics-token';
-import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from './utils';
+import type { IcsToken } from '../types/ics-token.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from './utils.js';
 
 export const icsTokenMapper: JsonApiMapper<IcsToken> = {
   type: 'ics_token',

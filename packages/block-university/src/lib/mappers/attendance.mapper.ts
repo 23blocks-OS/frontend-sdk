@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Attendance } from '../types/attendance';
-import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils';
+import type { Attendance } from '../types/attendance.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils.js';
 
 function parseAttendanceType(value: unknown): 'present' | 'absent' | 'late' | 'excused' {
   const type = parseString(value);

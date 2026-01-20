@@ -12,10 +12,10 @@ import type {
   ValidateWalletResponse,
   WalletContent,
   StoreWalletContentRequest,
-} from '../types/wallet';
-import type { Transaction } from '../types/transaction';
-import { walletMapper } from '../mappers/wallet.mapper';
-import { transactionMapper } from '../mappers/transaction.mapper';
+} from '../types/wallet.js';
+import type { Transaction } from '../types/transaction.js';
+import { walletMapper } from '../mappers/wallet.mapper.js';
+import { transactionMapper } from '../mappers/transaction.mapper.js';
 
 export interface WalletsService {
   list(params?: ListWalletsParams): Promise<PageResult<Wallet>>;

@@ -4,7 +4,7 @@ import type {
   RevenueReport,
   AgingReport,
   ParticipantBillingReport,
-} from '../types/billing-report';
+} from '../types/billing-report.js';
 
 export interface BillingReportsService {
   getRevenueReport(params?: BillingReportParams): Promise<RevenueReport>;

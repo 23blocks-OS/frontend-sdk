@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { EmployeeAssignment } from '../types/employee-assignment';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { EmployeeAssignment } from '../types/employee-assignment.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const employeeAssignmentMapper: ResourceMapper<EmployeeAssignment> = {
   type: 'EmployeeAssignment',

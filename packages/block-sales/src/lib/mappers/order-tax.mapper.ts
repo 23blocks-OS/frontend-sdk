@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { OrderTax } from '../types/order-tax';
-import { parseString, parseDate, parseNumber } from './utils';
+import type { OrderTax } from '../types/order-tax.js';
+import { parseString, parseDate, parseNumber } from './utils.js';
 
 export const orderTaxMapper: ResourceMapper<OrderTax> = {
   type: 'OrderTax',

@@ -5,8 +5,8 @@ import type {
   CreateMessageFileRequest,
   PresignMessageFileRequest,
   PresignMessageFileResponse,
-} from '../types/message-file';
-import { messageFileMapper } from '../mappers/message-file.mapper';
+} from '../types/message-file.js';
+import { messageFileMapper } from '../mappers/message-file.mapper.js';
 
 export interface MessageFilesService {
   get(conversationUniqueId: string, fileUniqueId: string): Promise<MessageFile>;

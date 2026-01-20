@@ -1,12 +1,12 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Opportunity,
   CreateOpportunityRequest,
   UpdateOpportunityRequest,
   ListOpportunitiesParams,
-} from '../types/opportunity';
-import { opportunityMapper } from '../mappers/opportunity.mapper';
+} from '../types/opportunity.js';
+import { opportunityMapper } from '../mappers/opportunity.mapper.js';
 
 export interface OpportunitiesService {
   list(params?: ListOpportunitiesParams): Promise<PageResult<Opportunity>>;

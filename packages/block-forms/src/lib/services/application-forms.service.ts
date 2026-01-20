@@ -7,8 +7,8 @@ import type {
   ApplicationFormResponse,
   SendOtpResponse,
   VerifyOtpRequest,
-} from '../types/application-form';
-import { applicationFormMapper, applicationFormResponseMapper, mapSendOtpResponse } from '../mappers/application-form.mapper';
+} from '../types/application-form.js';
+import { applicationFormMapper, applicationFormResponseMapper, mapSendOtpResponse } from '../mappers/application-form.mapper.js';
 
 export interface ApplicationFormsService {
   /**

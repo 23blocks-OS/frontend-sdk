@@ -5,8 +5,8 @@ import type {
   CreateLeadFollowRequest,
   UpdateLeadFollowRequest,
   ListLeadFollowsParams,
-} from '../types/lead-follow';
-import { leadFollowMapper } from '../mappers/lead-follow.mapper';
+} from '../types/lead-follow.js';
+import { leadFollowMapper } from '../mappers/lead-follow.mapper.js';
 
 export interface LeadFollowsService {
   list(leadUniqueId: string, params?: ListLeadFollowsParams): Promise<PageResult<LeadFollow>>;

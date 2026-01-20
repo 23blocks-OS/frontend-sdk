@@ -1,5 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Badge,
   UserBadge,
@@ -8,8 +8,8 @@ import type {
   ListBadgesParams,
   AwardBadgeRequest,
   ListUserBadgesParams,
-} from '../types/badge';
-import { badgeMapper, userBadgeMapper } from '../mappers/badge.mapper';
+} from '../types/badge.js';
+import { badgeMapper, userBadgeMapper } from '../mappers/badge.mapper.js';
 
 export interface BadgesService {
   list(params?: ListBadgesParams): Promise<PageResult<Badge>>;

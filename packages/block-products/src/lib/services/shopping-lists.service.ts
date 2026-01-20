@@ -5,8 +5,8 @@ import type {
   CreateShoppingListRequest,
   UpdateShoppingListRequest,
   ListShoppingListsParams,
-} from '../types/shopping-list';
-import { shoppingListMapper } from '../mappers/shopping-list.mapper';
+} from '../types/shopping-list.js';
+import { shoppingListMapper } from '../mappers/shopping-list.mapper.js';
 
 export interface ShoppingListsService {
   list(params?: ListShoppingListsParams): Promise<PageResult<ShoppingList>>;

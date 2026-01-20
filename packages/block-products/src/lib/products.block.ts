@@ -50,7 +50,7 @@ import {
   type RemarketingService,
   type VisitorsService,
   type ProductVendorsService,
-} from './services';
+} from './services/index.js';
 
 export interface ProductsBlockConfig extends BlockConfig {
   appId: string;

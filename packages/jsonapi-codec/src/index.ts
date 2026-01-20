@@ -17,6 +17,8 @@ export {
 export {
   type IncludedMap,
   type ResourceMapper,
+  // Backward-compatible alias for ResourceMapper
+  type ResourceMapper as JsonApiMapper,
   resourceKey,
   buildIncludedMap,
   getIncluded,

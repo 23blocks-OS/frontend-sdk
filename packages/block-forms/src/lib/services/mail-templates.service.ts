@@ -6,8 +6,8 @@ import type {
   UpdateMailTemplateRequest,
   ListMailTemplatesParams,
   MailTemplateStats,
-} from '../types/mail-template';
-import { mailTemplateMapper } from '../mappers/mail-template.mapper';
+} from '../types/mail-template.js';
+import { mailTemplateMapper } from '../mappers/mail-template.mapper.js';
 
 export interface MailTemplatesService {
   list(params?: ListMailTemplatesParams): Promise<PageResult<MailTemplate>>;

@@ -1,12 +1,12 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Quote,
   CreateQuoteRequest,
   UpdateQuoteRequest,
   ListQuotesParams,
-} from '../types/quote';
-import { quoteMapper } from '../mappers/quote.mapper';
+} from '../types/quote.js';
+import { quoteMapper } from '../mappers/quote.mapper.js';
 
 export interface QuotesService {
   list(params?: ListQuotesParams): Promise<PageResult<Quote>>;

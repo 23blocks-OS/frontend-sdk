@@ -5,8 +5,8 @@ import type {
   AddWorkflowParticipantRequest,
   UpdateWorkflowParticipantRequest,
   ListWorkflowParticipantsParams,
-} from '../types/workflow-participant';
-import { workflowParticipantMapper } from '../mappers/workflow-participant.mapper';
+} from '../types/workflow-participant.js';
+import { workflowParticipantMapper } from '../mappers/workflow-participant.mapper.js';
 
 export interface WorkflowParticipantsService {
   list(workflowUniqueId: string, params?: ListWorkflowParticipantsParams): Promise<PageResult<WorkflowParticipant>>;

@@ -1,7 +1,7 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
-import type { Order, CreateOrderRequest, UpdateOrderRequest, ListOrdersParams } from '../types/order';
-import { orderMapper } from '../mappers/order.mapper';
+import type { Order, CreateOrderRequest, UpdateOrderRequest, ListOrdersParams } from '../types/order.js';
+import { orderMapper } from '../mappers/order.mapper.js';
 
 export interface OrdersService {
   list(params?: ListOrdersParams): Promise<PageResult<Order>>;

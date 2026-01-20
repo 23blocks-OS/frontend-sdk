@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { GeoCountry, GeoState, GeoCity } from '../types/geo-lookup';
-import { parseString, parseNumber } from './utils';
+import type { GeoCountry, GeoState, GeoCity } from '../types/geo-lookup.js';
+import { parseString, parseNumber } from './utils.js';
 
 export const geoCountryMapper: ResourceMapper<GeoCountry> = {
   type: 'geo_country',

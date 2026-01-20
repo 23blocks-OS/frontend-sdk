@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { CampaignTemplate, TemplateDetail } from '../types/campaign-template';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils';
+import type { CampaignTemplate, TemplateDetail } from '../types/campaign-template.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const campaignTemplateMapper: ResourceMapper<CampaignTemplate> = {
   type: 'Template',

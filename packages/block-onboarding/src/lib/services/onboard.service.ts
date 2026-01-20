@@ -6,8 +6,8 @@ import type {
   StartOnboardRequest,
   StepOnboardRequest,
   LogOnboardRequest,
-} from '../types/onboard';
-import { onboardJourneyMapper } from '../mappers/onboard.mapper';
+} from '../types/onboard.js';
+import { onboardJourneyMapper } from '../mappers/onboard.mapper.js';
 
 export interface OnboardService {
   start(uniqueId: string, data?: StartOnboardRequest): Promise<OnboardJourney>;

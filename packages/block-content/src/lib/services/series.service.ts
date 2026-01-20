@@ -7,10 +7,10 @@ import type {
   ListSeriesParams,
   QuerySeriesParams,
   ReorderPostsRequest,
-} from '../types/series';
-import type { Post } from '../types/post';
-import { seriesMapper } from '../mappers/series.mapper';
-import { postMapper } from '../mappers/post.mapper';
+} from '../types/series.js';
+import type { Post } from '../types/post.js';
+import { seriesMapper } from '../mappers/series.mapper.js';
+import { postMapper } from '../mappers/post.mapper.js';
 
 export interface SeriesService {
   // CRUD Operations

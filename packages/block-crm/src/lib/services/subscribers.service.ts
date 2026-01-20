@@ -5,8 +5,8 @@ import type {
   CreateSubscriberRequest,
   UpdateSubscriberRequest,
   ListSubscribersParams,
-} from '../types/subscriber';
-import { subscriberMapper } from '../mappers/subscriber.mapper';
+} from '../types/subscriber.js';
+import { subscriberMapper } from '../mappers/subscriber.mapper.js';
 
 export interface SubscribersService {
   list(params?: ListSubscribersParams): Promise<PageResult<Subscriber>>;

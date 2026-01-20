@@ -1,6 +1,6 @@
 import type { ResourceMapper, JsonApiResource, IncludedMap } from '@23blocks/jsonapi-codec';
-import type { Match, MatchEvaluation, AvailableCoach, AvailableCoachee } from '../types/match';
-import { parseString, parseDate, parseNumber, parseStringArray } from './utils';
+import type { Match, MatchEvaluation, AvailableCoach, AvailableCoachee } from '../types/match.js';
+import { parseString, parseDate, parseNumber, parseStringArray } from './utils.js';
 
 export const matchMapper: ResourceMapper<Match> = {
   type: 'Match',

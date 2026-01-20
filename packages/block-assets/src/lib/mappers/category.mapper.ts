@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Category } from '../types/category';
-import { parseDate, parseStatus } from './utils';
+import type { Category } from '../types/category.js';
+import { parseDate, parseStatus } from './utils.js';
 
 export const categoryMapper: ResourceMapper<Category> = {
   type: 'category',

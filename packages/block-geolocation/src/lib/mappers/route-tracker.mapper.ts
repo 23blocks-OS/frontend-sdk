@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { RouteLocation } from '../types/route-tracker';
-import { parseString, parseDate, parseBoolean, parseStatus, parseNumber, parseOptionalNumber } from './utils';
+import type { RouteLocation } from '../types/route-tracker.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseNumber, parseOptionalNumber } from './utils.js';
 
 export const routeLocationMapper: ResourceMapper<RouteLocation> = {
   type: 'RouteLocation',

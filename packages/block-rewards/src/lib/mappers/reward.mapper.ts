@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Reward, RewardType, RewardRedemption } from '../types/reward';
-import { parseString, parseDate, parseBoolean, parseNumber, parseOptionalNumber, parseStatus } from './utils';
+import type { Reward, RewardType, RewardRedemption } from '../types/reward.js';
+import { parseString, parseDate, parseBoolean, parseNumber, parseOptionalNumber, parseStatus } from './utils.js';
 
 function parseRewardType(value: unknown): RewardType {
   const type = parseString(value);

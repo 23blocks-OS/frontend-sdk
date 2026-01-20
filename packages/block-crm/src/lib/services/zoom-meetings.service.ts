@@ -5,8 +5,8 @@ import type {
   ZoomAvailability,
   ProvisionZoomMeetingRequest,
   UpdateZoomMeetingRequest,
-} from '../types/zoom-meeting';
-import { zoomMeetingMapper } from '../mappers/zoom-meeting.mapper';
+} from '../types/zoom-meeting.js';
+import { zoomMeetingMapper } from '../mappers/zoom-meeting.mapper.js';
 
 export interface ZoomMeetingsService {
   get(userUniqueId: string, meetingUniqueId: string): Promise<ZoomMeeting>;

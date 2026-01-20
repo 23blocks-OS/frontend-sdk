@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { FileTag } from '../types/file-tag';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { FileTag } from '../types/file-tag.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const fileTagMapper: ResourceMapper<FileTag> = {
   type: 'FileTag',

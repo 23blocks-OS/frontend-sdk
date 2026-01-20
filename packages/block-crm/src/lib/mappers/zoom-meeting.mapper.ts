@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
-import type { ZoomMeeting } from '../types/zoom-meeting';
-import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils';
+import type { ZoomMeeting } from '../types/zoom-meeting.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils.js';
 
 export const zoomMeetingMapper: JsonApiMapper<ZoomMeeting> = {
   type: 'zoom_meeting',

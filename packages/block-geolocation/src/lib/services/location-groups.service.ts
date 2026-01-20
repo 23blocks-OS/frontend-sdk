@@ -4,8 +4,8 @@ import type {
   LocationGroup,
   CreateLocationGroupRequest,
   ListLocationGroupsParams,
-} from '../types/location-group';
-import { locationGroupMapper } from '../mappers/location-group.mapper';
+} from '../types/location-group.js';
+import { locationGroupMapper } from '../mappers/location-group.mapper.js';
 
 export interface LocationGroupsService {
   list(params?: ListLocationGroupsParams): Promise<PageResult<LocationGroup>>;

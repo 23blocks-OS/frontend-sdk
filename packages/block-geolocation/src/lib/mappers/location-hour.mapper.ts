@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { LocationHour } from '../types/location-hour';
-import { parseString, parseDate, parseStatus, parseNumber, parseBoolean } from './utils';
+import type { LocationHour } from '../types/location-hour.js';
+import { parseString, parseDate, parseStatus, parseNumber, parseBoolean } from './utils.js';
 
 export const locationHourMapper: ResourceMapper<LocationHour> = {
   type: 'location_hour',

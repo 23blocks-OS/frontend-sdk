@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Position } from '../types/position';
-import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from './utils';
+import type { Position } from '../types/position.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from './utils.js';
 
 export const positionMapper: ResourceMapper<Position> = {
   type: 'Position',

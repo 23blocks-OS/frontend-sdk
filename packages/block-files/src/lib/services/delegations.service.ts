@@ -5,8 +5,8 @@ import type {
   CreateFileDelegationRequest,
   UpdateFileDelegationRequest,
   ListFileDelegationsParams,
-} from '../types/delegation';
-import { fileDelegationMapper } from '../mappers/delegation.mapper';
+} from '../types/delegation.js';
+import { fileDelegationMapper } from '../mappers/delegation.mapper.js';
 
 export interface DelegationsService {
   list(userUniqueId: string, params?: ListFileDelegationsParams): Promise<PageResult<FileDelegation>>;

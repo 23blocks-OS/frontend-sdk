@@ -38,7 +38,7 @@ import {
   type GeoCountriesService,
   type GeoStatesService,
   type GeoCitiesService,
-} from './services';
+} from './services/index.js';
 
 export interface GeolocationBlockConfig extends BlockConfig {
   appId: string;

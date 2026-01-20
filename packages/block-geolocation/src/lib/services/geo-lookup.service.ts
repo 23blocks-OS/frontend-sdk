@@ -1,9 +1,9 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodePageResult } from '@23blocks/jsonapi-codec';
-import type { Location, ListLocationsParams } from '../types/location';
-import type { GeoLookupParams, GeoCountry, GeoState, GeoCity } from '../types/geo-lookup';
-import { locationMapper } from '../mappers/location.mapper';
-import { geoCountryMapper, geoStateMapper, geoCityMapper } from '../mappers/geo-lookup.mapper';
+import type { Location, ListLocationsParams } from '../types/location.js';
+import type { GeoLookupParams, GeoCountry, GeoState, GeoCity } from '../types/geo-lookup.js';
+import { locationMapper } from '../mappers/location.mapper.js';
+import { geoCountryMapper, geoStateMapper, geoCityMapper } from '../mappers/geo-lookup.mapper.js';
 
 /**
  * Geo Countries Service - Lookup locations by country

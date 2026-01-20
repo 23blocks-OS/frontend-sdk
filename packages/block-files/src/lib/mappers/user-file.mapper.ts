@@ -1,5 +1,5 @@
 import type { JsonApiResourceMapper } from '@23blocks/jsonapi-codec';
-import type { UserFile } from '../types/user-file';
+import type { UserFile } from '../types/user-file.js';
 
 export const userFileMapper: JsonApiResourceMapper<UserFile> = {
   type: 'file',

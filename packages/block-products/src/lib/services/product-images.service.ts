@@ -1,7 +1,7 @@
 import type { Transport } from '@23blocks/contracts';
 import { decodeOne } from '@23blocks/jsonapi-codec';
-import { productImageMapper } from '../mappers/product.mapper';
-import type { ProductImage } from '../types/product';
+import { productImageMapper } from '../mappers/product.mapper.js';
+import type { ProductImage } from '../types/product.js';
 
 export interface PresignResponse {
   url: string;

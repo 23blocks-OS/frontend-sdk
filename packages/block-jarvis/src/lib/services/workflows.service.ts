@@ -7,8 +7,8 @@ import type {
   ListWorkflowsParams,
   RunWorkflowRequest,
   RunWorkflowResponse,
-} from '../types/workflow';
-import { workflowMapper } from '../mappers/workflow.mapper';
+} from '../types/workflow.js';
+import { workflowMapper } from '../mappers/workflow.mapper.js';
 
 export interface WorkflowsService {
   list(params?: ListWorkflowsParams): Promise<PageResult<Workflow>>;

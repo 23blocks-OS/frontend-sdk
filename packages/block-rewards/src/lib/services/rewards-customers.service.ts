@@ -5,16 +5,16 @@ import type {
   CustomerRewardExpiration,
   CustomerRewardHistory,
   ListRewardsCustomersParams,
-} from '../types/rewards-customer';
-import type { Loyalty } from '../types/loyalty';
-import type { Badge } from '../types/badge';
-import type { Coupon } from '../types/coupon';
-import type { OfferCode } from '../types/offer-code';
-import { rewardsCustomerMapper } from '../mappers/rewards-customer.mapper';
-import { loyaltyMapper } from '../mappers/loyalty.mapper';
-import { badgeMapper } from '../mappers/badge.mapper';
-import { couponMapper } from '../mappers/coupon.mapper';
-import { offerCodeMapper } from '../mappers/offer-code.mapper';
+} from '../types/rewards-customer.js';
+import type { Loyalty } from '../types/loyalty.js';
+import type { Badge } from '../types/badge.js';
+import type { Coupon } from '../types/coupon.js';
+import type { OfferCode } from '../types/offer-code.js';
+import { rewardsCustomerMapper } from '../mappers/rewards-customer.mapper.js';
+import { loyaltyMapper } from '../mappers/loyalty.mapper.js';
+import { badgeMapper } from '../mappers/badge.mapper.js';
+import { couponMapper } from '../mappers/coupon.mapper.js';
+import { offerCodeMapper } from '../mappers/offer-code.mapper.js';
 
 export interface RewardsCustomersService {
   list(params?: ListRewardsCustomersParams): Promise<PageResult<RewardsCustomer>>;

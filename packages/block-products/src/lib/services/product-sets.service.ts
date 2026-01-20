@@ -5,8 +5,8 @@ import type {
   CreateProductSetRequest,
   UpdateProductSetRequest,
   ListProductSetsParams,
-} from '../types/product-set';
-import { productSetMapper } from '../mappers/product-set.mapper';
+} from '../types/product-set.js';
+import { productSetMapper } from '../mappers/product-set.mapper.js';
 
 export interface ProductSetsService {
   list(params?: ListProductSetsParams): Promise<PageResult<ProductSet>>;

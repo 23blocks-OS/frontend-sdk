@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { FileDelegation } from '../types/delegation';
-import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils';
+import type { FileDelegation } from '../types/delegation.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseStringArray } from './utils.js';
 
 export const fileDelegationMapper: ResourceMapper<FileDelegation> = {
   type: 'FileDelegation',

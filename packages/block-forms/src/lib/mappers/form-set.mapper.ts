@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { FormSet, FormReference } from '../types/form-set';
-import { parseString, parseDate, parseBoolean, parseStatus } from './utils';
+import type { FormSet, FormReference } from '../types/form-set.js';
+import { parseString, parseDate, parseBoolean, parseStatus } from './utils.js';
 
 export const formSetMapper: ResourceMapper<FormSet> = {
   type: 'FormSet',

@@ -4,8 +4,8 @@ import type {
   BusyBlock,
   CreateBusyBlockRequest,
   ListBusyBlocksParams,
-} from '../types/busy-block';
-import { busyBlockMapper } from '../mappers/busy-block.mapper';
+} from '../types/busy-block.js';
+import { busyBlockMapper } from '../mappers/busy-block.mapper.js';
 
 export interface BusyBlocksService {
   list(userUniqueId: string, params?: ListBusyBlocksParams): Promise<PageResult<BusyBlock>>;

@@ -5,8 +5,8 @@ import type {
   EnrollRequest,
   UpdateEnrollmentProgressRequest,
   ListEnrollmentsParams,
-} from '../types/enrollment';
-import { enrollmentMapper } from '../mappers/enrollment.mapper';
+} from '../types/enrollment.js';
+import { enrollmentMapper } from '../mappers/enrollment.mapper.js';
 
 export interface EnrollmentsService {
   list(params?: ListEnrollmentsParams): Promise<PageResult<Enrollment>>;

@@ -1,3 +1,3 @@
-export * from './wallet';
-export * from './transaction';
-export * from './authorization-code';
+export * from './wallet.js';
+export * from './transaction.js';
+export * from './authorization-code.js';

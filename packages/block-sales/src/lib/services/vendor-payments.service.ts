@@ -7,7 +7,7 @@ import type {
   CreateOrderDetailVendorRequest,
   UpdateOrderDetailVendorRequest,
   CreateOrderDetailVendorBySourceRequest,
-} from '../types/vendor-payment';
+} from '../types/vendor-payment.js';
 import type {
   VendorPaymentReportSummary,
   VendorPaymentReportList,
@@ -15,7 +15,7 @@ import type {
   ProviderReportSummary,
   ProviderReportList,
   ProviderReportParams,
-} from '../types/report';
+} from '../types/report.js';
 
 export interface VendorPaymentsService {
   get(paymentUniqueId: string): Promise<VendorPayment>;
@@ -242,7 +242,7 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
         },
         meta: {
           totalCount: response.meta.total_count,
-          page: response.meta.page,
+          currentPage: response.meta.current_page,
           perPage: response.meta.per_page,
           totalPages: response.meta.total_pages,
         },
@@ -300,7 +300,7 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
         },
         meta: {
           totalCount: response.meta.total_count,
-          page: response.meta.page,
+          currentPage: response.meta.current_page,
           perPage: response.meta.per_page,
           totalPages: response.meta.total_pages,
         },

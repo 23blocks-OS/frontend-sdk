@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Payment } from '../types/payment';
-import { parseString, parseDate, parseNumber, parsePaymentStatus } from './utils';
+import type { Payment } from '../types/payment.js';
+import { parseString, parseDate, parseNumber, parsePaymentStatus } from './utils.js';
 
 export const paymentMapper: ResourceMapper<Payment> = {
   type: 'Payment',

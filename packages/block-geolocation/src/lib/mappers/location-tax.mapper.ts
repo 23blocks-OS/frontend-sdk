@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { LocationTax } from '../types/location-tax';
-import { parseString, parseDate, parseStatus, parseNumber, parseBoolean } from './utils';
+import type { LocationTax } from '../types/location-tax.js';
+import { parseString, parseDate, parseStatus, parseNumber, parseBoolean } from './utils.js';
 
 export const locationTaxMapper: ResourceMapper<LocationTax> = {
   type: 'location_tax',

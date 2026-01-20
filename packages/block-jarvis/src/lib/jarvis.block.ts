@@ -34,7 +34,7 @@ import {
   type MarvinChatService,
   type PromptCommentsService,
   type ExecutionCommentsService,
-} from './services';
+} from './services/index.js';
 
 export interface JarvisBlockConfig extends BlockConfig {
   appId: string;

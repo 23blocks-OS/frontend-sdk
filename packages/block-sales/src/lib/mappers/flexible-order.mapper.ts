@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { FlexibleOrder } from '../types/flexible-order';
-import { parseDate } from './utils';
+import type { FlexibleOrder } from '../types/flexible-order.js';
+import { parseDate } from './utils.js';
 
 export const flexibleOrderMapper: ResourceMapper<FlexibleOrder> = {
   type: 'flexible_order',

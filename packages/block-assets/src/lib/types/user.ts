@@ -1,6 +1,6 @@
 import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
-import type { Asset } from './asset';
-import type { AssetsEntity } from './entity';
+import type { Asset } from './asset.js';
+import type { AssetsEntity } from './entity.js';
 
 export interface AssetsUser extends IdentityCore {
   email: string;

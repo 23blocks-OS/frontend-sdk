@@ -1,5 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Coupon,
   CouponApplication,
@@ -9,8 +9,8 @@ import type {
   ValidateCouponRequest,
   CouponValidationResult,
   ApplyCouponRequest,
-} from '../types/coupon';
-import { couponMapper, couponApplicationMapper } from '../mappers/coupon.mapper';
+} from '../types/coupon.js';
+import { couponMapper, couponApplicationMapper } from '../mappers/coupon.mapper.js';
 
 export interface CouponsService {
   list(params?: ListCouponsParams): Promise<PageResult<Coupon>>;
