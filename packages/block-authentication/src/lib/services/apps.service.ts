@@ -99,10 +99,10 @@ function buildListParams(params?: ListParams): Record<string, string | number | 
   const queryParams: Record<string, string | number | boolean | string[] | undefined> = {};
 
   if (params.page) {
-    queryParams['page[number]'] = params.page;
+    queryParams['page'] = params.page;
   }
   if (params.perPage) {
-    queryParams['page[size]'] = params.perPage;
+    queryParams['records'] = params.perPage;
   }
 
   if (params.sort) {

@@ -85,8 +85,8 @@ export function createApiKeysService(
     async list(params?: ListParams): Promise<PageResult<ApiKey>> {
       const queryParams: Record<string, unknown> = {};
 
-      if (params?.page) queryParams['page[number]'] = params.page;
-      if (params?.perPage) queryParams['page[size]'] = params.perPage;
+      if (params?.page) queryParams['page'] = params.page;
+      if (params?.perPage) queryParams['records'] = params.perPage;
       if (params?.filter) {
         for (const [key, value] of Object.entries(params.filter)) {
           queryParams[`filter[${key}]`] = value;

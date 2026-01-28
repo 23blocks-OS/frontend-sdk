@@ -70,8 +70,8 @@ export function createPermissionsService(
     async list(params?: ListParams): Promise<PageResult<Permission>> {
       const queryParams: Record<string, unknown> = {};
 
-      if (params?.page) queryParams['page[number]'] = params.page;
-      if (params?.perPage) queryParams['page[size]'] = params.perPage;
+      if (params?.page) queryParams['page'] = params.page;
+      if (params?.perPage) queryParams['records'] = params.perPage;
       if (params?.include) queryParams['include'] = params.include.join(',');
 
       const response = await transport.get<{ data: unknown[]; meta?: unknown }>(
