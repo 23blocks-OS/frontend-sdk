@@ -1,3 +1,10 @@
+## 7.5.13 (2026-01-28)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 6.3.3
+- Updated @23blocks/block-search to 4.2.2
+
 ## 7.5.12 (2026-01-20)
 
 ### 🩹 Fixes

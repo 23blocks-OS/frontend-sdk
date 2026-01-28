@@ -1,3 +1,14 @@
+## 6.3.3 (2026-01-28)
+
+### 🩹 Fixes
+
+- **auth,search:** use simple pagination params instead of JSON:API style ([52ac9bd](https://github.com/23blocks-OS/frontend-sdk/commit/52ac9bd))
+
+### ❤️ Thank You
+
+- Claude Opus 4.5
+- Juan Pelaez
+
 ## 6.3.2 (2026-01-20)
 
 ### 🧱 Updated Dependencies
