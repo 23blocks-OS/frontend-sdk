@@ -104,7 +104,7 @@ import {
   type UpdateNoteRequest,
   type ListNotesParams,
 } from '@23blocks/block-university';
-import { TRANSPORT, UNIVERSITY_TRANSPORT, UNIVERSITY_CONFIG } from '../tokens.js';
+import { TRANSPORT, UNIVERSITY_TRANSPORT, UNIVERSITY_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the University block.

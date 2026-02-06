@@ -72,7 +72,7 @@ import {
   type BulkWebNotificationRequest,
   type ListWebNotificationsParams,
 } from '@23blocks/block-conversations';
-import { TRANSPORT, CONVERSATIONS_TRANSPORT, CONVERSATIONS_CONFIG } from '../tokens.js';
+import { TRANSPORT, CONVERSATIONS_TRANSPORT, CONVERSATIONS_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Conversations block.

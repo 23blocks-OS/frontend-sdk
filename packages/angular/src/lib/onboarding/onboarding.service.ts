@@ -49,7 +49,7 @@ import {
   type AbandonedJourney,
   type ListAbandonedJourneysParams,
 } from '@23blocks/block-onboarding';
-import { TRANSPORT, ONBOARDING_TRANSPORT, ONBOARDING_CONFIG } from '../tokens.js';
+import { TRANSPORT, ONBOARDING_TRANSPORT, ONBOARDING_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Onboarding block.

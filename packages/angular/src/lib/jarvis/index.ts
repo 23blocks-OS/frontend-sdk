@@ -1,1 +1,1 @@
-export { JarvisService } from './jarvis.service.js';
+export { JarvisService } from './jarvis.service';

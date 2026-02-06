@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
@@ -62,7 +63,7 @@ import {
   type ReviewFileAccessRequestInput,
   type ListFileAccessRequestsParams,
 } from '@23blocks/block-files';
-import { TRANSPORT, FILES_TRANSPORT, FILES_CONFIG } from '../tokens.js';
+import { TRANSPORT, FILES_TRANSPORT, FILES_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Files block.

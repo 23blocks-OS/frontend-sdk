@@ -74,7 +74,7 @@ import {
   type CreateAssetImageRequest,
   type AssetImage,
 } from '@23blocks/block-assets';
-import { TRANSPORT, ASSETS_TRANSPORT, ASSETS_CONFIG } from '../tokens.js';
+import { TRANSPORT, ASSETS_TRANSPORT, ASSETS_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Assets block.

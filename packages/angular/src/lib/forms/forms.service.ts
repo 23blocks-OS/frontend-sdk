@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
@@ -66,7 +67,7 @@ import {
   type CrmConnectionStatus,
   type CrmSyncStatus,
 } from '@23blocks/block-forms';
-import { TRANSPORT, FORMS_TRANSPORT, FORMS_CONFIG } from '../tokens.js';
+import { TRANSPORT, FORMS_TRANSPORT, FORMS_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Forms block.

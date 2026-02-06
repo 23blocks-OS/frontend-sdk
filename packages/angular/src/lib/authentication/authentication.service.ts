@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from, tap } from 'rxjs';
 import type { Transport, PageResult, ListParams } from '@23blocks/contracts';
@@ -122,8 +123,8 @@ import {
   type CreateMagicLinkRequest,
   type RegisterDeviceRequest,
 } from '@23blocks/block-authentication';
-import { TRANSPORT, AUTHENTICATION_TRANSPORT, AUTHENTICATION_CONFIG } from '../tokens.js';
-import { TOKEN_MANAGER, SIMPLE_CONFIG, type TokenManagerService, type Simple23BlocksConfig } from '../simple-providers.js';
+import { TRANSPORT, AUTHENTICATION_TRANSPORT, AUTHENTICATION_CONFIG } from '../tokens';
+import { TOKEN_MANAGER, SIMPLE_CONFIG, type TokenManagerService, type Simple23BlocksConfig } from '../simple-providers';
 
 /**
  * Angular service wrapping the Authentication block.

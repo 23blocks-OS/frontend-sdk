@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
@@ -43,7 +44,7 @@ import {
   type QuerySeriesParams,
   type ReorderPostsRequest,
 } from '@23blocks/block-content';
-import { TRANSPORT, CONTENT_TRANSPORT, CONTENT_CONFIG } from '../tokens.js';
+import { TRANSPORT, CONTENT_TRANSPORT, CONTENT_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Content block.

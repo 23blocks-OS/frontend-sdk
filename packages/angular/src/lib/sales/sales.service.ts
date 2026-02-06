@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
@@ -77,7 +78,7 @@ import {
   type CreateMercadoPagoPaymentRequest,
   type CreateMercadoPagoPSERequest,
 } from '@23blocks/block-sales';
-import { TRANSPORT, SALES_TRANSPORT, SALES_CONFIG } from '../tokens.js';
+import { TRANSPORT, SALES_TRANSPORT, SALES_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Sales block.

@@ -35,7 +35,7 @@ import {
   type UpdateEmployeeAssignmentRequest,
   type ListEmployeeAssignmentsParams,
 } from '@23blocks/block-company';
-import { TRANSPORT, COMPANY_TRANSPORT, COMPANY_CONFIG } from '../tokens.js';
+import { TRANSPORT, COMPANY_TRANSPORT, COMPANY_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Company block.

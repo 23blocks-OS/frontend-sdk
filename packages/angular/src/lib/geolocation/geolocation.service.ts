@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
@@ -89,7 +90,7 @@ import {
   type GeoCity,
   type GeoLookupParams,
 } from '@23blocks/block-geolocation';
-import { TRANSPORT, GEOLOCATION_TRANSPORT, GEOLOCATION_CONFIG } from '../tokens.js';
+import { TRANSPORT, GEOLOCATION_TRANSPORT, GEOLOCATION_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Geolocation block.

@@ -1,1 +1,1 @@
-export { WalletService } from './wallet.service.js';
+export { WalletService } from './wallet.service';

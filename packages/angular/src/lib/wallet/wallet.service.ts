@@ -26,7 +26,7 @@ import {
   type WalletContent,
   type StoreWalletContentRequest,
 } from '@23blocks/block-wallet';
-import { TRANSPORT, WALLET_TRANSPORT, WALLET_CONFIG } from '../tokens.js';
+import { TRANSPORT, WALLET_TRANSPORT, WALLET_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Wallet block.

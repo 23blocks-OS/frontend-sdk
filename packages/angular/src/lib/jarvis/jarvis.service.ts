@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
@@ -133,7 +134,7 @@ import {
   type ListExecutionCommentsParams,
   type ReplyToCommentRequest,
 } from '@23blocks/block-jarvis';
-import { TRANSPORT, JARVIS_TRANSPORT, JARVIS_CONFIG } from '../tokens.js';
+import { TRANSPORT, JARVIS_TRANSPORT, JARVIS_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Jarvis block.

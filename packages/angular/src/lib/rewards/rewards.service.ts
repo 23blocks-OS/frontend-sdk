@@ -60,7 +60,7 @@ import {
   type CreateEventRuleRequest,
   type UpdateEventRuleRequest,
 } from '@23blocks/block-rewards';
-import { TRANSPORT, REWARDS_TRANSPORT, REWARDS_CONFIG } from '../tokens.js';
+import { TRANSPORT, REWARDS_TRANSPORT, REWARDS_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Rewards block.

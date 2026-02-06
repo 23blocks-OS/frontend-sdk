@@ -1,1 +1,1 @@
-export { SearchService } from './search.service.js';
+export { SearchService } from './search.service';

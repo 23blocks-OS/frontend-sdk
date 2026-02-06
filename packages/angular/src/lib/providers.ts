@@ -39,7 +39,7 @@ import {
   JARVIS_CONFIG,
   ONBOARDING_CONFIG,
   UNIVERSITY_CONFIG,
-} from './tokens.js';
+} from './tokens';
 
 /**
  * Configuration for providing 23blocks services

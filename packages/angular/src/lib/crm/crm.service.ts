@@ -137,7 +137,7 @@ import {
   // Calendar Sync types
   type CalendarSyncResult,
 } from '@23blocks/block-crm';
-import { TRANSPORT, CRM_TRANSPORT, CRM_CONFIG } from '../tokens.js';
+import { TRANSPORT, CRM_TRANSPORT, CRM_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the CRM block.

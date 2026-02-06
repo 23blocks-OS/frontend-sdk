@@ -1,1 +1,1 @@
-export { AuthenticationService } from './authentication.service.js';
+export { AuthenticationService } from './authentication.service';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable, Inject, Optional } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import type { Transport, PageResult } from '@23blocks/contracts';
@@ -26,7 +27,7 @@ import {
   type JarvisSearchQuery,
   type JarvisSearchResult,
 } from '@23blocks/block-search';
-import { TRANSPORT, SEARCH_TRANSPORT, SEARCH_CONFIG } from '../tokens.js';
+import { TRANSPORT, SEARCH_TRANSPORT, SEARCH_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Search block.

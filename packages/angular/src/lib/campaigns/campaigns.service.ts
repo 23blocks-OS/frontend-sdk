@@ -61,7 +61,7 @@ import {
   type UpdateMediaRequest,
   type ListMediaParams,
 } from '@23blocks/block-campaigns';
-import { TRANSPORT, CAMPAIGNS_TRANSPORT, CAMPAIGNS_CONFIG } from '../tokens.js';
+import { TRANSPORT, CAMPAIGNS_TRANSPORT, CAMPAIGNS_CONFIG } from '../tokens';
 
 /**
  * Angular service wrapping the Campaigns block.
