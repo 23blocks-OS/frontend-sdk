@@ -1,3 +1,7 @@
+## 2.1.2 (2026-02-06)
+
+This was a version bump only for @23blocks/contracts to align it with other projects, there were no code changes.
+
 ## 2.1.1 (2026-01-20)
 
 This was a version bump only for @23blocks/contracts to align it with other projects, there were no code changes.
