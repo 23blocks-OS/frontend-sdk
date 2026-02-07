@@ -1,3 +1,50 @@
+# 7.0.0 (2026-02-07)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/angular:** correct major version bump for v7 delegation rewrite ([f7b980b](https://github.com/23blocks-OS/frontend-sdk/commit/f7b980b))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/angular:** correct major version bump for v7 delegation rewrite  ([f7b980b](https://github.com/23blocks-OS/frontend-sdk/commit/f7b980b))
+  This triggers the correct major version bump to 7.0.0
+  for the delegation pattern rewrite that was incorrectly published as 6.5.18.
+  The previous commit used scope "angular" but nx release requires the full
+  project name "@23blocks/angular" for project-scoped version calculation.
+  Also fixes nx.json conventionalCommits types configuration so that:
+  - feat → minor bump (was defaulting to patch)
+  - fix → patch bump
+  - docs/chore/ci/test → no bump
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 6.3.5
+- Updated @23blocks/block-conversations to 3.3.5
+- Updated @23blocks/block-geolocation to 3.4.4
+- Updated @23blocks/block-onboarding to 3.1.5
+- Updated @23blocks/block-university to 3.4.4
+- Updated @23blocks/block-campaigns to 3.1.5
+- Updated @23blocks/block-products to 3.4.4
+- Updated @23blocks/transport-http to 3.1.3
+- Updated @23blocks/block-company to 3.2.5
+- Updated @23blocks/block-content to 3.3.7
+- Updated @23blocks/block-rewards to 3.2.4
+- Updated @23blocks/block-assets to 3.1.5
+- Updated @23blocks/block-jarvis to 3.1.7
+- Updated @23blocks/block-search to 4.2.4
+- Updated @23blocks/block-wallet to 3.1.5
+- Updated @23blocks/block-files to 3.4.4
+- Updated @23blocks/block-forms to 3.1.9
+- Updated @23blocks/block-sales to 3.1.5
+- Updated @23blocks/block-crm to 3.1.6
+- Updated @23blocks/contracts to 2.1.3
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 6.5.18 (2026-02-07)
 
 ### 🚀 Features
