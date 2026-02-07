@@ -1,3 +1,34 @@
+## 6.5.18 (2026-02-07)
+
+### 🚀 Features
+
+- ⚠️  **angular:** rewrite all services to delegation pattern ([c201621](https://github.com/23blocks-OS/frontend-sdk/commit/c201621))
+
+### ⚠️  Breaking Changes
+
+- **angular:** rewrite all services to delegation pattern  ([c201621](https://github.com/23blocks-OS/frontend-sdk/commit/c201621))
+  All 18 Angular services rewritten from Observable
+  wrappers (~10,000 lines) to typed getter delegation (~500 lines).
+  Services now expose block sub-services directly via typed getters
+  that auto-sync with block API types. Methods return Promises instead
+  of Observables - use `from()` to convert if needed.
+  AuthenticationService is hybrid: auth-flow methods (signIn, signUp,
+  signOut, OAuth) still return Observables with token management via
+  tap(), all other sub-services are delegated getters.
+  Migration:
+    // v6: this.searchService.search(request).subscribe(...)
+    // v7: from(this.searchService.search.search(request)).subscribe(...)
+  Additional changes:
+  - Remove @ts-nocheck from all 9 service files
+  - Enable strict: true and noEmitOnError: true in tsconfig.lib.json
+  - Add CI entry-point validation step to release.yml
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 6.5.17 (2026-02-07)
 
 ### 🩹 Fixes
