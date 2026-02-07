@@ -5,6 +5,8 @@ Angular bindings for the 23blocks SDK - Injectable services with typed delegatio
 [![npm version](https://img.shields.io/npm/v/@23blocks/angular.svg)](https://www.npmjs.com/package/@23blocks/angular)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+> **v7.0.0** - Complete rewrite from Observable wrappers to typed getter delegation. See [CHANGELOG.md](./CHANGELOG.md) for migration guide.
+
 ## Installation
 
 ```bash
