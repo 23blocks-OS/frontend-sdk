@@ -81,9 +81,11 @@ await auth.auth.signIn({ email, password });
 ### Framework Bindings
 
 **Angular** (`@23blocks/angular`):
-- Injectable services that wrap blocks
-- Use `provide23Blocks({ transport, authentication: {...} })` in app config
-- Services convert Promise methods to RxJS Observables via `from()`
+- Injectable services that expose block sub-services via typed getters (delegation pattern)
+- Use `provideBlocks23({ apiKey, urls: { authentication: '...' } })` in app config
+- Sub-services return Promises - use `from()` to convert to Observables if needed
+- AuthenticationService is hybrid: auth-flow methods (signIn, signUp, signOut, OAuth) return Observables with token management via `tap()`, all other sub-services are delegated getters
+- Built with ng-packagr (Ivy AOT partial compilation), strict mode enabled
 
 **React** (`@23blocks/react`):
 - `<Blocks23Provider>` creates block instances from config

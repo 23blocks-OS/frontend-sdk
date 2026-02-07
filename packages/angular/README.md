@@ -1,6 +1,6 @@
 # @23blocks/angular
 
-Angular bindings for the 23blocks SDK - Injectable services with RxJS Observables.
+Angular bindings for the 23blocks SDK - Injectable services with typed delegation to block APIs.
 
 [![npm version](https://img.shields.io/npm/v/@23blocks/angular.svg)](https://www.npmjs.com/package/@23blocks/angular)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -15,10 +15,12 @@ npm install @23blocks/angular
 
 This package provides Angular-specific bindings for the 23blocks SDK:
 
-- **Injectable Services** - All blocks exposed as Angular services
-- **RxJS Observables** - All methods return Observables
-- **Token Management** - Automatic token storage and refresh
+- **Injectable Services** - All 18 blocks exposed as Angular services
+- **Typed Delegation** - Services expose block sub-services via typed getters
+- **Promise-based** - All methods return Promises (use `from()` for Observables)
+- **Token Management** - Automatic token storage and refresh for auth flows
 - **Dependency Injection** - Full DI support with providers
+- **Zero Maintenance** - Getters auto-sync with block API types
 
 ## Quick Start
 
@@ -82,6 +84,7 @@ export class LoginComponent {
 
   login() {
     this.loading = true;
+    // Auth-flow methods return Observables with automatic token management
     this.auth.signIn({ email: this.email, password: this.password })
       .subscribe({
         next: (response) => {
@@ -96,6 +99,53 @@ export class LoginComponent {
       });
   }
 }
+```
+
+## Service Architecture
+
+Services expose block sub-services through typed getters. Each getter returns the block's native service, which provides Promise-based methods.
+
+```typescript
+// All non-auth services use this pattern:
+const products = inject(ProductsService);
+
+// Access sub-services via getters
+const list = await products.products.list({ page: 1, perPage: 20 });
+const cart = await products.cart.get(cartId);
+const categories = await products.categories.list();
+
+// Or convert to Observables with from()
+from(products.products.list()).subscribe(list => { ... });
+
+// Full block access for advanced use cases
+const block = products.productsBlock;
+```
+
+### AuthenticationService (Hybrid)
+
+AuthenticationService is special: auth-flow methods that manage tokens return **Observables** with automatic `tap()` for token storage. All other sub-services are delegated via getters (Promise-based).
+
+```typescript
+const auth = inject(AuthenticationService);
+
+// Observable methods (with token management):
+auth.signIn({ email, password }).subscribe(...)
+auth.signUp({ email, password, passwordConfirmation }).subscribe(...)
+auth.signOut().subscribe(...)
+auth.refreshToken({ refreshToken }).subscribe(...)
+auth.facebookLogin({ accessToken }).subscribe(...)
+auth.googleLogin({ accessToken }).subscribe(...)
+
+// Promise-based sub-services (via getters):
+const user = await auth.users.get(userId);
+const roles = await auth.roles.list();
+const keys = await auth.apiKeys.list();
+from(auth.mfa.enable(userId)).subscribe(...)
+
+// Token management:
+auth.isAuthenticated()     // boolean | null
+auth.getAccessToken()      // string | null
+auth.clearTokens()         // void
 ```
 
 ## Configuration Options
@@ -129,18 +179,7 @@ provideBlocks23({
 })
 ```
 
-### Token Mode (Default)
-
-```typescript
-provideBlocks23({
-  apiKey: 'your-api-key',
-  urls: { authentication: 'https://auth.yourapp.com' },
-  authMode: 'token',        // default
-  storage: 'localStorage',  // default
-})
-```
-
-### Cookie Mode (Recommended for Security)
+### Cookie Mode
 
 ```typescript
 provideBlocks23({
@@ -180,162 +219,32 @@ export class AppModule {}
 
 ## Available Services
 
-| Service | Description |
+| Service | Sub-services |
 |---------|-------------|
-| `AuthenticationService` | Sign in, sign up, password reset, MFA |
-| `SearchService` | Full-text search, favorites |
-| `ProductsService` | Products, categories, variants, cart |
-| `CrmService` | Contacts, accounts, leads, opportunities |
-| `ContentService` | Posts, comments, categories, tags |
-| `GeolocationService` | Addresses, locations, areas |
-| `ConversationsService` | Messages, groups, notifications |
-| `FilesService` | File uploads, storage |
-| `FormsService` | Form builder, submissions |
-| `AssetsService` | Asset management, tracking |
-| `CampaignsService` | Marketing campaigns, audiences |
-| `CompanyService` | Company settings, departments, teams |
-| `RewardsService` | Rewards, coupons, loyalty, badges |
-| `SalesService` | Orders, payments, subscriptions |
-| `WalletService` | Digital wallet, transactions |
-| `JarvisService` | AI assistant, prompts, workflows |
-| `OnboardingService` | User onboarding flows |
-| `UniversityService` | Courses, lessons, enrollments |
+| `AuthenticationService` | auth, users, roles, permissions, apiKeys, mfa, oauth, avatars, tenants, apps, blocks, services, subscriptionModels, userSubscriptions, companySubscriptions, countries, states, counties, cities, currencies, guests, magicLinks, refreshTokens, userDevices, tenantUsers, mailTemplates, jwks, adminRsaKeys, oidc |
+| `SearchService` | search, history, favorites, entities, identities, jarvis |
+| `ProductsService` | products, cart, cartDetails, categories, brands, vendors, warehouses, channels, collections, productSets, shoppingLists, promotions, prices, filters, images, variations, reviews, variationReviews, stock, suggestions, addons, myCarts, remarketing, visitors, productVendors |
+| `CrmService` | accounts, contacts, contactEvents, leads, leadFollows, opportunities, meetings, meetingParticipants, meetingBillings, quotes, subscribers, referrals, touches, categories, calendarAccounts, busyBlocks, icsTokens, zoomMeetings, zoomHosts, mailTemplates, communications, users, billingReports, calendarSync |
+| `ContentService` | posts, postVersions, postTemplates, comments, categories, tags, users, moderation, activity, series |
+| `GeolocationService` | locations, addresses, areas, regions, routes, bookings, premises, premiseEvents, routeTracker, locationHours, locationImages, locationSlots, locationTaxes, locationGroups, identities, locationIdentities, geoCountries, geoStates, geoCities |
+| `ConversationsService` | messages, draftMessages, groups, groupInvites, notifications, conversations, websocketTokens, contexts, notificationSettings, availabilities, messageFiles, sources, users, meetings, webNotifications |
+| `FilesService` | storageFiles, entityFiles, fileSchemas, userFiles, fileCategories, fileTags, delegations, fileAccess, fileAccessRequests |
+| `FormsService` | forms, schemas, schemaVersions, instances, sets, landings, subscriptions, appointments, surveys, referrals, mailTemplates, applicationForms, crmSync |
+| `AssetsService` | assets, events, audits, categories, tags, vendors, warehouses, entities, operations, alerts, users, images |
+| `CampaignsService` | campaigns, campaignMedia, landingPages, audiences, landingTemplates, targets, results, markets, locations, templates, mediaResults, media |
+| `CompanyService` | companies, departments, teams, teamMembers, quarters, positions, employeeAssignments |
+| `RewardsService` | rewards, coupons, loyalty, badges, couponConfigurations, offerCodes, expirationRules, customers, badgeCategories, moneyRules, productRules, eventRules |
+| `SalesService` | orders, orderDetails, orderTaxes, payments, subscriptions, subscriptionModels, entities, users, customers, flexibleOrders, stripe, mercadopago, vendorPayments |
+| `WalletService` | wallets, transactions, authorizationCodes, webhooks |
+| `JarvisService` | agents, prompts, workflows, executions, conversations, aiModels, entities, clusters, users, workflowParticipants, workflowSteps, workflowInstances, agentRuntime, mailTemplates, marvinChat, promptComments, executionComments |
+| `OnboardingService` | onboardings, flows, userJourneys, userIdentities, onboard, mailTemplates, remarketing |
+| `UniversityService` | courses, lessons, enrollments, assignments, submissions, subjects, teachers, students, courseGroups, coachingSessions, tests, registrationTokens, placements, calendars, matches, attendance, notes |
 
-## Authentication Examples
+Each service also exposes a `{serviceName}Block` getter for full block access.
 
-### Sign In
+## Usage Examples
 
-```typescript
-import { Component, inject } from '@angular/core';
-import { AuthenticationService } from '@23blocks/angular';
-
-@Component({ ... })
-export class LoginComponent {
-  private auth = inject(AuthenticationService);
-
-  email = '';
-  password = '';
-
-  signIn() {
-    // Required: email, password
-    this.auth.signIn({ email: this.email, password: this.password }).subscribe({
-      next: ({ user, accessToken, refreshToken, expiresIn }) => {
-        console.log('Welcome', user.email);
-        // In token mode, tokens are automatically stored
-      },
-      error: (err) => {
-        console.error('Login failed:', err.message);
-      },
-    });
-  }
-}
-```
-
-### Sign Up (Registration)
-
-```typescript
-@Component({ ... })
-export class RegisterComponent {
-  private auth = inject(AuthenticationService);
-
-  // Sign up with required fields only
-  signUp() {
-    this.auth.signUp({
-      email: 'new@example.com',         // Required
-      password: 'password',              // Required
-      passwordConfirmation: 'password',  // Required - must match password
-    }).subscribe({
-      next: ({ user, accessToken, message }) => {
-        // accessToken may be undefined if email confirmation is enabled
-        if (accessToken) {
-          console.log('Logged in as', user.email);
-        } else {
-          console.log(message); // "Confirmation email sent"
-        }
-      },
-    });
-  }
-
-  // Sign up with all optional fields
-  signUpFull() {
-    this.auth.signUp({
-      // Required
-      email: 'new@example.com',
-      password: 'securePassword123',
-      passwordConfirmation: 'securePassword123',
-
-      // Optional
-      name: 'John Doe',
-      username: 'johndoe',
-      roleId: 'role-uuid',
-      confirmSuccessUrl: 'https://yourapp.com/confirmed',  // Redirect after email confirmation
-      timeZone: 'America/New_York',
-      preferredLanguage: 'en',
-      payload: { referralCode: 'ABC123' },
-      subscription: 'premium-plan',
-    }).subscribe();
-  }
-}
-```
-
-### Sign Out
-
-```typescript
-signOut() {
-  this.auth.signOut().subscribe({
-    next: () => {
-      console.log('Signed out');
-      // Tokens are automatically cleared
-    },
-  });
-}
-```
-
-### Email Confirmation
-
-```typescript
-// Confirm email with token from URL
-confirmEmail(token: string) {
-  this.auth.confirmEmail(token).subscribe({
-    next: (user) => {
-      console.log('Email confirmed for', user.email);
-    },
-  });
-}
-
-// Resend confirmation email
-resendConfirmation(email: string) {
-  this.auth.resendConfirmation({
-    email,
-    confirmSuccessUrl: 'https://yourapp.com/confirmed',  // Optional
-  }).subscribe({
-    next: () => {
-      console.log('Confirmation email sent');
-    },
-  });
-}
-```
-
-### Get Current User
-
-```typescript
-// Returns user with role, avatar, and profile included
-getCurrentUser() {
-  return this.auth.getCurrentUser();
-}
-```
-
-### Check Authentication
-
-```typescript
-// Token mode: returns true/false
-// Cookie mode: returns null (use validateToken instead)
-isAuthenticated(): boolean | null {
-  return this.auth.isAuthenticated();
-}
-```
-
-### Full AuthenticationService Example
+### Authentication
 
 ```typescript
 import { Component, inject } from '@angular/core';
@@ -345,14 +254,14 @@ import { AuthenticationService } from '@23blocks/angular';
 export class AuthComponent {
   private auth = inject(AuthenticationService);
 
-  // Sign in
+  // Sign in (Observable with token management)
   signIn() {
-    this.auth.signIn({ email, password }).subscribe({
+    this.auth.signIn({ email: this.email, password: this.password }).subscribe({
       next: ({ user, accessToken }) => console.log('Welcome', user.email),
     });
   }
 
-  // Sign up
+  // Sign up (Observable with token management)
   signUp() {
     this.auth.signUp({
       email: 'new@example.com',
@@ -361,7 +270,7 @@ export class AuthComponent {
     }).subscribe();
   }
 
-  // Sign out
+  // Sign out (Observable with token management)
   signOut() {
     this.auth.signOut().subscribe();
   }
@@ -371,19 +280,23 @@ export class AuthComponent {
     return this.auth.isAuthenticated();
   }
 
-  // Get current user
-  getCurrentUser() {
-    return this.auth.getCurrentUser();
+  // Access sub-services (Promise-based)
+  async loadUser(id: string) {
+    return await this.auth.users.get(id);
+  }
+
+  async listRoles() {
+    return await this.auth.roles.list();
   }
 }
 ```
 
-## SearchService Example
+### Search
 
 ```typescript
 import { Component, inject } from '@angular/core';
 import { SearchService } from '@23blocks/angular';
-import { Subject, debounceTime, switchMap } from 'rxjs';
+import { Subject, debounceTime, switchMap, from } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -395,14 +308,14 @@ import { Subject, debounceTime, switchMap } from 'rxjs';
   `,
 })
 export class SearchComponent {
-  private search = inject(SearchService);
+  private searchSvc = inject(SearchService);
   private searchSubject = new Subject<string>();
   results: any[] = [];
 
   constructor() {
     this.searchSubject.pipe(
       debounceTime(300),
-      switchMap((query) => this.search.search({ query, limit: 10 }))
+      switchMap((query) => from(this.searchSvc.search.search({ query, limit: 10 })))
     ).subscribe({
       next: (response) => this.results = response.results,
     });
@@ -415,28 +328,32 @@ export class SearchComponent {
 }
 ```
 
-## ProductsService Example
+### Products
 
 ```typescript
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ProductsService } from '@23blocks/angular';
+import { from } from 'rxjs';
 
 @Component({ ... })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent {
   private products = inject(ProductsService);
-  productList$ = this.products.list({ limit: 20 });
 
-  addToCart(productId: string) {
-    this.products.addToCart({ productId, quantity: 1 }).subscribe();
+  // Promise-based
+  async loadProducts() {
+    return await this.products.products.list({ page: 1, perPage: 20 });
+  }
+
+  // Observable-based
+  products$ = from(this.products.products.list({ page: 1, perPage: 20 }));
+
+  async addToCart(productId: string) {
+    await this.products.cart.addItem({ productId, quantity: 1 });
   }
 }
 ```
 
-## ContentService Example
-
-The ContentService provides access to posts, comments, categories, tags, and **series** (collections of posts).
-
-### Basic Content Operations
+### Content
 
 ```typescript
 import { Component, inject } from '@angular/core';
@@ -446,201 +363,85 @@ import { ContentService } from '@23blocks/angular';
 export class BlogComponent {
   private content = inject(ContentService);
 
-  // List posts with pagination
-  posts$ = this.content.listPosts({ page: 1, perPage: 10 });
-
-  // Get a single post
-  loadPost(uniqueId: string) {
-    this.content.getPost(uniqueId).subscribe({
-      next: (post) => console.log('Post:', post.title),
-    });
+  async loadPosts() {
+    return await this.content.posts.list({ page: 1, perPage: 10 });
   }
 
-  // Create a new post
-  createPost() {
-    this.content.createPost({
+  async createPost() {
+    return await this.content.posts.create({
       title: 'My New Post',
       body: 'Post content here...',
       status: 'published',
-    }).subscribe();
+    });
+  }
+
+  async loadSeries() {
+    return await this.content.series.list({ page: 1, perPage: 10 });
   }
 }
 ```
 
-### Series Operations
-
-Series allow you to group posts into ordered collections (e.g., tutorials, courses, article series).
+### CRM
 
 ```typescript
 import { Component, inject } from '@angular/core';
-import { ContentService } from '@23blocks/angular';
+import { CrmService } from '@23blocks/angular';
 
 @Component({ ... })
-export class SeriesComponent {
-  private content = inject(ContentService);
+export class CrmComponent {
+  private crm = inject(CrmService);
 
-  // List all series
-  series$ = this.content.listSeries({ page: 1, perPage: 10 });
+  async loadContacts() {
+    return await this.crm.contacts.list({ page: 1, perPage: 20 });
+  }
 
-  // Query series with filters
-  loadPublicSeries() {
-    this.content.querySeries({
-      visibility: 'public',
-      completionStatus: 'ongoing',
-      page: 1,
-      perPage: 20,
-    }).subscribe({
-      next: (result) => console.log('Series:', result.data),
+  async createLead() {
+    return await this.crm.leads.create({
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john@example.com',
     });
   }
-
-  // Get a single series
-  loadSeries(uniqueId: string) {
-    this.content.getSeries(uniqueId).subscribe({
-      next: (series) => console.log('Series:', series.title),
-    });
-  }
-
-  // Create a new series
-  createSeries() {
-    this.content.createSeries({
-      title: 'TypeScript Fundamentals',
-      description: 'A complete guide to TypeScript',
-      visibility: 'public',
-      completionStatus: 'ongoing',
-    }).subscribe({
-      next: (series) => console.log('Created:', series.uniqueId),
-    });
-  }
-
-  // Update a series
-  updateSeries(uniqueId: string) {
-    this.content.updateSeries(uniqueId, {
-      completionStatus: 'completed',
-    }).subscribe();
-  }
-
-  // Delete a series
-  deleteSeries(uniqueId: string) {
-    this.content.deleteSeries(uniqueId).subscribe();
-  }
 }
-```
-
-### Series Social Actions
-
-```typescript
-// Like/dislike a series
-likeSeries(uniqueId: string) {
-  this.content.likeSeries(uniqueId).subscribe({
-    next: (series) => console.log('Likes:', series.likes),
-  });
-}
-
-dislikeSeries(uniqueId: string) {
-  this.content.dislikeSeries(uniqueId).subscribe();
-}
-
-// Follow/unfollow a series
-followSeries(uniqueId: string) {
-  this.content.followSeries(uniqueId).subscribe({
-    next: (series) => console.log('Followers:', series.followers),
-  });
-}
-
-unfollowSeries(uniqueId: string) {
-  this.content.unfollowSeries(uniqueId).subscribe();
-}
-
-// Save/unsave a series (bookmarking)
-saveSeries(uniqueId: string) {
-  this.content.saveSeries(uniqueId).subscribe();
-}
-
-unsaveSeries(uniqueId: string) {
-  this.content.unsaveSeries(uniqueId).subscribe();
-}
-```
-
-### Series Post Management
-
-```typescript
-// Get posts in a series (ordered)
-loadSeriesPosts(seriesUniqueId: string) {
-  this.content.getSeriesPosts(seriesUniqueId).subscribe({
-    next: (posts) => console.log('Posts in series:', posts.length),
-  });
-}
-
-// Add a post to a series with optional sequence
-addPostToSeries(seriesUniqueId: string, postUniqueId: string) {
-  this.content.addSeriesPost(seriesUniqueId, postUniqueId, 1).subscribe();
-}
-
-// Remove a post from a series
-removePostFromSeries(seriesUniqueId: string, postUniqueId: string) {
-  this.content.removeSeriesPost(seriesUniqueId, postUniqueId).subscribe();
-}
-
-// Reorder posts in a series
-reorderPosts(seriesUniqueId: string) {
-  this.content.reorderSeriesPosts(seriesUniqueId, {
-    posts: [
-      { postUniqueId: 'post-1', sequence: 1 },
-      { postUniqueId: 'post-2', sequence: 2 },
-      { postUniqueId: 'post-3', sequence: 3 },
-    ],
-  }).subscribe();
-}
-```
-
-### Series Types
-
-```typescript
-import type {
-  Series,
-  CreateSeriesRequest,
-  UpdateSeriesRequest,
-  ListSeriesParams,
-  QuerySeriesParams,
-  ReorderPostsRequest,
-  SeriesVisibility,      // 'public' | 'private' | 'unlisted'
-  SeriesCompletionStatus // 'ongoing' | 'completed' | 'hiatus' | 'cancelled'
-} from '@23blocks/block-content';
 ```
 
 ## RxJS Patterns
 
-### Combining Multiple Services
+Since sub-services return Promises, use `from()` to work with Observables:
 
 ```typescript
-import { forkJoin } from 'rxjs';
+import { from, forkJoin } from 'rxjs';
 
-// Fetch user and favorites in parallel
+// Convert a single Promise
+from(this.products.products.list()).subscribe(list => { ... });
+
+// Combine multiple calls
 forkJoin({
-  user: this.auth.getCurrentUser(),
-  favorites: this.search.listFavorites({ limit: 10 }),
-}).subscribe({
-  next: ({ user, favorites }) => {
-    console.log(user, favorites);
-  },
-});
+  products: from(this.products.products.list()),
+  categories: from(this.products.categories.list()),
+}).subscribe(({ products, categories }) => { ... });
+
+// Use with RxJS operators
+from(this.search.search.search({ query })).pipe(
+  map(result => result.data),
+  catchError(err => of([]))
+).subscribe(results => { ... });
 ```
 
 ### Caching with shareReplay
 
 ```typescript
-import { shareReplay } from 'rxjs';
+import { from, shareReplay } from 'rxjs';
 
-// Cache the current user
-currentUser$ = this.auth.getCurrentUser().pipe(
+// Cache categories
+categories$ = from(this.products.categories.list()).pipe(
   shareReplay(1)
 );
 ```
 
-### Error Handling
+## Error Handling
 
-Every error includes a unique request ID for easy debugging and support:
+Every error includes a unique request ID for debugging:
 
 ```typescript
 import { isBlockErrorException, ErrorCodes } from '@23blocks/contracts';
@@ -648,7 +449,6 @@ import { isBlockErrorException, ErrorCodes } from '@23blocks/contracts';
 this.auth.signIn({ email, password }).subscribe({
   error: (err) => {
     if (isBlockErrorException(err)) {
-      // Request tracing for debugging
       console.log('Request ID:', err.requestId);  // "req_m5abc_xyz123"
       console.log('Duration:', err.duration);      // 145 (ms)
 
@@ -659,15 +459,9 @@ this.auth.signIn({ email, password }).subscribe({
         case ErrorCodes.UNAUTHORIZED:
           this.error = 'Session expired';
           break;
-        case ErrorCodes.VALIDATION_ERROR:
-          this.error = err.message;
-          break;
         default:
           this.error = err.message;
       }
-
-      // Send request ID to support for debugging
-      // "Please check request req_m5abc_xyz123"
     }
   },
 });
@@ -716,10 +510,16 @@ import { of } from 'rxjs';
 
 describe('LoginComponent', () => {
   const mockAuth = {
+    // Auth-flow methods return Observables
     signIn: jest.fn().mockReturnValue(of({
       user: { email: 'test@test.com' },
       accessToken: 'token',
     })),
+    // Sub-service getters return objects with Promise methods
+    users: {
+      get: jest.fn().mockResolvedValue({ email: 'test@test.com' }),
+      list: jest.fn().mockResolvedValue({ data: [] }),
+    },
   };
 
   beforeEach(() => {
@@ -730,6 +530,17 @@ describe('LoginComponent', () => {
     });
   });
 });
+```
+
+## TypeScript
+
+All services are fully typed. Import types from block packages:
+
+```typescript
+import type { User, SignInResponse, SignUpResponse } from '@23blocks/block-authentication';
+import type { Product } from '@23blocks/block-products';
+import type { Contact, Lead } from '@23blocks/block-crm';
+import type { Post, Series } from '@23blocks/block-content';
 ```
 
 ## Environment Variables
@@ -756,30 +567,6 @@ export const appConfig: ApplicationConfig = {
     }),
   ],
 };
-```
-
-## TypeScript
-
-All services are fully typed:
-
-```typescript
-import type { User, SignInResponse, SignUpResponse } from '@23blocks/block-authentication';
-
-// SignInResponse
-interface SignInResponse {
-  user: User;
-  accessToken: string;
-  refreshToken?: string;
-  tokenType: string;
-  expiresIn?: number;
-}
-
-// SignUpResponse - accessToken is optional (email confirmation)
-interface SignUpResponse {
-  user: User;
-  accessToken?: string;  // undefined if email confirmation enabled
-  message?: string;
-}
 ```
 
 ## Related Packages

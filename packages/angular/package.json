@@ -1,7 +1,7 @@
 {
   "name": "@23blocks/angular",
   "version": "6.5.17",
-  "description": "Angular bindings for 23blocks SDK - Injectable services with RxJS Observables",
+  "description": "Angular bindings for 23blocks SDK - Injectable services with typed delegation to block APIs",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
@@ -19,7 +19,8 @@
     "angular-services",
     "angular-sdk",
     "rxjs",
-    "rxjs-observables",
+    "typed-delegation",
+    "promise-based",
     "angular-authentication",
     "angular-http-client",
     "angular-backend",
@@ -48,6 +49,7 @@
   },
   "files": [
     "dist",
+    "!dist/package.json",
     "!**/*.tsbuildinfo"
   ],
   "sideEffects": false,
