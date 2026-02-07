@@ -1,3 +1,11 @@
+## 6.5.15 (2026-02-07)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 6.3.6
+- Updated @23blocks/block-search to 4.2.5
+- Updated @23blocks/block-crm to 3.1.7
+
 ## 6.5.14 (2026-02-07)
 
 ### 🧱 Updated Dependencies

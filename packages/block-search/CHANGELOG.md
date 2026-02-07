@@ -1,3 +1,14 @@
+## 4.2.5 (2026-02-07)
+
+### 🩹 Fixes
+
+- replace misleading `id` params with `uniqueId` across SDK ([6dfc65b](https://github.com/23blocks-OS/frontend-sdk/commit/6dfc65b))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 4.2.4 (2026-02-07)
 
 ### 🧱 Updated Dependencies
