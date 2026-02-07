@@ -1,3 +1,14 @@
+## 6.5.17 (2026-02-07)
+
+### 🩹 Fixes
+
+- **angular:** add missing entry point fields to package.json ([ae4a378](https://github.com/23blocks-OS/frontend-sdk/commit/ae4a378))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 6.5.16 (2026-02-06)
 
 ### 🩹 Fixes
