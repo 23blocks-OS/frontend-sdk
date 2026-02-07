@@ -63,6 +63,30 @@ jobs:
       - name: Build all packages
         run: npm run build
 
+      - name: Validate package entry points
+        run: |
+          for pkg in packages/*/; do
+            if [ -f "$pkg/package.json" ]; then
+              node -e "
+                const pkg = require('./$pkg/package.json');
+                const path = require('path');
+                const fs = require('fs');
+                const base = './$pkg';
+                const checks = [
+                  pkg.main && path.join(base, pkg.main),
+                  pkg.types && path.join(base, pkg.types),
+                ].filter(Boolean);
+                for (const f of checks) {
+                  if (!fs.existsSync(f)) {
+                    console.error('MISSING: ' + f + ' (from ' + pkg.name + ')');
+                    process.exit(1);
+                  }
+                }
+                console.log(pkg.name + ': entry points OK');
+              "
+            fi
+          done
+
       - name: Run tests
         run: npm run test
 
