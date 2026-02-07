@@ -1132,7 +1132,7 @@ export function useUser(): UseUserReturn {
     }
 
     const authentication = context.authentication as AuthenticationBlock;
-    const updatedUser = await authentication.users.updateProfile(user.id, request as UpdateProfileRequest);
+    const updatedUser = await authentication.users.updateProfile(user.uniqueId, request as UpdateProfileRequest);
     setUser(updatedUser);
     return updatedUser;
   }, [context.authentication, user]);

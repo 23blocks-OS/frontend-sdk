@@ -151,48 +151,48 @@ export interface UsersService {
   list(params?: ListParams): Promise<PageResult<User>>;
 
   /**
-   * Get a user by ID
+   * Get a user by unique ID
    */
-  get(id: string): Promise<User>;
+  get(uniqueId: string): Promise<User>;
 
   /**
-   * Get a user by unique ID
+   * Get a user by unique ID (alias)
    */
   getByUniqueId(uniqueId: string): Promise<User>;
 
   /**
    * Update a user
    */
-  update(id: string, request: UpdateUserRequest): Promise<User>;
+  update(uniqueId: string, request: UpdateUserRequest): Promise<User>;
 
   /**
    * Update user profile
    */
-  updateProfile(userId: string, request: UpdateProfileRequest): Promise<User>;
+  updateProfile(userUniqueId: string, request: UpdateProfileRequest): Promise<User>;
 
   /**
    * Delete a user
    */
-  delete(id: string): Promise<void>;
+  delete(uniqueId: string): Promise<void>;
 
   /**
    * Activate a user
    */
-  activate(id: string): Promise<User>;
+  activate(uniqueId: string): Promise<User>;
 
   /**
    * Deactivate a user
    */
-  deactivate(id: string): Promise<User>;
+  deactivate(uniqueId: string): Promise<User>;
 
   /**
    * Change user role
-   * @param id - User unique ID
+   * @param uniqueId - User unique ID
    * @param roleUniqueId - The unique ID of the new role
    * @param reason - Reason for role change (minimum 10 characters)
    * @param forceReauth - If true, invalidates user's existing tokens
    */
-  changeRole(id: string, roleUniqueId: string, reason: string, forceReauth?: boolean): Promise<User>;
+  changeRole(uniqueId: string, roleUniqueId: string, reason: string, forceReauth?: boolean): Promise<User>;
 
   /**
    * Search users
@@ -301,9 +301,9 @@ export function createUsersService(
       return decodePageResult(response, userMapper);
     },
 
-    async get(id: string): Promise<User> {
+    async get(uniqueId: string): Promise<User> {
       const response = await transport.get<{ data: unknown }>(
-        `/users/${id}`,
+        `/users/${uniqueId}`,
         { params: { include: 'role,user_avatar,user_profile' } }
       );
       return decodeOne(response, userMapper);
@@ -317,9 +317,9 @@ export function createUsersService(
       return decodeOne(response, userMapper);
     },
 
-    async update(id: string, request: UpdateUserRequest): Promise<User> {
+    async update(uniqueId: string, request: UpdateUserRequest): Promise<User> {
       const response = await transport.put<{ data: unknown }>(
-        `/users/${id}`,
+        `/users/${uniqueId}`,
         {
           user: {
             name: request.name,
@@ -334,9 +334,9 @@ export function createUsersService(
       return decodeOne(response, userMapper);
     },
 
-    async updateProfile(userId: string, request: UpdateProfileRequest): Promise<User> {
+    async updateProfile(userUniqueId: string, request: UpdateProfileRequest): Promise<User> {
       const response = await transport.put<{ data: unknown }>(
-        `/users/${userId}/profile`,
+        `/users/${userUniqueId}/profile`,
         {
           profile: {
             first_name: request.firstName,
@@ -371,27 +371,27 @@ export function createUsersService(
       return decodeOne(response, userMapper);
     },
 
-    async delete(id: string): Promise<void> {
-      await transport.delete(`/users/${id}`);
+    async delete(uniqueId: string): Promise<void> {
+      await transport.delete(`/users/${uniqueId}`);
     },
 
-    async activate(id: string): Promise<User> {
+    async activate(uniqueId: string): Promise<User> {
       const response = await transport.post<{ data: unknown }>(
-        `/users/${id}/activate`
+        `/users/${uniqueId}/activate`
       );
       return decodeOne(response, userMapper);
     },
 
-    async deactivate(id: string): Promise<User> {
+    async deactivate(uniqueId: string): Promise<User> {
       const response = await transport.post<{ data: unknown }>(
-        `/users/${id}/deactivate`
+        `/users/${uniqueId}/deactivate`
       );
       return decodeOne(response, userMapper);
     },
 
-    async changeRole(id: string, roleUniqueId: string, reason: string, forceReauth?: boolean): Promise<User> {
+    async changeRole(uniqueId: string, roleUniqueId: string, reason: string, forceReauth?: boolean): Promise<User> {
       const response = await transport.put<{ data: unknown }>(
-        `/users/${id}/role`,
+        `/users/${uniqueId}/role`,
         {
           role: {
             role_unique_id: roleUniqueId,

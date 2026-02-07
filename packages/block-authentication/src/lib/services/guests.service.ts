@@ -31,9 +31,9 @@ export interface GuestsService {
   list(params?: ListParams): Promise<PageResult<Guest>>;
 
   /**
-   * Get a guest by ID
+   * Get a guest by unique ID
    */
-  get(id: string): Promise<Guest>;
+  get(uniqueId: string): Promise<Guest>;
 
   /**
    * Track a guest visit
@@ -43,7 +43,7 @@ export interface GuestsService {
   /**
    * Convert guest to user (registration)
    */
-  convert(id: string): Promise<Guest>;
+  convert(uniqueId: string): Promise<Guest>;
 }
 
 /**
@@ -56,9 +56,9 @@ export interface MagicLinksService {
   list(params?: ListParams): Promise<PageResult<MagicLink>>;
 
   /**
-   * Get a magic link by ID
+   * Get a magic link by unique ID
    */
-  get(id: string): Promise<MagicLink>;
+  get(uniqueId: string): Promise<MagicLink>;
 
   /**
    * Create a magic link
@@ -73,7 +73,7 @@ export interface MagicLinksService {
   /**
    * Expire a magic link
    */
-  expire(id: string): Promise<MagicLink>;
+  expire(uniqueId: string): Promise<MagicLink>;
 }
 
 /**
@@ -86,14 +86,14 @@ export interface RefreshTokensService {
   list(params?: ListParams): Promise<PageResult<RefreshToken>>;
 
   /**
-   * Get a refresh token by ID
+   * Get a refresh token by unique ID
    */
-  get(id: string): Promise<RefreshToken>;
+  get(uniqueId: string): Promise<RefreshToken>;
 
   /**
    * Revoke a refresh token
    */
-  revoke(id: string): Promise<RefreshToken>;
+  revoke(uniqueId: string): Promise<RefreshToken>;
 
   /**
    * Revoke all refresh tokens for current user
@@ -116,9 +116,9 @@ export interface UserDevicesService {
   list(params?: ListParams): Promise<PageResult<UserDevice>>;
 
   /**
-   * Get a device by ID
+   * Get a device by unique ID
    */
-  get(id: string): Promise<UserDevice>;
+  get(uniqueId: string): Promise<UserDevice>;
 
   /**
    * Register a new device
@@ -128,17 +128,17 @@ export interface UserDevicesService {
   /**
    * Update device settings
    */
-  update(id: string, request: Partial<RegisterDeviceRequest>): Promise<UserDevice>;
+  update(uniqueId: string, request: Partial<RegisterDeviceRequest>): Promise<UserDevice>;
 
   /**
    * Unregister a device
    */
-  unregister(id: string): Promise<void>;
+  unregister(uniqueId: string): Promise<void>;
 
   /**
    * Set default device
    */
-  setDefault(id: string): Promise<UserDevice>;
+  setDefault(uniqueId: string): Promise<UserDevice>;
 }
 
 /**
@@ -171,9 +171,9 @@ export interface MailTemplatesService {
   list(params?: ListParams): Promise<PageResult<MailTemplate>>;
 
   /**
-   * Get a mail template by ID
+   * Get a mail template by unique ID
    */
-  get(id: string): Promise<MailTemplate>;
+  get(uniqueId: string): Promise<MailTemplate>;
 
   /**
    * Get a mail template by event name
@@ -183,7 +183,7 @@ export interface MailTemplatesService {
   /**
    * Update a mail template
    */
-  update(id: string, template: Partial<MailTemplate>): Promise<MailTemplate>;
+  update(uniqueId: string, template: Partial<MailTemplate>): Promise<MailTemplate>;
 }
 
 /**
@@ -237,8 +237,8 @@ export function createGuestsService(
       return decodePageResult(response, guestMapper);
     },
 
-    async get(id: string): Promise<Guest> {
-      const response = await transport.get<JsonApiDocument>(`/guests/${id}`);
+    async get(uniqueId: string): Promise<Guest> {
+      const response = await transport.get<JsonApiDocument>(`/guests/${uniqueId}`);
       return decodeOne(response, guestMapper);
     },
 
@@ -247,9 +247,9 @@ export function createGuestsService(
       return decodeOne(response, guestMapper);
     },
 
-    async convert(id: string): Promise<Guest> {
+    async convert(uniqueId: string): Promise<Guest> {
       const response = await transport.post<JsonApiDocument>(
-        `/guests/${id}/convert`
+        `/guests/${uniqueId}/convert`
       );
       return decodeOne(response, guestMapper);
     },
@@ -272,9 +272,9 @@ export function createMagicLinksService(
       return decodePageResult(response, magicLinkMapper);
     },
 
-    async get(id: string): Promise<MagicLink> {
+    async get(uniqueId: string): Promise<MagicLink> {
       const response = await transport.get<JsonApiDocument>(
-        `/magic_links/${id}`
+        `/magic_links/${uniqueId}`
       );
       return decodeOne(response, magicLinkMapper);
     },
@@ -302,9 +302,9 @@ export function createMagicLinksService(
       return decodeOne(response, magicLinkMapper);
     },
 
-    async expire(id: string): Promise<MagicLink> {
+    async expire(uniqueId: string): Promise<MagicLink> {
       const response = await transport.post<JsonApiDocument>(
-        `/magic_links/${id}/expire`
+        `/magic_links/${uniqueId}/expire`
       );
       return decodeOne(response, magicLinkMapper);
     },
@@ -327,16 +327,16 @@ export function createRefreshTokensService(
       return decodePageResult(response, refreshTokenMapper);
     },
 
-    async get(id: string): Promise<RefreshToken> {
+    async get(uniqueId: string): Promise<RefreshToken> {
       const response = await transport.get<JsonApiDocument>(
-        `/refresh_tokens/${id}`
+        `/refresh_tokens/${uniqueId}`
       );
       return decodeOne(response, refreshTokenMapper);
     },
 
-    async revoke(id: string): Promise<RefreshToken> {
+    async revoke(uniqueId: string): Promise<RefreshToken> {
       const response = await transport.post<JsonApiDocument>(
-        `/refresh_tokens/${id}/revoke`
+        `/refresh_tokens/${uniqueId}/revoke`
       );
       return decodeOne(response, refreshTokenMapper);
     },
@@ -367,9 +367,9 @@ export function createUserDevicesService(
       return decodePageResult(response, userDeviceMapper);
     },
 
-    async get(id: string): Promise<UserDevice> {
+    async get(uniqueId: string): Promise<UserDevice> {
       const response = await transport.get<JsonApiDocument>(
-        `/user_devices/${id}`
+        `/user_devices/${uniqueId}`
       );
       return decodeOne(response, userDeviceMapper);
     },
@@ -389,11 +389,11 @@ export function createUserDevicesService(
     },
 
     async update(
-      id: string,
+      uniqueId: string,
       request: Partial<RegisterDeviceRequest>
     ): Promise<UserDevice> {
       const response = await transport.put<JsonApiDocument>(
-        `/users/devices/${id}`,
+        `/users/devices/${uniqueId}`,
         {
           device: {
             device_type: request.deviceType,
@@ -408,13 +408,13 @@ export function createUserDevicesService(
       return decodeOne(response, userDeviceMapper);
     },
 
-    async unregister(id: string): Promise<void> {
-      await transport.delete(`/user_devices/${id}`);
+    async unregister(uniqueId: string): Promise<void> {
+      await transport.delete(`/user_devices/${uniqueId}`);
     },
 
-    async setDefault(id: string): Promise<UserDevice> {
+    async setDefault(uniqueId: string): Promise<UserDevice> {
       const response = await transport.post<JsonApiDocument>(
-        `/user_devices/${id}/set_default`
+        `/user_devices/${uniqueId}/set_default`
       );
       return decodeOne(response, userDeviceMapper);
     },
@@ -469,9 +469,9 @@ export function createMailTemplatesService(
       return decodePageResult(response, mailTemplateMapper);
     },
 
-    async get(id: string): Promise<MailTemplate> {
+    async get(uniqueId: string): Promise<MailTemplate> {
       const response = await transport.get<JsonApiDocument>(
-        `/mail_templates/${id}`
+        `/mail_templates/${uniqueId}`
       );
       return decodeOne(response, mailTemplateMapper);
     },
@@ -483,9 +483,9 @@ export function createMailTemplatesService(
       return decodeOne(response, mailTemplateMapper);
     },
 
-    async update(id: string, template: Partial<MailTemplate>): Promise<MailTemplate> {
+    async update(uniqueId: string, template: Partial<MailTemplate>): Promise<MailTemplate> {
       const response = await transport.put<JsonApiDocument>(
-        `/mail_templates/${id}`,
+        `/mail_templates/${uniqueId}`,
         {
           template: {
             template_name: template.templateName,

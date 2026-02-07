@@ -41,9 +41,9 @@ export interface RolesService {
   list(params?: ListParams): Promise<PageResult<Role>>;
 
   /**
-   * Get a role by ID
+   * Get a role by unique ID
    */
-  get(id: string): Promise<Role>;
+  get(uniqueId: string): Promise<Role>;
 
   /**
    * Get a role by code
@@ -58,32 +58,32 @@ export interface RolesService {
   /**
    * Update a role
    */
-  update(id: string, request: UpdateRoleRequest): Promise<Role>;
+  update(uniqueId: string, request: UpdateRoleRequest): Promise<Role>;
 
   /**
    * Delete a role
    */
-  delete(id: string): Promise<void>;
+  delete(uniqueId: string): Promise<void>;
 
   /**
    * Get permissions for a role
    */
-  getPermissions(roleId: string): Promise<Permission[]>;
+  getPermissions(roleUniqueId: string): Promise<Permission[]>;
 
   /**
    * Set permissions for a role
    */
-  setPermissions(roleId: string, permissionIds: string[]): Promise<Role>;
+  setPermissions(roleUniqueId: string, permissionIds: string[]): Promise<Role>;
 
   /**
    * Add permission to a role
    */
-  addPermission(roleId: string, permissionId: string): Promise<Role>;
+  addPermission(roleUniqueId: string, permissionUniqueId: string): Promise<Role>;
 
   /**
    * Remove permission from a role
    */
-  removePermission(roleId: string, permissionId: string): Promise<Role>;
+  removePermission(roleUniqueId: string, permissionUniqueId: string): Promise<Role>;
 
   /**
    * List all permissions
@@ -113,9 +113,9 @@ export function createRolesService(
       return decodePageResult(response, roleMapper);
     },
 
-    async get(id: string): Promise<Role> {
+    async get(uniqueId: string): Promise<Role> {
       const response = await transport.get<{ data: unknown }>(
-        `/roles/${id}`,
+        `/roles/${uniqueId}`,
         { params: { include: 'permissions' } }
       );
       return decodeOne(response, roleMapper);
@@ -147,9 +147,9 @@ export function createRolesService(
       return decodeOne(response, roleMapper);
     },
 
-    async update(id: string, request: UpdateRoleRequest): Promise<Role> {
+    async update(uniqueId: string, request: UpdateRoleRequest): Promise<Role> {
       const response = await transport.put<{ data: unknown }>(
-        `/roles/${id}`,
+        `/roles/${uniqueId}`,
         {
           role: {
             name: request.name,
@@ -166,35 +166,35 @@ export function createRolesService(
       return decodeOne(response, roleMapper);
     },
 
-    async delete(id: string): Promise<void> {
-      await transport.delete(`/roles/${id}`);
+    async delete(uniqueId: string): Promise<void> {
+      await transport.delete(`/roles/${uniqueId}`);
     },
 
-    async getPermissions(roleId: string): Promise<Permission[]> {
+    async getPermissions(roleUniqueId: string): Promise<Permission[]> {
       const response = await transport.get<{ data: unknown[] }>(
-        `/roles/${roleId}/permissions`
+        `/roles/${roleUniqueId}/permissions`
       );
       return decodeMany(response, permissionMapper);
     },
 
-    async setPermissions(roleId: string, permissionIds: string[]): Promise<Role> {
+    async setPermissions(roleUniqueId: string, permissionIds: string[]): Promise<Role> {
       const response = await transport.put<{ data: unknown }>(
-        `/roles/${roleId}/permissions`,
+        `/roles/${roleUniqueId}/permissions`,
         { permission_ids: permissionIds }
       );
       return decodeOne(response, roleMapper);
     },
 
-    async addPermission(roleId: string, permissionId: string): Promise<Role> {
+    async addPermission(roleUniqueId: string, permissionUniqueId: string): Promise<Role> {
       const response = await transport.post<{ data: unknown }>(
-        `/roles/${roleId}/permissions/${permissionId}`
+        `/roles/${roleUniqueId}/permissions/${permissionUniqueId}`
       );
       return decodeOne(response, roleMapper);
     },
 
-    async removePermission(roleId: string, permissionId: string): Promise<Role> {
+    async removePermission(roleUniqueId: string, permissionUniqueId: string): Promise<Role> {
       const response = await transport.delete<{ data: unknown }>(
-        `/roles/${roleId}/permissions/${permissionId}`
+        `/roles/${roleUniqueId}/permissions/${permissionUniqueId}`
       );
       return decodeOne(response, roleMapper);
     },

@@ -10,7 +10,7 @@ import { icsTokenMapper } from '../mappers/ics-token.mapper.js';
 export interface IcsTokensService {
   list(userUniqueId: string, params?: ListIcsTokensParams): Promise<PageResult<IcsToken>>;
   create(userUniqueId: string, data: CreateIcsTokenRequest): Promise<IcsToken>;
-  delete(userUniqueId: string, id: string): Promise<void>;
+  delete(userUniqueId: string, uniqueId: string): Promise<void>;
 }
 
 export function createIcsTokensService(transport: Transport, _config: { appId: string }): IcsTokensService {
@@ -39,8 +39,8 @@ export function createIcsTokensService(transport: Transport, _config: { appId: s
       return decodeOne(response, icsTokenMapper);
     },
 
-    async delete(userUniqueId: string, id: string): Promise<void> {
-      await transport.delete(`/users/${userUniqueId}/ics_tokens/${id}`);
+    async delete(userUniqueId: string, uniqueId: string): Promise<void> {
+      await transport.delete(`/users/${userUniqueId}/ics_tokens/${uniqueId}`);
     },
   };
 }

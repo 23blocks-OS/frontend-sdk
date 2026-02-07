@@ -12,10 +12,10 @@ import { calendarAccountMapper } from '../mappers/calendar-account.mapper.js';
 
 export interface CalendarAccountsService {
   list(userUniqueId: string, params?: ListCalendarAccountsParams): Promise<PageResult<CalendarAccount>>;
-  get(userUniqueId: string, id: string): Promise<CalendarAccount>;
+  get(userUniqueId: string, uniqueId: string): Promise<CalendarAccount>;
   create(userUniqueId: string, data: CreateCalendarAccountRequest): Promise<CalendarAccount>;
-  update(userUniqueId: string, id: string, data: UpdateCalendarAccountRequest): Promise<CalendarAccount>;
-  delete(userUniqueId: string, id: string): Promise<void>;
+  update(userUniqueId: string, uniqueId: string, data: UpdateCalendarAccountRequest): Promise<CalendarAccount>;
+  delete(userUniqueId: string, uniqueId: string): Promise<void>;
   syncUser(userUniqueId: string, request?: SyncCalendarRequest): Promise<SyncCalendarResponse>;
   syncTenant(request?: SyncCalendarRequest): Promise<SyncCalendarResponse>;
 }
@@ -36,8 +36,8 @@ export function createCalendarAccountsService(transport: Transport, _config: { a
       return decodePageResult(response, calendarAccountMapper);
     },
 
-    async get(userUniqueId: string, id: string): Promise<CalendarAccount> {
-      const response = await transport.get<unknown>(`/users/${userUniqueId}/calendar_accounts/${id}`);
+    async get(userUniqueId: string, uniqueId: string): Promise<CalendarAccount> {
+      const response = await transport.get<unknown>(`/users/${userUniqueId}/calendar_accounts/${uniqueId}`);
       return decodeOne(response, calendarAccountMapper);
     },
 
@@ -57,8 +57,8 @@ export function createCalendarAccountsService(transport: Transport, _config: { a
       return decodeOne(response, calendarAccountMapper);
     },
 
-    async update(userUniqueId: string, id: string, data: UpdateCalendarAccountRequest): Promise<CalendarAccount> {
-      const response = await transport.put<unknown>(`/users/${userUniqueId}/calendar_accounts/${id}`, {
+    async update(userUniqueId: string, uniqueId: string, data: UpdateCalendarAccountRequest): Promise<CalendarAccount> {
+      const response = await transport.put<unknown>(`/users/${userUniqueId}/calendar_accounts/${uniqueId}`, {
         calendar_account: {
           email: data.email,
           name: data.name,
@@ -74,8 +74,8 @@ export function createCalendarAccountsService(transport: Transport, _config: { a
       return decodeOne(response, calendarAccountMapper);
     },
 
-    async delete(userUniqueId: string, id: string): Promise<void> {
-      await transport.delete(`/users/${userUniqueId}/calendar_accounts/${id}`);
+    async delete(userUniqueId: string, uniqueId: string): Promise<void> {
+      await transport.delete(`/users/${userUniqueId}/calendar_accounts/${uniqueId}`);
     },
 
     async syncUser(userUniqueId: string, request?: SyncCalendarRequest): Promise<SyncCalendarResponse> {

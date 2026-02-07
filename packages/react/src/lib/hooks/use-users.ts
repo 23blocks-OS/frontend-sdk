@@ -28,14 +28,14 @@ export interface UseUsersState {
 
 export interface UseUsersActions {
   listUsers: (params?: ListParams) => Promise<PageResult<User>>;
-  getUser: (id: string) => Promise<User>;
+  getUser: (uniqueId: string) => Promise<User>;
   getUserByUniqueId: (uniqueId: string) => Promise<User>;
-  updateUser: (id: string, request: UpdateUserRequest) => Promise<User>;
-  updateUserProfile: (userId: string, request: UpdateProfileRequest) => Promise<User>;
-  deleteUser: (id: string) => Promise<void>;
-  activateUser: (id: string) => Promise<User>;
-  deactivateUser: (id: string) => Promise<User>;
-  changeUserRole: (id: string, roleUniqueId: string, reason: string, forceReauth?: boolean) => Promise<User>;
+  updateUser: (uniqueId: string, request: UpdateUserRequest) => Promise<User>;
+  updateUserProfile: (userUniqueId: string, request: UpdateProfileRequest) => Promise<User>;
+  deleteUser: (uniqueId: string) => Promise<void>;
+  activateUser: (uniqueId: string) => Promise<User>;
+  deactivateUser: (uniqueId: string) => Promise<User>;
+  changeUserRole: (uniqueId: string, roleUniqueId: string, reason: string, forceReauth?: boolean) => Promise<User>;
   searchUsers: (query: string, params?: ListParams) => Promise<PageResult<User>>;
   searchUsersAdvanced: (request: UserSearchRequest, params?: ListParams) => Promise<PageResult<User>>;
   getUserProfile: (userUniqueId: string) => Promise<UserProfileFull>;
@@ -104,11 +104,11 @@ export function useUsers(): UseUsersReturn {
     }
   }, [block.users]);
 
-  const getUser = useCallback(async (id: string): Promise<User> => {
+  const getUser = useCallback(async (uniqueId: string): Promise<User> => {
     setIsLoading(true);
     setError(null);
     try {
-      return await block.users.get(id);
+      return await block.users.get(uniqueId);
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);
@@ -132,12 +132,12 @@ export function useUsers(): UseUsersReturn {
     }
   }, [block.users]);
 
-  const updateUser = useCallback(async (id: string, request: UpdateUserRequest): Promise<User> => {
+  const updateUser = useCallback(async (uniqueId: string, request: UpdateUserRequest): Promise<User> => {
     setIsLoading(true);
     setError(null);
     try {
-      const updated = await block.users.update(id, request);
-      setUsers(prev => prev.map(u => u.id === id ? updated : u));
+      const updated = await block.users.update(uniqueId, request);
+      setUsers(prev => prev.map(u => u.uniqueId === uniqueId ? updated : u));
       return updated;
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
@@ -148,11 +148,11 @@ export function useUsers(): UseUsersReturn {
     }
   }, [block.users]);
 
-  const updateUserProfile = useCallback(async (userId: string, request: UpdateProfileRequest): Promise<User> => {
+  const updateUserProfile = useCallback(async (userUniqueId: string, request: UpdateProfileRequest): Promise<User> => {
     setIsLoading(true);
     setError(null);
     try {
-      return await block.users.updateProfile(userId, request);
+      return await block.users.updateProfile(userUniqueId, request);
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);
@@ -162,12 +162,12 @@ export function useUsers(): UseUsersReturn {
     }
   }, [block.users]);
 
-  const deleteUser = useCallback(async (id: string): Promise<void> => {
+  const deleteUser = useCallback(async (uniqueId: string): Promise<void> => {
     setIsLoading(true);
     setError(null);
     try {
-      await block.users.delete(id);
-      setUsers(prev => prev.filter(u => u.id !== id));
+      await block.users.delete(uniqueId);
+      setUsers(prev => prev.filter(u => u.uniqueId !== uniqueId));
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);
@@ -177,12 +177,12 @@ export function useUsers(): UseUsersReturn {
     }
   }, [block.users]);
 
-  const activateUser = useCallback(async (id: string): Promise<User> => {
+  const activateUser = useCallback(async (uniqueId: string): Promise<User> => {
     setIsLoading(true);
     setError(null);
     try {
-      const activated = await block.users.activate(id);
-      setUsers(prev => prev.map(u => u.id === id ? activated : u));
+      const activated = await block.users.activate(uniqueId);
+      setUsers(prev => prev.map(u => u.uniqueId === uniqueId ? activated : u));
       return activated;
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
@@ -193,12 +193,12 @@ export function useUsers(): UseUsersReturn {
     }
   }, [block.users]);
 
-  const deactivateUser = useCallback(async (id: string): Promise<User> => {
+  const deactivateUser = useCallback(async (uniqueId: string): Promise<User> => {
     setIsLoading(true);
     setError(null);
     try {
-      const deactivated = await block.users.deactivate(id);
-      setUsers(prev => prev.map(u => u.id === id ? deactivated : u));
+      const deactivated = await block.users.deactivate(uniqueId);
+      setUsers(prev => prev.map(u => u.uniqueId === uniqueId ? deactivated : u));
       return deactivated;
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
@@ -210,7 +210,7 @@ export function useUsers(): UseUsersReturn {
   }, [block.users]);
 
   const changeUserRole = useCallback(async (
-    id: string,
+    uniqueId: string,
     roleUniqueId: string,
     reason: string,
     forceReauth?: boolean
@@ -218,8 +218,8 @@ export function useUsers(): UseUsersReturn {
     setIsLoading(true);
     setError(null);
     try {
-      const updated = await block.users.changeRole(id, roleUniqueId, reason, forceReauth);
-      setUsers(prev => prev.map(u => u.id === id ? updated : u));
+      const updated = await block.users.changeRole(uniqueId, roleUniqueId, reason, forceReauth);
+      setUsers(prev => prev.map(u => u.uniqueId === uniqueId ? updated : u));
       return updated;
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));

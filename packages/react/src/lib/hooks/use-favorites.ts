@@ -18,7 +18,7 @@ export interface UseFavoritesState {
 export interface UseFavoritesActions {
   listFavorites: () => Promise<FavoriteEntity[]>;
   addFavorite: (request: AddFavoriteRequest) => Promise<FavoriteEntity>;
-  removeFavorite: (id: string) => Promise<void>;
+  removeFavorite: (uniqueId: string) => Promise<void>;
   isFavorite: (entityUniqueId: string) => Promise<boolean>;
   clearError: () => void;
 }
@@ -95,12 +95,12 @@ export function useFavorites(): UseFavoritesReturn {
     }
   }, [block.favorites]);
 
-  const removeFavorite = useCallback(async (id: string): Promise<void> => {
+  const removeFavorite = useCallback(async (uniqueId: string): Promise<void> => {
     setIsLoading(true);
     setError(null);
     try {
-      await block.favorites.remove(id);
-      setFavorites(prev => prev.filter(f => f.id !== id));
+      await block.favorites.remove(uniqueId);
+      setFavorites(prev => prev.filter(f => f.uniqueId !== uniqueId));
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);

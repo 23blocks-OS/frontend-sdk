@@ -21,9 +21,9 @@ export interface CountriesService {
   list(params?: ListParams): Promise<PageResult<Country>>;
 
   /**
-   * Get a country by ID
+   * Get a country by unique ID
    */
-  get(id: string): Promise<Country>;
+  get(uniqueId: string): Promise<Country>;
 
   /**
    * Get a country by ISO code
@@ -46,14 +46,14 @@ export interface StatesService {
   list(params?: ListParams): Promise<PageResult<State>>;
 
   /**
-   * Get a state by ID
+   * Get a state by unique ID
    */
-  get(id: string): Promise<State>;
+  get(uniqueId: string): Promise<State>;
 
   /**
    * Get states for a country
    */
-  forCountry(countryId: string): Promise<State[]>;
+  forCountry(countryUniqueId: string): Promise<State[]>;
 }
 
 /**
@@ -66,14 +66,14 @@ export interface CountiesService {
   list(params?: ListParams): Promise<PageResult<County>>;
 
   /**
-   * Get a county by ID
+   * Get a county by unique ID
    */
-  get(id: string): Promise<County>;
+  get(uniqueId: string): Promise<County>;
 
   /**
    * Get counties for a state
    */
-  forState(stateId: string): Promise<County[]>;
+  forState(stateUniqueId: string): Promise<County[]>;
 }
 
 /**
@@ -86,19 +86,19 @@ export interface CitiesService {
   list(params?: ListParams): Promise<PageResult<City>>;
 
   /**
-   * Get a city by ID
+   * Get a city by unique ID
    */
-  get(id: string): Promise<City>;
+  get(uniqueId: string): Promise<City>;
 
   /**
    * Get cities for a state
    */
-  forState(stateId: string): Promise<City[]>;
+  forState(stateUniqueId: string): Promise<City[]>;
 
   /**
    * Get cities for a county
    */
-  forCounty(countyId: string): Promise<City[]>;
+  forCounty(countyUniqueId: string): Promise<City[]>;
 
   /**
    * Search cities by name
@@ -116,9 +116,9 @@ export interface CurrenciesService {
   list(params?: ListParams): Promise<PageResult<Currency>>;
 
   /**
-   * Get a currency by ID
+   * Get a currency by unique ID
    */
-  get(id: string): Promise<Currency>;
+  get(uniqueId: string): Promise<Currency>;
 
   /**
    * Get a currency by code
@@ -182,8 +182,8 @@ export function createCountriesService(
       return decodePageResult(response, countryMapper);
     },
 
-    async get(id: string): Promise<Country> {
-      const response = await transport.get<JsonApiDocument>(`/countries/${id}`);
+    async get(uniqueId: string): Promise<Country> {
+      const response = await transport.get<JsonApiDocument>(`/countries/${uniqueId}`);
       return decodeOne(response, countryMapper);
     },
 
@@ -219,14 +219,14 @@ export function createStatesService(
       return decodePageResult(response, stateMapper);
     },
 
-    async get(id: string): Promise<State> {
-      const response = await transport.get<JsonApiDocument>(`/states/${id}`);
+    async get(uniqueId: string): Promise<State> {
+      const response = await transport.get<JsonApiDocument>(`/states/${uniqueId}`);
       return decodeOne(response, stateMapper);
     },
 
-    async forCountry(countryId: string): Promise<State[]> {
+    async forCountry(countryUniqueId: string): Promise<State[]> {
       const response = await transport.get<JsonApiDocument>(
-        `/countries/${countryId}/states`
+        `/countries/${countryUniqueId}/states`
       );
       return decodeMany(response, stateMapper);
     },
@@ -249,14 +249,14 @@ export function createCountiesService(
       return decodePageResult(response, countyMapper);
     },
 
-    async get(id: string): Promise<County> {
-      const response = await transport.get<JsonApiDocument>(`/counties/${id}`);
+    async get(uniqueId: string): Promise<County> {
+      const response = await transport.get<JsonApiDocument>(`/counties/${uniqueId}`);
       return decodeOne(response, countyMapper);
     },
 
-    async forState(stateId: string): Promise<County[]> {
+    async forState(stateUniqueId: string): Promise<County[]> {
       const response = await transport.get<JsonApiDocument>(
-        `/states/${stateId}/counties`
+        `/states/${stateUniqueId}/counties`
       );
       return decodeMany(response, countyMapper);
     },
@@ -279,21 +279,21 @@ export function createCitiesService(
       return decodePageResult(response, cityMapper);
     },
 
-    async get(id: string): Promise<City> {
-      const response = await transport.get<JsonApiDocument>(`/cities/${id}`);
+    async get(uniqueId: string): Promise<City> {
+      const response = await transport.get<JsonApiDocument>(`/cities/${uniqueId}`);
       return decodeOne(response, cityMapper);
     },
 
-    async forState(stateId: string): Promise<City[]> {
+    async forState(stateUniqueId: string): Promise<City[]> {
       const response = await transport.get<JsonApiDocument>(
-        `/states/${stateId}/cities`
+        `/states/${stateUniqueId}/cities`
       );
       return decodeMany(response, cityMapper);
     },
 
-    async forCounty(countyId: string): Promise<City[]> {
+    async forCounty(countyUniqueId: string): Promise<City[]> {
       const response = await transport.get<JsonApiDocument>(
-        `/counties/${countyId}/cities`
+        `/counties/${countyUniqueId}/cities`
       );
       return decodeMany(response, cityMapper);
     },
@@ -327,8 +327,8 @@ export function createCurrenciesService(
       return decodePageResult(response, currencyMapper);
     },
 
-    async get(id: string): Promise<Currency> {
-      const response = await transport.get<JsonApiDocument>(`/currencies/${id}`);
+    async get(uniqueId: string): Promise<Currency> {
+      const response = await transport.get<JsonApiDocument>(`/currencies/${uniqueId}`);
       return decodeOne(response, currencyMapper);
     },
 

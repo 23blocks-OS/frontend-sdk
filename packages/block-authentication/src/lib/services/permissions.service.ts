@@ -39,9 +39,9 @@ export interface PermissionsService {
   list(params?: ListParams): Promise<PageResult<Permission>>;
 
   /**
-   * Get a permission by ID
+   * Get a permission by unique ID
    */
-  get(id: string): Promise<Permission>;
+  get(uniqueId: string): Promise<Permission>;
 
   /**
    * Create a new permission
@@ -51,12 +51,12 @@ export interface PermissionsService {
   /**
    * Update a permission
    */
-  update(id: string, request: UpdatePermissionRequest): Promise<Permission>;
+  update(uniqueId: string, request: UpdatePermissionRequest): Promise<Permission>;
 
   /**
    * Delete a permission
    */
-  delete(id: string): Promise<void>;
+  delete(uniqueId: string): Promise<void>;
 }
 
 /**
@@ -81,9 +81,9 @@ export function createPermissionsService(
       return decodePageResult(response, permissionMapper);
     },
 
-    async get(id: string): Promise<Permission> {
+    async get(uniqueId: string): Promise<Permission> {
       const response = await transport.get<{ data: unknown }>(
-        `/permissions/${id}`
+        `/permissions/${uniqueId}`
       );
       return decodeOne(response, permissionMapper);
     },
@@ -105,9 +105,9 @@ export function createPermissionsService(
       return decodeOne(response, permissionMapper);
     },
 
-    async update(id: string, request: UpdatePermissionRequest): Promise<Permission> {
+    async update(uniqueId: string, request: UpdatePermissionRequest): Promise<Permission> {
       const response = await transport.put<{ data: unknown }>(
-        `/permissions/${id}`,
+        `/permissions/${uniqueId}`,
         {
           permission: {
             name: request.name,
@@ -123,8 +123,8 @@ export function createPermissionsService(
       return decodeOne(response, permissionMapper);
     },
 
-    async delete(id: string): Promise<void> {
-      await transport.delete(`/permissions/${id}`);
+    async delete(uniqueId: string): Promise<void> {
+      await transport.delete(`/permissions/${uniqueId}`);
     },
   };
 }

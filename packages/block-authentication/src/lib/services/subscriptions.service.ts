@@ -31,9 +31,9 @@ export interface SubscriptionModelsService {
   list(params?: ListParams): Promise<PageResult<SubscriptionModel>>;
 
   /**
-   * Get a subscription model by ID
+   * Get a subscription model by unique ID
    */
-  get(id: string): Promise<SubscriptionModel>;
+  get(uniqueId: string): Promise<SubscriptionModel>;
 
   /**
    * Get a subscription model by code
@@ -56,9 +56,9 @@ export interface UserSubscriptionsService {
   list(params?: ListParams): Promise<PageResult<UserSubscription>>;
 
   /**
-   * Get a user subscription by ID
+   * Get a user subscription by unique ID
    */
-  get(id: string): Promise<UserSubscription>;
+  get(uniqueId: string): Promise<UserSubscription>;
 
   /**
    * Get subscriptions for a user
@@ -73,12 +73,12 @@ export interface UserSubscriptionsService {
   /**
    * Cancel a subscription
    */
-  cancel(id: string): Promise<UserSubscription>;
+  cancel(uniqueId: string): Promise<UserSubscription>;
 
   /**
    * Reactivate a subscription
    */
-  reactivate(id: string): Promise<UserSubscription>;
+  reactivate(uniqueId: string): Promise<UserSubscription>;
 }
 
 /**
@@ -91,9 +91,9 @@ export interface CompanySubscriptionsService {
   list(params?: ListParams): Promise<PageResult<CompanySubscription>>;
 
   /**
-   * Get a company subscription by ID
+   * Get a company subscription by unique ID
    */
-  get(id: string): Promise<CompanySubscription>;
+  get(uniqueId: string): Promise<CompanySubscription>;
 
   /**
    * Get subscriptions for a company
@@ -108,12 +108,12 @@ export interface CompanySubscriptionsService {
   /**
    * Cancel a subscription
    */
-  cancel(id: string): Promise<CompanySubscription>;
+  cancel(uniqueId: string): Promise<CompanySubscription>;
 
   /**
    * Reactivate a subscription
    */
-  reactivate(id: string): Promise<CompanySubscription>;
+  reactivate(uniqueId: string): Promise<CompanySubscription>;
 }
 
 /**
@@ -167,9 +167,9 @@ export function createSubscriptionModelsService(
       return decodePageResult(response, subscriptionModelMapper);
     },
 
-    async get(id: string): Promise<SubscriptionModel> {
+    async get(uniqueId: string): Promise<SubscriptionModel> {
       const response = await transport.get<JsonApiDocument>(
-        `/subscription_models/${id}`
+        `/subscription_models/${uniqueId}`
       );
       return decodeOne(response, subscriptionModelMapper);
     },
@@ -206,9 +206,9 @@ export function createUserSubscriptionsService(
       return decodePageResult(response, userSubscriptionMapper);
     },
 
-    async get(id: string): Promise<UserSubscription> {
+    async get(uniqueId: string): Promise<UserSubscription> {
       const response = await transport.get<JsonApiDocument>(
-        `/user_subscriptions/${id}`,
+        `/user_subscriptions/${uniqueId}`,
         { params: { include: 'subscription_model' } }
       );
       return decodeOne(response, userSubscriptionMapper);
@@ -237,16 +237,16 @@ export function createUserSubscriptionsService(
       return decodeOne(response, userSubscriptionMapper);
     },
 
-    async cancel(id: string): Promise<UserSubscription> {
+    async cancel(uniqueId: string): Promise<UserSubscription> {
       const response = await transport.post<JsonApiDocument>(
-        `/user_subscriptions/${id}/cancel`
+        `/user_subscriptions/${uniqueId}/cancel`
       );
       return decodeOne(response, userSubscriptionMapper);
     },
 
-    async reactivate(id: string): Promise<UserSubscription> {
+    async reactivate(uniqueId: string): Promise<UserSubscription> {
       const response = await transport.post<JsonApiDocument>(
-        `/user_subscriptions/${id}/reactivate`
+        `/user_subscriptions/${uniqueId}/reactivate`
       );
       return decodeOne(response, userSubscriptionMapper);
     },
@@ -269,9 +269,9 @@ export function createCompanySubscriptionsService(
       return decodePageResult(response, companySubscriptionMapper);
     },
 
-    async get(id: string): Promise<CompanySubscription> {
+    async get(uniqueId: string): Promise<CompanySubscription> {
       const response = await transport.get<JsonApiDocument>(
-        `/company_subscriptions/${id}`,
+        `/company_subscriptions/${uniqueId}`,
         { params: { include: 'subscription_model' } }
       );
       return decodeOne(response, companySubscriptionMapper);
@@ -300,16 +300,16 @@ export function createCompanySubscriptionsService(
       return decodeOne(response, companySubscriptionMapper);
     },
 
-    async cancel(id: string): Promise<CompanySubscription> {
+    async cancel(uniqueId: string): Promise<CompanySubscription> {
       const response = await transport.post<JsonApiDocument>(
-        `/company_subscriptions/${id}/cancel`
+        `/company_subscriptions/${uniqueId}/cancel`
       );
       return decodeOne(response, companySubscriptionMapper);
     },
 
-    async reactivate(id: string): Promise<CompanySubscription> {
+    async reactivate(uniqueId: string): Promise<CompanySubscription> {
       const response = await transport.post<JsonApiDocument>(
-        `/company_subscriptions/${id}/reactivate`
+        `/company_subscriptions/${uniqueId}/reactivate`
       );
       return decodeOne(response, companySubscriptionMapper);
     },

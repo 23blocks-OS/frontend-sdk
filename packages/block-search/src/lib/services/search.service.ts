@@ -50,9 +50,9 @@ export interface SearchHistoryService {
   recent(limit?: number): Promise<LastQuery[]>;
 
   /**
-   * Get a specific query by ID
+   * Get a specific query by unique ID
    */
-  get(id: string): Promise<SearchQuery>;
+  get(uniqueId: string): Promise<SearchQuery>;
 
   /**
    * Clear search history
@@ -62,7 +62,7 @@ export interface SearchHistoryService {
   /**
    * Delete a specific query from history
    */
-  delete(id: string): Promise<void>;
+  delete(uniqueId: string): Promise<void>;
 }
 
 /**
@@ -75,9 +75,9 @@ export interface FavoritesService {
   list(params?: ListParams): Promise<PageResult<FavoriteEntity>>;
 
   /**
-   * Get a favorite by ID
+   * Get a favorite by unique ID
    */
-  get(id: string): Promise<FavoriteEntity>;
+  get(uniqueId: string): Promise<FavoriteEntity>;
 
   /**
    * Add a favorite
@@ -87,7 +87,7 @@ export interface FavoritesService {
   /**
    * Remove a favorite
    */
-  remove(id: string): Promise<void>;
+  remove(uniqueId: string): Promise<void>;
 
   /**
    * Check if an entity is favorited
@@ -270,8 +270,8 @@ export function createSearchHistoryService(
       return decodeMany(response, lastQueryMapper);
     },
 
-    async get(id: string): Promise<SearchQuery> {
-      const response = await transport.get<JsonApiDocument>(`/search/queries/${id}`);
+    async get(uniqueId: string): Promise<SearchQuery> {
+      const response = await transport.get<JsonApiDocument>(`/search/queries/${uniqueId}`);
       return decodeOne(response, searchQueryMapper);
     },
 
@@ -279,8 +279,8 @@ export function createSearchHistoryService(
       await transport.delete('/search/history');
     },
 
-    async delete(id: string): Promise<void> {
-      await transport.delete(`/search/history/${id}`);
+    async delete(uniqueId: string): Promise<void> {
+      await transport.delete(`/search/history/${uniqueId}`);
     },
   };
 }
@@ -301,8 +301,8 @@ export function createFavoritesService(
       return decodePageResult(response, favoriteEntityMapper);
     },
 
-    async get(id: string): Promise<FavoriteEntity> {
-      const response = await transport.get<JsonApiDocument>(`/search/favorites/${id}`);
+    async get(uniqueId: string): Promise<FavoriteEntity> {
+      const response = await transport.get<JsonApiDocument>(`/search/favorites/${uniqueId}`);
       return decodeOne(response, favoriteEntityMapper);
     },
 
@@ -317,8 +317,8 @@ export function createFavoritesService(
       return decodeOne(response, favoriteEntityMapper);
     },
 
-    async remove(id: string): Promise<void> {
-      await transport.delete(`/search/favorites/${id}`);
+    async remove(uniqueId: string): Promise<void> {
+      await transport.delete(`/search/favorites/${uniqueId}`);
     },
 
     async isFavorite(entityUniqueId: string): Promise<boolean> {

@@ -20,9 +20,9 @@ export interface ApiKeysService {
   list(params?: ListParams): Promise<PageResult<ApiKey>>;
 
   /**
-   * Get an API key by ID
+   * Get an API key by unique ID
    */
-  get(id: string): Promise<ApiKey>;
+  get(uniqueId: string): Promise<ApiKey>;
 
   /**
    * Get an API key by key ID
@@ -37,27 +37,27 @@ export interface ApiKeysService {
   /**
    * Update an API key
    */
-  update(id: string, request: UpdateApiKeyRequest): Promise<ApiKey>;
+  update(uniqueId: string, request: UpdateApiKeyRequest): Promise<ApiKey>;
 
   /**
    * Regenerate an API key secret (returns new secret only once)
    */
-  regenerate(id: string): Promise<ApiKeyWithSecret>;
+  regenerate(uniqueId: string): Promise<ApiKeyWithSecret>;
 
   /**
    * Revoke an API key
    */
-  revoke(id: string, request?: RevokeApiKeyRequest): Promise<ApiKey>;
+  revoke(uniqueId: string, request?: RevokeApiKeyRequest): Promise<ApiKey>;
 
   /**
    * Delete an API key permanently
    */
-  delete(id: string): Promise<void>;
+  delete(uniqueId: string): Promise<void>;
 
   /**
    * Get usage statistics for an API key
    */
-  getUsage(id: string, period?: 'day' | 'week' | 'month'): Promise<ApiKeyUsageStats>;
+  getUsage(uniqueId: string, period?: 'day' | 'week' | 'month'): Promise<ApiKeyUsageStats>;
 }
 
 /**
@@ -100,9 +100,9 @@ export function createApiKeysService(
       return decodePageResult(response, apiKeyMapper);
     },
 
-    async get(id: string): Promise<ApiKey> {
+    async get(uniqueId: string): Promise<ApiKey> {
       const response = await transport.get<{ data: unknown }>(
-        `/api_keys/${id}`
+        `/api_keys/${uniqueId}`
       );
       return decodeOne(response, apiKeyMapper);
     },
@@ -136,9 +136,9 @@ export function createApiKeysService(
       return decodeOne(response, apiKeyWithSecretMapper);
     },
 
-    async update(id: string, request: UpdateApiKeyRequest): Promise<ApiKey> {
+    async update(uniqueId: string, request: UpdateApiKeyRequest): Promise<ApiKey> {
       const response = await transport.put<{ data: unknown }>(
-        `/api_keys/${id}`,
+        `/api_keys/${uniqueId}`,
         {
           api_key: {
             name: request.name,
@@ -156,26 +156,26 @@ export function createApiKeysService(
       return decodeOne(response, apiKeyMapper);
     },
 
-    async regenerate(id: string): Promise<ApiKeyWithSecret> {
+    async regenerate(uniqueId: string): Promise<ApiKeyWithSecret> {
       const response = await transport.post<{ data: unknown }>(
-        `/api_keys/${id}/regenerate`
+        `/api_keys/${uniqueId}/regenerate`
       );
       return decodeOne(response, apiKeyWithSecretMapper);
     },
 
-    async revoke(id: string, request?: RevokeApiKeyRequest): Promise<ApiKey> {
+    async revoke(uniqueId: string, request?: RevokeApiKeyRequest): Promise<ApiKey> {
       const response = await transport.post<{ data: unknown }>(
-        `/api_keys/${id}/revoke`,
+        `/api_keys/${uniqueId}/revoke`,
         { reason: request?.reason }
       );
       return decodeOne(response, apiKeyMapper);
     },
 
-    async delete(id: string): Promise<void> {
-      await transport.delete(`/api_keys/${id}`);
+    async delete(uniqueId: string): Promise<void> {
+      await transport.delete(`/api_keys/${uniqueId}`);
     },
 
-    async getUsage(id: string, period: 'day' | 'week' | 'month' = 'week'): Promise<ApiKeyUsageStats> {
+    async getUsage(uniqueId: string, period: 'day' | 'week' | 'month' = 'week'): Promise<ApiKeyUsageStats> {
       const response = await transport.get<{
         data: {
           attributes: {
@@ -189,7 +189,7 @@ export function createApiKeysService(
             requests_by_day: Array<{ date: string; count: number }>;
           };
         };
-      }>(`/api_keys/${id}/usage`, { params: { period } });
+      }>(`/api_keys/${uniqueId}/usage`, { params: { period } });
 
       const attrs = response.data.attributes;
       return {

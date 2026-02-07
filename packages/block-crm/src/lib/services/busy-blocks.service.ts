@@ -10,7 +10,7 @@ import { busyBlockMapper } from '../mappers/busy-block.mapper.js';
 export interface BusyBlocksService {
   list(userUniqueId: string, params?: ListBusyBlocksParams): Promise<PageResult<BusyBlock>>;
   create(userUniqueId: string, data: CreateBusyBlockRequest): Promise<BusyBlock>;
-  delete(userUniqueId: string, id: string): Promise<void>;
+  delete(userUniqueId: string, uniqueId: string): Promise<void>;
 }
 
 export function createBusyBlocksService(transport: Transport, _config: { appId: string }): BusyBlocksService {
@@ -45,8 +45,8 @@ export function createBusyBlocksService(transport: Transport, _config: { appId: 
       return decodeOne(response, busyBlockMapper);
     },
 
-    async delete(userUniqueId: string, id: string): Promise<void> {
-      await transport.delete(`/users/${userUniqueId}/busy_blocks/${id}`);
+    async delete(userUniqueId: string, uniqueId: string): Promise<void> {
+      await transport.delete(`/users/${userUniqueId}/busy_blocks/${uniqueId}`);
     },
   };
 }
