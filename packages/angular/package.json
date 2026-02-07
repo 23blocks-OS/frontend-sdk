@@ -31,6 +31,21 @@
     "injectable-services"
   ],
   "type": "module",
+  "main": "dist/fesm2022/23blocks-angular.mjs",
+  "module": "dist/fesm2022/23blocks-angular.mjs",
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "esm2022": "./dist/fesm2022/23blocks-angular.mjs",
+      "esm": "./dist/fesm2022/23blocks-angular.mjs",
+      "default": "./dist/fesm2022/23blocks-angular.mjs"
+    }
+  },
   "files": [
     "dist",
     "!**/*.tsbuildinfo"
