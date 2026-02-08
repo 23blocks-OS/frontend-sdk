@@ -1,3 +1,38 @@
+## 6.6.0 (2026-02-08)
+
+### 🚀 Features
+
+- add comprehensive JSDoc documentation and llms.txt for AI agent consumption ([fd97df2](https://github.com/23blocks-OS/frontend-sdk/commit/fd97df2))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 6.4.0
+- Updated @23blocks/block-conversations to 3.4.0
+- Updated @23blocks/block-geolocation to 3.5.0
+- Updated @23blocks/block-onboarding to 3.2.0
+- Updated @23blocks/block-university to 3.5.0
+- Updated @23blocks/block-campaigns to 3.2.0
+- Updated @23blocks/block-products to 3.5.0
+- Updated @23blocks/transport-http to 3.2.0
+- Updated @23blocks/block-company to 3.3.0
+- Updated @23blocks/block-content to 3.4.0
+- Updated @23blocks/block-rewards to 3.3.0
+- Updated @23blocks/jsonapi-codec to 3.2.0
+- Updated @23blocks/block-assets to 3.2.0
+- Updated @23blocks/block-jarvis to 3.2.0
+- Updated @23blocks/block-search to 4.3.0
+- Updated @23blocks/block-wallet to 3.2.0
+- Updated @23blocks/block-files to 3.5.0
+- Updated @23blocks/block-forms to 3.2.0
+- Updated @23blocks/block-sales to 3.2.0
+- Updated @23blocks/block-crm to 3.2.0
+- Updated @23blocks/contracts to 2.2.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 6.5.15 (2026-02-07)
 
 ### 🧱 Updated Dependencies

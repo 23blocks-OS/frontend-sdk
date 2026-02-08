@@ -1,3 +1,14 @@
+## 2.2.0 (2026-02-08)
+
+### 🚀 Features
+
+- add comprehensive JSDoc documentation and llms.txt for AI agent consumption ([fd97df2](https://github.com/23blocks-OS/frontend-sdk/commit/fd97df2))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 2.1.3 (2026-02-07)
 
 This was a version bump only for @23blocks/contracts to align it with other projects, there were no code changes.
