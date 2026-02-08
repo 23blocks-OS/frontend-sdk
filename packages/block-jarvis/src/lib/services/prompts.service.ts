@@ -15,13 +15,51 @@ import type {
 import { promptMapper } from '../mappers/prompt.mapper.js';
 
 export interface PromptsService {
+  /**
+   * List prompts with optional filtering and sorting.
+   * @returns Paginated list of Prompt records with metadata.
+   */
   list(params?: ListPromptsParams): Promise<PageResult<Prompt>>;
+
+  /**
+   * Get a single prompt by unique ID.
+   * @returns The matching Prompt record.
+   */
   get(uniqueId: string): Promise<Prompt>;
+
+  /**
+   * Create a new prompt.
+   * @returns The newly created Prompt record.
+   */
   create(data: CreatePromptRequest): Promise<Prompt>;
+
+  /**
+   * Update an existing prompt.
+   * @returns The updated Prompt record.
+   */
   update(uniqueId: string, data: UpdatePromptRequest): Promise<Prompt>;
+
+  /**
+   * Delete a prompt.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Execute a prompt with variables against an agent.
+   * @returns ExecutePromptResponse with output, token usage, cost, and duration.
+   */
   execute(uniqueId: string, data: ExecutePromptRequest): Promise<ExecutePromptResponse>;
+
+  /**
+   * Test a prompt template for validity without executing it.
+   * @returns TestPromptResponse with rendered prompt, validation status, and errors.
+   */
   test(data: TestPromptRequest): Promise<TestPromptResponse>;
+
+  /**
+   * Render a prompt template with placeholder values.
+   * @returns RenderPromptResponse with rendered content and placeholder metadata.
+   */
   render(uniqueId: string, data: RenderPromptRequest): Promise<RenderPromptResponse>;
 }
 

@@ -9,9 +9,28 @@ import type {
 import { tagMapper } from '../mappers/tag.mapper.js';
 
 export interface TagsService {
+  /**
+   * List tags with optional filtering and sorting.
+   * @returns Paginated list of Tag records with metadata.
+   */
   list(params?: ListTagsParams): Promise<PageResult<Tag>>;
+
+  /**
+   * Get a single tag by unique ID.
+   * @returns The matching Tag record.
+   */
   get(uniqueId: string): Promise<Tag>;
+
+  /**
+   * Create a new tag.
+   * @returns The newly created Tag record.
+   */
   create(data: CreateTagRequest): Promise<Tag>;
+
+  /**
+   * Update an existing tag.
+   * @returns The updated Tag record.
+   */
   update(uniqueId: string, data: UpdateTagRequest): Promise<Tag>;
 }
 

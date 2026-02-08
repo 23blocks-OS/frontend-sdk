@@ -12,13 +12,52 @@ import type {
 import { mailTemplateMapper } from '../mappers/mail-template.mapper.js';
 
 export interface MailTemplatesService {
+  /**
+   * List mail templates with optional filtering.
+   * @returns Paginated list of MailTemplate records with metadata.
+   */
   list(params?: ListMailTemplatesParams): Promise<PageResult<MailTemplate>>;
+
+  /**
+   * Get a single mail template by unique ID.
+   * @returns The matching MailTemplate record.
+   */
   get(uniqueId: string): Promise<MailTemplate>;
+
+  /**
+   * Create a new mail template.
+   * @returns The newly created MailTemplate record.
+   */
   create(data: CreateMailTemplateRequest): Promise<MailTemplate>;
+
+  /**
+   * Update an existing mail template.
+   * @returns The updated MailTemplate record.
+   */
   update(uniqueId: string, data: UpdateMailTemplateRequest): Promise<MailTemplate>;
+
+  /**
+   * Get delivery statistics for the linked Mandrill template.
+   * @returns MandrillTemplateStats with send, open, click, and bounce counts.
+   */
   getMandrillStats(uniqueId: string): Promise<MandrillTemplateStats>;
+
+  /**
+   * Create a Mandrill template linked to this mail template.
+   * @returns The updated MailTemplate record with Mandrill integration.
+   */
   createMandrillTemplate(uniqueId: string, data: CreateMandrillTemplateRequest): Promise<MailTemplate>;
+
+  /**
+   * Update the linked Mandrill template.
+   * @returns The updated MailTemplate record.
+   */
   updateMandrillTemplate(uniqueId: string, data: UpdateMandrillTemplateRequest): Promise<MailTemplate>;
+
+  /**
+   * Publish the Mandrill template to make it active.
+   * @returns The updated MailTemplate record with published status.
+   */
   publishMandrill(uniqueId: string): Promise<MailTemplate>;
 }
 

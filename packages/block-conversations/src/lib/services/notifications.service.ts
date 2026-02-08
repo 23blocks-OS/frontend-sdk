@@ -9,14 +9,70 @@ import type {
 import { notificationMapper } from '../mappers/notification.mapper.js';
 
 export interface NotificationsService {
+  /**
+   * List all notifications
+   * @param params - Optional filtering, sorting, and pagination parameters
+   * @returns Paginated list of Notification records with pagination metadata
+   */
   list(params?: ListNotificationsParams): Promise<PageResult<Notification>>;
+
+  /**
+   * Get a notification by unique ID
+   * @param uniqueId - Unique ID of the notification to retrieve
+   * @returns The matching Notification record
+   */
   get(uniqueId: string): Promise<Notification>;
+
+  /**
+   * Create a new notification
+   * @param data - Notification creation payload including content, source, target, and delivery options
+   * @returns The newly created Notification record
+   */
   create(data: CreateNotificationRequest): Promise<Notification>;
+
+  /**
+   * Update a notification
+   * @param uniqueId - Unique ID of the notification to update
+   * @param data - Fields to update (content, url, status, payload)
+   * @returns The updated Notification record
+   */
   update(uniqueId: string, data: UpdateNotificationRequest): Promise<Notification>;
+
+  /**
+   * Delete a notification
+   * @param uniqueId - Unique ID of the notification to delete
+   * @returns void on successful deletion
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Mark a notification as read
+   * @param uniqueId - Unique ID of the notification to mark as read
+   * @returns The updated Notification record with read status
+   */
   markAsRead(uniqueId: string): Promise<Notification>;
+
+  /**
+   * Mark a notification as unread
+   * @param uniqueId - Unique ID of the notification to mark as unread
+   * @returns The updated Notification record with unread status
+   */
   markAsUnread(uniqueId: string): Promise<Notification>;
+
+  /**
+   * List notifications filtered by target
+   * @param targetId - Target ID to filter notifications for
+   * @param params - Optional sorting and pagination parameters
+   * @returns Paginated list of Notification records for the given target
+   */
   listByTarget(targetId: string, params?: ListNotificationsParams): Promise<PageResult<Notification>>;
+
+  /**
+   * List unread notifications
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated list of unread Notification records
+   * @note Automatically filters by status "pending"
+   */
   listUnread(params?: ListNotificationsParams): Promise<PageResult<Notification>>;
 }
 

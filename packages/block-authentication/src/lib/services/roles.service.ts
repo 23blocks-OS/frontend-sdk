@@ -32,7 +32,7 @@ export interface UpdateRoleRequest {
 }
 
 /**
- * Roles service
+ * Roles service - CRUD roles and manage role-permission assignments.
  */
 export interface RolesService {
   /**

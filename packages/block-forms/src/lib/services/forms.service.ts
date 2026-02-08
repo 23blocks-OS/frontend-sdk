@@ -9,10 +9,40 @@ import type {
 import { formMapper } from '../mappers/form.mapper.js';
 
 export interface FormsService {
+  /**
+   * List all forms
+   * @param params - Optional filtering by status, form type, search term, and pagination
+   * @returns Paginated result containing Form items and metadata
+   */
   list(params?: ListFormsParams): Promise<PageResult<Form>>;
+
+  /**
+   * Get a specific form
+   * @param uniqueId - The unique identifier of the form
+   * @returns The matching Form record
+   */
   get(uniqueId: string): Promise<Form>;
+
+  /**
+   * Create a new form
+   * @param data - Form details including code, name, description, and form type
+   * @returns The newly created Form record
+   */
   create(data: CreateFormRequest): Promise<Form>;
+
+  /**
+   * Update an existing form
+   * @param uniqueId - The unique identifier of the form to update
+   * @param data - Fields to update such as name, description, type, or status
+   * @returns The updated Form record
+   */
   update(uniqueId: string, data: UpdateFormRequest): Promise<Form>;
+
+  /**
+   * Delete a form
+   * @param uniqueId - The unique identifier of the form to delete
+   * @returns Resolves when the form has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

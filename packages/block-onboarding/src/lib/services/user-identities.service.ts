@@ -9,11 +9,39 @@ import type {
 import { userIdentityMapper } from '../mappers/user-identity.mapper.js';
 
 export interface UserIdentitiesService {
+  /**
+   * List user identities with optional filtering and sorting.
+   * @returns Paginated list of UserIdentity records with metadata.
+   */
   list(params?: ListUserIdentitiesParams): Promise<PageResult<UserIdentity>>;
+
+  /**
+   * Get a single user identity by unique ID.
+   * @returns The matching UserIdentity record.
+   */
   get(uniqueId: string): Promise<UserIdentity>;
+
+  /**
+   * Create a new user identity.
+   * @returns The newly created UserIdentity record.
+   */
   create(data: CreateUserIdentityRequest): Promise<UserIdentity>;
+
+  /**
+   * Verify a user identity with a verification code.
+   * @returns The updated UserIdentity record with verified status.
+   */
   verify(uniqueId: string, data: VerifyUserIdentityRequest): Promise<UserIdentity>;
+
+  /**
+   * Delete a user identity.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List all identities belonging to a specific user.
+   * @returns Array of UserIdentity records for the user.
+   */
   listByUser(userUniqueId: string): Promise<UserIdentity[]>;
 }
 

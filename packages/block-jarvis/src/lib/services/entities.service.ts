@@ -15,16 +15,68 @@ import type {
 import { entityMapper } from '../mappers/entity.mapper.js';
 
 export interface EntitiesService {
+  /**
+   * List entities with optional filtering and sorting.
+   * @returns Paginated list of Entity records with metadata.
+   */
   list(params?: ListEntitiesParams): Promise<PageResult<Entity>>;
+
+  /**
+   * Get a single entity by unique ID.
+   * @returns The matching Entity record.
+   */
   get(uniqueId: string): Promise<Entity>;
+
+  /**
+   * Register an entity in the Jarvis system.
+   * @returns The newly registered Entity record.
+   */
   register(uniqueId: string, data?: RegisterEntityRequest): Promise<Entity>;
+
+  /**
+   * Update an existing entity.
+   * @returns The updated Entity record.
+   */
   update(uniqueId: string, data: UpdateEntityRequest): Promise<Entity>;
+
+  /**
+   * Delete an entity.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Associate a prompt with an entity.
+   */
   addPrompt(uniqueId: string, promptUniqueId: string): Promise<void>;
+
+  /**
+   * Get an existing entity context by unique ID.
+   * @returns The EntityContext with messages and metadata.
+   */
   getContext(uniqueId: string, contextUniqueId: string): Promise<EntityContext>;
+
+  /**
+   * Create a new context for entity conversations.
+   * @returns The newly created EntityContext.
+   */
   createContext(uniqueId: string, data?: CreateEntityContextRequest): Promise<EntityContext>;
+
+  /**
+   * Get the conversation history for an entity context.
+   * @returns The EntityContext with full message history.
+   */
   getConversation(uniqueId: string, contextUniqueId: string): Promise<EntityContext>;
+
+  /**
+   * Send a message within an entity context.
+   * @returns SendEntityMessageResponse with the sent message, optional AI response, and cost.
+   */
   sendMessage(uniqueId: string, contextUniqueId: string, data: SendEntityMessageRequest): Promise<SendEntityMessageResponse>;
+
+  /**
+   * Query an entity's file using natural language (RAG).
+   * @returns QueryEntityFileResponse with answer, sources, token usage, and cost.
+   */
   queryFile(uniqueId: string, fileUniqueId: string, data: QueryEntityFileRequest): Promise<QueryEntityFileResponse>;
 }
 

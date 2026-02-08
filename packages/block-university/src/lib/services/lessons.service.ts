@@ -10,12 +10,45 @@ import type {
 import { lessonMapper } from '../mappers/lesson.mapper.js';
 
 export interface LessonsService {
+  /**
+   * List lessons with optional filtering and sorting.
+   * @returns Paginated list of Lesson records with metadata.
+   */
   list(params?: ListLessonsParams): Promise<PageResult<Lesson>>;
+
+  /**
+   * Get a single lesson by unique ID.
+   * @returns The matching Lesson record.
+   */
   get(uniqueId: string): Promise<Lesson>;
+
+  /**
+   * Create a new lesson for a course.
+   * @returns The newly created Lesson record.
+   */
   create(data: CreateLessonRequest): Promise<Lesson>;
+
+  /**
+   * Update an existing lesson.
+   * @returns The updated Lesson record.
+   */
   update(uniqueId: string, data: UpdateLessonRequest): Promise<Lesson>;
+
+  /**
+   * Delete a lesson.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Reorder lessons within a course.
+   * @returns Array of Lesson records in the new order.
+   */
   reorder(courseUniqueId: string, data: ReorderLessonsRequest): Promise<Lesson[]>;
+
+  /**
+   * List lessons for a specific course.
+   * @returns Paginated list of Lesson records for the course.
+   */
   listByCourse(courseUniqueId: string, params?: ListLessonsParams): Promise<PageResult<Lesson>>;
 }
 

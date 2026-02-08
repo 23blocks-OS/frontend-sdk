@@ -9,13 +9,64 @@ import type {
 import { meetingMapper } from '../mappers/meeting.mapper.js';
 
 export interface MeetingsService {
+  /**
+   * List meetings with optional filtering, pagination, and sorting.
+   * @param params - Optional filtering (status, userUniqueId, accountUniqueId, meetingType, search), pagination, and sorting.
+   * @returns Paginated result containing Meeting objects and metadata.
+   */
   list(params?: ListMeetingsParams): Promise<PageResult<Meeting>>;
+
+  /**
+   * Retrieve a single meeting by its unique identifier.
+   * @param uniqueId - The unique identifier of the meeting.
+   * @returns The matching Meeting object.
+   */
   get(uniqueId: string): Promise<Meeting>;
+
+  /**
+   * Create a new meeting.
+   * @param data - The meeting creation payload with title, type, scheduling, location, and other fields.
+   * @returns The newly created Meeting object.
+   */
   create(data: CreateMeetingRequest): Promise<Meeting>;
+
+  /**
+   * Update an existing meeting.
+   * @param uniqueId - The unique identifier of the meeting to update.
+   * @param data - The fields to update on the meeting.
+   * @returns The updated Meeting object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(uniqueId: string, data: UpdateMeetingRequest): Promise<Meeting>;
+
+  /**
+   * Soft-delete a meeting.
+   * @param uniqueId - The unique identifier of the meeting to delete.
+   * @returns Resolves when the meeting has been deleted.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously soft-deleted meeting.
+   * @param uniqueId - The unique identifier of the meeting to recover.
+   * @returns The recovered Meeting object.
+   */
   recover(uniqueId: string): Promise<Meeting>;
+
+  /**
+   * Search meetings by a query string with optional pagination.
+   * @param query - The search query string.
+   * @param params - Optional pagination parameters.
+   * @returns Paginated result containing matching Meeting objects.
+   * @note Performs a server-side POST-based search.
+   */
   search(query: string, params?: ListMeetingsParams): Promise<PageResult<Meeting>>;
+
+  /**
+   * List soft-deleted meetings with optional pagination.
+   * @param params - Optional pagination parameters.
+   * @returns Paginated result containing soft-deleted Meeting objects.
+   */
   listDeleted(params?: ListMeetingsParams): Promise<PageResult<Meeting>>;
 }
 

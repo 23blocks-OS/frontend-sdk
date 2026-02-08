@@ -13,18 +13,82 @@ import type {
 import { contentTestMapper, testQuestionMapper, testOptionMapper } from '../mappers/content-test.mapper.js';
 
 export interface ContentTestsService {
+  /**
+   * List content tests with optional filtering and sorting.
+   * @returns Paginated list of ContentTest records with metadata.
+   */
   list(params?: ListContentTestsParams): Promise<PageResult<ContentTest>>;
+
+  /**
+   * Get a single content test by unique ID.
+   * @returns The matching ContentTest record.
+   */
   get(uniqueId: string): Promise<ContentTest>;
+
+  /**
+   * Create a new content test.
+   * @returns The newly created ContentTest record.
+   */
   create(data: CreateContentTestRequest): Promise<ContentTest>;
+
+  /**
+   * Update an existing content test.
+   * @returns The updated ContentTest record.
+   */
   update(uniqueId: string, data: UpdateContentTestRequest): Promise<ContentTest>;
+
+  /**
+   * Get test results for a content test.
+   * @returns Array of result objects.
+   */
   getResults(uniqueId: string): Promise<unknown[]>;
+
+  /**
+   * Get the solution for a content test.
+   * @returns The solution data.
+   */
   getSolution(uniqueId: string): Promise<unknown>;
+
+  /**
+   * Create a question for a content test.
+   * @returns The newly created TestQuestion record.
+   */
   createQuestion(uniqueId: string, data: CreateQuestionRequest): Promise<TestQuestion>;
+
+  /**
+   * Update a question within a content test.
+   * @returns The updated TestQuestion record.
+   */
   updateQuestion(uniqueId: string, questionUniqueId: string, data: Partial<CreateQuestionRequest>): Promise<TestQuestion>;
+
+  /**
+   * Get a specific question within a content test.
+   * @returns The matching TestQuestion record.
+   */
   getQuestion(uniqueId: string, questionId: string): Promise<TestQuestion>;
+
+  /**
+   * List all available test options.
+   * @returns Array of TestOption records.
+   */
   listOptions(): Promise<TestOption[]>;
+
+  /**
+   * Create a new test option.
+   * @returns The newly created TestOption record.
+   */
   createOption(data: CreateOptionRequest): Promise<TestOption>;
+
+  /**
+   * Update an existing test option.
+   * @returns The updated TestOption record.
+   */
   updateOption(uniqueId: string, optionUniqueId: string, data: Partial<CreateOptionRequest>): Promise<TestOption>;
+
+  /**
+   * Add an option to a question within a content test.
+   * @returns The updated TestQuestion record with the option linked.
+   */
   addOptionToQuestion(uniqueId: string, questionId: string, optionId: string): Promise<TestQuestion>;
 }
 

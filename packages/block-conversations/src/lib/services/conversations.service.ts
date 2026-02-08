@@ -7,8 +7,24 @@ import type {
 import { messageMapper } from '../mappers/message.mapper.js';
 
 export interface ConversationsService {
+  /**
+   * Get a conversation by context identifier
+   * @param params - Parameters including context ID, pagination, and optional file inclusion
+   * @returns Conversation object containing messages, files, and metadata
+   */
   get(params: GetConversationParams): Promise<Conversation>;
+
+  /**
+   * List all available conversation context identifiers
+   * @returns Array of context identifier strings
+   */
   listContexts(): Promise<string[]>;
+
+  /**
+   * Delete a conversation context and its associated messages
+   * @param context - Context identifier of the conversation to delete
+   * @returns void on successful deletion
+   */
   deleteContext(context: string): Promise<void>;
 }
 

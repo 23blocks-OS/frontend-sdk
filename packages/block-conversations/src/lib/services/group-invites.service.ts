@@ -17,26 +17,41 @@ import { groupMapper } from '../mappers/group.mapper.js';
 export interface GroupInvitesService {
   /**
    * List all invites for a group
+   * @param groupUniqueId - Unique ID of the group
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated list of GroupInvite records with pagination metadata
    */
   list(groupUniqueId: string, params?: ListGroupInvitesParams): Promise<PageResult<GroupInvite>>;
 
   /**
    * Create a new invite for a group
+   * @param groupUniqueId - Unique ID of the group to create an invite for
+   * @param data - Optional invite configuration including max uses and expiration
+   * @returns The newly created GroupInvite record containing the invite code
    */
   create(groupUniqueId: string, data?: CreateGroupInviteRequest): Promise<GroupInvite>;
 
   /**
    * Revoke an invite
+   * @param groupUniqueId - Unique ID of the group the invite belongs to
+   * @param code - Invite code to revoke
+   * @returns void on successful revocation
    */
   revoke(groupUniqueId: string, code: string): Promise<void>;
 
   /**
    * Get QR code for an invite
+   * @param groupUniqueId - Unique ID of the group the invite belongs to
+   * @param code - Invite code to generate a QR code for
+   * @returns QRCodeResponse containing the QR code data and invite URL
    */
   getQRCode(groupUniqueId: string, code: string): Promise<QRCodeResponse>;
 
   /**
    * Join a group using an invite code
+   * @param code - Invite code to use for joining
+   * @param data - Optional request body with the joining user's unique ID
+   * @returns The Group record that was joined
    */
   join(code: string, data?: JoinGroupRequest): Promise<Group>;
 }

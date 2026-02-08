@@ -4,9 +4,28 @@ import type { OrderDetail, UpdateOrderDetailRequest } from '../types/order-detai
 import { orderDetailMapper } from '../mappers/order-detail.mapper.js';
 
 export interface OrderDetailsService {
+  /**
+   * List all order details.
+   * @returns Array of OrderDetail records.
+   */
   list(): Promise<OrderDetail[]>;
+
+  /**
+   * Get a single order detail by unique ID.
+   * @returns The matching OrderDetail record.
+   */
   get(uniqueId: string): Promise<OrderDetail>;
+
+  /**
+   * Update an existing order detail.
+   * @returns The updated OrderDetail record.
+   */
   update(uniqueId: string, data: UpdateOrderDetailRequest): Promise<OrderDetail>;
+
+  /**
+   * List order details belonging to a specific order.
+   * @returns Array of OrderDetail records for the order.
+   */
   listByOrder(orderUniqueId: string): Promise<OrderDetail[]>;
 }
 

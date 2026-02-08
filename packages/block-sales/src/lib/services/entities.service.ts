@@ -12,11 +12,40 @@ import type {
 import { salesEntityMapper } from '../mappers/entity.mapper.js';
 
 export interface SalesEntitiesService {
+  /**
+   * List sales entities with optional filtering and sorting.
+   * @returns Paginated list of SalesEntity records with metadata.
+   */
   list(params?: ListSalesEntitiesParams): Promise<PageResult<SalesEntity>>;
+
+  /**
+   * Get a sales entity by unique ID.
+   * @returns The matching SalesEntity record.
+   */
   get(uniqueId: string): Promise<SalesEntity>;
+
+  /**
+   * Register a new sales entity.
+   * @returns The newly registered SalesEntity record.
+   */
   register(uniqueId: string, data?: RegisterSalesEntityRequest): Promise<SalesEntity>;
+
+  /**
+   * Update an existing sales entity.
+   * @returns The updated SalesEntity record.
+   */
   update(uniqueId: string, data: UpdateSalesEntityRequest): Promise<SalesEntity>;
+
+  /**
+   * Create a subscription for an entity.
+   * @returns The newly created EntitySubscription record.
+   */
   createSubscription(uniqueId: string, data: CreateEntitySubscriptionRequest): Promise<EntitySubscription>;
+
+  /**
+   * Update an entity subscription.
+   * @returns The updated EntitySubscription record.
+   */
   updateSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateEntitySubscriptionRequest): Promise<EntitySubscription>;
 }
 

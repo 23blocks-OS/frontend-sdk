@@ -18,13 +18,61 @@ export interface UpdateMyCartRequest {
 }
 
 export interface MyCartsService {
+  /**
+   * Get the authenticated user's cart by unique identifier.
+   * @param uniqueId - The cart unique ID
+   * @returns The matching Cart
+   */
   get(uniqueId: string): Promise<Cart>;
+
+  /**
+   * Create a new cart for the authenticated user.
+   * @returns The newly created Cart
+   */
   create(): Promise<Cart>;
+
+  /**
+   * Update cart metadata such as notes and payload.
+   * @param uniqueId - The cart unique ID
+   * @param data - Fields to update (notes, payload)
+   * @returns The updated Cart
+   */
   update(uniqueId: string, data: UpdateMyCartRequest): Promise<Cart>;
+
+  /**
+   * Add a product to the authenticated user's cart.
+   * @param data - Item details including product ID, optional variation, quantity, price, and notes
+   * @returns The updated Cart after adding the item
+   * @note Uses PUT to upsert the item into the cart
+   */
   addToCart(data: AddToMyCartRequest): Promise<Cart>;
+
+  /**
+   * Initiate checkout for the cart.
+   * @param uniqueId - The cart unique ID
+   * @returns The Cart in checkout state
+   */
   checkout(uniqueId: string): Promise<Cart>;
+
+  /**
+   * Place an order for all items in the cart.
+   * @param uniqueId - The cart unique ID
+   * @returns The Cart after ordering all items
+   */
   orderAll(uniqueId: string): Promise<Cart>;
+
+  /**
+   * Cancel all items in the cart.
+   * @param uniqueId - The cart unique ID
+   * @returns The Cart after cancelling all items
+   */
   cancelAll(uniqueId: string): Promise<Cart>;
+
+  /**
+   * Delete a cart.
+   * @param uniqueId - The cart unique ID
+   * @returns Resolves when the cart has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

@@ -11,14 +11,56 @@ import { onboardingMapper } from '../mappers/onboarding.mapper.js';
 import { onboardingStepMapper } from '../mappers/step.mapper.js';
 
 export interface OnboardingsService {
+  /**
+   * List onboardings with optional filtering and sorting.
+   * @returns Paginated list of Onboarding records with metadata.
+   */
   list(params?: ListOnboardingsParams): Promise<PageResult<Onboarding>>;
+
+  /**
+   * Get a single onboarding by unique ID.
+   * @returns The matching Onboarding record.
+   */
   get(uniqueId: string): Promise<Onboarding>;
+
+  /**
+   * Create a new onboarding.
+   * @returns The newly created Onboarding record.
+   */
   create(data: CreateOnboardingRequest): Promise<Onboarding>;
+
+  /**
+   * Update an existing onboarding.
+   * @returns The updated Onboarding record.
+   */
   update(uniqueId: string, data: UpdateOnboardingRequest): Promise<Onboarding>;
+
+  /**
+   * Delete an onboarding.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Add a step to an onboarding.
+   * @returns The newly created OnboardingStep record.
+   */
   addStep(uniqueId: string, data: AddStepRequest): Promise<OnboardingStep>;
+
+  /**
+   * Update an existing onboarding step.
+   * @returns The updated OnboardingStep record.
+   */
   updateStep(uniqueId: string, stepUniqueId: string, data: UpdateStepRequest): Promise<OnboardingStep>;
+
+  /**
+   * Delete an onboarding step.
+   */
   deleteStep(uniqueId: string, stepUniqueId: string): Promise<void>;
+
+  /**
+   * Advance a user through an onboarding step.
+   * @returns The updated Onboarding record.
+   */
   stepUser(uniqueId: string, userUniqueId: string, stepData?: Record<string, unknown>): Promise<Onboarding>;
 }
 

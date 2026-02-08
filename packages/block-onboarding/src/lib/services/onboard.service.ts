@@ -10,12 +10,46 @@ import type {
 import { onboardJourneyMapper } from '../mappers/onboard.mapper.js';
 
 export interface OnboardService {
+  /**
+   * Start a new onboard journey for a user.
+   * @returns The newly created OnboardJourney record.
+   */
   start(uniqueId: string, data?: StartOnboardRequest): Promise<OnboardJourney>;
+
+  /**
+   * Get a single onboard journey by unique ID.
+   * @returns The matching OnboardJourney record.
+   */
   get(uniqueId: string): Promise<OnboardJourney>;
+
+  /**
+   * Get detailed information about an onboard journey including step progress and logs.
+   * @returns OnboardJourneyDetails with steps and log entries.
+   */
   getDetails(uniqueId: string): Promise<OnboardJourneyDetails>;
+
+  /**
+   * Advance the onboard journey to a specific step.
+   * @returns The updated OnboardJourney record.
+   */
   step(uniqueId: string, data: StepOnboardRequest): Promise<OnboardJourney>;
+
+  /**
+   * Log an action or event for the onboard journey.
+   * @returns The updated OnboardJourney record.
+   */
   log(uniqueId: string, data: LogOnboardRequest): Promise<OnboardJourney>;
+
+  /**
+   * Suspend an active onboard journey.
+   * @returns The updated OnboardJourney record with suspended status.
+   */
   suspend(uniqueId: string): Promise<OnboardJourney>;
+
+  /**
+   * Resume a suspended onboard journey.
+   * @returns The updated OnboardJourney record with resumed status.
+   */
   resume(uniqueId: string): Promise<OnboardJourney>;
 }
 

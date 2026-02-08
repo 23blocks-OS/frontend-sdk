@@ -9,13 +9,66 @@ import type {
 import { fileAccessMapper } from '../mappers/file-access.mapper.js';
 
 export interface FileAccessService {
+  /**
+   * List all file access grants
+   * @param params - Optional filtering by file, grantee, access level, status, and pagination
+   * @returns Paginated result containing FileAccess items and metadata
+   */
   list(params?: ListFileAccessParams): Promise<PageResult<FileAccess>>;
+
+  /**
+   * Get a specific file access grant
+   * @param uniqueId - The unique identifier of the access grant
+   * @returns The matching FileAccess record
+   */
   get(uniqueId: string): Promise<FileAccess>;
+
+  /**
+   * Grant file access to a grantee
+   * @param data - Access grant details including file, grantee, access level, and optional expiry
+   * @returns The newly created FileAccess record
+   */
   grant(data: CreateFileAccessRequest): Promise<FileAccess>;
+
+  /**
+   * Update an existing file access grant
+   * @param uniqueId - The unique identifier of the access grant to update
+   * @param data - Fields to update such as access level, expiration, or status
+   * @returns The updated FileAccess record
+   */
   update(uniqueId: string, data: UpdateFileAccessRequest): Promise<FileAccess>;
+
+  /**
+   * Revoke a file access grant
+   * @param uniqueId - The unique identifier of the access grant to revoke
+   * @returns Resolves when the access grant has been revoked
+   */
   revoke(uniqueId: string): Promise<void>;
+
+  /**
+   * List all access grants for a specific file
+   * @param fileUniqueId - The unique identifier of the file
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated result of FileAccess records for the given file
+   */
   listByFile(fileUniqueId: string, params?: ListFileAccessParams): Promise<PageResult<FileAccess>>;
+
+  /**
+   * List all access grants for a specific grantee
+   * @param granteeUniqueId - The unique identifier of the grantee
+   * @param granteeType - The type of grantee (e.g., user, group)
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated result of FileAccess records for the given grantee
+   */
   listByGrantee(granteeUniqueId: string, granteeType: string, params?: ListFileAccessParams): Promise<PageResult<FileAccess>>;
+
+  /**
+   * Check whether a grantee has access to a specific file
+   * @param fileUniqueId - The unique identifier of the file
+   * @param granteeUniqueId - The unique identifier of the grantee
+   * @returns The FileAccess record if access exists, or null if no access is granted
+   * @note Returns null instead of throwing when no access record is found
+   */
   checkAccess(fileUniqueId: string, granteeUniqueId: string): Promise<FileAccess | null>;
 }
 

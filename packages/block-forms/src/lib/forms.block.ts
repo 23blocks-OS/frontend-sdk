@@ -28,11 +28,19 @@ import {
   type CrmSyncService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Forms block.
+ */
 export interface FormsBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * Dynamic forms and submissions block interface.
+ */
 export interface FormsBlock {
   /** Form definitions (CRUD) */
   forms: FormsService;
@@ -74,6 +82,15 @@ export interface FormsBlock {
   crmSync: CrmSyncService;
 }
 
+/**
+ * Create the Forms block.
+ *
+ * @example
+ * ```typescript
+ * const block = createFormsBlock(transport, { appId: 'xxx' });
+ * const forms = await block.forms.list({ page: 1 });
+ * ```
+ */
 export function createFormsBlock(
   transport: Transport,
   config: FormsBlockConfig

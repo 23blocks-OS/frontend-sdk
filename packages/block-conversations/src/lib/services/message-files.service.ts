@@ -9,9 +9,37 @@ import type {
 import { messageFileMapper } from '../mappers/message-file.mapper.js';
 
 export interface MessageFilesService {
+  /**
+   * Get a message file by unique ID
+   * @param conversationUniqueId - Unique ID of the conversation the file belongs to
+   * @param fileUniqueId - Unique ID of the file to retrieve
+   * @returns The matching MessageFile record
+   */
   get(conversationUniqueId: string, fileUniqueId: string): Promise<MessageFile>;
+
+  /**
+   * Create a new message file record
+   * @param conversationUniqueId - Unique ID of the conversation to attach the file to
+   * @param data - File metadata including name, content type, size, and URL
+   * @returns The newly created MessageFile record
+   */
   create(conversationUniqueId: string, data: CreateMessageFileRequest): Promise<MessageFile>;
+
+  /**
+   * Delete a message file
+   * @param conversationUniqueId - Unique ID of the conversation the file belongs to
+   * @param fileUniqueId - Unique ID of the file to delete
+   * @returns void on successful deletion
+   */
   delete(conversationUniqueId: string, fileUniqueId: string): Promise<void>;
+
+  /**
+   * Get a presigned URL for direct file upload
+   * @param conversationUniqueId - Unique ID of the conversation to upload the file to
+   * @param data - File details including filename, content type, and size
+   * @returns PresignMessageFileResponse with upload URL, final file URL, form fields, and expiration
+   * @note Use the returned uploadUrl and fields to perform a direct upload to storage
+   */
   presign(conversationUniqueId: string, data: PresignMessageFileRequest): Promise<PresignMessageFileResponse>;
 }
 

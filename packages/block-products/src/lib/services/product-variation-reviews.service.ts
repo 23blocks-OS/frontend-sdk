@@ -9,15 +9,84 @@ import type {
 import { productVariationReviewMapper } from '../mappers/product-variation-review.mapper.js';
 
 export interface ProductVariationReviewsService {
+  /**
+   * List reviews for a specific product variation with optional filtering and pagination.
+   * @param variationUniqueId - The variation unique ID
+   * @param params - Filter options including user, rating range, verified purchase, status, and pagination
+   * @returns Paginated result containing an array of ProductVariationReview items and page metadata
+   */
   list(variationUniqueId: string, params?: ListVariationReviewsParams): Promise<PageResult<ProductVariationReview>>;
+
+  /**
+   * Get a single variation review by its unique identifier.
+   * @param variationUniqueId - The variation unique ID
+   * @param reviewUniqueId - The review unique ID
+   * @returns The matching ProductVariationReview
+   */
   get(variationUniqueId: string, reviewUniqueId: string): Promise<ProductVariationReview>;
+
+  /**
+   * Create a new review for a product variation.
+   * @param variationUniqueId - The variation unique ID
+   * @param data - Review creation payload including rating, optional title, content, and payload
+   * @returns The newly created ProductVariationReview
+   */
   create(variationUniqueId: string, data: CreateVariationReviewRequest): Promise<ProductVariationReview>;
+
+  /**
+   * Update an existing variation review.
+   * @param variationUniqueId - The variation unique ID
+   * @param reviewUniqueId - The review unique ID
+   * @param data - Fields to update on the review
+   * @returns The updated ProductVariationReview
+   */
   update(variationUniqueId: string, reviewUniqueId: string, data: UpdateVariationReviewRequest): Promise<ProductVariationReview>;
+
+  /**
+   * Delete a variation review.
+   * @param variationUniqueId - The variation unique ID
+   * @param reviewUniqueId - The review unique ID
+   * @returns Resolves when the review has been deleted
+   */
   delete(variationUniqueId: string, reviewUniqueId: string): Promise<void>;
+
+  /**
+   * Mark a variation review as helpful.
+   * @param variationUniqueId - The variation unique ID
+   * @param reviewUniqueId - The review unique ID
+   * @returns The updated ProductVariationReview with incremented helpful count
+   */
   markHelpful(variationUniqueId: string, reviewUniqueId: string): Promise<ProductVariationReview>;
+
+  /**
+   * Mark a variation review as not helpful.
+   * @param variationUniqueId - The variation unique ID
+   * @param reviewUniqueId - The review unique ID
+   * @returns The updated ProductVariationReview with incremented not-helpful count
+   */
   markNotHelpful(variationUniqueId: string, reviewUniqueId: string): Promise<ProductVariationReview>;
+
+  /**
+   * Flag a variation review for moderation.
+   * @param variationUniqueId - The variation unique ID
+   * @param reviewUniqueId - The review unique ID
+   * @returns The flagged ProductVariationReview
+   */
   flag(variationUniqueId: string, reviewUniqueId: string): Promise<ProductVariationReview>;
+
+  /**
+   * List all variation reviews submitted by a specific user.
+   * @param userUniqueId - The user unique ID
+   * @param params - Optional filter and pagination options
+   * @returns Paginated result containing ProductVariationReview items by the user and page metadata
+   */
   listByUser(userUniqueId: string, params?: ListVariationReviewsParams): Promise<PageResult<ProductVariationReview>>;
+
+  /**
+   * Get the average rating and total review count for a product variation.
+   * @param variationUniqueId - The variation unique ID
+   * @returns Object containing averageRating (number) and totalReviews (number)
+   */
   getAverageRating(variationUniqueId: string): Promise<{ averageRating: number; totalReviews: number }>;
 }
 

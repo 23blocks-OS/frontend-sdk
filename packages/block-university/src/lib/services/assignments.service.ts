@@ -9,11 +9,39 @@ import type {
 import { assignmentMapper } from '../mappers/assignment.mapper.js';
 
 export interface AssignmentsService {
+  /**
+   * List assignments with optional filtering and sorting.
+   * @returns Paginated list of Assignment records with metadata.
+   */
   list(params?: ListAssignmentsParams): Promise<PageResult<Assignment>>;
+
+  /**
+   * Get a single assignment by unique ID.
+   * @returns The matching Assignment record.
+   */
   get(uniqueId: string): Promise<Assignment>;
+
+  /**
+   * Create a new assignment for a lesson.
+   * @returns The newly created Assignment record.
+   */
   create(data: CreateAssignmentRequest): Promise<Assignment>;
+
+  /**
+   * Update an existing assignment.
+   * @returns The updated Assignment record.
+   */
   update(uniqueId: string, data: UpdateAssignmentRequest): Promise<Assignment>;
+
+  /**
+   * Delete an assignment.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List assignments for a specific lesson.
+   * @returns Paginated list of Assignment records for the lesson.
+   */
   listByLesson(lessonUniqueId: string, params?: ListAssignmentsParams): Promise<PageResult<Assignment>>;
 }
 

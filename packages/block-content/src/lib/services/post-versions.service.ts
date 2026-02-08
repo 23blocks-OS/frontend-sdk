@@ -6,16 +6,27 @@ import { postVersionMapper } from '../mappers/post-version.mapper.js';
 export interface PostVersionsService {
   /**
    * List all versions of a post
+   * @param postUniqueId - Unique ID of the post to list versions for
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated list of PostVersion records with pagination metadata
+   * @note Versions are extracted from the post's included relationships rather than a dedicated endpoint
    */
   list(postUniqueId: string, params?: ListPostVersionsParams): Promise<PageResult<PostVersion>>;
 
   /**
    * Get a specific version of a post
+   * @param postUniqueId - Unique ID of the parent post
+   * @param versionUniqueId - Unique ID of the version to retrieve
+   * @returns The matching PostVersion record
+   * @note Fetches the post with included versions and filters to the requested version; throws if not found
    */
   get(postUniqueId: string, versionUniqueId: string): Promise<PostVersion>;
 
   /**
    * Publish a specific version (makes it the current live version)
+   * @param postUniqueId - Unique ID of the parent post
+   * @param versionUniqueId - Unique ID of the version to publish
+   * @returns The published PostVersion record
    */
   publish(postUniqueId: string, versionUniqueId: string): Promise<PostVersion>;
 }

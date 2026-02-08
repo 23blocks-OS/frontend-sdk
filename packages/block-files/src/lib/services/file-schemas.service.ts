@@ -9,11 +9,47 @@ import type {
 import { fileSchemaMapper } from '../mappers/file-schema.mapper.js';
 
 export interface FileSchemasService {
+  /**
+   * List all file schemas
+   * @param params - Optional filtering by status, search term, and pagination
+   * @returns Paginated result containing FileSchema items and metadata
+   */
   list(params?: ListFileSchemasParams): Promise<PageResult<FileSchema>>;
+
+  /**
+   * Get a specific file schema by unique identifier
+   * @param uniqueId - The unique identifier of the file schema
+   * @returns The matching FileSchema record
+   */
   get(uniqueId: string): Promise<FileSchema>;
+
+  /**
+   * Get a file schema by its code
+   * @param code - The unique code identifying the file schema
+   * @returns The matching FileSchema record
+   */
   getByCode(code: string): Promise<FileSchema>;
+
+  /**
+   * Create a new file schema
+   * @param data - Schema details including code, name, MIME types, and file size constraints
+   * @returns The newly created FileSchema record
+   */
   create(data: CreateFileSchemaRequest): Promise<FileSchema>;
+
+  /**
+   * Update an existing file schema
+   * @param uniqueId - The unique identifier of the schema to update
+   * @param data - Fields to update such as name, allowed MIME types, or constraints
+   * @returns The updated FileSchema record
+   */
   update(uniqueId: string, data: UpdateFileSchemaRequest): Promise<FileSchema>;
+
+  /**
+   * Delete a file schema
+   * @param uniqueId - The unique identifier of the schema to delete
+   * @returns Resolves when the schema has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

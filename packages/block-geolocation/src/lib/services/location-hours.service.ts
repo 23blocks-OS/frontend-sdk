@@ -8,10 +8,44 @@ import type {
 import { locationHourMapper } from '../mappers/location-hour.mapper.js';
 
 export interface LocationHoursService {
+  /**
+   * List all operating hours for a location
+   * @param locationUniqueId - The unique identifier of the location
+   * @returns Array of LocationHour records for each configured day/period
+   */
   list(locationUniqueId: string): Promise<LocationHour[]>;
+
+  /**
+   * Get a specific operating hours entry
+   * @param locationUniqueId - The unique identifier of the location
+   * @param hourUniqueId - The unique identifier of the hours entry
+   * @returns The matching LocationHour record
+   */
   get(locationUniqueId: string, hourUniqueId: string): Promise<LocationHour>;
+
+  /**
+   * Create a new operating hours entry for a location
+   * @param locationUniqueId - The unique identifier of the location
+   * @param data - Hours details including day of week, open/close times, and closed/all-day flags
+   * @returns The newly created LocationHour record
+   */
   create(locationUniqueId: string, data: CreateLocationHourRequest): Promise<LocationHour>;
+
+  /**
+   * Update an operating hours entry
+   * @param locationUniqueId - The unique identifier of the location
+   * @param hourUniqueId - The unique identifier of the hours entry to update
+   * @param data - Fields to update such as times, closed flag, or status
+   * @returns The updated LocationHour record
+   */
   update(locationUniqueId: string, hourUniqueId: string, data: UpdateLocationHourRequest): Promise<LocationHour>;
+
+  /**
+   * Delete an operating hours entry
+   * @param locationUniqueId - The unique identifier of the location
+   * @param hourUniqueId - The unique identifier of the hours entry to delete
+   * @returns Resolves when the hours entry has been deleted
+   */
   delete(locationUniqueId: string, hourUniqueId: string): Promise<void>;
 }
 

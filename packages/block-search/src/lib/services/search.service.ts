@@ -25,17 +25,24 @@ import type { SearchBlockConfig } from '../search.block.js';
  */
 export interface SearchService {
   /**
-   * Execute a search query
+   * Execute a search query against the search index.
+   * @param request - The search request containing query text, optional entity type filters, include/exclude lists, and pagination (limit/offset).
+   * @returns A {@link SearchResponse} containing the matched results array, a synthesized {@link SearchQuery} with execution metadata (elapsed time, total records), and summary counts.
+   * @note The returned `query` object is constructed from response metadata when available; otherwise it is synthesized client-side with default/null values.
    */
   search(request: SearchRequest): Promise<SearchResponse>;
 
   /**
-   * Get search suggestions/autocomplete
+   * Get search suggestions/autocomplete results for a partial query.
+   * @param query - The partial text to generate suggestions for.
+   * @param limit - Maximum number of suggestions to return. Defaults to 10.
+   * @returns An array of {@link SearchResult} items matching the suggestion query.
    */
   suggest(query: string, limit?: number): Promise<SearchResult[]>;
 
   /**
-   * Get available entity types
+   * Get all available entity types that can be searched.
+   * @returns An array of {@link EntityType} objects, each containing the type identifier and source.
    */
   entityTypes(): Promise<EntityType[]>;
 }
@@ -45,22 +52,30 @@ export interface SearchService {
  */
 export interface SearchHistoryService {
   /**
-   * Get recent searches for the current user
+   * Get recent searches for the current user.
+   * @param limit - Maximum number of recent queries to return. Defaults to 20.
+   * @returns An array of {@link LastQuery} objects representing the user's recent search history, including query text, user context, and execution statistics.
    */
   recent(limit?: number): Promise<LastQuery[]>;
 
   /**
-   * Get a specific query by unique ID
+   * Get a specific saved query by its unique ID.
+   * @param uniqueId - The unique identifier of the query to retrieve.
+   * @returns The full {@link SearchQuery} record including query text, user context, execution timing, and result counts.
    */
   get(uniqueId: string): Promise<SearchQuery>;
 
   /**
-   * Clear search history
+   * Clear all search history for the current user.
+   * @returns Resolves with no value on successful deletion.
+   * @note This deletes the entire search history; individual entries cannot be restored after clearing.
    */
   clear(): Promise<void>;
 
   /**
-   * Delete a specific query from history
+   * Delete a specific query from the search history.
+   * @param uniqueId - The unique identifier of the history entry to delete.
+   * @returns Resolves with no value on successful deletion.
    */
   delete(uniqueId: string): Promise<void>;
 }
@@ -70,27 +85,38 @@ export interface SearchHistoryService {
  */
 export interface FavoritesService {
   /**
-   * List user's favorites
+   * List the current user's favorite entities with optional pagination, sorting, and filtering.
+   * @param params - Optional {@link ListParams} for pagination, sorting, and filtering.
+   * @returns A paginated result containing an array of {@link FavoriteEntity} items and pagination metadata.
    */
   list(params?: ListParams): Promise<PageResult<FavoriteEntity>>;
 
   /**
-   * Get a favorite by unique ID
+   * Get a single favorite by its unique ID.
+   * @param uniqueId - The unique identifier of the favorite entry.
+   * @returns The matching {@link FavoriteEntity}.
    */
   get(uniqueId: string): Promise<FavoriteEntity>;
 
   /**
-   * Add a favorite
+   * Add an entity to the user's favorites.
+   * @param request - The favorite request containing the entity's unique ID, type, and optional alias/URL/avatar fields.
+   * @returns The newly created {@link FavoriteEntity} as persisted by the backend.
    */
   add(request: AddFavoriteRequest): Promise<FavoriteEntity>;
 
   /**
-   * Remove a favorite
+   * Remove a favorite by its unique ID.
+   * @param uniqueId - The unique identifier of the favorite entry to remove.
+   * @returns Resolves with no value on successful removal.
    */
   remove(uniqueId: string): Promise<void>;
 
   /**
-   * Check if an entity is favorited
+   * Check whether a given entity is in the user's favorites.
+   * @param entityUniqueId - The unique identifier of the entity to check.
+   * @returns `true` if the entity is favorited, `false` otherwise.
+   * @note Returns `false` on any error (e.g., network failure or 404), rather than throwing.
    */
   isFavorite(entityUniqueId: string): Promise<boolean>;
 }

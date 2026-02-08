@@ -28,27 +28,57 @@ import {
   type VendorPaymentsService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Sales block.
+ */
 export interface SalesBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * Sales, orders, and payment management block interface.
+ */
 export interface SalesBlock {
+  /** Order CRUD operations */
   orders: OrdersService;
+  /** Order line-item detail management */
   orderDetails: OrderDetailsService;
+  /** Order tax management */
   orderTaxes: OrderTaxesService;
+  /** Payment processing */
   payments: PaymentsService;
+  /** Subscription management */
   subscriptions: SubscriptionsService;
+  /** Subscription model definition management */
   subscriptionModels: SubscriptionModelsService;
+  /** Sales entity management */
   entities: SalesEntitiesService;
+  /** Sales user management */
   users: SalesUsersService;
+  /** Sales customer management */
   customers: SalesCustomersService;
+  /** Flexible order management */
   flexibleOrders: FlexibleOrdersService;
+  /** Stripe payment integration */
   stripe: StripeService;
+  /** MercadoPago payment integration */
   mercadopago: MercadoPagoService;
+  /** Vendor payment management */
   vendorPayments: VendorPaymentsService;
 }
 
+/**
+ * Create the Sales block.
+ *
+ * @example
+ * ```typescript
+ * const block = createSalesBlock(transport, { appId: 'xxx' });
+ * const orders = await block.orders.list({ page: 1 });
+ * ```
+ */
 export function createSalesBlock(
   transport: Transport,
   config: SalesBlockConfig

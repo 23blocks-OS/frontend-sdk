@@ -4,10 +4,34 @@ import type { Execution, ListExecutionsParams } from '../types/execution.js';
 import { executionMapper } from '../mappers/execution.mapper.js';
 
 export interface ExecutionsService {
+  /**
+   * List executions with optional filtering and sorting.
+   * @returns Paginated list of Execution records with metadata.
+   */
   list(params?: ListExecutionsParams): Promise<PageResult<Execution>>;
+
+  /**
+   * Get a single execution by unique ID.
+   * @returns The matching Execution record.
+   */
   get(uniqueId: string): Promise<Execution>;
+
+  /**
+   * List executions for a specific agent.
+   * @returns Paginated list of Execution records with metadata.
+   */
   listByAgent(agentUniqueId: string, params?: ListExecutionsParams): Promise<PageResult<Execution>>;
+
+  /**
+   * List executions for a specific prompt.
+   * @returns Paginated list of Execution records with metadata.
+   */
   listByPrompt(promptUniqueId: string, params?: ListExecutionsParams): Promise<PageResult<Execution>>;
+
+  /**
+   * Cancel a running execution.
+   * @returns The updated Execution record with cancelled status.
+   */
   cancel(uniqueId: string): Promise<Execution>;
 }
 

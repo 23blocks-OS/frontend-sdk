@@ -9,10 +9,45 @@ import type {
 import { referralMapper } from '../mappers/referral.mapper.js';
 
 export interface ReferralsService {
+  /**
+   * List all referrals for a form
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param params - Optional filtering by status, referrer, and pagination
+   * @returns Paginated result containing Referral items and metadata
+   */
   list(formUniqueId: string, params?: ListReferralsParams): Promise<PageResult<Referral>>;
+
+  /**
+   * Get a specific referral
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the referral
+   * @returns The matching Referral record
+   */
   get(formUniqueId: string, uniqueId: string): Promise<Referral>;
+
+  /**
+   * Create a new referral
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param data - Referral details including referrer and referee contact information
+   * @returns The newly created Referral record
+   */
   create(formUniqueId: string, data: CreateReferralRequest): Promise<Referral>;
+
+  /**
+   * Update an existing referral
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the referral to update
+   * @param data - Fields to update such as referee info, data, or status
+   * @returns The updated Referral record
+   */
   update(formUniqueId: string, uniqueId: string, data: UpdateReferralRequest): Promise<Referral>;
+
+  /**
+   * Delete a referral
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the referral to delete
+   * @returns Resolves when the referral has been deleted
+   */
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
 }
 

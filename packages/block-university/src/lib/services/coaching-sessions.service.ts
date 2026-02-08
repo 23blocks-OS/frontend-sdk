@@ -9,19 +9,89 @@ import type {
 import { coachingSessionMapper } from '../mappers/coaching-session.mapper.js';
 
 export interface CoachingSessionsService {
+  /**
+   * List coaching sessions with optional filtering and sorting.
+   * @returns Paginated list of CoachingSession records with metadata.
+   */
   list(params?: ListCoachingSessionsParams): Promise<PageResult<CoachingSession>>;
+
+  /**
+   * Create a new coaching session.
+   * @returns The newly created CoachingSession record.
+   */
   create(data: CreateCoachingSessionRequest): Promise<CoachingSession>;
+
+  /**
+   * Update an existing coaching session.
+   * @returns The updated CoachingSession record.
+   */
   update(uniqueId: string, data: UpdateCoachingSessionRequest): Promise<CoachingSession>;
+
+  /**
+   * Delete a coaching session.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Get all coaching sessions for a student.
+   * @returns Array of CoachingSession records.
+   * @note Extracts the data array from a paginated response.
+   */
   getByStudent(studentUniqueId: string): Promise<CoachingSession[]>;
+
+  /**
+   * Get all coaching sessions for a teacher.
+   * @returns Array of CoachingSession records.
+   * @note Extracts the data array from a paginated response.
+   */
   getByTeacher(teacherUniqueId: string): Promise<CoachingSession[]>;
+
+  /**
+   * Record student confirmation of a coaching session.
+   * @returns The updated CoachingSession record.
+   */
   studentConfirm(uniqueId: string): Promise<CoachingSession>;
+
+  /**
+   * Record student check-in for a coaching session.
+   * @returns The updated CoachingSession record.
+   */
   studentCheckIn(uniqueId: string): Promise<CoachingSession>;
+
+  /**
+   * Record student check-out for a coaching session.
+   * @returns The updated CoachingSession record.
+   */
   studentCheckOut(uniqueId: string): Promise<CoachingSession>;
+
+  /**
+   * Add student notes to a coaching session.
+   * @returns The updated CoachingSession record.
+   */
   studentNotes(uniqueId: string, notes: string): Promise<CoachingSession>;
+
+  /**
+   * Record teacher confirmation of a coaching session.
+   * @returns The updated CoachingSession record.
+   */
   teacherConfirm(uniqueId: string): Promise<CoachingSession>;
+
+  /**
+   * Record teacher check-in for a coaching session.
+   * @returns The updated CoachingSession record.
+   */
   teacherCheckIn(uniqueId: string): Promise<CoachingSession>;
+
+  /**
+   * Record teacher check-out for a coaching session.
+   * @returns The updated CoachingSession record.
+   */
   teacherCheckOut(uniqueId: string): Promise<CoachingSession>;
+
+  /**
+   * Add admin notes to a coaching session.
+   * @returns The updated CoachingSession record.
+   */
   adminNotes(uniqueId: string, notes: string): Promise<CoachingSession>;
 }
 

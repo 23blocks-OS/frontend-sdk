@@ -10,31 +10,44 @@ import type {
 } from '../types/index.js';
 
 /**
- * MFA Service Interface
+ * MFA (Multi-Factor Authentication) service - setup, enable, disable, and verify TOTP-based MFA.
  */
 export interface MfaService {
   /**
-   * Setup MFA for a user (generates secret and QR code)
+   * Setup MFA for a user. Generates a TOTP secret and QR code URI.
+   *
+   * @param userUniqueId - The user's UUID.
+   * @param regenerate - If true, regenerates the secret even if one exists.
+   * @returns MfaSetupResponseFull with `secret`, `qrCodeUri`, `backupCodes`, and `testCode`.
    */
   setup(userUniqueId: string, regenerate?: boolean): Promise<MfaSetupResponseFull>;
 
   /**
-   * Enable MFA after setup (requires TOTP code verification)
+   * Enable MFA after setup. Requires a valid TOTP code to confirm the user has configured their authenticator.
+   *
+   * @returns MfaOperationResponse with `enabled: true` and a confirmation `message`.
    */
   enable(userUniqueId: string, request: MfaEnableRequest): Promise<MfaOperationResponse>;
 
   /**
-   * Disable MFA (requires password verification)
+   * Disable MFA. Requires the user's password for security verification.
+   *
+   * @returns MfaOperationResponse with `enabled: false` and a confirmation `message`.
    */
   disable(userUniqueId: string, request: MfaDisableRequest): Promise<MfaOperationResponse>;
 
   /**
-   * Verify MFA code or backup code
+   * Verify a TOTP code or backup code during sign-in.
+   *
+   * @param request - Provide either `code` (TOTP) or `backupCode`.
+   * @returns MfaVerificationResponse with `valid` and `message`.
    */
   verify(userUniqueId: string, request: MfaVerifyRequestFull): Promise<MfaVerificationResponse>;
 
   /**
-   * Get MFA status for a user
+   * Get the MFA status for a user.
+   *
+   * @returns MfaStatusResponse with `enabled`, `setupRequired`, `backupCodesRemaining`, `lastUsedAt`.
    */
   status(userUniqueId: string): Promise<MfaStatusResponse>;
 }

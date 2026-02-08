@@ -18,11 +18,55 @@ export interface UpdateReviewRequest {
 }
 
 export interface ProductReviewsService {
+  /**
+   * List reviews for a specific product with optional pagination.
+   * @param productUniqueId - The product unique ID
+   * @param page - Page number for pagination
+   * @param perPage - Number of items per page
+   * @returns Paginated result containing an array of ProductReview items and page metadata
+   */
   list(productUniqueId: string, page?: number, perPage?: number): Promise<PageResult<ProductReview>>;
+
+  /**
+   * Create a new review for a product.
+   * @param productUniqueId - The product unique ID
+   * @param data - Review creation payload including rating, optional title, content, and payload
+   * @returns The newly created ProductReview
+   */
   create(productUniqueId: string, data: CreateReviewRequest): Promise<ProductReview>;
+
+  /**
+   * Update an existing product review.
+   * @param productUniqueId - The product unique ID
+   * @param reviewUniqueId - The review unique ID
+   * @param data - Fields to update on the review
+   * @returns The updated ProductReview
+   */
   update(productUniqueId: string, reviewUniqueId: string, data: UpdateReviewRequest): Promise<ProductReview>;
+
+  /**
+   * Delete a product review.
+   * @param productUniqueId - The product unique ID
+   * @param reviewUniqueId - The review unique ID
+   * @returns Resolves when the review has been deleted
+   */
   delete(productUniqueId: string, reviewUniqueId: string): Promise<void>;
+
+  /**
+   * Flag a product review for moderation.
+   * @param productUniqueId - The product unique ID
+   * @param reviewUniqueId - The review unique ID
+   * @returns The flagged ProductReview
+   */
   flag(productUniqueId: string, reviewUniqueId: string): Promise<ProductReview>;
+
+  /**
+   * List all reviews submitted by a specific user.
+   * @param userUniqueId - The user unique ID
+   * @param page - Page number for pagination
+   * @param perPage - Number of items per page
+   * @returns Paginated result containing ProductReview items by the user and page metadata
+   */
   listByUser(userUniqueId: string, page?: number, perPage?: number): Promise<PageResult<ProductReview>>;
 }
 

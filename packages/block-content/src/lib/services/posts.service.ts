@@ -12,32 +12,154 @@ import { parseValidationResult } from '../mappers/post-template.mapper.js';
 
 export interface PostsService {
   // Posts
+
+  /**
+   * List all posts
+   * @param params - Optional filtering, sorting, and pagination parameters
+   * @returns Paginated list of Post records with pagination metadata
+   */
   list(params?: ListPostsParams): Promise<PageResult<Post>>;
+
+  /**
+   * Query posts using advanced filters via POST
+   * @param params - Required filtering and pagination parameters
+   * @returns Paginated list of Post records with pagination metadata
+   * @note Uses POST for complex query payloads unlike the GET-based list method
+   */
   query(params: ListPostsParams): Promise<PageResult<Post>>;
+
+  /**
+   * Get a post by unique ID
+   * @param uniqueId - Unique ID of the post to retrieve
+   * @returns The matching Post record
+   */
   get(uniqueId: string): Promise<Post>;
+
+  /**
+   * Create a new post
+   * @param data - Post creation payload
+   * @returns The newly created Post record
+   */
   create(data: CreatePostRequest): Promise<Post>;
+
+  /**
+   * Update a post (partial update)
+   * @param uniqueId - Unique ID of the post to update
+   * @param data - Fields to update on the post
+   * @returns The updated Post record
+   */
   update(uniqueId: string, data: UpdatePostRequest): Promise<Post>;
+
+  /**
+   * Replace a post (full replacement)
+   * @param uniqueId - Unique ID of the post to replace
+   * @param data - Complete post data to replace the existing record
+   * @returns The replaced Post record
+   * @note Unlike update, this replaces the entire post content rather than merging fields
+   */
   replace(uniqueId: string, data: UpdatePostRequest): Promise<Post>;
+
+  /**
+   * Delete a post (soft delete)
+   * @param uniqueId - Unique ID of the post to delete
+   * @returns void on successful deletion
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously deleted post
+   * @param uniqueId - Unique ID of the deleted post to recover
+   * @returns The recovered Post record
+   */
   recover(uniqueId: string): Promise<Post>;
+
+  /**
+   * Search posts by query string
+   * @param query - Search query text
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of matching Post records with pagination metadata
+   */
   search(query: string, params?: ListPostsParams): Promise<PageResult<Post>>;
+
+  /**
+   * List soft-deleted posts
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of deleted Post records with pagination metadata
+   */
   listDeleted(params?: ListPostsParams): Promise<PageResult<Post>>;
 
   // Ownership
+
+  /**
+   * Transfer ownership of a post to another user
+   * @param uniqueId - Unique ID of the post to transfer
+   * @param newOwnerUniqueId - Unique ID of the new owner
+   * @returns The updated Post record with new ownership
+   */
   changeOwner(uniqueId: string, newOwnerUniqueId: string): Promise<Post>;
 
   // Versioning
+
+  /**
+   * Publish a specific version of a post
+   * @param uniqueId - Unique ID of the post
+   * @param versionUniqueId - Unique ID of the version to publish
+   * @returns The updated Post record reflecting the published version
+   */
   publishVersion(uniqueId: string, versionUniqueId: string): Promise<Post>;
 
   // Engagement
+
+  /**
+   * Like a post
+   * @param uniqueId - Unique ID of the post to like
+   * @returns The updated Post record with engagement state
+   */
   like(uniqueId: string): Promise<Post>;
+
+  /**
+   * Remove a like from a post
+   * @param uniqueId - Unique ID of the post to dislike
+   * @returns The updated Post record with engagement state
+   */
   dislike(uniqueId: string): Promise<Post>;
+
+  /**
+   * Save a post to the user's saved items
+   * @param uniqueId - Unique ID of the post to save
+   * @returns The updated Post record with engagement state
+   */
   save(uniqueId: string): Promise<Post>;
+
+  /**
+   * Remove a post from the user's saved items
+   * @param uniqueId - Unique ID of the post to unsave
+   * @returns The updated Post record with engagement state
+   */
   unsave(uniqueId: string): Promise<Post>;
+
+  /**
+   * Follow a post to receive notifications on updates
+   * @param uniqueId - Unique ID of the post to follow
+   * @returns The updated Post record with engagement state
+   */
   follow(uniqueId: string): Promise<Post>;
+
+  /**
+   * Unfollow a post to stop receiving notifications
+   * @param uniqueId - Unique ID of the post to unfollow
+   * @returns The updated Post record with engagement state
+   */
   unfollow(uniqueId: string): Promise<Post>;
 
   // Validation
+
+  /**
+   * Validate a post against a post template
+   * @param uniqueId - Unique ID of the post to validate
+   * @param templateUniqueId - Unique ID of the template to validate against
+   * @returns PostValidationResult indicating whether the post conforms to the template
+   */
   validate(uniqueId: string, templateUniqueId: string): Promise<PostValidationResult>;
 }
 

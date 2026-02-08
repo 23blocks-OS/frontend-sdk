@@ -14,12 +14,46 @@ import { assetMapper } from '../mappers/asset.mapper.js';
 import { assetsEntityMapper } from '../mappers/entity.mapper.js';
 
 export interface AssetsUsersService {
+  /**
+   * List asset users with optional filtering and sorting.
+   * @returns Paginated list of AssetsUser records with metadata.
+   */
   list(params?: ListAssetsUsersParams): Promise<PageResult<AssetsUser>>;
+
+  /**
+   * Get a single asset user by unique ID.
+   * @returns The matching AssetsUser record.
+   */
   get(uniqueId: string): Promise<AssetsUser>;
+
+  /**
+   * Register a user in the assets system.
+   * @returns The newly registered AssetsUser record.
+   */
   register(uniqueId: string, data: RegisterAssetsUserRequest): Promise<AssetsUser>;
+
+  /**
+   * Update an asset user.
+   * @returns The updated AssetsUser record.
+   */
   update(uniqueId: string, data: UpdateAssetsUserRequest): Promise<AssetsUser>;
+
+  /**
+   * List entities associated with a user.
+   * @returns Array of AssetsEntity records.
+   */
   listEntities(uniqueId: string): Promise<AssetsEntity[]>;
+
+  /**
+   * List assets assigned to a user.
+   * @returns Array of Asset records.
+   */
   listAssets(uniqueId: string): Promise<Asset[]>;
+
+  /**
+   * List ownership records for a user.
+   * @returns Array of UserOwnership records.
+   */
   listOwnership(uniqueId: string): Promise<UserOwnership[]>;
 }
 

@@ -1,11 +1,14 @@
 /**
- * Base identity interface for all domain objects
- * All entities in 23blocks have these common fields
+ * Base identity interface for all domain objects in 23blocks.
+ * Every entity (User, Role, Contact, Product, etc.) extends this interface.
+ *
+ * @note Always use `uniqueId` (UUID) for API calls, not `id` (database ID).
+ *   The `id` is an internal database identifier and should not be used in client code.
  */
 export interface IdentityCore {
-  /** Database ID */
+  /** Internal database ID. Prefer `uniqueId` for API operations. */
   id: string;
-  /** UUID - globally unique identifier */
+  /** UUID - globally unique identifier. Use this for all API calls (get, update, delete). */
   uniqueId: string;
   /** Creation timestamp */
   createdAt: Date;

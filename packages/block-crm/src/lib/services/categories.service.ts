@@ -9,10 +9,41 @@ import type {
 import { categoryMapper } from '../mappers/category.mapper.js';
 
 export interface CategoriesService {
+  /**
+   * List categories with optional filtering, pagination, and sorting.
+   * @param params - Optional filtering (status, parentUniqueId, search), pagination, and sorting parameters.
+   * @returns Paginated result containing Category objects and metadata.
+   */
   list(params?: ListCategoriesParams): Promise<PageResult<Category>>;
+
+  /**
+   * Retrieve a single category by its unique identifier.
+   * @param uniqueId - The unique identifier of the category.
+   * @returns The matching Category object.
+   */
   get(uniqueId: string): Promise<Category>;
+
+  /**
+   * Create a new category.
+   * @param data - The category creation payload including name, code, and optional hierarchy/display fields.
+   * @returns The newly created Category object.
+   */
   create(data: CreateCategoryRequest): Promise<Category>;
+
+  /**
+   * Update an existing category.
+   * @param uniqueId - The unique identifier of the category to update.
+   * @param data - The fields to update on the category.
+   * @returns The updated Category object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(uniqueId: string, data: UpdateCategoryRequest): Promise<Category>;
+
+  /**
+   * Delete a category.
+   * @param uniqueId - The unique identifier of the category to delete.
+   * @returns Resolves when the category has been deleted.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

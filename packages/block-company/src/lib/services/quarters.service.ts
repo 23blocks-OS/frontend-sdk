@@ -9,10 +9,33 @@ import type {
 import { quarterMapper } from '../mappers/quarter.mapper.js';
 
 export interface QuartersService {
+  /**
+   * List quarters with optional filtering and sorting.
+   * @returns Paginated list of Quarter records with metadata.
+   */
   list(params?: ListQuartersParams): Promise<PageResult<Quarter>>;
+
+  /**
+   * Get a single quarter by unique ID.
+   * @returns The matching Quarter record.
+   */
   get(uniqueId: string): Promise<Quarter>;
+
+  /**
+   * Create a new quarter.
+   * @returns The newly created Quarter record.
+   */
   create(data: CreateQuarterRequest): Promise<Quarter>;
+
+  /**
+   * Update an existing quarter.
+   * @returns The updated Quarter record.
+   */
   update(uniqueId: string, data: UpdateQuarterRequest): Promise<Quarter>;
+
+  /**
+   * Delete a quarter.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

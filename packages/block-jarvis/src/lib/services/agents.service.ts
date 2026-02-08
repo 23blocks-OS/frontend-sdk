@@ -13,12 +13,45 @@ import type {
 import { agentMapper } from '../mappers/agent.mapper.js';
 
 export interface AgentsService {
+  /**
+   * List agents with optional filtering and sorting.
+   * @returns Paginated list of Agent records with metadata.
+   */
   list(params?: ListAgentsParams): Promise<PageResult<Agent>>;
+
+  /**
+   * Get a single agent by unique ID.
+   * @returns The matching Agent record.
+   */
   get(uniqueId: string): Promise<Agent>;
+
+  /**
+   * Create a new agent.
+   * @returns The newly created Agent record.
+   */
   create(data: CreateAgentRequest): Promise<Agent>;
+
+  /**
+   * Update an existing agent.
+   * @returns The updated Agent record.
+   */
   update(uniqueId: string, data: UpdateAgentRequest): Promise<Agent>;
+
+  /**
+   * Delete an agent.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Send a chat message to an agent.
+   * @returns ChatResponse with the agent's reply, token usage, and cost.
+   */
   chat(uniqueId: string, data: ChatRequest): Promise<ChatResponse>;
+
+  /**
+   * Send a completion request to an agent.
+   * @returns CompleteResponse with output, token usage, cost, and duration.
+   */
   complete(uniqueId: string, data: CompleteRequest): Promise<CompleteResponse>;
 }
 

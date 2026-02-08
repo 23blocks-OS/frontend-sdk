@@ -9,11 +9,39 @@ import type {
 import { positionMapper } from '../mappers/position.mapper.js';
 
 export interface PositionsService {
+  /**
+   * List positions with optional filtering and sorting.
+   * @returns Paginated list of Position records with metadata.
+   */
   list(params?: ListPositionsParams): Promise<PageResult<Position>>;
+
+  /**
+   * Get a single position by unique ID.
+   * @returns The matching Position record.
+   */
   get(uniqueId: string): Promise<Position>;
+
+  /**
+   * Create a new position.
+   * @returns The newly created Position record.
+   */
   create(data: CreatePositionRequest): Promise<Position>;
+
+  /**
+   * Update an existing position.
+   * @returns The updated Position record.
+   */
   update(uniqueId: string, data: UpdatePositionRequest): Promise<Position>;
+
+  /**
+   * Delete a position.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List all positions belonging to a specific department.
+   * @returns Array of Position records for the department.
+   */
   listByDepartment(departmentUniqueId: string): Promise<Position[]>;
 }
 

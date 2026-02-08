@@ -9,13 +9,66 @@ import type {
 import { shoppingListMapper } from '../mappers/shopping-list.mapper.js';
 
 export interface ShoppingListsService {
+  /**
+   * List shopping lists with optional filtering, sorting, and pagination.
+   * @param params - Filter options including status, user, and pagination
+   * @returns Paginated result containing an array of ShoppingList items and page metadata
+   */
   list(params?: ListShoppingListsParams): Promise<PageResult<ShoppingList>>;
+
+  /**
+   * Get a single shopping list by its unique identifier.
+   * @param uniqueId - The shopping list unique ID
+   * @returns The matching ShoppingList
+   */
   get(uniqueId: string): Promise<ShoppingList>;
+
+  /**
+   * Create a new shopping list.
+   * @param data - Shopping list creation payload including name, description, and visibility
+   * @returns The newly created ShoppingList
+   */
   create(data: CreateShoppingListRequest): Promise<ShoppingList>;
+
+  /**
+   * Update an existing shopping list.
+   * @param uniqueId - The shopping list unique ID
+   * @param data - Fields to update on the shopping list
+   * @returns The updated ShoppingList
+   */
   update(uniqueId: string, data: UpdateShoppingListRequest): Promise<ShoppingList>;
+
+  /**
+   * Delete a shopping list.
+   * @param uniqueId - The shopping list unique ID
+   * @returns Resolves when the shopping list has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Add a product item to the shopping list.
+   * @param uniqueId - The shopping list unique ID
+   * @param productUniqueId - The product unique ID to add
+   * @param quantity - Quantity of the product (defaults to 1)
+   * @returns The updated ShoppingList
+   */
   addItem(uniqueId: string, productUniqueId: string, quantity?: number): Promise<ShoppingList>;
+
+  /**
+   * Remove a product item from the shopping list.
+   * @param uniqueId - The shopping list unique ID
+   * @param productUniqueId - The product unique ID to remove
+   * @returns Resolves when the item has been removed
+   */
   removeItem(uniqueId: string, productUniqueId: string): Promise<void>;
+
+  /**
+   * Update the quantity of a product item in the shopping list.
+   * @param uniqueId - The shopping list unique ID
+   * @param productUniqueId - The product unique ID to update
+   * @param quantity - The new quantity
+   * @returns The updated ShoppingList
+   */
   updateItemQuantity(uniqueId: string, productUniqueId: string, quantity: number): Promise<ShoppingList>;
 }
 

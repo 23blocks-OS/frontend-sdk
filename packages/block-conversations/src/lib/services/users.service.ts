@@ -13,13 +13,67 @@ import { groupMapper } from '../mappers/group.mapper.js';
 import { messageMapper } from '../mappers/message.mapper.js';
 
 export interface UsersService {
+  /**
+   * List all conversations users
+   * @param params - Optional filtering, sorting, and pagination parameters
+   * @returns Paginated list of ConversationsUser records with pagination metadata
+   */
   list(params?: ListUsersParams): Promise<PageResult<ConversationsUser>>;
+
+  /**
+   * Get a conversations user by unique ID
+   * @param uniqueId - Unique ID of the user to retrieve
+   * @returns The matching ConversationsUser record
+   */
   get(uniqueId: string): Promise<ConversationsUser>;
+
+  /**
+   * Register a user in the conversations system
+   * @param uniqueId - Unique ID of the user to register
+   * @param data - Optional registration payload with profile details
+   * @returns The newly registered ConversationsUser record
+   */
   register(uniqueId: string, data?: RegisterUserRequest): Promise<ConversationsUser>;
+
+  /**
+   * Update a conversations user's profile
+   * @param uniqueId - Unique ID of the user to update
+   * @param data - Fields to update on the user profile
+   * @returns The updated ConversationsUser record
+   */
   update(uniqueId: string, data: UpdateUserRequest): Promise<ConversationsUser>;
+
+  /**
+   * List groups that a user belongs to
+   * @param uniqueId - Unique ID of the user
+   * @returns Paginated list of Group records the user is a member of
+   */
   listGroups(uniqueId: string): Promise<PageResult<Group>>;
+
+  /**
+   * List conversations for a user
+   * @param uniqueId - Unique ID of the user
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of Conversation records (messages and files are empty; use conversations.get for full data)
+   * @note Returned conversations contain empty messages and files arrays; fetch individual conversations for full content
+   */
   listConversations(uniqueId: string, params?: { page?: number; perPage?: number }): Promise<PageResult<Conversation>>;
+
+  /**
+   * List group conversations for a user
+   * @param uniqueId - Unique ID of the user
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of group Conversation records (messages and files are empty)
+   * @note Returned conversations contain empty messages and files arrays; fetch individual conversations for full content
+   */
   listGroupConversations(uniqueId: string, params?: { page?: number; perPage?: number }): Promise<PageResult<Conversation>>;
+
+  /**
+   * List groups for a user within a specific context
+   * @param uniqueId - Unique ID of the user
+   * @param contextUniqueId - Unique ID of the context to filter groups by
+   * @returns Paginated list of Group records within the specified context
+   */
   listContextGroups(uniqueId: string, contextUniqueId: string): Promise<PageResult<Group>>;
 }
 

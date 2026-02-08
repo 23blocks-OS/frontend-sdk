@@ -9,10 +9,46 @@ import type {
 import { leadFollowMapper } from '../mappers/lead-follow.mapper.js';
 
 export interface LeadFollowsService {
+  /**
+   * List follow-up actions for a specific lead with optional filtering, pagination, and sorting.
+   * @param leadUniqueId - The unique identifier of the parent lead.
+   * @param params - Optional filtering (status, followType, search), pagination, and sorting parameters.
+   * @returns Paginated result containing LeadFollow objects and metadata.
+   */
   list(leadUniqueId: string, params?: ListLeadFollowsParams): Promise<PageResult<LeadFollow>>;
+
+  /**
+   * Retrieve a single follow-up action for a lead.
+   * @param leadUniqueId - The unique identifier of the parent lead.
+   * @param followUniqueId - The unique identifier of the follow-up.
+   * @returns The matching LeadFollow object.
+   */
   get(leadUniqueId: string, followUniqueId: string): Promise<LeadFollow>;
+
+  /**
+   * Create a new follow-up action for a lead.
+   * @param leadUniqueId - The unique identifier of the parent lead.
+   * @param data - The follow-up creation payload with user, type, scheduling, and notes.
+   * @returns The newly created LeadFollow object.
+   */
   create(leadUniqueId: string, data: CreateLeadFollowRequest): Promise<LeadFollow>;
+
+  /**
+   * Update an existing follow-up action for a lead.
+   * @param leadUniqueId - The unique identifier of the parent lead.
+   * @param followUniqueId - The unique identifier of the follow-up to update.
+   * @param data - The fields to update on the follow-up.
+   * @returns The updated LeadFollow object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(leadUniqueId: string, followUniqueId: string, data: UpdateLeadFollowRequest): Promise<LeadFollow>;
+
+  /**
+   * Delete a follow-up action from a lead.
+   * @param leadUniqueId - The unique identifier of the parent lead.
+   * @param followUniqueId - The unique identifier of the follow-up to delete.
+   * @returns Resolves when the follow-up has been deleted.
+   */
   delete(leadUniqueId: string, followUniqueId: string): Promise<void>;
 }
 

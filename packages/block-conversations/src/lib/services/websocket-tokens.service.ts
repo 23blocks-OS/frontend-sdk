@@ -5,6 +5,11 @@ import type {
 } from '../types/websocket-token.js';
 
 export interface WebSocketTokensService {
+  /**
+   * Create a WebSocket authentication token
+   * @param data - Optional request with channel and user ID
+   * @returns CreateWebSocketTokenResponse with token, channel, URL, and optional expiration
+   */
   create(data?: CreateWebSocketTokenRequest): Promise<CreateWebSocketTokenResponse>;
 }
 

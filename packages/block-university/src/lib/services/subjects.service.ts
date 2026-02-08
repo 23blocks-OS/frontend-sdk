@@ -9,16 +9,69 @@ import type {
 import { subjectMapper } from '../mappers/subject.mapper.js';
 
 export interface SubjectsService {
+  /**
+   * List subjects with optional filtering and sorting.
+   * @returns Paginated list of Subject records with metadata.
+   */
   list(params?: ListSubjectsParams): Promise<PageResult<Subject>>;
+
+  /**
+   * Get a single subject by unique ID.
+   * @returns The matching Subject record.
+   */
   get(uniqueId: string): Promise<Subject>;
+
+  /**
+   * Create a new subject.
+   * @returns The newly created Subject record.
+   */
   create(data: CreateSubjectRequest): Promise<Subject>;
+
+  /**
+   * Update an existing subject.
+   * @returns The updated Subject record.
+   */
   update(uniqueId: string, data: UpdateSubjectRequest): Promise<Subject>;
+
+  /**
+   * Get resources for a subject.
+   * @returns Array of resource objects.
+   */
   getResources(uniqueId: string): Promise<unknown[]>;
+
+  /**
+   * Get resources for a subject assigned by a specific teacher.
+   * @returns Array of resource objects.
+   */
   getTeacherResources(uniqueId: string, teacherUniqueId: string): Promise<unknown[]>;
+
+  /**
+   * Get tests for a subject.
+   * @returns Array of test objects.
+   */
   getTests(uniqueId: string): Promise<unknown[]>;
+
+  /**
+   * Add a lesson to a subject.
+   * @returns The newly created lesson data.
+   */
   addLesson(uniqueId: string, lessonData: { name: string; description?: string }): Promise<unknown>;
+
+  /**
+   * Add a resource to a subject.
+   * @returns The newly created resource data.
+   */
   addResource(uniqueId: string, resourceData: unknown): Promise<unknown>;
+
+  /**
+   * Update a resource within a subject.
+   * @returns The updated resource data.
+   */
   updateResource(uniqueId: string, resourceUniqueId: string, resourceData: unknown): Promise<unknown>;
+
+  /**
+   * Delete a resource from a subject.
+   */
   deleteResource(uniqueId: string, resourceUniqueId: string): Promise<void>;
 }
 

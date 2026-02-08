@@ -9,10 +9,33 @@ import type {
 import { landingTemplateMapper } from '../mappers/landing-template.mapper.js';
 
 export interface LandingTemplatesService {
+  /**
+   * List landing templates with optional filtering and sorting.
+   * @returns Paginated list of LandingTemplate records with metadata.
+   */
   list(params?: ListLandingTemplatesParams): Promise<PageResult<LandingTemplate>>;
+
+  /**
+   * Get a single landing template by unique ID.
+   * @returns The matching LandingTemplate record.
+   */
   get(uniqueId: string): Promise<LandingTemplate>;
+
+  /**
+   * Create a new landing template.
+   * @returns The newly created LandingTemplate record.
+   */
   create(data: CreateLandingTemplateRequest): Promise<LandingTemplate>;
+
+  /**
+   * Update an existing landing template.
+   * @returns The updated LandingTemplate record.
+   */
   update(uniqueId: string, data: UpdateLandingTemplateRequest): Promise<LandingTemplate>;
+
+  /**
+   * Delete a landing template.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

@@ -14,37 +14,44 @@ import { registrationTokenMapper } from '../mappers/registration-token.mapper.js
  */
 export interface RegistrationTokensService {
   /**
-   * List all registration tokens
+   * List all registration tokens with optional filtering and sorting.
+   * @returns Paginated list of RegistrationToken records with metadata.
    */
   list(params?: ListRegistrationTokensParams): Promise<PageResult<RegistrationToken>>;
 
   /**
-   * Get a specific registration token
+   * Get a specific registration token by unique ID.
+   * @returns The matching RegistrationToken record.
    */
   get(uniqueId: string): Promise<RegistrationToken>;
 
   /**
-   * Create a new registration token
+   * Create a new registration token.
+   * @returns The newly created RegistrationToken record.
    */
   create(data: CreateRegistrationTokenRequest): Promise<RegistrationToken>;
 
   /**
-   * Update a registration token
+   * Update a registration token.
+   * @returns The updated RegistrationToken record.
    */
   update(uniqueId: string, data: UpdateRegistrationTokenRequest): Promise<RegistrationToken>;
 
   /**
-   * Delete a registration token
+   * Delete a registration token.
    */
   delete(uniqueId: string): Promise<void>;
 
   /**
-   * Validate a token code
+   * Validate a token code.
+   * @returns TokenValidationResult with `valid` boolean and optional `token` or `error`.
+   * @note Returns `{ valid: false }` on any validation error instead of throwing.
    */
   validate(tokenCode: string): Promise<TokenValidationResult>;
 
   /**
-   * Use a token to register a user
+   * Use a token to register a user and create an enrollment.
+   * @returns Object with `success` boolean, optional `enrollmentUniqueId`, and optional `error`.
    */
   use(tokenCode: string, userUniqueId: string): Promise<{
     success: boolean;
@@ -53,12 +60,14 @@ export interface RegistrationTokensService {
   }>;
 
   /**
-   * Revoke a registration token
+   * Revoke a registration token so it can no longer be used.
+   * @returns The RegistrationToken record with revoked status.
    */
   revoke(uniqueId: string): Promise<RegistrationToken>;
 
   /**
-   * Generate a batch of tokens
+   * Generate a batch of registration tokens.
+   * @returns Array of newly created RegistrationToken records.
    */
   generateBatch(request: CreateRegistrationTokenRequest & { count: number }): Promise<RegistrationToken[]>;
 }

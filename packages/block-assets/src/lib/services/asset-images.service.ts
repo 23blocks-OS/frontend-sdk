@@ -6,12 +6,40 @@ import type {
 } from '../types/asset-image.js';
 
 export interface AssetImagesService {
+  /**
+   * Get a presigned URL for uploading an asset image.
+   * @returns AssetPresignResponse with `url`, `fields`, and `key`.
+   */
   presign(assetUniqueId: string): Promise<AssetPresignResponse>;
+
+  /**
+   * Create an asset image record after upload.
+   * @returns The newly created AssetImage record with URL.
+   */
   create(assetUniqueId: string, data: CreateAssetImageRequest): Promise<AssetImage>;
+
+  /**
+   * Delete an asset image.
+   */
   delete(assetUniqueId: string, imageUniqueId: string): Promise<void>;
+
   // Event images
+
+  /**
+   * Get a presigned URL for uploading an event image.
+   * @returns AssetPresignResponse with `url`, `fields`, and `key`.
+   */
   presignEvent(assetUniqueId: string, eventUniqueId: string): Promise<AssetPresignResponse>;
+
+  /**
+   * Create an event image record after upload.
+   * @returns The newly created AssetImage record with URL.
+   */
   createEventImage(assetUniqueId: string, eventUniqueId: string, data: CreateAssetImageRequest): Promise<AssetImage>;
+
+  /**
+   * Delete an event image.
+   */
   deleteEventImage(assetUniqueId: string, eventUniqueId: string, imageUniqueId: string): Promise<void>;
 }
 

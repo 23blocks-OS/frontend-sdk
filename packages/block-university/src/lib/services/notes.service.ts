@@ -9,17 +9,75 @@ import type {
 import { noteMapper } from '../mappers/note.mapper.js';
 
 export interface NotesService {
+  /**
+   * List notes with optional filtering and sorting.
+   * @returns Paginated list of Note records with metadata.
+   */
   list(params?: ListNotesParams): Promise<PageResult<Note>>;
+
+  /**
+   * Get a single note by unique ID.
+   * @returns The matching Note record.
+   */
   get(uniqueId: string): Promise<Note>;
+
+  /**
+   * Create a new note.
+   * @returns The newly created Note record.
+   */
   create(data: CreateNoteRequest): Promise<Note>;
+
+  /**
+   * Update an existing note.
+   * @returns The updated Note record.
+   */
   update(uniqueId: string, data: UpdateNoteRequest): Promise<Note>;
+
+  /**
+   * Delete a note.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List notes by author.
+   * @returns Paginated list of Note records by the author.
+   */
   listByAuthor(authorUniqueId: string, params?: ListNotesParams): Promise<PageResult<Note>>;
+
+  /**
+   * List notes for a specific target entity.
+   * @returns Paginated list of Note records for the target.
+   */
   listByTarget(targetUniqueId: string, targetType: string, params?: ListNotesParams): Promise<PageResult<Note>>;
+
+  /**
+   * List notes for a specific course.
+   * @returns Paginated list of Note records for the course.
+   */
   listByCourse(courseUniqueId: string, params?: ListNotesParams): Promise<PageResult<Note>>;
+
+  /**
+   * List notes for a specific lesson.
+   * @returns Paginated list of Note records for the lesson.
+   */
   listByLesson(lessonUniqueId: string, params?: ListNotesParams): Promise<PageResult<Note>>;
+
+  /**
+   * Pin a note for visibility.
+   * @returns The updated Note record with pinned status.
+   */
   pin(uniqueId: string): Promise<Note>;
+
+  /**
+   * Unpin a note.
+   * @returns The updated Note record with unpinned status.
+   */
   unpin(uniqueId: string): Promise<Note>;
+
+  /**
+   * Get all replies to a note.
+   * @returns Array of Note records that are replies.
+   */
   getReplies(uniqueId: string): Promise<Note[]>;
 }
 

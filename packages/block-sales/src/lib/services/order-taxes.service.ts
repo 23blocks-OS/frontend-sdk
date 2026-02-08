@@ -4,10 +4,33 @@ import type { OrderTax, CreateOrderTaxRequest, UpdateOrderTaxRequest } from '../
 import { orderTaxMapper } from '../mappers/order-tax.mapper.js';
 
 export interface OrderTaxesService {
+  /**
+   * List all taxes for an order.
+   * @returns Array of OrderTax records for the order.
+   */
   list(orderUniqueId: string): Promise<OrderTax[]>;
+
+  /**
+   * Get a specific tax entry for an order.
+   * @returns The matching OrderTax record.
+   */
   get(orderUniqueId: string, uniqueId: string): Promise<OrderTax>;
+
+  /**
+   * Create a new tax entry for an order.
+   * @returns The newly created OrderTax record.
+   */
   create(orderUniqueId: string, data: CreateOrderTaxRequest): Promise<OrderTax>;
+
+  /**
+   * Update an existing tax entry for an order.
+   * @returns The updated OrderTax record.
+   */
   update(orderUniqueId: string, uniqueId: string, data: UpdateOrderTaxRequest): Promise<OrderTax>;
+
+  /**
+   * Delete a tax entry from an order.
+   */
   delete(orderUniqueId: string, uniqueId: string): Promise<void>;
 }
 

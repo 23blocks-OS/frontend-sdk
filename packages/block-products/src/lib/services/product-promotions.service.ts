@@ -9,12 +9,54 @@ import type {
 import { productPromotionMapper } from '../mappers/product-promotion.mapper.js';
 
 export interface ProductPromotionsService {
+  /**
+   * List product promotions with optional filtering, sorting, and pagination.
+   * @param params - Filter options including status, product, promotion type, active state, and pagination
+   * @returns Paginated result containing an array of ProductPromotion items and page metadata
+   */
   list(params?: ListProductPromotionsParams): Promise<PageResult<ProductPromotion>>;
+
+  /**
+   * Get a single product promotion by its unique identifier.
+   * @param uniqueId - The promotion unique ID
+   * @returns The matching ProductPromotion
+   */
   get(uniqueId: string): Promise<ProductPromotion>;
+
+  /**
+   * Create a new product promotion.
+   * @param data - Promotion creation payload including product, discount details, date range, and quantity constraints
+   * @returns The newly created ProductPromotion
+   */
   create(data: CreateProductPromotionRequest): Promise<ProductPromotion>;
+
+  /**
+   * Update an existing product promotion.
+   * @param uniqueId - The promotion unique ID
+   * @param data - Fields to update on the promotion
+   * @returns The updated ProductPromotion
+   */
   update(uniqueId: string, data: UpdateProductPromotionRequest): Promise<ProductPromotion>;
+
+  /**
+   * Delete a product promotion.
+   * @param uniqueId - The promotion unique ID
+   * @returns Resolves when the promotion has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Activate a product promotion.
+   * @param uniqueId - The promotion unique ID
+   * @returns The activated ProductPromotion
+   */
   activate(uniqueId: string): Promise<ProductPromotion>;
+
+  /**
+   * Deactivate a product promotion.
+   * @param uniqueId - The promotion unique ID
+   * @returns The deactivated ProductPromotion
+   */
   deactivate(uniqueId: string): Promise<ProductPromotion>;
 }
 

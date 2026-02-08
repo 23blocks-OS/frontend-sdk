@@ -36,31 +36,65 @@ import {
   type ExecutionCommentsService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Jarvis block.
+ */
 export interface JarvisBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * AI agents, prompts, and workflow management block interface.
+ */
 export interface JarvisBlock {
+  /** AI agent management */
   agents: AgentsService;
+  /** Prompt template management */
   prompts: PromptsService;
+  /** Workflow definition management */
   workflows: WorkflowsService;
+  /** Workflow execution tracking */
   executions: ExecutionsService;
+  /** AI conversation management */
   conversations: ConversationsService;
+  /** AI model configuration */
   aiModels: AIModelsService;
+  /** Entity management for AI context */
   entities: EntitiesService;
+  /** Entity cluster management */
   clusters: ClustersService;
+  /** Jarvis user management */
   users: JarvisUsersService;
+  /** Workflow participant management */
   workflowParticipants: WorkflowParticipantsService;
+  /** Workflow step definition management */
   workflowSteps: WorkflowStepsService;
+  /** Workflow instance management */
   workflowInstances: WorkflowInstancesService;
+  /** Agent runtime execution */
   agentRuntime: AgentRuntimeService;
+  /** Mail template management */
   mailTemplates: MailTemplatesService;
+  /** Marvin chat interface */
   marvinChat: MarvinChatService;
+  /** Prompt comment management */
   promptComments: PromptCommentsService;
+  /** Execution comment management */
   executionComments: ExecutionCommentsService;
 }
 
+/**
+ * Create the Jarvis block.
+ *
+ * @example
+ * ```typescript
+ * const block = createJarvisBlock(transport, { appId: 'xxx' });
+ * const agents = await block.agents.list({ page: 1 });
+ * ```
+ */
 export function createJarvisBlock(
   transport: Transport,
   config: JarvisBlockConfig

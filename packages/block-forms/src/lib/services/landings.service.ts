@@ -9,10 +9,45 @@ import type {
 import { landingMapper } from '../mappers/landing.mapper.js';
 
 export interface LandingsService {
+  /**
+   * List all landing page submissions for a form
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param params - Optional filtering by status and pagination
+   * @returns Paginated result containing Landing items and metadata
+   */
   list(formUniqueId: string, params?: ListLandingsParams): Promise<PageResult<Landing>>;
+
+  /**
+   * Get a specific landing page submission
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the landing submission
+   * @returns The matching Landing record
+   */
   get(formUniqueId: string, uniqueId: string): Promise<Landing>;
+
+  /**
+   * Submit a new landing page form
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param data - Submission details including contact information and form data
+   * @returns The newly created Landing record
+   */
   submit(formUniqueId: string, data: CreateLandingRequest): Promise<Landing>;
+
+  /**
+   * Update a landing page submission
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the landing submission to update
+   * @param data - Fields to update such as contact info, data, or status
+   * @returns The updated Landing record
+   */
   update(formUniqueId: string, uniqueId: string, data: UpdateLandingRequest): Promise<Landing>;
+
+  /**
+   * Delete a landing page submission
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the landing submission to delete
+   * @returns Resolves when the submission has been deleted
+   */
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
 }
 

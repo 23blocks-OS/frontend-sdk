@@ -8,10 +8,44 @@ import type {
 import { locationSlotMapper } from '../mappers/location-slot.mapper.js';
 
 export interface LocationSlotsService {
+  /**
+   * List all time slots for a location
+   * @param locationUniqueId - The unique identifier of the location
+   * @returns Array of LocationSlot records for the location
+   */
   list(locationUniqueId: string): Promise<LocationSlot[]>;
+
+  /**
+   * Get a specific time slot
+   * @param locationUniqueId - The unique identifier of the location
+   * @param slotUniqueId - The unique identifier of the slot
+   * @returns The matching LocationSlot record
+   */
   get(locationUniqueId: string, slotUniqueId: string): Promise<LocationSlot>;
+
+  /**
+   * Create a new time slot for a location
+   * @param locationUniqueId - The unique identifier of the location
+   * @param data - Slot details including name, times, duration, capacity, and pricing
+   * @returns The newly created LocationSlot record
+   */
   create(locationUniqueId: string, data: CreateLocationSlotRequest): Promise<LocationSlot>;
+
+  /**
+   * Update a time slot
+   * @param locationUniqueId - The unique identifier of the location
+   * @param slotUniqueId - The unique identifier of the slot to update
+   * @param data - Fields to update such as times, capacity, price, or status
+   * @returns The updated LocationSlot record
+   */
   update(locationUniqueId: string, slotUniqueId: string, data: UpdateLocationSlotRequest): Promise<LocationSlot>;
+
+  /**
+   * Delete a time slot
+   * @param locationUniqueId - The unique identifier of the location
+   * @param slotUniqueId - The unique identifier of the slot to delete
+   * @returns Resolves when the slot has been deleted
+   */
   delete(locationUniqueId: string, slotUniqueId: string): Promise<void>;
 }
 

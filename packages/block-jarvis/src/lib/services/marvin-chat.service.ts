@@ -9,11 +9,40 @@ import type {
 } from '../types/marvin-chat.js';
 
 export interface MarvinChatService {
+  /**
+   * Send a chat message via Marvin v1 API.
+   * @returns MarvinChatResponse with the AI response, token usage, and cost.
+   */
   chat(data: MarvinChatRequest): Promise<MarvinChatResponse>;
+
+  /**
+   * Send a chat message via Jarvis v2 API.
+   * @returns MarvinChatResponse with the AI response, token usage, and cost.
+   */
   chatV2(data: MarvinChatRequest): Promise<MarvinChatResponse>;
+
+  /**
+   * Send a chat message via Jarvis v3 API.
+   * @returns MarvinChatResponse with the AI response, token usage, and cost.
+   */
   chatV3(data: MarvinChatRequest): Promise<MarvinChatResponse>;
+
+  /**
+   * Get an existing Marvin context by unique ID.
+   * @returns The MarvinContext with messages, model config, and metadata.
+   */
   getContext(uniqueId: string): Promise<MarvinContext>;
+
+  /**
+   * Create a new Marvin context for conversations.
+   * @returns The newly created MarvinContext.
+   */
   createContext(data?: CreateMarvinContextRequest): Promise<MarvinContext>;
+
+  /**
+   * Send a message within a Marvin context.
+   * @returns SendMarvinMessageResponse with the user message, AI response, and cost.
+   */
   sendMessage(contextUniqueId: string, data: SendMarvinMessageRequest): Promise<SendMarvinMessageResponse>;
 }
 

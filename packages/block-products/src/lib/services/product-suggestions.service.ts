@@ -4,10 +4,42 @@ import type { Product } from '../types/product.js';
 import { productMapper } from '../mappers/product.mapper.js';
 
 export interface ProductSuggestionsService {
+  /**
+   * List all suggested products for a given product.
+   * @param productUniqueId - The product unique ID
+   * @returns Array of suggested Product items
+   */
   list(productUniqueId: string): Promise<Product[]>;
+
+  /**
+   * Add a product suggestion link.
+   * @param productUniqueId - The source product unique ID
+   * @param suggestedProductUniqueId - The suggested product unique ID to link
+   * @returns Resolves when the suggestion has been added
+   */
   add(productUniqueId: string, suggestedProductUniqueId: string): Promise<void>;
+
+  /**
+   * Remove a product suggestion link.
+   * @param productUniqueId - The source product unique ID
+   * @param suggestedProductUniqueId - The suggested product unique ID to unlink
+   * @returns Resolves when the suggestion has been removed
+   */
   remove(productUniqueId: string, suggestedProductUniqueId: string): Promise<void>;
+
+  /**
+   * Get replacement products for a given product.
+   * @param productUniqueId - The product unique ID
+   * @returns Array of replacement Product items
+   */
   getReplacements(productUniqueId: string): Promise<Product[]>;
+
+  /**
+   * Add multiple replacement product links at once.
+   * @param productUniqueId - The source product unique ID
+   * @param replacementProductUniqueIds - Array of product unique IDs to link as replacements
+   * @returns Resolves when the replacements have been added
+   */
   addReplacements(productUniqueId: string, replacementProductUniqueIds: string[]): Promise<void>;
 }
 

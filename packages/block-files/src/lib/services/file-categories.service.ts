@@ -9,11 +9,47 @@ import type {
 import { fileCategoryMapper } from '../mappers/file-category.mapper.js';
 
 export interface FileCategoriesService {
+  /**
+   * List all file categories
+   * @param params - Optional filtering by parent, status, search term, and pagination
+   * @returns Paginated result containing FileCategory items and metadata
+   */
   list(params?: ListFileCategoriesParams): Promise<PageResult<FileCategory>>;
+
+  /**
+   * Get a specific file category
+   * @param uniqueId - The unique identifier of the category
+   * @returns The matching FileCategory record
+   */
   get(uniqueId: string): Promise<FileCategory>;
+
+  /**
+   * Create a new file category
+   * @param data - Category details including code, name, and optional parent
+   * @returns The newly created FileCategory record
+   */
   create(data: CreateFileCategoryRequest): Promise<FileCategory>;
+
+  /**
+   * Update an existing file category
+   * @param uniqueId - The unique identifier of the category to update
+   * @param data - Fields to update such as name, description, or parent
+   * @returns The updated FileCategory record
+   */
   update(uniqueId: string, data: UpdateFileCategoryRequest): Promise<FileCategory>;
+
+  /**
+   * Delete a file category
+   * @param uniqueId - The unique identifier of the category to delete
+   * @returns Resolves when the category has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List child categories of a parent category
+   * @param parentUniqueId - The unique identifier of the parent category
+   * @returns Array of FileCategory records that are children of the given parent
+   */
   listChildren(parentUniqueId: string): Promise<FileCategory[]>;
 }
 

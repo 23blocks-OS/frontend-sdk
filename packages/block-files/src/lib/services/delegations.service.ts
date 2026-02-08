@@ -9,11 +9,52 @@ import type {
 import { fileDelegationMapper } from '../mappers/delegation.mapper.js';
 
 export interface DelegationsService {
+  /**
+   * List all file delegations for a user
+   * @param userUniqueId - The unique identifier of the delegating user
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated result containing FileDelegation items and metadata
+   */
   list(userUniqueId: string, params?: ListFileDelegationsParams): Promise<PageResult<FileDelegation>>;
+
+  /**
+   * Get a specific file delegation
+   * @param userUniqueId - The unique identifier of the delegating user
+   * @param uniqueId - The unique identifier of the delegation
+   * @returns The matching FileDelegation record
+   */
   get(userUniqueId: string, uniqueId: string): Promise<FileDelegation>;
+
+  /**
+   * Create a new file delegation
+   * @param userUniqueId - The unique identifier of the delegating user
+   * @param data - Delegation details including delegatee, file/folder, and permissions
+   * @returns The newly created FileDelegation record
+   */
   create(userUniqueId: string, data: CreateFileDelegationRequest): Promise<FileDelegation>;
+
+  /**
+   * Update an existing file delegation
+   * @param userUniqueId - The unique identifier of the delegating user
+   * @param uniqueId - The unique identifier of the delegation to update
+   * @param data - Fields to update such as permissions, expiration, or status
+   * @returns The updated FileDelegation record
+   */
   update(userUniqueId: string, uniqueId: string, data: UpdateFileDelegationRequest): Promise<FileDelegation>;
+
+  /**
+   * Delete a file delegation
+   * @param userUniqueId - The unique identifier of the delegating user
+   * @param uniqueId - The unique identifier of the delegation to delete
+   * @returns Resolves when the delegation has been deleted
+   */
   delete(userUniqueId: string, uniqueId: string): Promise<void>;
+
+  /**
+   * List delegations received by a user from other users
+   * @param userUniqueId - The unique identifier of the receiving user
+   * @returns Array of FileDelegation records where this user is the delegatee
+   */
   listReceivedDelegations(userUniqueId: string): Promise<FileDelegation[]>;
 }
 

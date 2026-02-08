@@ -10,12 +10,58 @@ import type {
 import { entityFileMapper } from '../mappers/entity-file.mapper.js';
 
 export interface EntityFilesService {
+  /**
+   * List all entity-file associations
+   * @param params - Optional filtering by entity, file type, status, and pagination
+   * @returns Paginated result containing EntityFile items and metadata
+   */
   list(params?: ListEntityFilesParams): Promise<PageResult<EntityFile>>;
+
+  /**
+   * Get a specific entity-file association
+   * @param uniqueId - The unique identifier of the entity-file record
+   * @returns The matching EntityFile record
+   */
   get(uniqueId: string): Promise<EntityFile>;
+
+  /**
+   * Attach a file to an entity
+   * @param data - Association details including entity and file identifiers
+   * @returns The newly created EntityFile association
+   */
   attach(data: AttachFileRequest): Promise<EntityFile>;
+
+  /**
+   * Detach a file from an entity
+   * @param uniqueId - The unique identifier of the entity-file record to remove
+   * @returns Resolves when the association has been removed
+   */
   detach(uniqueId: string): Promise<void>;
+
+  /**
+   * Update an entity-file association
+   * @param uniqueId - The unique identifier of the entity-file record
+   * @param data - Fields to update such as display order or status
+   * @returns The updated EntityFile record
+   */
   update(uniqueId: string, data: UpdateEntityFileRequest): Promise<EntityFile>;
+
+  /**
+   * Reorder files attached to an entity
+   * @param entityUniqueId - The unique identifier of the parent entity
+   * @param entityType - The type of the parent entity
+   * @param data - The new ordering specification for attached files
+   * @returns Array of EntityFile records reflecting the new order
+   */
   reorder(entityUniqueId: string, entityType: string, data: ReorderFilesRequest): Promise<EntityFile[]>;
+
+  /**
+   * List files attached to a specific entity
+   * @param entityUniqueId - The unique identifier of the parent entity
+   * @param entityType - The type of the parent entity
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated result of EntityFile records for the given entity
+   */
   listByEntity(entityUniqueId: string, entityType: string, params?: ListEntityFilesParams): Promise<PageResult<EntityFile>>;
 }
 

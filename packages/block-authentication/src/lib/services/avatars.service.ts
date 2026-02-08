@@ -36,46 +36,60 @@ const avatarMapper = {
 };
 
 /**
- * Avatars Service Interface
+ * Avatars service - manage user profile images with direct S3 upload support.
  */
 export interface AvatarsService {
   /**
-   * List avatars for a user
+   * List avatars for a user.
+   *
+   * @returns Paginated list of UserAvatarFull objects with `url`, `thumbnail`, `fileType`, etc.
    */
   list(userUniqueId: string, params?: ListParams): Promise<PageResult<UserAvatarFull>>;
 
   /**
-   * Get a specific avatar
+   * Get the avatar for a user.
+   *
+   * @returns UserAvatarFull with `url`, `thumbnail`, `fileSize`, `fileType`.
    */
   get(userUniqueId: string): Promise<UserAvatarFull>;
 
   /**
-   * Create/update an avatar
+   * Create or replace a user's avatar using a URL (not direct upload).
+   *
+   * @returns The created UserAvatarFull.
    */
   create(userUniqueId: string, request: CreateAvatarRequest): Promise<UserAvatarFull>;
 
   /**
-   * Update an avatar
+   * Update avatar metadata.
+   *
+   * @returns The updated UserAvatarFull.
    */
   update(userUniqueId: string, request: Partial<CreateAvatarRequest>): Promise<UserAvatarFull>;
 
   /**
-   * Delete an avatar
+   * Delete a user's avatar.
    */
   delete(userUniqueId: string): Promise<void>;
 
   /**
-   * Get presigned URL for direct upload
+   * Get a presigned URL for direct-to-S3 avatar upload (single part).
+   *
+   * @returns AvatarPresignResponse with `uploadUrl` (PUT to S3), `publicUrl`, and `key`.
    */
   presignUpload(userUniqueId: string, filename: string): Promise<AvatarPresignResponse>;
 
   /**
-   * Get presigned URLs for multipart upload
+   * Get presigned URLs for multipart upload (large files).
+   *
+   * @returns MultipartPresignResponse with `uploadId`, `key`, and `parts[]` (each with `partNumber` and `uploadUrl`).
    */
   multipartPresign(userUniqueId: string, request: MultipartPresignRequest): Promise<MultipartPresignResponse>;
 
   /**
-   * Complete a multipart upload
+   * Complete a multipart upload after all parts have been uploaded.
+   *
+   * @returns MultipartCompleteResponse with `publicUrl` and `fileName`.
    */
   multipartComplete(userUniqueId: string, request: MultipartCompleteRequest): Promise<MultipartCompleteResponse>;
 }

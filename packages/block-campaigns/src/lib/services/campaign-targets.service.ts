@@ -9,10 +9,33 @@ import type {
 import { campaignTargetMapper } from '../mappers/campaign-target.mapper.js';
 
 export interface CampaignTargetsService {
+  /**
+   * List campaign targets with optional filtering and sorting.
+   * @returns Paginated list of CampaignTarget records with metadata.
+   */
   list(params?: ListCampaignTargetsParams): Promise<PageResult<CampaignTarget>>;
+
+  /**
+   * Get a single campaign target by unique ID.
+   * @returns The matching CampaignTarget record.
+   */
   get(uniqueId: string): Promise<CampaignTarget>;
+
+  /**
+   * Create a new campaign target.
+   * @returns The newly created CampaignTarget record.
+   */
   create(data: CreateCampaignTargetRequest): Promise<CampaignTarget>;
+
+  /**
+   * Update an existing campaign target.
+   * @returns The updated CampaignTarget record.
+   */
   update(uniqueId: string, data: UpdateCampaignTargetRequest): Promise<CampaignTarget>;
+
+  /**
+   * Delete a campaign target.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

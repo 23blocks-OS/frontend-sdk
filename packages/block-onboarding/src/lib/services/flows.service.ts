@@ -9,13 +9,51 @@ import type {
 import { flowMapper } from '../mappers/flow.mapper.js';
 
 export interface FlowsService {
+  /**
+   * List flows with optional filtering and sorting.
+   * @returns Paginated list of Flow records with metadata.
+   */
   list(params?: ListFlowsParams): Promise<PageResult<Flow>>;
+
+  /**
+   * Get a single flow by unique ID.
+   * @returns The matching Flow record.
+   */
   get(uniqueId: string): Promise<Flow>;
+
+  /**
+   * Create a new flow.
+   * @returns The newly created Flow record.
+   */
   create(data: CreateFlowRequest): Promise<Flow>;
+
+  /**
+   * Update an existing flow.
+   * @returns The updated Flow record.
+   */
   update(uniqueId: string, data: UpdateFlowRequest): Promise<Flow>;
+
+  /**
+   * Delete a flow.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List all flows belonging to a specific onboarding.
+   * @returns Array of Flow records for the onboarding.
+   */
   listByOnboarding(onboardingUniqueId: string): Promise<Flow[]>;
+
+  /**
+   * Get a flow's state for a specific source.
+   * @returns The Flow record with source-specific state.
+   */
   getBySource(uniqueId: string, sourceUniqueId: string): Promise<Flow>;
+
+  /**
+   * Advance a flow step for a specific source.
+   * @returns The updated Flow record after stepping.
+   */
   stepBySource(uniqueId: string, sourceUniqueId: string, stepData?: Record<string, unknown>): Promise<Flow>;
 }
 

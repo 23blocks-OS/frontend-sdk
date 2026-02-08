@@ -26,26 +26,55 @@ import {
   type AssetImagesService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Assets block.
+ */
 export interface AssetsBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * Asset management block interface.
+ */
 export interface AssetsBlock {
+  /** Core asset CRUD operations */
   assets: AssetsService;
+  /** Asset event tracking */
   events: AssetEventsService;
+  /** Asset audit trail */
   audits: AssetAuditsService;
+  /** Asset category management */
   categories: CategoriesService;
+  /** Asset tag management */
   tags: TagsService;
+  /** Vendor management */
   vendors: VendorsService;
+  /** Warehouse management */
   warehouses: WarehousesService;
+  /** Asset-entity relationship management */
   entities: AssetsEntitiesService;
+  /** Asset operations (check-in, check-out, transfer) */
   operations: AssetOperationsService;
+  /** Asset alert management */
   alerts: AlertsService;
+  /** Asset user assignments */
   users: AssetsUsersService;
+  /** Asset image management */
   images: AssetImagesService;
 }
 
+/**
+ * Create the Assets block.
+ *
+ * @example
+ * ```typescript
+ * const block = createAssetsBlock(transport, { appId: 'xxx' });
+ * const assets = await block.assets.list({ page: 1 });
+ * ```
+ */
 export function createAssetsBlock(
   transport: Transport,
   config: AssetsBlockConfig

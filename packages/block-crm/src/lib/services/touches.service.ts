@@ -9,10 +9,41 @@ import type {
 import { touchMapper } from '../mappers/touch.mapper.js';
 
 export interface TouchesService {
+  /**
+   * List touches with optional filtering, pagination, and sorting.
+   * @param params - Optional filtering (status, contactUniqueId, userUniqueId, touchType, channel, search), pagination, and sorting.
+   * @returns Paginated result containing Touch objects and metadata.
+   */
   list(params?: ListTouchesParams): Promise<PageResult<Touch>>;
+
+  /**
+   * Retrieve a single touch by its unique identifier.
+   * @param uniqueId - The unique identifier of the touch.
+   * @returns The matching Touch object.
+   */
   get(uniqueId: string): Promise<Touch>;
+
+  /**
+   * Create a new touch record.
+   * @param data - The touch creation payload with contact, user, type, channel, subject, and notes.
+   * @returns The newly created Touch object.
+   */
   create(data: CreateTouchRequest): Promise<Touch>;
+
+  /**
+   * Update an existing touch record.
+   * @param uniqueId - The unique identifier of the touch to update.
+   * @param data - The fields to update on the touch.
+   * @returns The updated Touch object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(uniqueId: string, data: UpdateTouchRequest): Promise<Touch>;
+
+  /**
+   * Delete a touch record.
+   * @param uniqueId - The unique identifier of the touch to delete.
+   * @returns Resolves when the touch has been deleted.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

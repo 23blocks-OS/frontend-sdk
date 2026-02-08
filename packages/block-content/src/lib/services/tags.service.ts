@@ -9,10 +9,40 @@ import type {
 import { tagMapper } from '../mappers/tag.mapper.js';
 
 export interface TagsService {
+  /**
+   * List all tags
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated list of Tag records with pagination metadata
+   */
   list(params?: ListTagsParams): Promise<PageResult<Tag>>;
+
+  /**
+   * Get a tag by unique ID
+   * @param uniqueId - Unique ID of the tag to retrieve
+   * @returns The matching Tag record
+   */
   get(uniqueId: string): Promise<Tag>;
+
+  /**
+   * Create a new tag
+   * @param data - Tag creation payload
+   * @returns The newly created Tag record
+   */
   create(data: CreateTagRequest): Promise<Tag>;
+
+  /**
+   * Update a tag
+   * @param uniqueId - Unique ID of the tag to update
+   * @param data - Fields to update on the tag
+   * @returns The updated Tag record
+   */
   update(uniqueId: string, data: UpdateTagRequest): Promise<Tag>;
+
+  /**
+   * Delete a tag
+   * @param uniqueId - Unique ID of the tag to delete
+   * @returns void on successful deletion
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

@@ -10,14 +10,57 @@ import type {
 import { campaignMapper } from '../mappers/campaign.mapper.js';
 
 export interface CampaignsService {
+  /**
+   * List campaigns with optional filtering and sorting.
+   * @returns Paginated list of Campaign records with metadata.
+   */
   list(params?: ListCampaignsParams): Promise<PageResult<Campaign>>;
+
+  /**
+   * Get a single campaign by unique ID.
+   * @returns The matching Campaign record.
+   */
   get(uniqueId: string): Promise<Campaign>;
+
+  /**
+   * Create a new campaign.
+   * @returns The newly created Campaign record.
+   */
   create(data: CreateCampaignRequest): Promise<Campaign>;
+
+  /**
+   * Update an existing campaign.
+   * @returns The updated Campaign record.
+   */
   update(uniqueId: string, data: UpdateCampaignRequest): Promise<Campaign>;
+
+  /**
+   * Delete a campaign.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Start a campaign, transitioning it to active state.
+   * @returns The updated Campaign record with active status.
+   */
   start(uniqueId: string): Promise<Campaign>;
+
+  /**
+   * Pause an active campaign.
+   * @returns The updated Campaign record with paused status.
+   */
   pause(uniqueId: string): Promise<Campaign>;
+
+  /**
+   * Stop a campaign, transitioning it to stopped state.
+   * @returns The updated Campaign record with stopped status.
+   */
   stop(uniqueId: string): Promise<Campaign>;
+
+  /**
+   * Get aggregated results for a campaign.
+   * @returns CampaignResults with performance metrics.
+   */
   getResults(uniqueId: string): Promise<CampaignResults>;
 }
 

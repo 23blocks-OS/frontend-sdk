@@ -9,13 +9,61 @@ import type {
 import { premiseBookingMapper } from '../mappers/booking.mapper.js';
 
 export interface PremiseBookingsService {
+  /**
+   * List all premise bookings
+   * @param params - Optional filtering by premise, user, date range, status, and pagination
+   * @returns Paginated result containing PremiseBooking items and metadata
+   */
   list(params?: ListPremiseBookingsParams): Promise<PageResult<PremiseBooking>>;
+
+  /**
+   * Get a specific premise booking
+   * @param uniqueId - The unique identifier of the booking
+   * @returns The matching PremiseBooking record
+   */
   get(uniqueId: string): Promise<PremiseBooking>;
+
+  /**
+   * Create a new premise booking
+   * @param data - Booking details including premise, user, and check-in/out times
+   * @returns The newly created PremiseBooking record
+   */
   create(data: CreatePremiseBookingRequest): Promise<PremiseBooking>;
+
+  /**
+   * Update an existing premise booking
+   * @param uniqueId - The unique identifier of the booking to update
+   * @param data - Fields to update such as check-in/out times or status
+   * @returns The updated PremiseBooking record
+   */
   update(uniqueId: string, data: UpdatePremiseBookingRequest): Promise<PremiseBooking>;
+
+  /**
+   * Delete a premise booking (soft delete)
+   * @param uniqueId - The unique identifier of the booking to delete
+   * @returns Resolves when the booking has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously deleted booking
+   * @param uniqueId - The unique identifier of the deleted booking
+   * @returns The recovered PremiseBooking record
+   */
   recover(uniqueId: string): Promise<PremiseBooking>;
+
+  /**
+   * Record check-in for a booking
+   * @param uniqueId - The unique identifier of the booking to check in
+   * @returns The updated PremiseBooking record with check-in recorded
+   */
   checkIn(uniqueId: string): Promise<PremiseBooking>;
+
+  /**
+   * Record check-out for a booking
+   * @param uniqueId - The unique identifier of the booking to check out
+   * @returns The updated PremiseBooking record with check-out recorded
+   */
   checkOut(uniqueId: string): Promise<PremiseBooking>;
 }
 

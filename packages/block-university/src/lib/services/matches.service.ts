@@ -16,25 +16,96 @@ import { matchMapper, matchEvaluationMapper, availableCoachMapper, availableCoac
 
 export interface MatchesService {
   // Match CRUD
+
+  /**
+   * Create a new teacher-student match.
+   * @returns The newly created Match record.
+   */
   create(data: CreateMatchRequest): Promise<Match>;
+
+  /**
+   * Activate a match.
+   * @returns The Match record with active status.
+   */
   activate(uniqueId: string): Promise<Match>;
+
+  /**
+   * Deactivate a match.
+   * @returns The Match record with inactive status.
+   */
   deactivate(uniqueId: string): Promise<Match>;
+
+  /**
+   * Delete a match.
+   */
   delete(uniqueId: string): Promise<void>;
 
   // By Student
+
+  /**
+   * Get the active match for a student.
+   * @returns The active Match record, or null if none exists.
+   * @note Returns null instead of throwing when no active match is found.
+   */
   getActiveByStudent(studentUniqueId: string): Promise<Match | null>;
+
+  /**
+   * Get all matches for a student.
+   * @returns Array of Match records.
+   */
   getAllByStudent(studentUniqueId: string): Promise<Match[]>;
+
+  /**
+   * Get available matches for a student.
+   * @returns Array of available Match records.
+   */
   getAvailableByStudent(studentUniqueId: string): Promise<Match[]>;
 
   // By Teacher
+
+  /**
+   * Get the active match for a teacher.
+   * @returns The active Match record, or null if none exists.
+   * @note Returns null instead of throwing when no active match is found.
+   */
   getActiveByTeacher(teacherUniqueId: string): Promise<Match | null>;
+
+  /**
+   * Get all matches for a teacher.
+   * @returns Array of Match records.
+   */
   getAllByTeacher(teacherUniqueId: string): Promise<Match[]>;
+
+  /**
+   * Get available matches for a teacher.
+   * @returns Array of available Match records.
+   */
   getAvailableByTeacher(teacherUniqueId: string): Promise<Match[]>;
 
   // Matching Engine
+
+  /**
+   * Find available coaches for a student.
+   * @returns Array of AvailableCoach records with compatibility info.
+   */
   findCoaches(studentUniqueId: string, request?: FindCoachesRequest): Promise<AvailableCoach[]>;
+
+  /**
+   * Find available coachees for a teacher.
+   * @returns Array of AvailableCoachee records with compatibility info.
+   */
   findCoachees(teacherUniqueId: string, request?: FindCoacheesRequest): Promise<AvailableCoachee[]>;
+
+  /**
+   * Evaluate potential matches between teachers and students.
+   * @returns Array of MatchEvaluation records with scores.
+   */
   evaluateMatches(request: EvaluateMatchesRequest): Promise<MatchEvaluation[]>;
+
+  /**
+   * Evaluate availability compatibility between a teacher and student.
+   * @returns Array of MatchEvaluation records with availability overlap data.
+   */
   evaluateAvailabilities(request: EvaluateAvailabilitiesRequest): Promise<MatchEvaluation[]>;
 }
 

@@ -8,8 +8,28 @@ import type {
 import { busyBlockMapper } from '../mappers/busy-block.mapper.js';
 
 export interface BusyBlocksService {
+  /**
+   * List busy blocks for a specific user with optional filtering, pagination, and sorting.
+   * @param userUniqueId - The unique identifier of the user.
+   * @param params - Optional filtering (status, startTime, endTime, search), pagination, and sorting.
+   * @returns Paginated result containing BusyBlock objects and metadata.
+   */
   list(userUniqueId: string, params?: ListBusyBlocksParams): Promise<PageResult<BusyBlock>>;
+
+  /**
+   * Create a new busy block for a user, marking a time range as unavailable.
+   * @param userUniqueId - The unique identifier of the user.
+   * @param data - The busy block creation payload with title, time range, all-day flag, and recurrence settings.
+   * @returns The newly created BusyBlock object.
+   */
   create(userUniqueId: string, data: CreateBusyBlockRequest): Promise<BusyBlock>;
+
+  /**
+   * Delete a busy block for a user, freeing up the time range.
+   * @param userUniqueId - The unique identifier of the user.
+   * @param uniqueId - The unique identifier of the busy block to delete.
+   * @returns Resolves when the busy block has been deleted.
+   */
   delete(userUniqueId: string, uniqueId: string): Promise<void>;
 }
 

@@ -8,8 +8,25 @@ import type {
 import { locationGroupMapper } from '../mappers/location-group.mapper.js';
 
 export interface LocationGroupsService {
+  /**
+   * List all location groups
+   * @param params - Optional filtering by status, search, and pagination
+   * @returns Paginated result containing LocationGroup items and metadata
+   */
   list(params?: ListLocationGroupsParams): Promise<PageResult<LocationGroup>>;
+
+  /**
+   * Get a specific location group
+   * @param uniqueId - The unique identifier of the location group
+   * @returns The matching LocationGroup record
+   */
   get(uniqueId: string): Promise<LocationGroup>;
+
+  /**
+   * Create a new location group
+   * @param data - Group details including name, code, description, and optional parent
+   * @returns The newly created LocationGroup record
+   */
   create(data: CreateLocationGroupRequest): Promise<LocationGroup>;
 }
 

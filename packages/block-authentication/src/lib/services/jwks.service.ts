@@ -8,7 +8,7 @@ import type {
 } from '../types/jwks.js';
 
 /**
- * JWKS Service Interface - JSON Web Key Set operations
+ * JWKS service - retrieve public JSON Web Keys for JWT verification.
  */
 export interface JwksService {
   /**

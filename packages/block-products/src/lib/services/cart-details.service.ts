@@ -13,47 +13,74 @@ import { cartDetailMapper } from '../mappers/cart.mapper.js';
  */
 export interface CartDetailsService {
   /**
-   * Mark cart detail as ordered
+   * Mark cart detail as ordered.
+   * @param cartUniqueId - The cart unique ID
+   * @param detailUniqueId - The cart detail unique ID
+   * @returns The updated CartDetail with ordered status
    */
   order(cartUniqueId: string, detailUniqueId: string): Promise<CartDetail>;
 
   /**
-   * Accept the order for this cart detail (vendor confirms)
+   * Accept the order for this cart detail (vendor confirms).
+   * @param cartUniqueId - The cart unique ID
+   * @param detailUniqueId - The cart detail unique ID
+   * @returns The updated CartDetail with accepted status
    */
   accept(cartUniqueId: string, detailUniqueId: string): Promise<CartDetail>;
 
   /**
-   * Start processing the cart detail item
+   * Start processing the cart detail item.
+   * @param cartUniqueId - The cart unique ID
+   * @param detailUniqueId - The cart detail unique ID
+   * @returns The updated CartDetail with start-processing status
    */
   startProcessing(cartUniqueId: string, detailUniqueId: string): Promise<CartDetail>;
 
   /**
-   * Mark cart detail as being processed
+   * Mark cart detail as being processed.
+   * @param cartUniqueId - The cart unique ID
+   * @param detailUniqueId - The cart detail unique ID
+   * @returns The updated CartDetail with processing status
    */
   processing(cartUniqueId: string, detailUniqueId: string): Promise<CartDetail>;
 
   /**
-   * Mark cart detail as ready for shipping/pickup
+   * Mark cart detail as ready for shipping/pickup.
+   * @param cartUniqueId - The cart unique ID
+   * @param detailUniqueId - The cart detail unique ID
+   * @returns The updated CartDetail with ready status
    */
   ready(cartUniqueId: string, detailUniqueId: string): Promise<CartDetail>;
 
   /**
-   * Mark cart detail as shipped
+   * Mark cart detail as shipped.
+   * @param cartUniqueId - The cart unique ID
+   * @param detailUniqueId - The cart detail unique ID
+   * @returns The updated CartDetail with shipped status
    */
   ship(cartUniqueId: string, detailUniqueId: string): Promise<CartDetail>;
 
   /**
-   * Mark cart detail as delivered
+   * Mark cart detail as delivered.
+   * @param cartUniqueId - The cart unique ID
+   * @param detailUniqueId - The cart detail unique ID
+   * @returns The updated CartDetail with delivered status
    */
   deliver(cartUniqueId: string, detailUniqueId: string): Promise<CartDetail>;
 
   /**
-   * Cancel this cart detail item
+   * Cancel this cart detail item.
+   * @param cartUniqueId - The cart unique ID
+   * @param detailUniqueId - The cart detail unique ID
+   * @returns The updated CartDetail with cancelled status
    */
   cancel(cartUniqueId: string, detailUniqueId: string): Promise<CartDetail>;
 
   /**
-   * Initiate return for this cart detail item
+   * Initiate return for this cart detail item.
+   * @param cartUniqueId - The cart unique ID
+   * @param detailUniqueId - The cart detail unique ID
+   * @returns The updated CartDetail with return-initiated status
    */
   return(cartUniqueId: string, detailUniqueId: string): Promise<CartDetail>;
 }

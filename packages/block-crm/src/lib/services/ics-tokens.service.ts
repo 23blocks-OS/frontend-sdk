@@ -8,8 +8,28 @@ import type {
 import { icsTokenMapper } from '../mappers/ics-token.mapper.js';
 
 export interface IcsTokensService {
+  /**
+   * List ICS tokens for a specific user with optional filtering, pagination, and sorting.
+   * @param userUniqueId - The unique identifier of the user.
+   * @param params - Optional filtering (status, search), pagination, and sorting parameters.
+   * @returns Paginated result containing IcsToken objects and metadata.
+   */
   list(userUniqueId: string, params?: ListIcsTokensParams): Promise<PageResult<IcsToken>>;
+
+  /**
+   * Create a new ICS token for a user, enabling calendar feed access.
+   * @param userUniqueId - The unique identifier of the user.
+   * @param data - The ICS token creation payload with name, description, and optional expiration.
+   * @returns The newly created IcsToken object containing the generated token value.
+   */
   create(userUniqueId: string, data: CreateIcsTokenRequest): Promise<IcsToken>;
+
+  /**
+   * Delete an ICS token for a user, revoking calendar feed access.
+   * @param userUniqueId - The unique identifier of the user.
+   * @param uniqueId - The unique identifier of the ICS token to delete.
+   * @returns Resolves when the ICS token has been deleted.
+   */
   delete(userUniqueId: string, uniqueId: string): Promise<void>;
 }
 

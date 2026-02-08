@@ -10,12 +10,45 @@ import type {
 import { departmentMapper } from '../mappers/department.mapper.js';
 
 export interface DepartmentsService {
+  /**
+   * List departments with optional filtering and sorting.
+   * @returns Paginated list of Department records with metadata.
+   */
   list(params?: ListDepartmentsParams): Promise<PageResult<Department>>;
+
+  /**
+   * Get a single department by unique ID.
+   * @returns The matching Department record.
+   */
   get(uniqueId: string): Promise<Department>;
+
+  /**
+   * Create a new department.
+   * @returns The newly created Department record.
+   */
   create(data: CreateDepartmentRequest): Promise<Department>;
+
+  /**
+   * Update an existing department.
+   * @returns The updated Department record.
+   */
   update(uniqueId: string, data: UpdateDepartmentRequest): Promise<Department>;
+
+  /**
+   * Delete a department.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List all departments belonging to a specific company.
+   * @returns Array of Department records for the company.
+   */
   listByCompany(companyUniqueId: string): Promise<Department[]>;
+
+  /**
+   * Get the department hierarchy tree for a company.
+   * @returns Array of DepartmentHierarchy records with nested children.
+   */
   getHierarchy(companyUniqueId: string): Promise<DepartmentHierarchy[]>;
 }
 

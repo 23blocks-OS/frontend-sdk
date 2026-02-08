@@ -1,0 +1,466 @@
+# 23blocks SDK
+
+> LLM-friendly reference for the 23blocks TypeScript SDK.
+> Source: https://github.com/23blocks-OS/frontend-sdk
+
+## Overview
+
+23blocks SDK is a modular, framework-agnostic TypeScript SDK for building applications with 23blocks backends. It uses JSON:API v1.0 and provides native bindings for Angular (RxJS) and React (hooks/context).
+
+## Quick Start
+
+```typescript
+import { create23BlocksClient } from '@23blocks/sdk';
+
+const client = create23BlocksClient({
+  apiKey: 'your-api-key',
+  urls: {
+    authentication: 'https://gateway.example.com',
+    crm: 'https://crm.example.com',
+  },
+});
+
+// Sign in (tokens stored automatically)
+const { user, accessToken } = await client.auth.signIn({
+  email: 'user@example.com',
+  password: 'password',
+});
+
+// Access sub-services
+const contacts = await client.crm.contacts.list({ page: 1, perPage: 20 });
+```
+
+## Architecture
+
+The SDK is organized as independent npm packages:
+
+```
+@23blocks/sdk              Meta-package re-exporting all blocks + client factory
+@23blocks/contracts        Core types: Transport, BlockConfig, IdentityCore, PageResult, ListParams
+@23blocks/jsonapi-codec    JSON:API v1.0 encoder/decoder
+@23blocks/transport-http   HTTP transport implementation (fetch-based)
+@23blocks/block-*          18 feature blocks (Promise-based, framework-agnostic)
+@23blocks/angular          Angular services wrapping blocks (delegation pattern)
+@23blocks/react            React context + hooks wrapping blocks
+```
+
+### Block Pattern
+
+Each block follows this pattern:
+
+```typescript
+import { createXxxBlock } from '@23blocks/block-xxx';
+const block = createXxxBlock(transport, { apiKey: 'xxx' });
+// block.subService.method(params) => Promise<T>
+```
+
+## Core Types
+
+### IdentityCore
+
+All entities extend this base interface:
+
+```typescript
+interface IdentityCore {
+  id: string;        // Database ID
+  uniqueId: string;  // UUID - use this for API calls
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+### PageResult<T>
+
+List operations return paginated results:
+
+```typescript
+interface PageResult<T> {
+  data: T[];
+  meta: {
+    currentPage: number;  // 1-indexed
+    totalPages: number;
+    totalCount: number;
+    perPage: number;
+  };
+}
+```
+
+### ListParams
+
+Common parameters for list operations:
+
+```typescript
+interface ListParams {
+  page?: number;
+  perPage?: number;
+  sort?: SortParam | SortParam[];     // { field: string, direction: 'asc' | 'desc' }
+  filter?: Record<string, string | number | boolean | string[]>;
+  include?: string[];                  // Related resources to include
+}
+```
+
+### EntityStatus
+
+```typescript
+type EntityStatus = 'active' | 'inactive' | 'pending' | 'archived' | 'deleted';
+```
+
+## The User Object
+
+The User type has optional relationships that are only populated when included:
+
+```typescript
+interface User extends IdentityCore {
+  email: string;
+  username: string | null;
+  name: string | null;
+  nickname: string | null;
+  bio: string | null;
+  provider: string;
+  uid: string;
+  roleId: string | null;
+  status: EntityStatus;
+  // ... other fields
+
+  // Relationships - only populated when included via `include` param
+  role?: Role | null;
+  avatar?: UserAvatar | null;
+  profile?: UserProfile | null;
+}
+```
+
+### Accessing User Profile Data
+
+The profile is a separate relationship. To access profile fields:
+
+```typescript
+// getCurrentUser() includes role, avatar, profile by default
+const user = await client.auth.getCurrentUser();
+console.log(user.profile?.firstName);   // Profile data
+console.log(user.profile?.lastName);
+console.log(user.profile?.payload);     // Custom JSON payload (object, not string)
+console.log(user.role?.name);           // Role name
+console.log(user.avatar?.url);          // Avatar URL
+```
+
+### Updating a Profile
+
+`updateProfile()` returns a **User** object, not a profile. The updated profile is nested in `user.profile`:
+
+```typescript
+const user = await client.users.updateProfile(userUniqueId, {
+  firstName: 'Jane',
+  lastName: 'Doe',
+  payload: { customField: 'value' }, // Must be an object, not a string
+});
+// Access updated profile: user.profile?.firstName === 'Jane'
+```
+
+## Common Gotchas
+
+1. **No PATCH method.** The 23blocks API only supports PUT for updates. Never use PATCH.
+2. **`payload` is an object, not a string.** Pass `Record<string, unknown>`, not `JSON.stringify()`.
+3. **`updateProfile()` returns User, not UserProfile.** Profile data is in `user.profile?.fieldName`.
+4. **`uniqueId` vs `id`.** Always use `uniqueId` (UUID) for API calls, not `id` (database ID).
+5. **Relationships are optional.** `user.role`, `user.avatar`, `user.profile` are only populated when explicitly included via the `include` parameter or when using `getCurrentUser()` / `users.get()`.
+6. **`create()` on ApiKeysService returns `ApiKeyWithSecret`.** The secret is only available once at creation time.
+7. **Service URLs are per-microservice.** Each block connects to its own backend URL.
+8. **Accessing unconfigured services throws.** If you didn't provide `urls.crm`, accessing `client.crm` throws an error.
+
+## Error Handling
+
+All service methods throw on HTTP errors. The SDK uses a standard error hierarchy:
+
+```typescript
+import { ApiError, NotFoundError, ValidationError, UnauthorizedError } from '@23blocks/contracts';
+
+try {
+  const user = await client.users.get('nonexistent-id');
+} catch (error) {
+  if (error instanceof NotFoundError) { /* 404 */ }
+  if (error instanceof ValidationError) { /* 422 - check error.errors for field-level details */ }
+  if (error instanceof UnauthorizedError) { /* 401 - token expired or invalid */ }
+  if (error instanceof ApiError) { /* any HTTP error - check error.status, error.message */ }
+}
+```
+
+## Client Factory (Recommended)
+
+```typescript
+import { create23BlocksClient } from '@23blocks/sdk';
+
+const client = create23BlocksClient({
+  apiKey: 'your-api-key',
+  urls: { authentication: '...', crm: '...', /* only what you need */ },
+  authMode: 'token',        // 'token' (default) or 'cookie'
+  storage: 'localStorage',  // 'localStorage' | 'sessionStorage' | 'memory'
+  timeout: 30000,           // Request timeout in ms
+});
+```
+
+The client provides:
+- `client.auth` - Managed auth with automatic token storage
+- `client.users`, `client.roles`, `client.apiKeys` - Auth sub-services (shorthand)
+- `client.authentication` - Full authentication block
+- `client.{blockName}` - All other blocks
+- `client.getAccessToken()`, `client.setTokens()`, `client.clearSession()` - Token utilities
+
+## All 18 Blocks and Their Sub-Services
+
+### authentication (block-authentication)
+- `auth` - Sign in, sign up, sign out, password reset, magic links, invitations, email confirmation
+- `users` - List, get, update, delete, activate/deactivate, change role, search, profile, devices, companies
+- `roles` - CRUD roles, manage permissions per role
+- `permissions` - CRUD standalone permissions
+- `apiKeys` - CRUD API keys with scopes, rate limits, usage stats
+- `mfa` - Setup, enable, disable, verify TOTP codes, check status
+- `oauth` - Facebook/Google login, tenant login, token introspection, revocation, tenant context switching
+- `avatars` - CRUD avatars with presigned upload and multipart upload support
+- `tenants` - List child tenants, validate codes, search, create tenant users
+- `apps` - CRUD apps with webhook management
+- `blocks` - List/add/remove feature blocks for companies
+- `services` - Service registry with health checks
+- `subscriptionModels` - List subscription plans, get by code
+- `userSubscriptions` - Subscribe/cancel/reactivate user plans
+- `companySubscriptions` - Subscribe/cancel/reactivate company plans
+- `countries`, `states`, `counties`, `cities`, `currencies` - Geography lookups
+- `guests` - Track anonymous visitors, convert to users
+- `magicLinks` - Create, validate, expire magic links
+- `refreshTokens` - List, revoke, revoke all/others
+- `userDevices` - Register, update, unregister devices
+- `tenantUsers` - Current tenant user, list tenant users
+- `mailTemplates` - CRUD email templates by event
+- `jwks` - Get JWKS public keys
+- `adminRsaKeys` - CRUD RSA keys, rotate, deactivate
+- `oidc` - OpenID Connect discovery, authorize, token exchange, userinfo
+
+### search (block-search)
+- `search` - Full-text search across entities
+- `history` - Search history tracking
+- `favorites` - User favorites management
+- `entities` - Entity search operations
+- `identities` - Identity search operations
+- `jarvis` - AI-powered search
+
+### products (block-products)
+- `products` - CRUD products with filtering
+- `cart`, `cartDetails` - Shopping cart management
+- `categories`, `brands`, `vendors`, `warehouses` - Catalog taxonomy
+- `channels`, `collections`, `productSets` - Product organization
+- `shoppingLists` - Saved shopping lists
+- `promotions`, `prices` - Pricing and promotions
+- `filters` - Dynamic product filters
+- `images` - Product image management
+- `variations`, `reviews`, `variationReviews` - Product variants and reviews
+- `stock` - Inventory management
+- `suggestions`, `addons` - Recommendations and add-ons
+- `myCarts`, `remarketing`, `visitors` - User cart history and remarketing
+- `productVendors` - Product-vendor relationships
+
+### crm (block-crm)
+- `accounts` - Company/organization accounts
+- `contacts`, `contactEvents` - Contact management with event tracking
+- `leads`, `leadFollows` - Lead management with follow-up tracking
+- `opportunities` - Sales pipeline opportunities
+- `meetings`, `meetingParticipants`, `meetingBillings` - Meeting scheduling and billing
+- `quotes` - Sales quotes
+- `subscribers`, `referrals` - Subscriber and referral tracking
+- `touches` - Customer touchpoint logging
+- `categories` - CRM categories
+- `calendarAccounts`, `busyBlocks`, `icsTokens`, `calendarSync` - Calendar integration
+- `zoomMeetings`, `zoomHosts` - Zoom integration
+- `mailTemplates` - CRM email templates
+- `communications` - Communication logging
+- `users` - CRM user management
+- `billingReports` - Billing reports
+
+### content (block-content)
+- `posts`, `postVersions`, `postTemplates` - Content with versioning
+- `comments` - Comment system
+- `categories`, `tags` - Content taxonomy
+- `users` - Content user identities
+- `moderation` - Content moderation
+- `activity` - Activity feed
+- `series` - Content series/collections
+
+### conversations (block-conversations)
+- `messages`, `draftMessages` - Messaging
+- `groups`, `groupInvites` - Group management
+- `notifications`, `webNotifications`, `notificationSettings` - Notification system
+- `conversations` - Conversation threads
+- `websocketTokens` - Real-time connection tokens
+- `contexts`, `sources` - Conversation context
+- `availabilities` - User availability
+- `messageFiles` - File attachments
+- `users` - Conversation participants
+- `meetings` - Meeting scheduling
+
+### files (block-files)
+- `storageFiles` - Company-level file storage
+- `entityFiles` - Entity-associated files
+- `fileSchemas` - File metadata schemas
+- `userFiles` - User file uploads with presigned URLs
+- `fileCategories`, `fileTags` - File organization
+- `delegations` - File access delegation
+- `fileAccess`, `fileAccessRequests` - Access control
+
+### forms (block-forms)
+- `forms` - Form definitions
+- `schemas`, `schemaVersions` - Form schema management
+- `instances` - Form submissions/instances
+- `sets` - Form grouping
+- `landings` - Landing page forms
+- `subscriptions` - Newsletter subscriptions
+- `appointments` - Appointment scheduling
+- `surveys` - Survey management
+- `referrals` - Referral tracking
+- `mailTemplates` - Form email templates
+- `applicationForms` - Application form processing
+- `crmSync` - CRM synchronization
+
+### geolocation (block-geolocation)
+- `locations`, `locationHours`, `locationImages`, `locationSlots` - Location management
+- `addresses` - Address management
+- `areas`, `regions` - Geographic areas
+- `routes`, `routeTracker` - Travel routes
+- `bookings` - Premise bookings
+- `premises`, `premiseEvents` - Premise management
+- `locationTaxes`, `locationGroups` - Location config
+- `identities`, `locationIdentities` - User location associations
+- `geoCountries`, `geoStates`, `geoCities` - Geography lookups
+
+### assets (block-assets)
+- `assets`, `events`, `audits` - Asset lifecycle management
+- `categories`, `tags` - Asset taxonomy
+- `vendors`, `warehouses` - Supply chain
+- `entities` - Asset-entity relationships
+- `operations` - Asset operations
+- `alerts` - Asset alerts
+- `users` - Asset user management
+- `images` - Asset images
+
+### campaigns (block-campaigns)
+- `campaigns`, `campaignMedia` - Campaign management
+- `landingPages`, `landingTemplates` - Landing pages
+- `audiences` - Audience targeting
+- `targets`, `results`, `mediaResults` - Campaign targeting and analytics
+- `markets`, `locations` - Market segmentation
+- `templates` - Campaign templates
+- `media` - Media management
+
+### company (block-company)
+- `companies` - Company settings
+- `departments`, `teams`, `teamMembers` - Org structure
+- `quarters` - Quarterly planning
+- `positions`, `employeeAssignments` - HR/positions
+
+### rewards (block-rewards)
+- `rewards` - Reward definitions
+- `coupons`, `couponConfigurations`, `offerCodes` - Coupon system
+- `loyalty` - Loyalty program
+- `badges`, `badgeCategories` - Achievement badges
+- `expirationRules` - Reward expiration
+- `customers` - Reward customer profiles
+- `moneyRules`, `productRules`, `eventRules` - Reward trigger rules
+
+### sales (block-sales)
+- `orders`, `orderDetails`, `orderTaxes` - Order management
+- `payments` - Payment processing
+- `subscriptions`, `subscriptionModels` - Recurring billing
+- `entities`, `users`, `customers` - Sales entities
+- `flexibleOrders` - Custom order workflows
+- `stripe`, `mercadopago` - Payment gateway integrations
+- `vendorPayments` - Vendor payment management
+
+### wallet (block-wallet)
+- `wallets` - Digital wallet management
+- `transactions` - Transaction history
+- `authorizationCodes` - Payment authorization
+- `webhooks` - Wallet webhooks
+
+### jarvis (block-jarvis)
+- `agents`, `agentRuntime` - AI agent management and execution
+- `prompts`, `promptComments` - Prompt management
+- `workflows`, `workflowSteps`, `workflowParticipants`, `workflowInstances` - AI workflows
+- `executions`, `executionComments` - Execution tracking
+- `conversations` - AI conversations
+- `aiModels` - Model configuration
+- `entities`, `clusters` - Knowledge management
+- `users` - Jarvis user management
+- `mailTemplates` - AI email templates
+- `marvinChat` - Chat interface
+
+### onboarding (block-onboarding)
+- `onboardings`, `flows` - Onboarding flow definitions
+- `userJourneys` - User journey tracking
+- `userIdentities` - Identity management
+- `onboard` - Onboarding execution
+- `mailTemplates` - Onboarding emails
+- `remarketing` - Re-engagement
+
+### university (block-university)
+- `courses`, `courseGroups` - Course management
+- `lessons` - Lesson content
+- `enrollments` - Student enrollment
+- `assignments`, `submissions` - Assignments and grading
+- `subjects` - Subject areas
+- `teachers`, `students` - User roles
+- `coachingSessions` - 1:1 coaching
+- `tests`, `placements` - Testing and placement
+- `calendars` - Academic calendar
+- `matches` - Student-teacher matching
+- `attendance` - Attendance tracking
+- `notes` - Student notes
+- `registrationTokens` - Registration management
+
+## React Integration
+
+```typescript
+import { Blocks23Provider, useAuth, useSearch } from '@23blocks/react';
+
+function App() {
+  return (
+    <Blocks23Provider config={{
+      apiKey: 'your-api-key',
+      urls: { authentication: '...', search: '...' },
+    }}>
+      <MyComponent />
+    </Blocks23Provider>
+  );
+}
+
+function MyComponent() {
+  const auth = useAuth();        // AuthenticationBlock
+  const search = useSearch();    // SearchBlock
+  // Blocks are memoized - stable references across re-renders
+}
+```
+
+## Angular Integration
+
+```typescript
+// app.config.ts
+import { provideBlocks23 } from '@23blocks/angular';
+
+export const appConfig = {
+  providers: [
+    provideBlocks23({
+      apiKey: 'your-api-key',
+      urls: { authentication: '...', crm: '...' },
+    }),
+  ],
+};
+
+// component.ts
+import { AuthenticationService, CrmService } from '@23blocks/angular';
+
+@Component({ ... })
+export class MyComponent {
+  private auth = inject(AuthenticationService);
+  private crm = inject(CrmService);
+
+  // Angular services delegate to block sub-services via typed getters
+  // auth.users.list() returns Promise<PageResult<User>>
+  // auth.auth.signIn() wraps in Observable with token management
+}
+```

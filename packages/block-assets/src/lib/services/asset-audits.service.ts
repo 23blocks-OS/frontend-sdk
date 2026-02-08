@@ -9,10 +9,33 @@ import type {
 import { assetAuditMapper } from '../mappers/asset-audit.mapper.js';
 
 export interface AssetAuditsService {
+  /**
+   * List audits for a specific asset.
+   * @returns Paginated list of AssetAudit records with metadata.
+   */
   list(assetUniqueId: string, params?: ListAssetAuditsParams): Promise<PageResult<AssetAudit>>;
+
+  /**
+   * Get a specific audit record for an asset.
+   * @returns The matching AssetAudit record.
+   */
   get(assetUniqueId: string, auditUniqueId: string): Promise<AssetAudit>;
+
+  /**
+   * Create a new audit record for an asset.
+   * @returns The newly created AssetAudit record.
+   */
   create(assetUniqueId: string, data: CreateAssetAuditRequest): Promise<AssetAudit>;
+
+  /**
+   * Update an existing audit record for an asset.
+   * @returns The updated AssetAudit record.
+   */
   update(assetUniqueId: string, auditUniqueId: string, data: UpdateAssetAuditRequest): Promise<AssetAudit>;
+
+  /**
+   * Delete an audit record for an asset.
+   */
   delete(assetUniqueId: string, auditUniqueId: string): Promise<void>;
 }
 

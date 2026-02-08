@@ -26,26 +26,55 @@ import {
   type EventRulesService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Rewards block.
+ */
 export interface RewardsBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * Loyalty, rewards, and gamification block interface.
+ */
 export interface RewardsBlock {
+  /** Reward CRUD operations */
   rewards: RewardsService;
+  /** Coupon management */
   coupons: CouponsService;
+  /** Loyalty program management */
   loyalty: LoyaltyService;
+  /** Badge management */
   badges: BadgesService;
+  /** Coupon configuration management */
   couponConfigurations: CouponConfigurationsService;
+  /** Offer code management */
   offerCodes: OfferCodesService;
+  /** Reward expiration rule management */
   expirationRules: ExpirationRulesService;
+  /** Rewards customer management */
   customers: RewardsCustomersService;
+  /** Badge category management */
   badgeCategories: BadgeCategoriesService;
+  /** Money-based reward rule management */
   moneyRules: MoneyRulesService;
+  /** Product-based reward rule management */
   productRules: ProductRulesService;
+  /** Event-based reward rule management */
   eventRules: EventRulesService;
 }
 
+/**
+ * Create the Rewards block.
+ *
+ * @example
+ * ```typescript
+ * const block = createRewardsBlock(transport, { appId: 'xxx' });
+ * const rewards = await block.rewards.list({ page: 1 });
+ * ```
+ */
 export function createRewardsBlock(
   transport: Transport,
   config: RewardsBlockConfig

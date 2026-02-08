@@ -16,36 +16,51 @@ import type { FormInstance } from '../types/form-instance.js';
 export interface FormSetsService {
   /**
    * List all form sets
+   * @param params - Optional filtering by status, search term, and pagination
+   * @returns Paginated result containing FormSet items and metadata
    */
   list(params?: ListFormSetsParams): Promise<PageResult<FormSet>>;
 
   /**
    * Get a specific form set
+   * @param uniqueId - The unique identifier of the form set
+   * @returns The matching FormSet record
    */
   get(uniqueId: string): Promise<FormSet>;
 
   /**
    * Create a new form set
+   * @param data - Form set details including code, name, and form references
+   * @returns The newly created FormSet record
    */
   create(data: CreateFormSetRequest): Promise<FormSet>;
 
   /**
    * Update a form set
+   * @param uniqueId - The unique identifier of the form set to update
+   * @param data - Fields to update such as name, forms list, or status
+   * @returns The updated FormSet record
    */
   update(uniqueId: string, data: UpdateFormSetRequest): Promise<FormSet>;
 
   /**
    * Delete a form set
+   * @param uniqueId - The unique identifier of the form set to delete
+   * @returns Resolves when the form set has been deleted
    */
   delete(uniqueId: string): Promise<void>;
 
   /**
    * Match criteria against form sets to find the best match
+   * @param data - Match request including criteria and optional user identifier
+   * @returns Array of FormSetMatchResult with matched form sets, scores, and matched criteria
    */
   match(data: FormSetMatchRequest): Promise<FormSetMatchResult[]>;
 
   /**
    * Auto-assign forms from a form set to a user
+   * @param data - Assignment request including user, criteria, and optional form set
+   * @returns Array of FormInstance records created by the auto-assignment
    */
   autoAssign(data: FormSetAutoAssignRequest): Promise<FormInstance[]>;
 }

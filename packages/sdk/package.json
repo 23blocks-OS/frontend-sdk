@@ -51,6 +51,7 @@
   },
   "files": [
     "dist",
+    "llms.txt",
     "!**/*.tsbuildinfo"
   ],
   "nx": {

@@ -4,13 +4,52 @@ import type { Subscription, CreateSubscriptionRequest, UpdateSubscriptionRequest
 import { subscriptionMapper } from '../mappers/subscription.mapper.js';
 
 export interface SubscriptionsService {
+  /**
+   * List subscriptions with optional filtering and sorting.
+   * @returns Paginated list of Subscription records with metadata.
+   */
   list(params?: ListSubscriptionsParams): Promise<PageResult<Subscription>>;
+
+  /**
+   * Get a single subscription by unique ID.
+   * @returns The matching Subscription record.
+   */
   get(uniqueId: string): Promise<Subscription>;
+
+  /**
+   * Create a new subscription.
+   * @returns The newly created Subscription record.
+   */
   create(data: CreateSubscriptionRequest): Promise<Subscription>;
+
+  /**
+   * Update an existing subscription.
+   * @returns The updated Subscription record.
+   */
   update(uniqueId: string, data: UpdateSubscriptionRequest): Promise<Subscription>;
+
+  /**
+   * Cancel a subscription.
+   * @returns The Subscription record with cancelled status.
+   */
   cancel(uniqueId: string): Promise<Subscription>;
+
+  /**
+   * Pause an active subscription.
+   * @returns The Subscription record with paused status.
+   */
   pause(uniqueId: string): Promise<Subscription>;
+
+  /**
+   * Resume a paused subscription.
+   * @returns The Subscription record with resumed status.
+   */
   resume(uniqueId: string): Promise<Subscription>;
+
+  /**
+   * List subscriptions for a specific user.
+   * @returns Paginated list of Subscription records for the user.
+   */
   listByUser(userUniqueId: string, params?: ListSubscriptionsParams): Promise<PageResult<Subscription>>;
 }
 

@@ -26,26 +26,55 @@ import {
   type MediaService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Campaigns block.
+ */
 export interface CampaignsBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * Marketing campaigns block interface.
+ */
 export interface CampaignsBlock {
+  /** Core campaign CRUD operations */
   campaigns: CampaignsService;
+  /** Campaign media asset management */
   campaignMedia: CampaignMediaService;
+  /** Landing page management */
   landingPages: LandingPagesService;
+  /** Audience segment management */
   audiences: AudiencesService;
+  /** Landing page template management */
   landingTemplates: LandingTemplatesService;
+  /** Campaign target management */
   targets: CampaignTargetsService;
+  /** Campaign result tracking */
   results: CampaignResultsService;
+  /** Campaign market management */
   markets: CampaignMarketsService;
+  /** Campaign location management */
   locations: CampaignLocationsService;
+  /** Campaign template management */
   templates: CampaignTemplatesService;
+  /** Campaign media result tracking */
   mediaResults: CampaignMediaResultsService;
+  /** Media channel management */
   media: MediaService;
 }
 
+/**
+ * Create the Campaigns block.
+ *
+ * @example
+ * ```typescript
+ * const block = createCampaignsBlock(transport, { appId: 'xxx' });
+ * const campaigns = await block.campaigns.list({ page: 1 });
+ * ```
+ */
 export function createCampaignsBlock(
   transport: Transport,
   config: CampaignsBlockConfig

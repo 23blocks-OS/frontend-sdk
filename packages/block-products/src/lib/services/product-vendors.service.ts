@@ -8,17 +8,27 @@ import { productVendorMapper } from '../mappers/product-vendor.mapper.js';
  */
 export interface ProductVendorsService {
   /**
-   * Get all vendors that sell a specific product
+   * Get all vendors that sell a specific product.
+   * @param productUniqueId - The product unique ID
+   * @param params - Optional filter and pagination options including availability and primary flags
+   * @returns Paginated result containing an array of ProductVendor items and page metadata
    */
   listByProduct(productUniqueId: string, params?: ListProductVendorsParams): Promise<PageResult<ProductVendor>>;
 
   /**
-   * Get the primary vendor for a product
+   * Get the primary vendor for a product.
+   * @param productUniqueId - The product unique ID
+   * @returns The primary ProductVendor, or null if no primary vendor is assigned
+   * @note Internally fetches with isPrimary filter and perPage=1
    */
   getPrimaryVendor(productUniqueId: string): Promise<ProductVendor | null>;
 
   /**
-   * Get available vendors for a product (with stock)
+   * Get available vendors for a product (those with stock).
+   * @param productUniqueId - The product unique ID
+   * @param params - Optional additional filter and pagination options
+   * @returns Paginated result containing available ProductVendor items and page metadata
+   * @note Internally delegates to listByProduct with isAvailable=true
    */
   getAvailableVendors(productUniqueId: string, params?: ListProductVendorsParams): Promise<PageResult<ProductVendor>>;
 }

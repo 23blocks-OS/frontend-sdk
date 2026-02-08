@@ -16,18 +16,81 @@ import { salesUserMapper } from '../mappers/user.mapper.js';
 import { orderMapper } from '../mappers/order.mapper.js';
 
 export interface SalesUsersService {
+  /**
+   * List sales users with optional filtering and sorting.
+   * @returns Paginated list of SalesUser records with metadata.
+   */
   list(params?: ListSalesUsersParams): Promise<PageResult<SalesUser>>;
+
+  /**
+   * Get a sales user by unique ID.
+   * @returns The matching SalesUser record.
+   */
   get(uniqueId: string): Promise<SalesUser>;
+
+  /**
+   * Register a user in the sales system.
+   * @returns The newly registered SalesUser record.
+   */
   register(uniqueId: string, data?: RegisterSalesUserRequest): Promise<SalesUser>;
+
+  /**
+   * Update a sales user.
+   * @returns The updated SalesUser record.
+   */
   update(uniqueId: string, data: UpdateSalesUserRequest): Promise<SalesUser>;
+
+  /**
+   * List orders for a specific user.
+   * @returns Paginated list of Order records.
+   */
   listOrders(uniqueId: string, params?: { page?: number; perPage?: number }): Promise<PageResult<Order>>;
+
+  /**
+   * Get a specific order for a user.
+   * @returns The matching Order record.
+   */
   getOrder(uniqueId: string, orderUniqueId: string): Promise<Order>;
+
+  /**
+   * List subscriptions for a user.
+   * @returns Paginated list of UserSubscription records.
+   */
   listSubscriptions(uniqueId: string, params?: ListUserSubscriptionsParams): Promise<PageResult<UserSubscription>>;
+
+  /**
+   * Get a specific subscription for a user.
+   * @returns The matching UserSubscription record.
+   */
   getSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<UserSubscription>;
+
+  /**
+   * Create a subscription for a user based on a subscription model.
+   * @returns The newly created UserSubscription record.
+   */
   createSubscription(uniqueId: string, subscriptionUniqueId: string, data?: CreateUserSubscriptionRequest): Promise<UserSubscription>;
+
+  /**
+   * Update a user subscription.
+   * @returns The updated UserSubscription record.
+   */
   updateSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateUserSubscriptionRequest): Promise<UserSubscription>;
+
+  /**
+   * Add a consumption record to a user subscription.
+   * @returns The updated UserSubscription record with consumption data.
+   */
   addConsumption(uniqueId: string, subscriptionUniqueId: string, data: AddSubscriptionConsumptionRequest): Promise<UserSubscription>;
+
+  /**
+   * Cancel a user subscription.
+   * @returns The UserSubscription record with cancelled status.
+   */
   cancelSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<UserSubscription>;
+
+  /**
+   * Delete a user subscription.
+   */
   deleteSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<void>;
 }
 

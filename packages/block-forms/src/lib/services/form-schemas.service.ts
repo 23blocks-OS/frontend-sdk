@@ -11,26 +11,42 @@ import { formSchemaMapper } from '../mappers/form-schema.mapper.js';
 export interface FormSchemasService {
   /**
    * List all schemas for a form
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param params - Optional filtering by status, version, and pagination
+   * @returns Paginated result containing FormSchema items and metadata
    */
   list(formUniqueId: string, params?: ListFormSchemasParams): Promise<PageResult<FormSchema>>;
 
   /**
    * Get a specific schema
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param schemaUniqueId - The unique identifier of the schema
+   * @returns The matching FormSchema record
    */
   get(formUniqueId: string, schemaUniqueId: string): Promise<FormSchema>;
 
   /**
    * Create a new schema for a form
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param data - Schema details including code, name, version, schema definition, and UI schema
+   * @returns The newly created FormSchema record
    */
   create(formUniqueId: string, data: CreateFormSchemaRequest): Promise<FormSchema>;
 
   /**
    * Update a schema
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param schemaUniqueId - The unique identifier of the schema to update
+   * @param data - Fields to update such as name, schema definition, or UI schema
+   * @returns The updated FormSchema record
    */
   update(formUniqueId: string, schemaUniqueId: string, data: UpdateFormSchemaRequest): Promise<FormSchema>;
 
   /**
    * Delete a schema
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param schemaUniqueId - The unique identifier of the schema to delete
+   * @returns Resolves when the schema has been deleted
    */
   delete(formUniqueId: string, schemaUniqueId: string): Promise<void>;
 }

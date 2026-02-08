@@ -9,8 +9,28 @@ import type {
 import { meetingParticipantMapper } from '../mappers/meeting-participant.mapper.js';
 
 export interface MeetingParticipantsService {
+  /**
+   * List participants for a specific meeting with optional filtering, pagination, and sorting.
+   * @param meetingUniqueId - The unique identifier of the parent meeting.
+   * @param params - Optional filtering (status, role, rsvpStatus, search), pagination, and sorting.
+   * @returns Paginated result containing MeetingParticipant objects and metadata.
+   */
   list(meetingUniqueId: string, params?: ListMeetingParticipantsParams): Promise<PageResult<MeetingParticipant>>;
+
+  /**
+   * Add a participant to a meeting.
+   * @param meetingUniqueId - The unique identifier of the parent meeting.
+   * @param data - The participant creation payload with contact/user reference, email, name, role, and RSVP status.
+   * @returns The newly created MeetingParticipant object.
+   */
   create(meetingUniqueId: string, data: CreateMeetingParticipantRequest): Promise<MeetingParticipant>;
+
+  /**
+   * Remove a participant from a meeting.
+   * @param meetingUniqueId - The unique identifier of the parent meeting.
+   * @param participantUniqueId - The unique identifier of the participant to remove.
+   * @returns Resolves when the participant has been removed.
+   */
   delete(meetingUniqueId: string, participantUniqueId: string): Promise<void>;
 }
 

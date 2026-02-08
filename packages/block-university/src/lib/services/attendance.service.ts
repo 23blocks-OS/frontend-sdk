@@ -11,16 +11,69 @@ import type {
 import { attendanceMapper } from '../mappers/attendance.mapper.js';
 
 export interface AttendanceService {
+  /**
+   * List attendance records with optional filtering and sorting.
+   * @returns Paginated list of Attendance records with metadata.
+   */
   list(params?: ListAttendanceParams): Promise<PageResult<Attendance>>;
+
+  /**
+   * Get a single attendance record by unique ID.
+   * @returns The matching Attendance record.
+   */
   get(uniqueId: string): Promise<Attendance>;
+
+  /**
+   * Create a new attendance record.
+   * @returns The newly created Attendance record.
+   */
   create(data: CreateAttendanceRequest): Promise<Attendance>;
+
+  /**
+   * Update an existing attendance record.
+   * @returns The updated Attendance record.
+   */
   update(uniqueId: string, data: UpdateAttendanceRequest): Promise<Attendance>;
+
+  /**
+   * Delete an attendance record.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Create attendance records in bulk for a lesson.
+   * @returns Array of newly created Attendance records.
+   */
   bulkCreate(data: BulkAttendanceRequest): Promise<Attendance[]>;
+
+  /**
+   * List attendance records for a specific lesson.
+   * @returns Paginated list of Attendance records for the lesson.
+   */
   listByLesson(lessonUniqueId: string, params?: ListAttendanceParams): Promise<PageResult<Attendance>>;
+
+  /**
+   * List attendance records for a specific student.
+   * @returns Paginated list of Attendance records for the student.
+   */
   listByStudent(studentUniqueId: string, params?: ListAttendanceParams): Promise<PageResult<Attendance>>;
+
+  /**
+   * List attendance records for a specific course.
+   * @returns Paginated list of Attendance records for the course.
+   */
   listByCourse(courseUniqueId: string, params?: ListAttendanceParams): Promise<PageResult<Attendance>>;
+
+  /**
+   * Get attendance statistics for a student, optionally scoped to a course.
+   * @returns AttendanceStats with totalLessons, present, absent, late, excused, and attendanceRate.
+   */
   getStudentStats(studentUniqueId: string, courseUniqueId?: string): Promise<AttendanceStats>;
+
+  /**
+   * Verify an attendance record.
+   * @returns The Attendance record with verified status.
+   */
   verify(uniqueId: string): Promise<Attendance>;
 }
 

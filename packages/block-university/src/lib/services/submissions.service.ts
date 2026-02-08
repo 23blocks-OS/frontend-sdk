@@ -9,11 +9,40 @@ import type {
 import { submissionMapper } from '../mappers/submission.mapper.js';
 
 export interface SubmissionsService {
+  /**
+   * List submissions with optional filtering and sorting.
+   * @returns Paginated list of Submission records with metadata.
+   */
   list(params?: ListSubmissionsParams): Promise<PageResult<Submission>>;
+
+  /**
+   * Get a single submission by unique ID.
+   * @returns The matching Submission record.
+   */
   get(uniqueId: string): Promise<Submission>;
+
+  /**
+   * Submit an assignment.
+   * @returns The newly created Submission record.
+   */
   submit(data: SubmitAssignmentRequest): Promise<Submission>;
+
+  /**
+   * Grade a submission with score and feedback.
+   * @returns The updated Submission record with grade data.
+   */
   grade(uniqueId: string, data: GradeSubmissionRequest): Promise<Submission>;
+
+  /**
+   * List submissions for a specific assignment.
+   * @returns Paginated list of Submission records for the assignment.
+   */
   listByAssignment(assignmentUniqueId: string, params?: ListSubmissionsParams): Promise<PageResult<Submission>>;
+
+  /**
+   * List submissions by a specific user.
+   * @returns Paginated list of Submission records for the user.
+   */
   listByUser(userUniqueId: string, params?: ListSubmissionsParams): Promise<PageResult<Submission>>;
 }
 

@@ -9,14 +9,69 @@ import type {
 import { addressMapper } from '../mappers/address.mapper.js';
 
 export interface AddressesService {
+  /**
+   * List all addresses
+   * @param params - Optional filtering by owner, country, default flag, search, and pagination
+   * @returns Paginated result containing Address items and metadata
+   */
   list(params?: ListAddressesParams): Promise<PageResult<Address>>;
+
+  /**
+   * Get a specific address
+   * @param uniqueId - The unique identifier of the address
+   * @returns The matching Address record
+   */
   get(uniqueId: string): Promise<Address>;
+
+  /**
+   * Create a new address
+   * @param data - Address details including owner, country, coordinates, and postal info
+   * @returns The newly created Address record
+   */
   create(data: CreateAddressRequest): Promise<Address>;
+
+  /**
+   * Update an existing address
+   * @param uniqueId - The unique identifier of the address to update
+   * @param data - Fields to update such as address lines, coordinates, or status
+   * @returns The updated Address record
+   */
   update(uniqueId: string, data: UpdateAddressRequest): Promise<Address>;
+
+  /**
+   * Delete an address (soft delete)
+   * @param uniqueId - The unique identifier of the address to delete
+   * @returns Resolves when the address has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously deleted address
+   * @param uniqueId - The unique identifier of the deleted address
+   * @returns The recovered Address record
+   */
   recover(uniqueId: string): Promise<Address>;
+
+  /**
+   * Search addresses by query string
+   * @param query - The search query text
+   * @param params - Optional additional filtering and pagination
+   * @returns Paginated result of Address records matching the search query
+   */
   search(query: string, params?: ListAddressesParams): Promise<PageResult<Address>>;
+
+  /**
+   * List soft-deleted addresses
+   * @param params - Optional pagination parameters
+   * @returns Paginated result of deleted Address records
+   */
   listDeleted(params?: ListAddressesParams): Promise<PageResult<Address>>;
+
+  /**
+   * Set an address as the default for its owner
+   * @param uniqueId - The unique identifier of the address to set as default
+   * @returns The updated Address record marked as default
+   */
   setDefault(uniqueId: string): Promise<Address>;
 }
 

@@ -32,29 +32,61 @@ import {
   type WebNotificationsService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Conversations block.
+ */
 export interface ConversationsBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * Messaging and conversations block interface.
+ */
 export interface ConversationsBlock {
+  /** Message CRUD operations */
   messages: MessagesService;
+  /** Draft message management */
   draftMessages: DraftMessagesService;
+  /** Group chat management */
   groups: GroupsService;
+  /** Group invitation management */
   groupInvites: GroupInvitesService;
+  /** In-app notification management */
   notifications: NotificationsService;
+  /** Conversation thread management */
   conversations: ConversationsService;
+  /** WebSocket token generation */
   websocketTokens: WebSocketTokensService;
+  /** Conversation context management */
   contexts: ContextsService;
+  /** Notification preference management */
   notificationSettings: NotificationSettingsService;
+  /** User availability status management */
   availabilities: AvailabilitiesService;
+  /** Message file attachment management */
   messageFiles: MessageFilesService;
+  /** Message source management */
   sources: SourcesService;
+  /** Conversation user management */
   users: UsersService;
+  /** Meeting management */
   meetings: MeetingsService;
+  /** Web push notification management */
   webNotifications: WebNotificationsService;
 }
 
+/**
+ * Create the Conversations block.
+ *
+ * @example
+ * ```typescript
+ * const block = createConversationsBlock(transport, { appId: 'xxx' });
+ * const messages = await block.messages.list({ page: 1 });
+ * ```
+ */
 export function createConversationsBlock(
   transport: Transport,
   config: ConversationsBlockConfig

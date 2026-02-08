@@ -15,17 +15,76 @@ import type {
 } from '../types/agent-runtime.js';
 
 export interface AgentRuntimeService {
+  /**
+   * Get an existing agent context by unique ID.
+   * @returns The AgentContext with thread and optional conversation data.
+   */
   getContext(agentUniqueId: string, contextUniqueId: string): Promise<AgentContext>;
+
+  /**
+   * Create a new agent context for conversations.
+   * @returns The newly created AgentContext with thread info.
+   */
   createContext(agentUniqueId: string, data?: CreateAgentContextRequest): Promise<AgentContext>;
+
+  /**
+   * Get the conversation history for an agent context.
+   * @returns Object containing an array of AgentMessage records.
+   */
   getConversation(agentUniqueId: string, contextUniqueId: string): Promise<{ messages: AgentMessage[] }>;
+
+  /**
+   * Get an existing agent thread by ID.
+   * @returns The AgentThread record.
+   */
   getThread(agentUniqueId: string, threadId: string): Promise<AgentThread>;
+
+  /**
+   * Create a new agent thread.
+   * @returns The newly created AgentThread record.
+   */
   createThread(agentUniqueId: string, data?: CreateAgentThreadRequest): Promise<AgentThread>;
+
+  /**
+   * Send a message to an agent thread.
+   * @returns SendAgentThreadMessageResponse with the sent message.
+   */
   sendMessage(agentUniqueId: string, threadId: string, data: SendAgentThreadMessageRequest): Promise<SendAgentThreadMessageResponse>;
+
+  /**
+   * Send a message to an agent thread and receive a streaming response.
+   * @returns ReadableStream of string chunks for real-time output.
+   */
   sendMessageStream(agentUniqueId: string, threadId: string, data: SendAgentThreadMessageRequest): Promise<ReadableStream<string>>;
+
+  /**
+   * Run an agent thread to generate a response.
+   * @returns RunAgentThreadResponse with run details and status.
+   */
   runThread(agentUniqueId: string, threadId: string, data?: RunAgentThreadRequest): Promise<RunAgentThreadResponse>;
+
+  /**
+   * Get the status and details of an agent run.
+   * @returns The AgentRun record with status and usage info.
+   */
   getRun(agentUniqueId: string, threadId: string, runId: string): Promise<AgentRun>;
+
+  /**
+   * Get all messages in an agent thread.
+   * @returns Array of AgentMessage records.
+   */
   getMessages(agentUniqueId: string, threadId: string): Promise<AgentMessage[]>;
+
+  /**
+   * List agent run executions with optional filtering and sorting.
+   * @returns Paginated list of AgentRunExecution records with metadata.
+   */
   listExecutions(agentUniqueId: string, params?: ListAgentRunExecutionsParams): Promise<PageResult<AgentRunExecution>>;
+
+  /**
+   * Get a single agent run execution by unique ID.
+   * @returns The AgentRunExecution record with input, output, and cost details.
+   */
   getExecution(agentUniqueId: string, executionUniqueId: string): Promise<AgentRunExecution>;
 }
 

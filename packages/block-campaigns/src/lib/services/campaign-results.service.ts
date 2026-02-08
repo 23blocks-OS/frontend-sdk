@@ -9,10 +9,33 @@ import type {
 import { campaignResultMapper } from '../mappers/campaign-result.mapper.js';
 
 export interface CampaignResultsService {
+  /**
+   * List campaign results with optional date-range filtering and sorting.
+   * @returns Paginated list of CampaignResult records with metadata.
+   */
   list(params?: ListCampaignResultsParams): Promise<PageResult<CampaignResult>>;
+
+  /**
+   * Get a single campaign result by unique ID.
+   * @returns The matching CampaignResult record.
+   */
   get(uniqueId: string): Promise<CampaignResult>;
+
+  /**
+   * Create a new campaign result entry.
+   * @returns The newly created CampaignResult record.
+   */
   create(data: CreateCampaignResultRequest): Promise<CampaignResult>;
+
+  /**
+   * Update an existing campaign result.
+   * @returns The updated CampaignResult record.
+   */
   update(uniqueId: string, data: UpdateCampaignResultRequest): Promise<CampaignResult>;
+
+  /**
+   * Delete a campaign result.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

@@ -11,14 +11,75 @@ import type {
 import { appointmentMapper } from '../mappers/appointment.mapper.js';
 
 export interface AppointmentsService {
+  /**
+   * List all appointments for a form
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param params - Optional filtering by status, date range, and pagination
+   * @returns Paginated result containing Appointment items and metadata
+   */
   list(formUniqueId: string, params?: ListAppointmentsParams): Promise<PageResult<Appointment>>;
+
+  /**
+   * Get a specific appointment
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the appointment
+   * @returns The matching Appointment record
+   */
   get(formUniqueId: string, uniqueId: string): Promise<Appointment>;
+
+  /**
+   * Create a new appointment
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param data - Appointment details including contact info, schedule, and location
+   * @returns The newly created Appointment record
+   */
   create(formUniqueId: string, data: CreateAppointmentRequest): Promise<Appointment>;
+
+  /**
+   * Update an existing appointment
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the appointment to update
+   * @param data - Fields to update such as schedule, contact info, or status
+   * @returns The updated Appointment record
+   */
   update(formUniqueId: string, uniqueId: string, data: UpdateAppointmentRequest): Promise<Appointment>;
+
+  /**
+   * Delete an appointment
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the appointment to delete
+   * @returns Resolves when the appointment has been deleted
+   */
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
+
+  /**
+   * Confirm an appointment
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the appointment to confirm
+   * @returns The updated Appointment record with confirmed status
+   */
   confirm(formUniqueId: string, uniqueId: string): Promise<Appointment>;
+
+  /**
+   * Cancel an appointment
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the appointment to cancel
+   * @returns The updated Appointment record with cancelled status
+   */
   cancel(formUniqueId: string, uniqueId: string): Promise<Appointment>;
+
+  /**
+   * Generate an appointment report list
+   * @param data - Report criteria including form, date range, status, and grouping
+   * @returns Array of Appointment records matching the report criteria
+   */
   reportList(data: AppointmentReportRequest): Promise<Appointment[]>;
+
+  /**
+   * Generate an appointment report summary
+   * @param data - Report criteria including form, date range, status, and grouping
+   * @returns Aggregated summary statistics for matching appointments
+   */
   reportSummary(data: AppointmentReportRequest): Promise<AppointmentReportSummary>;
 }
 

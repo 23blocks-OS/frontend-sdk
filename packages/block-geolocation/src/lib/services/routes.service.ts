@@ -9,13 +9,62 @@ import type {
 import { travelRouteMapper } from '../mappers/route.mapper.js';
 
 export interface TravelRoutesService {
+  /**
+   * List all travel routes
+   * @param params - Optional filtering by owner, status, search, and pagination
+   * @returns Paginated result containing TravelRoute items and metadata
+   */
   list(params?: ListTravelRoutesParams): Promise<PageResult<TravelRoute>>;
+
+  /**
+   * Get a specific travel route
+   * @param uniqueId - The unique identifier of the route
+   * @returns The matching TravelRoute record
+   */
   get(uniqueId: string): Promise<TravelRoute>;
+
+  /**
+   * Create a new travel route
+   * @param data - Route details including name, code, description, and owner
+   * @returns The newly created TravelRoute record
+   */
   create(data: CreateTravelRouteRequest): Promise<TravelRoute>;
+
+  /**
+   * Update an existing travel route
+   * @param uniqueId - The unique identifier of the route to update
+   * @param data - Fields to update such as name, description, tags, or status
+   * @returns The updated TravelRoute record
+   */
   update(uniqueId: string, data: UpdateTravelRouteRequest): Promise<TravelRoute>;
+
+  /**
+   * Delete a travel route (soft delete)
+   * @param uniqueId - The unique identifier of the route to delete
+   * @returns Resolves when the route has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously deleted travel route
+   * @param uniqueId - The unique identifier of the deleted route
+   * @returns The recovered TravelRoute record
+   */
   recover(uniqueId: string): Promise<TravelRoute>;
+
+  /**
+   * Search travel routes by query string
+   * @param query - The search query text
+   * @param params - Optional additional filtering and pagination
+   * @returns Paginated result of TravelRoute records matching the search query
+   */
   search(query: string, params?: ListTravelRoutesParams): Promise<PageResult<TravelRoute>>;
+
+  /**
+   * List soft-deleted travel routes
+   * @param params - Optional pagination parameters
+   * @returns Paginated result of deleted TravelRoute records
+   */
   listDeleted(params?: ListTravelRoutesParams): Promise<PageResult<TravelRoute>>;
 }
 

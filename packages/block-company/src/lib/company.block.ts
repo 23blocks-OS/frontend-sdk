@@ -16,21 +16,45 @@ import {
   type EmployeeAssignmentsService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Company block.
+ */
 export interface CompanyBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * Company organizational structure block interface.
+ */
 export interface CompanyBlock {
+  /** Company CRUD operations */
   companies: CompaniesService;
+  /** Department management */
   departments: DepartmentsService;
+  /** Team management */
   teams: TeamsService;
+  /** Team member management */
   teamMembers: TeamMembersService;
+  /** Quarterly period management */
   quarters: QuartersService;
+  /** Position/role definition management */
   positions: PositionsService;
+  /** Employee-to-position assignment management */
   employeeAssignments: EmployeeAssignmentsService;
 }
 
+/**
+ * Create the Company block.
+ *
+ * @example
+ * ```typescript
+ * const block = createCompanyBlock(transport, { appId: 'xxx' });
+ * const companies = await block.companies.list({ page: 1 });
+ * ```
+ */
 export function createCompanyBlock(
   transport: Transport,
   config: CompanyBlockConfig

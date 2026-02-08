@@ -13,17 +13,72 @@ import type {
 import { clusterMapper } from '../mappers/cluster.mapper.js';
 
 export interface ClustersService {
+  /**
+   * List clusters for a user with optional filtering and sorting.
+   * @returns Paginated list of Cluster records with metadata.
+   */
   list(userUniqueId: string, params?: ListClustersParams): Promise<PageResult<Cluster>>;
+
+  /**
+   * Get a single cluster by unique ID.
+   * @returns The matching Cluster record.
+   */
   get(userUniqueId: string, uniqueId: string): Promise<Cluster>;
+
+  /**
+   * Create a new cluster for a user.
+   * @returns The newly created Cluster record.
+   */
   create(userUniqueId: string, data: CreateClusterRequest): Promise<Cluster>;
+
+  /**
+   * Update an existing cluster.
+   * @returns The updated Cluster record.
+   */
   update(userUniqueId: string, uniqueId: string, data: UpdateClusterRequest): Promise<Cluster>;
+
+  /**
+   * Delete a cluster.
+   */
   delete(userUniqueId: string, uniqueId: string): Promise<void>;
+
+  /**
+   * Add an entity as a member of a cluster.
+   */
   addMember(userUniqueId: string, uniqueId: string, entityUniqueId: string): Promise<void>;
+
+  /**
+   * Remove an entity from a cluster.
+   */
   removeMember(userUniqueId: string, uniqueId: string, entityUniqueId: string): Promise<void>;
+
+  /**
+   * Associate a prompt with a cluster.
+   */
   addPrompt(userUniqueId: string, uniqueId: string, promptUniqueId: string): Promise<void>;
+
+  /**
+   * Get an existing cluster context by unique ID.
+   * @returns The ClusterContext with messages and metadata.
+   */
   getContext(userUniqueId: string, uniqueId: string, contextUniqueId: string): Promise<ClusterContext>;
+
+  /**
+   * Create a new context for cluster conversations.
+   * @returns The newly created ClusterContext.
+   */
   createContext(userUniqueId: string, uniqueId: string, data?: CreateClusterContextRequest): Promise<ClusterContext>;
+
+  /**
+   * Get the conversation history for a cluster context.
+   * @returns The ClusterContext with full message history.
+   */
   getConversation(userUniqueId: string, uniqueId: string, contextUniqueId: string): Promise<ClusterContext>;
+
+  /**
+   * Send a message within a cluster context.
+   * @returns SendClusterMessageResponse with the sent message, optional AI response, and cost.
+   */
   sendMessage(userUniqueId: string, uniqueId: string, contextUniqueId: string, data: SendClusterMessageRequest): Promise<SendClusterMessageResponse>;
 }
 

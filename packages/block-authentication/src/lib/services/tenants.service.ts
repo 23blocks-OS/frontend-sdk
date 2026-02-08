@@ -43,7 +43,7 @@ const tenantUserMapper = {
 };
 
 /**
- * Tenants Service Interface
+ * Tenants service - manage child tenants, validate tenant codes, search tenants, and manage tenant-user relationships.
  */
 export interface TenantsService {
   /**

@@ -14,41 +14,60 @@ import { fileAccessRequestMapper } from '../mappers/file-access-request.mapper.j
 export interface FileAccessRequestsService {
   /**
    * List all access requests
+   * @param params - Optional filtering by file, requester, status, date range, and pagination
+   * @returns Paginated result containing FileAccessRequest items and metadata
    */
   list(params?: ListFileAccessRequestsParams): Promise<PageResult<FileAccessRequest>>;
 
   /**
    * Get a specific access request
+   * @param uniqueId - The unique identifier of the access request
+   * @returns The matching FileAccessRequest record
    */
   get(uniqueId: string): Promise<FileAccessRequest>;
 
   /**
    * Create a new access request
+   * @param data - Request details including file, access level, and optional message
+   * @returns The newly created FileAccessRequest record
    */
   create(data: CreateFileAccessRequestInput): Promise<FileAccessRequest>;
 
   /**
    * Review (approve/reject) an access request
+   * @param uniqueId - The unique identifier of the access request to review
+   * @param decision - The review decision including approval/rejection and optional note
+   * @returns The updated FileAccessRequest record reflecting the review outcome
    */
   review(uniqueId: string, decision: ReviewFileAccessRequestInput): Promise<FileAccessRequest>;
 
   /**
    * Cancel a pending access request
+   * @param uniqueId - The unique identifier of the access request to cancel
+   * @returns Resolves when the request has been cancelled
+   * @note Uses PUT instead of DELETE to transition request status
    */
   cancel(uniqueId: string): Promise<void>;
 
   /**
    * List requests for a specific file (for file owners)
+   * @param fileUniqueId - The unique identifier of the file
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated result of FileAccessRequest records for the given file
    */
   listByFile(fileUniqueId: string, params?: ListFileAccessRequestsParams): Promise<PageResult<FileAccessRequest>>;
 
   /**
    * List requests made by a specific user
+   * @param requesterUniqueId - The unique identifier of the requester
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated result of FileAccessRequest records by the given requester
    */
   listByRequester(requesterUniqueId: string, params?: ListFileAccessRequestsParams): Promise<PageResult<FileAccessRequest>>;
 
   /**
    * Get pending requests count for a file owner
+   * @returns The number of pending access requests
    */
   getPendingCount(): Promise<number>;
 }

@@ -14,15 +14,64 @@ import type {
 import { userJourneyMapper } from '../mappers/user-journey.mapper.js';
 
 export interface UserJourneysService {
+  /**
+   * List user journeys with optional filtering and sorting.
+   * @returns Paginated list of UserJourney records with metadata.
+   */
   list(params?: ListUserJourneysParams): Promise<PageResult<UserJourney>>;
+
+  /**
+   * Get a single user journey by unique ID.
+   * @returns The matching UserJourney record.
+   */
   get(uniqueId: string): Promise<UserJourney>;
+
+  /**
+   * Start a new user journey for an onboarding.
+   * @returns The newly created UserJourney record.
+   */
   start(data: StartJourneyRequest): Promise<UserJourney>;
+
+  /**
+   * Complete a step in a user journey.
+   * @returns The updated UserJourney record with step marked complete.
+   */
   completeStep(uniqueId: string, data: CompleteStepRequest): Promise<UserJourney>;
+
+  /**
+   * Abandon a user journey.
+   * @returns The updated UserJourney record with abandoned status.
+   */
   abandon(uniqueId: string): Promise<UserJourney>;
+
+  /**
+   * Get all journeys for a specific user.
+   * @returns Array of UserJourney records for the user.
+   */
   getByUser(userUniqueId: string): Promise<UserJourney[]>;
+
+  /**
+   * Get the progress of a user journey.
+   * @returns Object with progress percentage, current step, and completed steps.
+   */
   getProgress(uniqueId: string): Promise<{ progress: number; currentStep?: number; completedSteps?: number[] }>;
+
+  /**
+   * Get a user's journey for a specific onboarding.
+   * @returns The matching UserJourney record.
+   */
   listByUserAndOnboarding(userUniqueId: string, onboardingUniqueId: string): Promise<UserJourney>;
+
+  /**
+   * Generate a detailed list report of user journeys.
+   * @returns UserJourneyReportList with journey details, summary stats, and pagination.
+   */
   reportList(params: UserJourneyReportParams): Promise<UserJourneyReportList>;
+
+  /**
+   * Generate a summary report of user journeys.
+   * @returns UserJourneyReportSummary with totals, completion rate, and status breakdown.
+   */
   reportSummary(params: UserJourneyReportParams): Promise<UserJourneyReportSummary>;
 }
 

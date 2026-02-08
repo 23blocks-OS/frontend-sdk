@@ -9,9 +9,28 @@ import type {
 import { subscriptionModelMapper } from '../mappers/subscription-model.mapper.js';
 
 export interface SubscriptionModelsService {
+  /**
+   * List subscription models with optional filtering and sorting.
+   * @returns Paginated list of SubscriptionModel records with metadata.
+   */
   list(params?: ListSubscriptionModelsParams): Promise<PageResult<SubscriptionModel>>;
+
+  /**
+   * Get a single subscription model by unique ID.
+   * @returns The matching SubscriptionModel record.
+   */
   get(uniqueId: string): Promise<SubscriptionModel>;
+
+  /**
+   * Create a new subscription model.
+   * @returns The newly created SubscriptionModel record.
+   */
   create(data: CreateSubscriptionModelRequest): Promise<SubscriptionModel>;
+
+  /**
+   * Update an existing subscription model.
+   * @returns The updated SubscriptionModel record.
+   */
   update(uniqueId: string, data: UpdateSubscriptionModelRequest): Promise<SubscriptionModel>;
 }
 

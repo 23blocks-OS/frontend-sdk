@@ -9,8 +9,28 @@ import type {
 import { locationImageMapper } from '../mappers/location-image.mapper.js';
 
 export interface LocationImagesService {
+  /**
+   * Get a presigned URL for uploading a location image
+   * @param locationUniqueId - The unique identifier of the location
+   * @param data - Upload metadata including file name and content type
+   * @returns Presigned upload URL, public URL, and optional form fields
+   */
   presign(locationUniqueId: string, data: PresignLocationImageRequest): Promise<PresignLocationImageResponse>;
+
+  /**
+   * Create a location image record after upload
+   * @param locationUniqueId - The unique identifier of the location
+   * @param data - Image details including URL, caption, alt text, and sort order
+   * @returns The newly created LocationImage record
+   */
   create(locationUniqueId: string, data: CreateLocationImageRequest): Promise<LocationImage>;
+
+  /**
+   * Delete a location image
+   * @param locationUniqueId - The unique identifier of the location
+   * @param imageUniqueId - The unique identifier of the image to delete
+   * @returns Resolves when the image has been deleted
+   */
   delete(locationUniqueId: string, imageUniqueId: string): Promise<void>;
 }
 

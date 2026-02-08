@@ -18,15 +18,63 @@ import type {
 } from '../types/stripe.js';
 
 export interface StripeService {
+  /**
+   * Create a Stripe customer.
+   * @returns CreateStripeCustomerResponse with `customerId` and `customer` details.
+   */
   createCustomer(data: CreateStripeCustomerRequest): Promise<CreateStripeCustomerResponse>;
+
+  /**
+   * Create a Stripe checkout session.
+   * @returns StripeCheckoutSession with `id`, `url`, `status`, and `expiresAt`.
+   */
   createCheckoutSession(data: CreateStripeCheckoutSessionRequest): Promise<StripeCheckoutSession>;
+
+  /**
+   * Create a Stripe payment intent.
+   * @returns StripePaymentIntent with `id`, `clientSecret`, `status`, `amount`, and `currency`.
+   */
   createPaymentIntent(data: CreateStripePaymentIntentRequest): Promise<StripePaymentIntent>;
+
+  /**
+   * Create a Stripe customer portal session for managing billing.
+   * @returns StripeCustomerPortalSession with `id` and `url`.
+   */
   createCustomerPortal(uniqueId: string, data: CreateStripeCustomerPortalRequest): Promise<StripeCustomerPortalSession>;
+
+  /**
+   * List Stripe subscriptions with optional filtering.
+   * @returns Paginated list of StripeSubscription records.
+   */
   listSubscriptions(params?: ListStripeSubscriptionsParams): Promise<PageResult<StripeSubscription>>;
+
+  /**
+   * Create a Stripe subscription.
+   * @returns The newly created StripeSubscription record.
+   */
   createSubscription(data: CreateStripeSubscriptionRequest): Promise<StripeSubscription>;
+
+  /**
+   * Update an existing Stripe subscription.
+   * @returns The updated StripeSubscription record.
+   */
   updateSubscription(stripeSubscriptionId: string, data: UpdateStripeSubscriptionRequest): Promise<StripeSubscription>;
+
+  /**
+   * Cancel a Stripe subscription.
+   */
   cancelSubscription(stripeSubscriptionId: string): Promise<void>;
+
+  /**
+   * List configured Stripe webhooks.
+   * @returns Array of StripeWebhook records.
+   */
   listWebhooks(): Promise<StripeWebhook[]>;
+
+  /**
+   * Create a new Stripe webhook endpoint.
+   * @returns The newly created StripeWebhook record.
+   */
   createWebhook(data: CreateStripeWebhookRequest): Promise<StripeWebhook>;
 }
 

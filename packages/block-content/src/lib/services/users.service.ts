@@ -15,25 +15,114 @@ import { postMapper } from '../mappers/post.mapper.js';
 import { commentMapper } from '../mappers/comment.mapper.js';
 
 export interface ContentUsersService {
+  /**
+   * List all content users
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated list of ContentUser records with pagination metadata
+   */
   list(params?: ListContentUsersParams): Promise<PageResult<ContentUser>>;
+
+  /**
+   * Get a content user by unique ID
+   * @param uniqueId - Unique ID of the user to retrieve
+   * @returns The matching ContentUser record
+   */
   get(uniqueId: string): Promise<ContentUser>;
+
+  /**
+   * Register a user in the content system
+   * @param uniqueId - Unique ID of the user to register
+   * @param data - Registration payload with profile details
+   * @returns The newly registered ContentUser record
+   */
   register(uniqueId: string, data: RegisterContentUserRequest): Promise<ContentUser>;
+
+  /**
+   * Update a content user's profile
+   * @param uniqueId - Unique ID of the user to update
+   * @param data - Fields to update on the user profile
+   * @returns The updated ContentUser record
+   */
   update(uniqueId: string, data: UpdateContentUserRequest): Promise<ContentUser>;
 
   // User content
+
+  /**
+   * Get a user's draft posts
+   * @param uniqueId - Unique ID of the user
+   * @returns Array of draft Post records
+   */
   getDrafts(uniqueId: string): Promise<Post[]>;
+
+  /**
+   * Get a user's published posts
+   * @param uniqueId - Unique ID of the user
+   * @returns Array of Post records
+   */
   getPosts(uniqueId: string): Promise<Post[]>;
+
+  /**
+   * Get a user's comments
+   * @param uniqueId - Unique ID of the user
+   * @returns Array of Comment records
+   */
   getComments(uniqueId: string): Promise<Comment[]>;
+
+  /**
+   * Get a user's activity history
+   * @param uniqueId - Unique ID of the user
+   * @returns Array of UserActivity records with activity type, target, and timestamp
+   */
   getActivities(uniqueId: string): Promise<UserActivity[]>;
 
   // Tags
+
+  /**
+   * Add a tag to a content user
+   * @param uniqueId - Unique ID of the user
+   * @param tagUniqueId - Unique ID of the tag to add
+   * @returns The updated ContentUser record
+   */
   addTag(uniqueId: string, tagUniqueId: string): Promise<ContentUser>;
+
+  /**
+   * Remove a tag from a content user
+   * @param uniqueId - Unique ID of the user
+   * @param tagUniqueId - Unique ID of the tag to remove
+   * @returns void on successful removal
+   */
   removeTag(uniqueId: string, tagUniqueId: string): Promise<void>;
 
-  // Social - returns Following[] with full relationship data
+  // Social
+
+  /**
+   * Get a user's followers
+   * @param uniqueId - Unique ID of the user
+   * @returns Array of Following records with full relationship data
+   */
   getFollowers(uniqueId: string): Promise<Following[]>;
+
+  /**
+   * Get users that a user is following
+   * @param uniqueId - Unique ID of the user
+   * @returns Array of Following records with full relationship data
+   */
   getFollowing(uniqueId: string): Promise<Following[]>;
+
+  /**
+   * Follow another user
+   * @param uniqueId - Unique ID of the current user
+   * @param targetUserUniqueId - Unique ID of the user to follow
+   * @returns void on successful follow
+   */
   followUser(uniqueId: string, targetUserUniqueId: string): Promise<void>;
+
+  /**
+   * Unfollow another user
+   * @param uniqueId - Unique ID of the current user
+   * @param targetUserUniqueId - Unique ID of the user to unfollow
+   * @returns void on successful unfollow
+   */
   unfollowUser(uniqueId: string, targetUserUniqueId: string): Promise<void>;
 }
 

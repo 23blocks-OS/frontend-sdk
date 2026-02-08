@@ -14,25 +14,101 @@ import { availabilityMapper, calendarEventMapper } from '../mappers/calendar.map
 
 export interface CalendarsService {
   // Student Availability
+
+  /**
+   * Get all availability slots for a student.
+   * @returns Array of Availability records.
+   */
   getStudentAvailability(userUniqueId: string): Promise<Availability[]>;
+
+  /**
+   * Add an availability slot for a student.
+   * @returns The newly created Availability record.
+   */
   addStudentAvailability(userUniqueId: string, data: CreateAvailabilityRequest): Promise<Availability>;
+
+  /**
+   * Update a specific availability slot for a student.
+   * @returns The updated Availability record.
+   */
   updateStudentAvailability(userUniqueId: string, availabilityUniqueId: string, data: UpdateAvailabilityRequest): Promise<Availability>;
+
+  /**
+   * Bulk update all availability slots for a student.
+   * @returns Array of updated Availability records.
+   * @note Replaces all existing slots with the provided set.
+   */
   updateStudentAvailabilities(userUniqueId: string, data: BulkUpdateAvailabilityRequest): Promise<Availability[]>;
+
+  /**
+   * Delete a specific availability slot for a student.
+   */
   deleteStudentAvailability(userUniqueId: string, availabilityUniqueId: string): Promise<void>;
+
+  /**
+   * Delete all availability slots for a student.
+   */
   deleteAllStudentAvailability(userUniqueId: string): Promise<void>;
 
   // Teacher Availability
+
+  /**
+   * Get all availability slots for a teacher.
+   * @returns Array of Availability records.
+   */
   getTeacherAvailability(teacherUniqueId: string): Promise<Availability[]>;
+
+  /**
+   * Add an availability slot for a teacher.
+   * @returns The newly created Availability record.
+   */
   addTeacherAvailability(teacherUniqueId: string, data: CreateAvailabilityRequest): Promise<Availability>;
+
+  /**
+   * Update a specific availability slot for a teacher.
+   * @returns The updated Availability record.
+   */
   updateTeacherAvailability(teacherUniqueId: string, availabilityUniqueId: string, data: UpdateAvailabilityRequest): Promise<Availability>;
+
+  /**
+   * Delete a specific availability slot for a teacher.
+   */
   deleteTeacherAvailability(teacherUniqueId: string, availabilityUniqueId: string): Promise<void>;
+
+  /**
+   * Delete all availability slots for a teacher.
+   */
   deleteAllTeacherAvailability(teacherUniqueId: string): Promise<void>;
 
   // Events
+
+  /**
+   * List calendar events with optional filtering.
+   * @returns Paginated list of CalendarEvent records with metadata.
+   */
   listEvents(params?: ListCalendarEventsParams): Promise<PageResult<CalendarEvent>>;
+
+  /**
+   * Get a single calendar event by unique ID.
+   * @returns The matching CalendarEvent record.
+   */
   getEvent(uniqueId: string): Promise<CalendarEvent>;
+
+  /**
+   * Create a new calendar event.
+   * @returns The newly created CalendarEvent record.
+   */
   createEvent(data: CreateCalendarEventRequest): Promise<CalendarEvent>;
+
+  /**
+   * Update an existing calendar event.
+   * @returns The updated CalendarEvent record.
+   */
   updateEvent(uniqueId: string, data: UpdateCalendarEventRequest): Promise<CalendarEvent>;
+
+  /**
+   * Delete a calendar event.
+   */
   deleteEvent(uniqueId: string): Promise<void>;
 }
 

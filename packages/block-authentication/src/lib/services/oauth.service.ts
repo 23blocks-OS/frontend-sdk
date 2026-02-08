@@ -17,31 +17,42 @@ import type {
 import { userMapper } from '../mappers/index.js';
 
 /**
- * OAuth Service Interface
+ * OAuth service - social login, token introspection/revocation, and tenant context switching.
  */
 export interface OAuthService {
   /**
-   * Login with Facebook token
+   * Login with a Facebook access token. Creates or signs in the user.
+   *
+   * @returns SignInResponse with `user`, `accessToken`, optional `refreshToken`.
    */
   facebookLogin(request: OAuthSocialLoginRequest): Promise<SignInResponse>;
 
   /**
-   * Login with Google token
+   * Login with a Google access token. Creates or signs in the user.
+   *
+   * @returns SignInResponse with `user`, `accessToken`, optional `refreshToken`.
    */
   googleLogin(request: OAuthSocialLoginRequest): Promise<SignInResponse>;
 
   /**
-   * Login to a specific tenant
+   * Login to a specific tenant with email and password.
+   *
+   * @returns SignInResponse scoped to the target tenant.
    */
   tenantLogin(request: TenantLoginRequest): Promise<SignInResponse>;
 
   /**
-   * Introspect a token (validate and get metadata)
+   * Introspect a token to check validity and get metadata.
+   *
+   * @param token - The token to introspect (defaults to the current session token).
+   * @returns TokenIntrospectionResponse with `active`, `userUniqueId`, `scopes`, `expiresAt`.
    */
   introspectToken(token?: string): Promise<TokenIntrospectionResponse>;
 
   /**
-   * Refresh an access token using a refresh token
+   * Refresh an access token using a refresh token (OAuth2 endpoint).
+   *
+   * @returns New `accessToken`, optional `refreshToken`, `tokenType`, `expiresIn`.
    */
   refreshToken(refreshToken: string): Promise<{
     accessToken: string;
@@ -51,27 +62,35 @@ export interface OAuthService {
   }>;
 
   /**
-   * Revoke a single token
+   * Revoke a single token (access or refresh).
+   *
+   * @returns TokenRevokeResponse with `revoked`, `message`, `revokedAt`.
    */
   revokeToken(request: TokenRevokeRequest): Promise<TokenRevokeResponse>;
 
   /**
-   * Revoke all tokens for a user
+   * Revoke all tokens for a user (or all tokens for a specific device).
+   *
+   * @returns TokenRevokeResponse with `revoked`, `message`, `revokedAt`.
    */
   revokeAllTokens(request: TokenRevokeAllRequest): Promise<TokenRevokeResponse>;
 
   /**
-   * Create a tenant context (switch to a different tenant)
+   * Create a tenant context - switch the current session to a different tenant/company.
+   *
+   * @returns TenantContextResponse with `tenantContextToken`, `expiresIn`, `tenantInfo`.
    */
   createTenantContext(request: TenantContextCreateRequest): Promise<TenantContextResponse>;
 
   /**
-   * Revoke a tenant context
+   * Revoke an active tenant context, returning to the original tenant.
    */
   revokeTenantContext(request: TenantContextRevokeRequest): Promise<{ message: string }>;
 
   /**
-   * Get tenant context audit log
+   * Get the audit log of tenant context switches.
+   *
+   * @returns Array of TenantContextAuditEntry with `companyName`, `switchReason`, `active`, `revoked`.
    */
   getTenantContextAudit(): Promise<TenantContextAuditEntry[]>;
 }

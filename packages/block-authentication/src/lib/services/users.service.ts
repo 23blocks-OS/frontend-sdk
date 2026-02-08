@@ -142,110 +142,177 @@ export interface UpdateProfileRequest {
 }
 
 /**
- * Users service
+ * Users service - CRUD operations on users, profiles, devices, companies, and subscriptions.
  */
 export interface UsersService {
   /**
-   * List users with pagination and filtering
+   * List users with pagination and filtering.
+   *
+   * @returns PageResult containing User objects (without relationships by default).
+   *   Use `include: ['role', 'user_avatar', 'user_profile']` in params to load relationships.
    */
   list(params?: ListParams): Promise<PageResult<User>>;
 
   /**
-   * Get a user by unique ID
+   * Get a user by unique ID with role, avatar, and profile pre-loaded.
+   *
+   * @param uniqueId - The user's UUID (not database ID).
+   * @returns User with `role`, `avatar`, and `profile` relationships populated.
    */
   get(uniqueId: string): Promise<User>;
 
   /**
-   * Get a user by unique ID (alias)
+   * Get a user by unique ID via the `/by_unique_id/` endpoint. Same result as `get()`.
+   *
+   * @param uniqueId - The user's UUID.
+   * @returns User with `role`, `avatar`, and `profile` relationships populated.
    */
   getByUniqueId(uniqueId: string): Promise<User>;
 
   /**
-   * Update a user
+   * Update a user's core fields (name, username, nickname, bio, role, status).
+   *
+   * @param uniqueId - The user's UUID.
+   * @returns The updated User.
+   * @note This updates the User record, not the profile. Use `updateProfile()` for profile fields.
    */
   update(uniqueId: string, request: UpdateUserRequest): Promise<User>;
 
   /**
-   * Update user profile
+   * Update a user's profile (firstName, lastName, phone, social links, payload, etc.).
+   *
+   * @param userUniqueId - The user's UUID.
+   * @returns The User object (not the profile directly). Access updated profile fields
+   *   via `user.profile?.firstName`, `user.profile?.payload`, etc.
+   * @note Returns a User, not a UserProfile. The updated profile is nested in `user.profile`.
+   * @note The `payload` field must be a JSON object, not a string.
+   * @example
+   * const user = await auth.users.updateProfile(uid, {
+   *   firstName: 'Jane',
+   *   payload: { department: 'Engineering' },
+   * });
+   * console.log(user.profile?.firstName); // 'Jane'
    */
   updateProfile(userUniqueId: string, request: UpdateProfileRequest): Promise<User>;
 
   /**
-   * Delete a user
+   * Soft-delete a user.
+   *
+   * @param uniqueId - The user's UUID.
    */
   delete(uniqueId: string): Promise<void>;
 
   /**
-   * Activate a user
+   * Activate a deactivated user.
+   *
+   * @returns The User with `status: 'active'`.
    */
   activate(uniqueId: string): Promise<User>;
 
   /**
-   * Deactivate a user
+   * Deactivate a user (prevents sign-in without deleting).
+   *
+   * @returns The User with `status: 'inactive'`.
    */
   deactivate(uniqueId: string): Promise<User>;
 
   /**
-   * Change user role
-   * @param uniqueId - User unique ID
-   * @param roleUniqueId - The unique ID of the new role
-   * @param reason - Reason for role change (minimum 10 characters)
-   * @param forceReauth - If true, invalidates user's existing tokens
+   * Change a user's role. Optionally force re-authentication.
+   *
+   * @param uniqueId - User unique ID.
+   * @param roleUniqueId - The unique ID of the new role.
+   * @param reason - Reason for role change (minimum 10 characters).
+   * @param forceReauth - If true, invalidates the user's existing tokens.
+   * @returns The updated User with the new role.
+   * @example
+   * const user = await auth.users.changeRole(
+   *   userUid, roleUid, 'Promoted to admin', true
+   * );
    */
   changeRole(uniqueId: string, roleUniqueId: string, reason: string, forceReauth?: boolean): Promise<User>;
 
   /**
-   * Search users
+   * Search users by a text query (searches name, email, username).
+   *
+   * @param query - Free-text search string.
+   * @returns Paginated User results.
    */
   search(query: string, params?: ListParams): Promise<PageResult<User>>;
 
   /**
-   * Advanced search users by criteria or payload
+   * Advanced search by structured criteria or payload fields.
+   *
+   * @param request - Contains `searchBy` (field-value pairs), `payload` (JSON query), `orderBy`.
+   * @returns Paginated User results.
+   * @example
+   * const results = await auth.users.searchAdvanced({
+   *   searchBy: { status: 'active', role_id: '123' },
+   *   payload: { department: 'Engineering' },
+   *   orderBy: 'created_at desc',
+   * });
    */
   searchAdvanced(request: UserSearchRequest, params?: ListParams): Promise<PageResult<User>>;
 
   /**
-   * Get user profile
+   * Get a user's profile directly (not nested in User).
+   *
+   * @returns UserProfileFull with all profile fields including `payload`.
    */
   getProfile(userUniqueId: string): Promise<UserProfileFull>;
 
   /**
-   * Create or update user profile
+   * Create or update the current user's profile.
+   *
+   * @returns UserProfileFull with the created/updated profile data.
+   * @note The `payload` field accepts both objects and strings (strings are JSON.stringify'd).
    */
   createProfile(request: ProfileRequest): Promise<UserProfileFull>;
 
   /**
-   * Update email address
+   * Update a user's email address. Requires password confirmation.
+   *
+   * @returns The User with the updated email (may trigger re-confirmation).
    */
   updateEmail(userUniqueId: string, request: UpdateEmailRequest): Promise<User>;
 
   /**
-   * Get user devices
+   * Get devices registered to a user.
+   *
+   * @returns Paginated list of UserDeviceFull objects.
    */
   getDevices(userUniqueId: string, params?: ListParams): Promise<PageResult<UserDeviceFull>>;
 
   /**
-   * Add a device
+   * Add a device to the current user.
+   *
+   * @returns The created UserDeviceFull.
    */
   addDevice(request: AddDeviceRequest): Promise<UserDeviceFull>;
 
   /**
-   * Get user's companies
+   * Get all companies a user belongs to (in multi-tenant setups).
+   *
+   * @returns Array of Company objects.
    */
   getCompanies(userUniqueId: string): Promise<Company[]>;
 
   /**
-   * Add subscription to user
+   * Add a subscription to a user.
+   *
+   * @param request - Contains `subscriptionUniqueId` and optional `payload` (object, not string).
+   * @returns The created UserSubscription.
    */
   addSubscription(userUniqueId: string, request: AddUserSubscriptionRequest): Promise<UserSubscription>;
 
   /**
-   * Update user subscription
+   * Update a user's subscription.
+   *
+   * @returns The updated UserSubscription.
    */
   updateSubscription(userUniqueId: string, request: AddUserSubscriptionRequest): Promise<UserSubscription>;
 
   /**
-   * Resend confirmation email by user unique ID
+   * Resend the confirmation email for a specific user (by their UUID, not email).
    */
   resendConfirmationByUniqueId(userUniqueId: string): Promise<void>;
 }

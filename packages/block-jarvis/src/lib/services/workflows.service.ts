@@ -11,13 +11,51 @@ import type {
 import { workflowMapper } from '../mappers/workflow.mapper.js';
 
 export interface WorkflowsService {
+  /**
+   * List workflows with optional filtering and sorting.
+   * @returns Paginated list of Workflow records with metadata.
+   */
   list(params?: ListWorkflowsParams): Promise<PageResult<Workflow>>;
+
+  /**
+   * Get a single workflow by unique ID.
+   * @returns The matching Workflow record.
+   */
   get(uniqueId: string): Promise<Workflow>;
+
+  /**
+   * Create a new workflow.
+   * @returns The newly created Workflow record.
+   */
   create(data: CreateWorkflowRequest): Promise<Workflow>;
+
+  /**
+   * Update an existing workflow.
+   * @returns The updated Workflow record.
+   */
   update(uniqueId: string, data: UpdateWorkflowRequest): Promise<Workflow>;
+
+  /**
+   * Delete a workflow.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Run a workflow with input data.
+   * @returns RunWorkflowResponse with execution ID, status, and output.
+   */
   run(uniqueId: string, data: RunWorkflowRequest): Promise<RunWorkflowResponse>;
+
+  /**
+   * Pause a running workflow.
+   * @returns The updated Workflow record with paused status.
+   */
   pause(uniqueId: string): Promise<Workflow>;
+
+  /**
+   * Resume a paused workflow.
+   * @returns The updated Workflow record with resumed status.
+   */
   resume(uniqueId: string): Promise<Workflow>;
 }
 

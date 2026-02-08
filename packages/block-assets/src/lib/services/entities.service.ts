@@ -12,20 +12,82 @@ import type {
 import { assetsEntityMapper } from '../mappers/entity.mapper.js';
 
 export interface AssetsEntitiesService {
+  /**
+   * List asset entities with optional filtering and sorting.
+   * @returns Paginated list of AssetsEntity records with metadata.
+   */
   list(params?: ListAssetsEntitiesParams): Promise<PageResult<AssetsEntity>>;
+
+  /**
+   * Get a single asset entity by unique ID.
+   * @returns The matching AssetsEntity record.
+   */
   get(uniqueId: string): Promise<AssetsEntity>;
+
+  /**
+   * Create a new asset entity.
+   * @returns The newly created AssetsEntity record.
+   */
   create(data: CreateAssetsEntityRequest): Promise<AssetsEntity>;
+
+  /**
+   * Update an existing asset entity.
+   * @returns The updated AssetsEntity record.
+   */
   update(uniqueId: string, data: UpdateAssetsEntityRequest): Promise<AssetsEntity>;
+
+  /**
+   * Delete an asset entity.
+   */
   delete(uniqueId: string): Promise<void>;
+
   // Access Management
+
+  /**
+   * List access grants for an entity.
+   * @returns Array of EntityAccess records.
+   */
   listAccesses(uniqueId: string): Promise<EntityAccess[]>;
+
+  /**
+   * Get the access record for an entity.
+   * @returns The EntityAccess record.
+   */
   getAccess(uniqueId: string): Promise<EntityAccess>;
+
+  /**
+   * Make an entity publicly accessible.
+   */
   makePublic(uniqueId: string): Promise<void>;
+
+  /**
+   * Revoke a specific access grant for an entity.
+   */
   revokeAccess(uniqueId: string, accessUniqueId: string): Promise<void>;
+
   // Access Requests
+
+  /**
+   * Request access to an entity.
+   * @returns The newly created AccessRequest record.
+   */
   requestAccess(uniqueId: string, data: CreateAccessRequestRequest): Promise<AccessRequest>;
+
+  /**
+   * List pending access requests for an entity.
+   * @returns Array of AccessRequest records.
+   */
   listAccessRequests(uniqueId: string): Promise<AccessRequest[]>;
+
+  /**
+   * Approve an access request for an entity.
+   * @returns The approved AccessRequest record.
+   */
   approveAccessRequest(uniqueId: string, requestUniqueId: string): Promise<AccessRequest>;
+
+  /**
+   * Deny an access request for an entity.
+   */
   denyAccessRequest(uniqueId: string, requestUniqueId: string): Promise<void>;
 }
 

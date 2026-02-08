@@ -10,17 +10,57 @@ import type {
 import { executionCommentMapper } from '../mappers/comment.mapper.js';
 
 export interface ExecutionCommentsService {
+  /**
+   * List comments on an execution with optional filtering and sorting.
+   * @returns Paginated list of ExecutionComment records with metadata.
+   */
   list(promptUniqueId: string, executionUniqueId: string, params?: ListExecutionCommentsParams): Promise<PageResult<ExecutionComment>>;
+
+  /**
+   * Get a single execution comment by unique ID.
+   * @returns The matching ExecutionComment record.
+   */
   get(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<ExecutionComment>;
+
+  /**
+   * Create a new comment on an execution.
+   * @returns The newly created ExecutionComment record.
+   */
   create(promptUniqueId: string, executionUniqueId: string, data: CreateExecutionCommentRequest): Promise<ExecutionComment>;
+
+  /**
+   * Update an existing execution comment.
+   * @returns The updated ExecutionComment record.
+   */
   update(promptUniqueId: string, executionUniqueId: string, uniqueId: string, data: UpdateExecutionCommentRequest): Promise<ExecutionComment>;
+
+  /**
+   * Delete an execution comment.
+   */
   delete(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
+
+  /** Like an execution comment. */
   like(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
+
+  /** Remove a like from an execution comment. */
   dislike(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
+
+  /**
+   * Reply to an execution comment.
+   * @returns The newly created reply ExecutionComment record.
+   */
   reply(promptUniqueId: string, executionUniqueId: string, uniqueId: string, data: ReplyToCommentRequest): Promise<ExecutionComment>;
+
+  /** Follow an execution comment to receive notifications. */
   follow(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
+
+  /** Unfollow an execution comment. */
   unfollow(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
+
+  /** Save an execution comment to bookmarks. */
   save(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
+
+  /** Remove an execution comment from bookmarks. */
   unsave(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
 }
 

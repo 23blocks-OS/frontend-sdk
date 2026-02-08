@@ -5,7 +5,19 @@ import type {
 } from '../types/notification-settings.js';
 
 export interface NotificationSettingsService {
+  /**
+   * Get notification settings for a user
+   * @param userUniqueId - Unique ID of the user
+   * @returns NotificationSettings with channel toggles, quiet hours, timezone, and preferences
+   */
   get(userUniqueId: string): Promise<NotificationSettings>;
+
+  /**
+   * Update notification settings for a user
+   * @param userUniqueId - Unique ID of the user
+   * @param data - Settings fields to update (channel toggles, quiet hours, timezone, preferences)
+   * @returns The updated NotificationSettings record
+   */
   update(userUniqueId: string, data: UpdateNotificationSettingsRequest): Promise<NotificationSettings>;
 }
 

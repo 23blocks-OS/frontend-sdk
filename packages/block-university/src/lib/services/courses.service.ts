@@ -9,14 +9,57 @@ import type {
 import { courseMapper } from '../mappers/course.mapper.js';
 
 export interface CoursesService {
+  /**
+   * List courses with optional filtering and sorting.
+   * @returns Paginated list of Course records with metadata.
+   */
   list(params?: ListCoursesParams): Promise<PageResult<Course>>;
+
+  /**
+   * Get a single course by unique ID.
+   * @returns The matching Course record.
+   */
   get(uniqueId: string): Promise<Course>;
+
+  /**
+   * Create a new course.
+   * @returns The newly created Course record.
+   */
   create(data: CreateCourseRequest): Promise<Course>;
+
+  /**
+   * Update an existing course.
+   * @returns The updated Course record.
+   */
   update(uniqueId: string, data: UpdateCourseRequest): Promise<Course>;
+
+  /**
+   * Delete a course.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Publish a course to make it available.
+   * @returns The Course record with published status.
+   */
   publish(uniqueId: string): Promise<Course>;
+
+  /**
+   * Unpublish a course to make it unavailable.
+   * @returns The Course record with unpublished status.
+   */
   unpublish(uniqueId: string): Promise<Course>;
+
+  /**
+   * List courses for a specific instructor.
+   * @returns Paginated list of Course records for the instructor.
+   */
   listByInstructor(instructorUniqueId: string, params?: ListCoursesParams): Promise<PageResult<Course>>;
+
+  /**
+   * List courses in a specific category.
+   * @returns Paginated list of Course records in the category.
+   */
   listByCategory(categoryUniqueId: string, params?: ListCoursesParams): Promise<PageResult<Course>>;
 }
 

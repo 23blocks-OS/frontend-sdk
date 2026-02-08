@@ -9,13 +9,62 @@ import type {
 import { regionMapper } from '../mappers/region.mapper.js';
 
 export interface RegionsService {
+  /**
+   * List all regions
+   * @param params - Optional filtering by country code, search, status, and pagination
+   * @returns Paginated result containing Region items and metadata
+   */
   list(params?: ListRegionsParams): Promise<PageResult<Region>>;
+
+  /**
+   * Get a specific region
+   * @param uniqueId - The unique identifier of the region
+   * @returns The matching Region record
+   */
   get(uniqueId: string): Promise<Region>;
+
+  /**
+   * Create a new region
+   * @param data - Region details including name, code, country, and media URLs
+   * @returns The newly created Region record
+   */
   create(data: CreateRegionRequest): Promise<Region>;
+
+  /**
+   * Update an existing region
+   * @param uniqueId - The unique identifier of the region to update
+   * @param data - Fields to update such as name, code, country, media URLs, or status
+   * @returns The updated Region record
+   */
   update(uniqueId: string, data: UpdateRegionRequest): Promise<Region>;
+
+  /**
+   * Delete a region (soft delete)
+   * @param uniqueId - The unique identifier of the region to delete
+   * @returns Resolves when the region has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously deleted region
+   * @param uniqueId - The unique identifier of the deleted region
+   * @returns The recovered Region record
+   */
   recover(uniqueId: string): Promise<Region>;
+
+  /**
+   * Search regions by query string
+   * @param query - The search query text
+   * @param params - Optional additional filtering and pagination
+   * @returns Paginated result of Region records matching the search query
+   */
   search(query: string, params?: ListRegionsParams): Promise<PageResult<Region>>;
+
+  /**
+   * List soft-deleted regions
+   * @param params - Optional pagination parameters
+   * @returns Paginated result of deleted Region records
+   */
   listDeleted(params?: ListRegionsParams): Promise<PageResult<Region>>;
 }
 

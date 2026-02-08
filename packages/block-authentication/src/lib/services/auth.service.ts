@@ -29,101 +29,151 @@ import { userMapper } from '../mappers/index.js';
 import type { AuthenticationBlockConfig } from '../authentication.block.js';
 
 /**
- * Authentication service
+ * Authentication service - handles sign in, sign up, sign out, password management,
+ * magic links, invitations, email confirmation, and account recovery.
  */
 export interface AuthService {
   /**
-   * Sign in with email and password
+   * Sign in with email and password.
+   *
+   * @returns SignInResponse containing `user` (with role/avatar/profile if included),
+   *   `accessToken`, optional `refreshToken`, `tokenType`, and `expiresIn`.
+   * @example
+   * const { user, accessToken } = await auth.auth.signIn({
+   *   email: 'user@example.com',
+   *   password: 'password',
+   * });
    */
   signIn(request: SignInRequest): Promise<SignInResponse>;
 
   /**
-   * Sign up a new user
+   * Sign up a new user.
+   *
+   * @returns SignUpResponse containing `user`, optional `accessToken` (may be absent
+   *   if email confirmation is required), and optional `message`.
+   * @note If email confirmation is enabled, `accessToken` will be undefined until confirmed.
    */
   signUp(request: SignUpRequest): Promise<SignUpResponse>;
 
   /**
-   * Sign out the current user
+   * Sign out the current user. Invalidates the current session server-side.
    */
   signOut(): Promise<void>;
 
   /**
-   * Validate the current token and get user info
+   * Validate the current token and get basic user info.
+   *
+   * @returns TokenValidationResponse with `user` (without relationships) and `valid: true`.
+   * @note Unlike `getCurrentUser()`, this does NOT include role, avatar, or profile relationships.
+   *   Use this for lightweight token checks; use `getCurrentUser()` for full user data.
    */
   validateToken(): Promise<TokenValidationResponse>;
 
   /**
-   * Get the current authenticated user
+   * Get the current authenticated user with all relationships pre-loaded.
+   *
+   * @returns User with `role`, `avatar`, and `profile` relationships populated.
+   *   Access profile data via `user.profile?.firstName`, role via `user.role?.name`.
+   * @example
+   * const user = await auth.auth.getCurrentUser();
+   * console.log(user.profile?.firstName); // 'Jane'
+   * console.log(user.role?.name);         // 'admin'
+   * console.log(user.avatar?.url);        // 'https://...'
    */
   getCurrentUser(): Promise<User>;
 
   /**
-   * Request a password reset email
+   * Request a password reset email. Sends an email with a reset link.
+   *
+   * @param request - Contains `email` and optional `redirectUrl` for the reset page.
    */
   requestPasswordReset(request: PasswordResetRequest): Promise<void>;
 
   /**
-   * Update password (with reset token or current password)
+   * Update password using either a reset token or the current password.
+   *
+   * @param request - Provide `resetPasswordToken` for reset flow, or `currentPassword` for change flow.
    */
   updatePassword(request: PasswordUpdateRequest): Promise<void>;
 
   /**
-   * Refresh the access token
+   * Refresh the access token using a refresh token.
+   *
+   * @returns RefreshTokenResponse with new `accessToken`, optional new `refreshToken`,
+   *   `tokenType`, and `expiresIn`.
    */
   refreshToken(request: RefreshTokenRequest): Promise<RefreshTokenResponse>;
 
   /**
-   * Request a magic link for passwordless login
+   * Request a magic link for passwordless login. Sends an email with a login link.
    */
   requestMagicLink(request: MagicLinkRequest): Promise<void>;
 
   /**
-   * Verify a magic link token
+   * Verify a magic link token and sign in.
+   *
+   * @returns SignInResponse with `user`, `accessToken`, optional `refreshToken`.
    */
   verifyMagicLink(request: MagicLinkVerifyRequest): Promise<SignInResponse>;
 
   /**
-   * Send an invitation to a new user
+   * Send an invitation email to a new user.
+   *
+   * @param request - Contains `email`, optional `roleId`, and optional `redirectUrl`.
    */
   sendInvitation(request: InvitationRequest): Promise<void>;
 
   /**
-   * Accept an invitation
+   * Accept an invitation and create the user's account.
+   *
+   * @returns SignInResponse with the new `user`, `accessToken`, optional `refreshToken`.
    */
   acceptInvitation(request: AcceptInvitationRequest): Promise<SignInResponse>;
 
   /**
-   * Confirm email with token
+   * Confirm email address using a confirmation token (from the confirmation email link).
+   *
+   * @returns The confirmed User.
    */
   confirmEmail(token: string): Promise<User>;
 
   /**
-   * Resend confirmation email
+   * Resend the confirmation email for an unconfirmed user.
    */
   resendConfirmation(request: ResendConfirmationRequest): Promise<void>;
 
   /**
-   * Validate email before registration (check if exists, format, etc.)
+   * Validate an email before registration. Checks format, existence, and account status.
+   *
+   * @returns ValidateEmailResponse with `exists`, `wellFormed`, `canRecover`, `accountStatus`.
    */
   validateEmail(request: ValidateEmailRequest): Promise<ValidateEmailResponse>;
 
   /**
-   * Validate document before registration (check if exists)
+   * Validate a document (e.g., ID number) before registration. Checks existence and account status.
+   *
+   * @returns ValidateDocumentResponse with `exists`, `canRecover`, `maskedEmail`, `accountStatus`.
    */
   validateDocument(request: ValidateDocumentRequest): Promise<ValidateDocumentResponse>;
 
   /**
-   * Resend invitation email
+   * Resend an invitation email to a previously invited user.
+   *
+   * @returns The User whose invitation was resent.
    */
   resendInvitation(request: ResendInvitationRequest): Promise<User>;
 
   /**
-   * Request account recovery (for deleted accounts)
+   * Request account recovery for a deleted/deactivated account. Sends a recovery email.
+   *
+   * @returns AccountRecoveryResponse with `success` and `message`.
    */
   requestAccountRecovery(request: AccountRecoveryRequest): Promise<AccountRecoveryResponse>;
 
   /**
-   * Complete account recovery with new password
+   * Complete account recovery by setting a new password with the recovery token.
+   *
+   * @returns The recovered User.
    */
   completeAccountRecovery(request: CompleteRecoveryRequest): Promise<User>;
 }

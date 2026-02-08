@@ -17,14 +17,80 @@ export interface CreateProductImageRequest {
 }
 
 export interface ProductImagesService {
+  /**
+   * Get a presigned URL for uploading a product image.
+   * @param productUniqueId - The product unique ID
+   * @returns PresignResponse containing the upload URL, form fields, and storage key
+   */
   presign(productUniqueId: string): Promise<PresignResponse>;
+
+  /**
+   * Get presigned URLs for a multipart upload of a large product image.
+   * @param productUniqueId - The product unique ID
+   * @param filename - The original filename
+   * @param contentType - The MIME type of the file
+   * @param totalParts - Number of parts the file will be split into
+   * @returns Object containing the uploadId and an array of presigned URLs, one per part
+   */
   multipartPresign(productUniqueId: string, filename: string, contentType: string, totalParts: number): Promise<{ uploadId: string; urls: string[] }>;
+
+  /**
+   * Complete a multipart upload by assembling uploaded parts.
+   * @param productUniqueId - The product unique ID
+   * @param uploadId - The multipart upload ID received from multipartPresign
+   * @param key - The storage key for the assembled file
+   * @param parts - Array of uploaded parts with their etag and part number
+   * @returns Resolves when the multipart upload has been completed
+   */
   multipartComplete(productUniqueId: string, uploadId: string, key: string, parts: { etag: string; partNumber: number }[]): Promise<void>;
+
+  /**
+   * Create a product image record after uploading the file.
+   * @param productUniqueId - The product unique ID
+   * @param data - Image metadata including the storage key, filename, content type, and primary flag
+   * @returns The newly created ProductImage
+   */
   create(productUniqueId: string, data: CreateProductImageRequest): Promise<ProductImage>;
+
+  /**
+   * Get a single product image by its unique identifier.
+   * @param productUniqueId - The product unique ID
+   * @param imageUniqueId - The image unique ID
+   * @returns The matching ProductImage
+   */
   get(productUniqueId: string, imageUniqueId: string): Promise<ProductImage>;
+
+  /**
+   * Update a product image (e.g., toggle primary status).
+   * @param productUniqueId - The product unique ID
+   * @param imageUniqueId - The image unique ID
+   * @param data - Fields to update (isPrimary)
+   * @returns The updated ProductImage
+   */
   update(productUniqueId: string, imageUniqueId: string, data: { isPrimary?: boolean }): Promise<ProductImage>;
+
+  /**
+   * Delete a product image.
+   * @param productUniqueId - The product unique ID
+   * @param imageUniqueId - The image unique ID
+   * @returns Resolves when the image has been deleted
+   */
   delete(productUniqueId: string, imageUniqueId: string): Promise<void>;
+
+  /**
+   * Approve a product image for use.
+   * @param productUniqueId - The product unique ID
+   * @param imageUniqueId - The image unique ID
+   * @returns The approved ProductImage
+   */
   approve(productUniqueId: string, imageUniqueId: string): Promise<ProductImage>;
+
+  /**
+   * Publish a product image, making it publicly visible.
+   * @param productUniqueId - The product unique ID
+   * @param imageUniqueId - The image unique ID
+   * @returns The published ProductImage
+   */
   publish(productUniqueId: string, imageUniqueId: string): Promise<ProductImage>;
 }
 

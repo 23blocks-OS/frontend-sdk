@@ -9,12 +9,45 @@ import type {
 import { employeeAssignmentMapper } from '../mappers/employee-assignment.mapper.js';
 
 export interface EmployeeAssignmentsService {
+  /**
+   * List employee assignments with optional filtering and sorting.
+   * @returns Paginated list of EmployeeAssignment records with metadata.
+   */
   list(params?: ListEmployeeAssignmentsParams): Promise<PageResult<EmployeeAssignment>>;
+
+  /**
+   * Get a single employee assignment by unique ID.
+   * @returns The matching EmployeeAssignment record.
+   */
   get(uniqueId: string): Promise<EmployeeAssignment>;
+
+  /**
+   * Create a new employee assignment.
+   * @returns The newly created EmployeeAssignment record.
+   */
   create(data: CreateEmployeeAssignmentRequest): Promise<EmployeeAssignment>;
+
+  /**
+   * Update an existing employee assignment.
+   * @returns The updated EmployeeAssignment record.
+   */
   update(uniqueId: string, data: UpdateEmployeeAssignmentRequest): Promise<EmployeeAssignment>;
+
+  /**
+   * Delete an employee assignment.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List all assignments for a specific user.
+   * @returns Array of EmployeeAssignment records for the user.
+   */
   listByUser(userUniqueId: string): Promise<EmployeeAssignment[]>;
+
+  /**
+   * List all assignments for a specific position.
+   * @returns Array of EmployeeAssignment records for the position.
+   */
   listByPosition(positionUniqueId: string): Promise<EmployeeAssignment[]>;
 }
 

@@ -9,13 +9,62 @@ import type {
 import { premiseMapper } from '../mappers/premise.mapper.js';
 
 export interface PremisesService {
+  /**
+   * List all premises
+   * @param params - Optional filtering by type, location, address, area, parent, search, and pagination
+   * @returns Paginated result containing Premise items and metadata
+   */
   list(params?: ListPremisesParams): Promise<PageResult<Premise>>;
+
+  /**
+   * Get a specific premise
+   * @param uniqueId - The unique identifier of the premise
+   * @returns The matching Premise record
+   */
   get(uniqueId: string): Promise<Premise>;
+
+  /**
+   * Create a new premise
+   * @param data - Premise details including name, code, location, type, floor, and capacity
+   * @returns The newly created Premise record
+   */
   create(data: CreatePremiseRequest): Promise<Premise>;
+
+  /**
+   * Update an existing premise
+   * @param uniqueId - The unique identifier of the premise to update
+   * @param data - Fields to update such as name, type, capacity, instructions, or status
+   * @returns The updated Premise record
+   */
   update(uniqueId: string, data: UpdatePremiseRequest): Promise<Premise>;
+
+  /**
+   * Delete a premise (soft delete)
+   * @param uniqueId - The unique identifier of the premise to delete
+   * @returns Resolves when the premise has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously deleted premise
+   * @param uniqueId - The unique identifier of the deleted premise
+   * @returns The recovered Premise record
+   */
   recover(uniqueId: string): Promise<Premise>;
+
+  /**
+   * Search premises by query string
+   * @param query - The search query text
+   * @param params - Optional additional filtering and pagination
+   * @returns Paginated result of Premise records matching the search query
+   */
   search(query: string, params?: ListPremisesParams): Promise<PageResult<Premise>>;
+
+  /**
+   * List soft-deleted premises
+   * @param params - Optional pagination parameters
+   * @returns Paginated result of deleted Premise records
+   */
   listDeleted(params?: ListPremisesParams): Promise<PageResult<Premise>>;
 }
 

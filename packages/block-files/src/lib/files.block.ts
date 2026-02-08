@@ -20,23 +20,49 @@ import {
   type FileAccessRequestsService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Files block.
+ */
 export interface FilesBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * File storage and management block interface.
+ */
 export interface FilesBlock {
+  /** Storage file upload and download operations */
   storageFiles: StorageFilesService;
+  /** Entity-associated file management */
   entityFiles: EntityFilesService;
+  /** File schema definition management */
   fileSchemas: FileSchemasService;
+  /** User-associated file management */
   userFiles: UserFilesService;
+  /** File category management */
   fileCategories: FileCategoriesService;
+  /** File tag management */
   fileTags: FileTagsService;
+  /** File delegation management */
   delegations: DelegationsService;
+  /** File access control management */
   fileAccess: FileAccessService;
+  /** File access request management */
   fileAccessRequests: FileAccessRequestsService;
 }
 
+/**
+ * Create the Files block.
+ *
+ * @example
+ * ```typescript
+ * const block = createFilesBlock(transport, { appId: 'xxx' });
+ * const files = await block.storageFiles.list({ page: 1 });
+ * ```
+ */
 export function createFilesBlock(
   transport: Transport,
   config: FilesBlockConfig

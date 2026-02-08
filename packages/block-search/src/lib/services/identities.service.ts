@@ -9,9 +9,38 @@ import type {
 import { searchIdentityMapper } from '../mappers/identity.mapper.js';
 
 export interface IdentitiesService {
+  /**
+   * List search identities with optional filtering, pagination, and sorting.
+   * @param params - Optional filtering, pagination, and sorting parameters.
+   * @returns A paginated result containing an array of {@link SearchIdentity} items and pagination metadata.
+   * @note The `perPage` param is sent as `records` to the backend API.
+   * @note Sort order is expressed via a `-` prefix on the field name for descending (JSON:API convention).
+   */
   list(params?: ListIdentitiesParams): Promise<PageResult<SearchIdentity>>;
+
+  /**
+   * Get a single search identity by its unique ID.
+   * @param uniqueId - The unique identifier of the identity.
+   * @returns The matching {@link SearchIdentity}.
+   */
   get(uniqueId: string): Promise<SearchIdentity>;
+
+  /**
+   * Register a new search identity under a given unique ID.
+   * @param uniqueId - The unique identifier to assign to the identity.
+   * @param data - The identity registration payload including email, name fields, and optional avatar/payload.
+   * @returns The newly created {@link SearchIdentity} as persisted by the backend.
+   * @note The `uniqueId` is part of the URL path (`/identities/{uniqueId}/register/`), not the request body.
+   */
   register(uniqueId: string, data: RegisterIdentityRequest): Promise<SearchIdentity>;
+
+  /**
+   * Update an existing search identity.
+   * @param uniqueId - The unique identifier of the identity to update.
+   * @param data - The fields to update. All fields are optional.
+   * @returns The updated {@link SearchIdentity}.
+   * @note Uses PUT (not PATCH) for the update request.
+   */
   update(uniqueId: string, data: UpdateIdentityRequest): Promise<SearchIdentity>;
 }
 

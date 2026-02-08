@@ -52,39 +52,81 @@ import {
   type ProductVendorsService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Products block.
+ */
 export interface ProductsBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * E-commerce product catalog and cart management block interface.
+ */
 export interface ProductsBlock {
+  /** Product CRUD operations */
   products: ProductsService;
+  /** Shopping cart management */
   cart: CartService;
+  /** Cart line-item detail management */
   cartDetails: CartDetailsService;
+  /** Product category management */
   categories: CategoriesService;
+  /** Brand management */
   brands: BrandsService;
+  /** Vendor management */
   vendors: VendorsService;
+  /** Warehouse management */
   warehouses: WarehousesService;
+  /** Sales channel management */
   channels: ChannelsService;
+  /** Product collection management */
   collections: CollectionsService;
+  /** Product set management */
   productSets: ProductSetsService;
+  /** Shopping list management */
   shoppingLists: ShoppingListsService;
+  /** Product promotion management */
   promotions: ProductPromotionsService;
+  /** Product pricing management */
   prices: ProductPricesService;
+  /** Product filter management */
   filters: ProductFiltersService;
+  /** Product image management */
   images: ProductImagesService;
+  /** Product variation management */
   variations: ProductVariationsService;
+  /** Product review management */
   reviews: ProductReviewsService;
+  /** Product variation review management */
   variationReviews: ProductVariationReviewsService;
+  /** Stock/inventory management */
   stock: StockService;
+  /** Product suggestion management */
   suggestions: ProductSuggestionsService;
+  /** Product add-on management */
   addons: AddonsService;
+  /** Current user cart management */
   myCarts: MyCartsService;
+  /** Remarketing campaign management */
   remarketing: RemarketingService;
+  /** Visitor tracking */
   visitors: VisitorsService;
+  /** Product-vendor association management */
   productVendors: ProductVendorsService;
 }
 
+/**
+ * Create the Products block.
+ *
+ * @example
+ * ```typescript
+ * const block = createProductsBlock(transport, { appId: 'xxx' });
+ * const products = await block.products.list({ page: 1 });
+ * ```
+ */
 export function createProductsBlock(
   transport: Transport,
   config: ProductsBlockConfig

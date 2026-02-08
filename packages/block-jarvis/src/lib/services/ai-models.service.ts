@@ -9,10 +9,33 @@ import type {
 import { aiModelMapper } from '../mappers/ai-model.mapper.js';
 
 export interface AIModelsService {
+  /**
+   * List AI models with optional filtering and sorting.
+   * @returns Paginated list of AIModel records with metadata.
+   */
   list(params?: ListAIModelsParams): Promise<PageResult<AIModel>>;
+
+  /**
+   * Get a single AI model by unique ID.
+   * @returns The matching AIModel record.
+   */
   get(uniqueId: string): Promise<AIModel>;
+
+  /**
+   * Create a new AI model configuration.
+   * @returns The newly created AIModel record.
+   */
   create(data: CreateAIModelRequest): Promise<AIModel>;
+
+  /**
+   * Update an existing AI model configuration.
+   * @returns The updated AIModel record.
+   */
   update(uniqueId: string, data: UpdateAIModelRequest): Promise<AIModel>;
+
+  /**
+   * Delete an AI model.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

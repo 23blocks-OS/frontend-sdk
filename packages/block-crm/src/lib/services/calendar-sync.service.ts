@@ -8,7 +8,17 @@ export interface CalendarSyncResult {
 }
 
 export interface CalendarSyncService {
+  /**
+   * Trigger a calendar sync for a specific user.
+   * @param userUniqueId - The unique identifier of the user whose calendar to sync.
+   * @returns A CalendarSyncResult indicating success status, number of synced events, any errors, and sync timestamp.
+   */
   syncUser(userUniqueId: string): Promise<CalendarSyncResult>;
+
+  /**
+   * Trigger a calendar sync for the entire tenant.
+   * @returns A CalendarSyncResult indicating success status, number of synced events, any errors, and sync timestamp.
+   */
   syncTenant(): Promise<CalendarSyncResult>;
 }
 

@@ -9,10 +9,33 @@ import type {
 import { workflowParticipantMapper } from '../mappers/workflow-participant.mapper.js';
 
 export interface WorkflowParticipantsService {
+  /**
+   * List participants in a workflow with optional filtering and sorting.
+   * @returns Paginated list of WorkflowParticipant records with metadata.
+   */
   list(workflowUniqueId: string, params?: ListWorkflowParticipantsParams): Promise<PageResult<WorkflowParticipant>>;
+
+  /**
+   * Get a single workflow participant by unique ID.
+   * @returns The matching WorkflowParticipant record.
+   */
   get(workflowUniqueId: string, uniqueId: string): Promise<WorkflowParticipant>;
+
+  /**
+   * Add a participant to a workflow.
+   * @returns The newly created WorkflowParticipant record.
+   */
   add(workflowUniqueId: string, data: AddWorkflowParticipantRequest): Promise<WorkflowParticipant>;
+
+  /**
+   * Update a workflow participant's role or permissions.
+   * @returns The updated WorkflowParticipant record.
+   */
   update(workflowUniqueId: string, uniqueId: string, data: UpdateWorkflowParticipantRequest): Promise<WorkflowParticipant>;
+
+  /**
+   * Remove a participant from a workflow.
+   */
   remove(workflowUniqueId: string, uniqueId: string): Promise<void>;
 }
 

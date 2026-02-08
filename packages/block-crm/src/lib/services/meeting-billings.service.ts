@@ -15,16 +15,83 @@ import type {
 import { meetingBillingMapper } from '../mappers/meeting-billing.mapper.js';
 
 export interface MeetingBillingsService {
+  /**
+   * List billing records for a specific meeting with optional filtering, pagination, and sorting.
+   * @param meetingUniqueId - The unique identifier of the parent meeting.
+   * @param params - Optional filtering (status, billingStatus, payerName, search), pagination, and sorting.
+   * @returns Paginated result containing MeetingBilling objects and metadata.
+   */
   list(meetingUniqueId: string, params?: ListMeetingBillingsParams): Promise<PageResult<MeetingBilling>>;
+
+  /**
+   * Retrieve a single billing record by its unique identifier.
+   * @param uniqueId - The unique identifier of the billing record.
+   * @returns The matching MeetingBilling object.
+   */
   get(uniqueId: string): Promise<MeetingBilling>;
+
+  /**
+   * Create a new billing record for a meeting.
+   * @param meetingUniqueId - The unique identifier of the parent meeting.
+   * @param data - The billing creation payload with participant, amount, currency, and due date.
+   * @returns The newly created MeetingBilling object.
+   */
   create(meetingUniqueId: string, data: CreateMeetingBillingRequest): Promise<MeetingBilling>;
+
+  /**
+   * Update an existing billing record.
+   * @param uniqueId - The unique identifier of the billing record to update.
+   * @param data - The fields to update on the billing record.
+   * @returns The updated MeetingBilling object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(uniqueId: string, data: UpdateMeetingBillingRequest): Promise<MeetingBilling>;
+
+  /**
+   * Delete a billing record.
+   * @param uniqueId - The unique identifier of the billing record to delete.
+   * @returns Resolves when the billing record has been deleted.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Retrieve the payment split breakdown for a billing record.
+   * @param uniqueId - The unique identifier of the billing record.
+   * @returns An array of PaymentSplit objects showing how the payment is distributed.
+   */
   getPaymentSplit(uniqueId: string): Promise<PaymentSplit[]>;
+
+  /**
+   * Retrieve EAP (Employee Assistance Program) session details for a participant and payer.
+   * @param participantEmail - The email address of the participant.
+   * @param payerName - The name of the payer.
+   * @returns An EapSession object with session details.
+   */
   getEapSessions(participantEmail: string, payerName: string): Promise<EapSession>;
+
+  /**
+   * Retrieve outstanding billing amounts grouped by payer.
+   * @returns An array of OutstandingByPayer objects with payer names and amounts.
+   */
   getOutstandingByPayer(): Promise<OutstandingByPayer[]>;
+
+  /**
+   * Retrieve the billing revenue report.
+   * @returns A BillingRevenueReport with revenue totals and breakdowns.
+   */
   getRevenueReport(): Promise<BillingRevenueReport>;
+
+  /**
+   * Retrieve the billing aging report.
+   * @returns A BillingAgingReport with amounts bucketed by days outstanding.
+   */
   getAgingReport(): Promise<BillingAgingReport>;
+
+  /**
+   * Retrieve billing report for a specific participant.
+   * @param participantEmail - The email address of the participant.
+   * @returns A BillingParticipantReport with billing totals and session details.
+   */
   getParticipantReport(participantEmail: string): Promise<BillingParticipantReport>;
 }
 

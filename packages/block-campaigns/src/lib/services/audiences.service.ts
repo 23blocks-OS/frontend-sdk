@@ -10,11 +10,39 @@ import type {
 import { audienceMapper, audienceMemberMapper } from '../mappers/audience.mapper.js';
 
 export interface AudiencesService {
+  /**
+   * List audiences with optional filtering and sorting.
+   * @returns Paginated list of Audience records with metadata.
+   */
   list(params?: ListAudiencesParams): Promise<PageResult<Audience>>;
+
+  /**
+   * Get a single audience by unique ID.
+   * @returns The matching Audience record.
+   */
   get(uniqueId: string): Promise<Audience>;
+
+  /**
+   * Create a new audience.
+   * @returns The newly created Audience record.
+   */
   create(data: CreateAudienceRequest): Promise<Audience>;
+
+  /**
+   * Update an existing audience.
+   * @returns The updated Audience record.
+   */
   update(uniqueId: string, data: UpdateAudienceRequest): Promise<Audience>;
+
+  /**
+   * Delete an audience.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Get all members belonging to an audience.
+   * @returns Array of AudienceMember records.
+   */
   getMembers(uniqueId: string): Promise<AudienceMember[]>;
 }
 

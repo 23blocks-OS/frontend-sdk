@@ -29,46 +29,200 @@ import {
 } from '../mappers/catalog.mapper.js';
 
 export interface CategoriesService {
+  /**
+   * List categories with optional filtering and pagination.
+   * @param params - Filter and pagination options including parent category, children, and products includes
+   * @returns Paginated result containing an array of Category items and page metadata
+   * @note Supports including related children and products via `withChildren` and `withProducts` params
+   */
   list(params?: ListCategoriesParams): Promise<PageResult<Category>>;
+
+  /**
+   * Get a single category by its unique identifier.
+   * @param uniqueId - The category unique ID
+   * @returns The matching Category
+   */
   get(uniqueId: string): Promise<Category>;
+
+  /**
+   * Create a new category.
+   * @param data - Category creation payload including name, description, and optional parent reference
+   * @returns The newly created Category
+   */
   create(data: CreateCategoryRequest): Promise<Category>;
+
+  /**
+   * Update an existing category.
+   * @param uniqueId - The category unique ID
+   * @param data - Fields to update on the category
+   * @returns The updated Category
+   */
   update(uniqueId: string, data: UpdateCategoryRequest): Promise<Category>;
+
+  /**
+   * Soft-delete a category.
+   * @param uniqueId - The category unique ID
+   * @returns Resolves when the category has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously soft-deleted category.
+   * @param uniqueId - The category unique ID
+   * @returns The recovered Category
+   */
   recover(uniqueId: string): Promise<Category>;
+
+  /**
+   * Get the child categories of a parent category.
+   * @param uniqueId - The parent category unique ID
+   * @returns Array of child Category items
+   */
   getChildren(uniqueId: string): Promise<Category[]>;
 }
 
 export interface BrandsService {
+  /**
+   * List brands with optional pagination.
+   * @param page - Page number for pagination
+   * @param perPage - Number of items per page
+   * @returns Paginated result containing an array of Brand items and page metadata
+   */
   list(page?: number, perPage?: number): Promise<PageResult<Brand>>;
+
+  /**
+   * Get a single brand by its unique identifier.
+   * @param uniqueId - The brand unique ID
+   * @returns The matching Brand
+   */
   get(uniqueId: string): Promise<Brand>;
+
+  /**
+   * Create a new brand.
+   * @param data - Brand creation payload including name and optional image URL
+   * @returns The newly created Brand
+   */
   create(data: CreateBrandRequest): Promise<Brand>;
+
+  /**
+   * Update an existing brand.
+   * @param uniqueId - The brand unique ID
+   * @param data - Fields to update on the brand
+   * @returns The updated Brand
+   */
   update(uniqueId: string, data: UpdateBrandRequest): Promise<Brand>;
+
+  /**
+   * Delete a brand.
+   * @param uniqueId - The brand unique ID
+   * @returns Resolves when the brand has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
 }
 
 export interface VendorsService {
+  /**
+   * List vendors with optional filtering and pagination.
+   * @param params - Filter and pagination options including search
+   * @returns Paginated result containing an array of Vendor items and page metadata
+   */
   list(params?: ListVendorsParams): Promise<PageResult<Vendor>>;
+
+  /**
+   * Get a single vendor by its unique identifier.
+   * @param uniqueId - The vendor unique ID
+   * @returns The matching Vendor
+   */
   get(uniqueId: string): Promise<Vendor>;
+
+  /**
+   * Create a new vendor.
+   * @param data - Vendor creation payload including name, contact info, and tax ID
+   * @returns The newly created Vendor
+   */
   create(data: CreateVendorRequest): Promise<Vendor>;
+
+  /**
+   * Update an existing vendor.
+   * @param uniqueId - The vendor unique ID
+   * @param data - Fields to update on the vendor
+   * @returns The updated Vendor
+   */
   update(uniqueId: string, data: UpdateVendorRequest): Promise<Vendor>;
+
+  /**
+   * Delete a vendor.
+   * @param uniqueId - The vendor unique ID
+   * @returns Resolves when the vendor has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
 }
 
 export interface WarehousesService {
+  /**
+   * List warehouses with optional filtering and pagination.
+   * @param params - Filter and pagination options including vendor filter
+   * @returns Paginated result containing an array of Warehouse items and page metadata
+   */
   list(params?: ListWarehousesParams): Promise<PageResult<Warehouse>>;
+
+  /**
+   * Get a single warehouse by its unique identifier.
+   * @param uniqueId - The warehouse unique ID
+   * @returns The matching Warehouse
+   */
   get(uniqueId: string): Promise<Warehouse>;
+
+  /**
+   * Create a new warehouse.
+   * @param data - Warehouse creation payload including name, vendor, and location references
+   * @returns The newly created Warehouse
+   */
   create(data: CreateWarehouseRequest): Promise<Warehouse>;
+
+  /**
+   * Update an existing warehouse.
+   * @param uniqueId - The warehouse unique ID
+   * @param data - Fields to update on the warehouse
+   * @returns The updated Warehouse
+   */
   update(uniqueId: string, data: UpdateWarehouseRequest): Promise<Warehouse>;
+
+  /**
+   * Delete a warehouse.
+   * @param uniqueId - The warehouse unique ID
+   * @returns Resolves when the warehouse has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
 }
 
 export interface ChannelsService {
+  /**
+   * List all available sales channels.
+   * @returns Array of Channel items
+   */
   list(): Promise<Channel[]>;
+
+  /**
+   * Get a single channel by its unique identifier.
+   * @param uniqueId - The channel unique ID
+   * @returns The matching Channel
+   */
   get(uniqueId: string): Promise<Channel>;
 }
 
 export interface CollectionsService {
+  /**
+   * List all product collections.
+   * @returns Array of Collection items
+   */
   list(): Promise<Collection[]>;
+
+  /**
+   * Get a single collection by its unique identifier.
+   * @param uniqueId - The collection unique ID
+   * @returns The matching Collection
+   */
   get(uniqueId: string): Promise<Collection>;
 }
 

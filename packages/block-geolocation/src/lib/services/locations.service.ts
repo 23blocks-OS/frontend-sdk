@@ -9,17 +9,92 @@ import type {
 import { locationMapper } from '../mappers/location.mapper.js';
 
 export interface LocationsService {
+  /**
+   * List all locations
+   * @param params - Optional filtering by owner, type, region, search, and pagination
+   * @returns Paginated result containing Location items and metadata
+   */
   list(params?: ListLocationsParams): Promise<PageResult<Location>>;
+
+  /**
+   * Get a specific location
+   * @param uniqueId - The unique identifier of the location
+   * @returns The matching Location record
+   */
   get(uniqueId: string): Promise<Location>;
+
+  /**
+   * Create a new location
+   * @param data - Location details including name, code, owner, coordinates, and type
+   * @returns The newly created Location record
+   */
   create(data: CreateLocationRequest): Promise<Location>;
+
+  /**
+   * Update an existing location
+   * @param uniqueId - The unique identifier of the location to update
+   * @param data - Fields to update such as name, coordinates, media URLs, or status
+   * @returns The updated Location record
+   */
   update(uniqueId: string, data: UpdateLocationRequest): Promise<Location>;
+
+  /**
+   * Delete a location (soft delete)
+   * @param uniqueId - The unique identifier of the location to delete
+   * @returns Resolves when the location has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously deleted location
+   * @param uniqueId - The unique identifier of the deleted location
+   * @returns The recovered Location record
+   */
   recover(uniqueId: string): Promise<Location>;
+
+  /**
+   * Search locations by query string
+   * @param query - The search query text
+   * @param params - Optional additional filtering and pagination
+   * @returns Paginated result of Location records matching the search query
+   */
   search(query: string, params?: ListLocationsParams): Promise<PageResult<Location>>;
+
+  /**
+   * List soft-deleted locations
+   * @param params - Optional pagination parameters
+   * @returns Paginated result of deleted Location records
+   */
   listDeleted(params?: ListLocationsParams): Promise<PageResult<Location>>;
+
+  /**
+   * Get a QR code for a location
+   * @param uniqueId - The unique identifier of the location
+   * @returns The QR code data as a string
+   */
   getQRCode(uniqueId: string): Promise<string>;
+
+  /**
+   * Search locations by their code
+   * @param code - The location code to search for
+   * @returns Array of Location records matching the code
+   */
   searchByCode(code: string): Promise<Location[]>;
+
+  /**
+   * Add a tag to a location
+   * @param uniqueId - The unique identifier of the location
+   * @param tagUniqueId - The unique identifier of the tag to add
+   * @returns The updated Location record with the tag applied
+   */
   addTag(uniqueId: string, tagUniqueId: string): Promise<Location>;
+
+  /**
+   * Remove a tag from a location
+   * @param uniqueId - The unique identifier of the location
+   * @param tagUniqueId - The unique identifier of the tag to remove
+   * @returns Resolves when the tag has been removed
+   */
   removeTag(uniqueId: string, tagUniqueId: string): Promise<void>;
 }
 

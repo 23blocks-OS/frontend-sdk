@@ -9,12 +9,55 @@ import type {
 import { draftMessageMapper } from '../mappers/draft-message.mapper.js';
 
 export interface DraftMessagesService {
+  /**
+   * List all draft messages
+   * @param params - Optional filtering, sorting, and pagination parameters
+   * @returns Paginated list of DraftMessage records with pagination metadata
+   */
   list(params?: ListDraftMessagesParams): Promise<PageResult<DraftMessage>>;
+
+  /**
+   * Get a draft message by unique ID
+   * @param uniqueId - Unique ID of the draft message to retrieve
+   * @returns The matching DraftMessage record
+   */
   get(uniqueId: string): Promise<DraftMessage>;
+
+  /**
+   * Create a new draft message
+   * @param data - Draft message creation payload including content, source, target, and routing fields
+   * @returns The newly created DraftMessage record
+   */
   create(data: CreateDraftMessageRequest): Promise<DraftMessage>;
+
+  /**
+   * Update a draft message
+   * @param uniqueId - Unique ID of the draft message to update
+   * @param data - Fields to update (content, status, enabled, payload)
+   * @returns The updated DraftMessage record
+   */
   update(uniqueId: string, data: UpdateDraftMessageRequest): Promise<DraftMessage>;
+
+  /**
+   * Delete a draft message
+   * @param uniqueId - Unique ID of the draft message to delete
+   * @returns void on successful deletion
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List draft messages filtered by context
+   * @param contextId - Context identifier to filter by
+   * @param params - Optional sorting and pagination parameters
+   * @returns Paginated list of DraftMessage records for the given context
+   */
   listByContext(contextId: string, params?: ListDraftMessagesParams): Promise<PageResult<DraftMessage>>;
+
+  /**
+   * Publish a draft message, converting it into a sent message
+   * @param uniqueId - Unique ID of the draft message to publish
+   * @returns The published DraftMessage record with updated status
+   */
   publish(uniqueId: string): Promise<DraftMessage>;
 }
 

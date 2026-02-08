@@ -28,12 +28,65 @@ export interface SearchStockParams {
 }
 
 export interface StockService {
+  /**
+   * Get all stock entries for a product across vendors and warehouses.
+   * @param productUniqueId - The product unique ID
+   * @returns Array of ProductStock entries
+   */
   get(productUniqueId: string): Promise<ProductStock[]>;
+
+  /**
+   * Create a new stock entry for a product at a specific vendor and warehouse.
+   * @param productUniqueId - The product unique ID
+   * @param data - Stock creation payload including vendor, warehouse, quantity, and optional thresholds
+   * @returns The newly created ProductStock entry
+   */
   create(productUniqueId: string, data: CreateStockRequest): Promise<ProductStock>;
+
+  /**
+   * Update an existing stock entry by its unique identifier.
+   * @param productUniqueId - The product unique ID
+   * @param stockUniqueId - The stock entry unique ID
+   * @param data - Fields to update (quantity, min/max thresholds, reorder point)
+   * @returns The updated ProductStock entry
+   */
   update(productUniqueId: string, stockUniqueId: string, data: UpdateStockRequest): Promise<ProductStock>;
+
+  /**
+   * Update stock quantity using vendor, warehouse, and product identifiers.
+   * @param vendorUniqueId - The vendor unique ID
+   * @param warehouseUniqueId - The warehouse unique ID
+   * @param productUniqueId - The product unique ID
+   * @param quantity - The new stock quantity
+   * @returns The updated ProductStock entry
+   * @note Routes through the vendor/warehouse/product nested endpoint
+   */
   updateWithDetails(vendorUniqueId: string, warehouseUniqueId: string, productUniqueId: string, quantity: number): Promise<ProductStock>;
+
+  /**
+   * Update stock quantity for a specific variation using vendor, warehouse, product, and variation identifiers.
+   * @param vendorUniqueId - The vendor unique ID
+   * @param warehouseUniqueId - The warehouse unique ID
+   * @param productUniqueId - The product unique ID
+   * @param variationUniqueId - The variation unique ID
+   * @param quantity - The new stock quantity
+   * @returns The updated ProductStock entry
+   * @note Routes through the vendor/warehouse/product/variation nested endpoint
+   */
   updateVariationWithDetails(vendorUniqueId: string, warehouseUniqueId: string, productUniqueId: string, variationUniqueId: string, quantity: number): Promise<ProductStock>;
+
+  /**
+   * Search stock entries with filters for vendor, warehouse, and low-stock status.
+   * @param params - Search criteria including vendor, warehouse, low-stock flag, and pagination
+   * @returns Paginated result containing ProductStock items and page metadata
+   */
   search(params: SearchStockParams): Promise<PageResult<ProductStock>>;
+
+  /**
+   * Evaluate stock rules and return any triggered alerts for a stock entry.
+   * @param stockUniqueId - The stock entry unique ID
+   * @returns Object containing an alerts array with triggered rule evaluations
+   */
   evaluateRules(stockUniqueId: string): Promise<{ alerts: any[] }>;
 }
 

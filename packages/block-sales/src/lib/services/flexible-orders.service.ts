@@ -16,20 +16,93 @@ import { flexibleOrderMapper } from '../mappers/flexible-order.mapper.js';
 import { paymentMapper } from '../mappers/payment.mapper.js';
 
 export interface FlexibleOrdersService {
+  /**
+   * List flexible orders with optional filtering and sorting.
+   * @returns Paginated list of FlexibleOrder records with metadata.
+   */
   list(params?: ListFlexibleOrdersParams): Promise<PageResult<FlexibleOrder>>;
+
+  /**
+   * Get a flexible order by unique ID.
+   * @returns The matching FlexibleOrder record.
+   */
   get(uniqueId: string): Promise<FlexibleOrder>;
+
+  /**
+   * Create a new flexible order.
+   * @returns The newly created FlexibleOrder record.
+   */
   create(data: CreateFlexibleOrderRequest): Promise<FlexibleOrder>;
+
+  /**
+   * Update an existing flexible order.
+   * @returns The updated FlexibleOrder record.
+   */
   update(uniqueId: string, data: UpdateFlexibleOrderRequest): Promise<FlexibleOrder>;
+
+  /**
+   * Add line item details to a flexible order.
+   * @returns The updated FlexibleOrder record with the new detail.
+   */
   addDetails(uniqueId: string, data: AddFlexibleOrderDetailRequest): Promise<FlexibleOrder>;
+
+  /**
+   * Add tips to a flexible order.
+   * @returns The updated FlexibleOrder record with tips applied.
+   */
   addTips(uniqueId: string, data: AddFlexibleOrderTipsRequest): Promise<FlexibleOrder>;
+
+  /**
+   * Set the payment method for a flexible order.
+   * @returns The updated FlexibleOrder record.
+   */
   addPaymentMethod(uniqueId: string, data: AddFlexibleOrderPaymentMethodRequest): Promise<FlexibleOrder>;
+
+  /**
+   * Add a payment to a flexible order.
+   * @returns The updated FlexibleOrder record with the new payment.
+   */
   addPayment(uniqueId: string, data: AddFlexibleOrderPaymentRequest): Promise<FlexibleOrder>;
+
+  /**
+   * Confirm a specific payment on a flexible order.
+   * @returns The updated FlexibleOrder record.
+   */
   confirmPayment(uniqueId: string, paymentUniqueId: string): Promise<FlexibleOrder>;
+
+  /**
+   * Update the status of a flexible order.
+   * @returns The updated FlexibleOrder record.
+   */
   updateStatus(uniqueId: string, status: string): Promise<FlexibleOrder>;
+
+  /**
+   * Update the status of a specific order detail.
+   * @returns The updated FlexibleOrder record.
+   */
   updateDetailStatus(uniqueId: string, detailUniqueId: string, status: string): Promise<FlexibleOrder>;
+
+  /**
+   * Cancel a flexible order.
+   */
   cancel(uniqueId: string): Promise<void>;
+
+  /**
+   * Update logistics information for a flexible order.
+   * @returns The updated FlexibleOrder record with logistics data.
+   */
   updateLogistics(uniqueId: string, data: UpdateFlexibleOrderLogisticsRequest): Promise<FlexibleOrder>;
+
+  /**
+   * Update logistics information for a specific order detail.
+   * @returns The updated FlexibleOrder record with detail logistics data.
+   */
   updateDetailLogistics(uniqueId: string, detailUniqueId: string, data: UpdateFlexibleOrderLogisticsRequest): Promise<FlexibleOrder>;
+
+  /**
+   * Get payments for a flexible order.
+   * @returns Paginated list of Payment records.
+   */
   getPayments(uniqueId: string): Promise<PageResult<Payment>>;
 }
 

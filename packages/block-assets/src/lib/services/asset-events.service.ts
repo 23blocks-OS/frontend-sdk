@@ -17,15 +17,59 @@ import type {
 import { assetEventMapper } from '../mappers/asset-event.mapper.js';
 
 export interface AssetEventsService {
+  /**
+   * List events for a specific asset.
+   * @returns Paginated list of AssetEvent records with metadata.
+   */
   list(assetUniqueId: string, params?: ListAssetEventsParams): Promise<PageResult<AssetEvent>>;
+
+  /**
+   * Get a specific event for an asset.
+   * @returns The matching AssetEvent record.
+   */
   get(assetUniqueId: string, eventUniqueId: string): Promise<AssetEvent>;
+
+  /**
+   * Create a new event for an asset.
+   * @returns The newly created AssetEvent record.
+   */
   create(assetUniqueId: string, data: CreateAssetEventRequest): Promise<AssetEvent>;
+
+  /**
+   * Update an existing event for an asset.
+   * @returns The updated AssetEvent record.
+   */
   update(assetUniqueId: string, eventUniqueId: string, data: UpdateAssetEventRequest): Promise<AssetEvent>;
+
+  /**
+   * Get a detailed event report list.
+   * @returns EventReportList with events array, summary, and pagination meta.
+   */
   reportList(params: EventReportParams): Promise<EventReportList>;
+
+  /**
+   * Get an event report summary.
+   * @returns EventReportSummary with totals and breakdown by event type.
+   */
   reportSummary(params: EventReportParams): Promise<EventReportSummary>;
+
   // Event Images
+
+  /**
+   * Get a presigned URL for uploading an event image.
+   * @returns EventImagePresignResponse with `url`, `fields`, and `key`.
+   */
   presignImage(assetUniqueId: string, eventUniqueId: string): Promise<EventImagePresignResponse>;
+
+  /**
+   * Create an event image record after upload.
+   * @returns The newly created EventImage record with URL.
+   */
   createImage(assetUniqueId: string, eventUniqueId: string, data: CreateEventImageRequest): Promise<EventImage>;
+
+  /**
+   * Delete an event image.
+   */
   deleteImage(assetUniqueId: string, eventUniqueId: string, imageUniqueId: string): Promise<void>;
 }
 

@@ -9,13 +9,21 @@ export interface SignInRequest {
 }
 
 /**
- * Sign in response
+ * Sign in response - returned by signIn, verifyMagicLink, acceptInvitation, and social login methods.
+ *
+ * @note The `user` object includes relationships only if the server returns included resources.
+ *   For guaranteed relationship loading, call `auth.getCurrentUser()` after sign-in.
  */
 export interface SignInResponse {
+  /** The authenticated user. Relationships (role, avatar, profile) may or may not be populated. */
   user: User;
+  /** JWT access token for authenticating subsequent requests. */
   accessToken: string;
+  /** Refresh token for obtaining new access tokens (if refresh tokens are enabled). */
   refreshToken?: string;
+  /** Always 'Bearer'. */
   tokenType: string;
+  /** Token lifetime in seconds (if provided by the server). */
   expiresIn?: number;
 }
 
@@ -48,11 +56,17 @@ export interface SignUpRequest {
 }
 
 /**
- * Sign up response
+ * Sign up response.
+ *
+ * @note If email confirmation is required, `accessToken` will be undefined.
+ *   The user must confirm their email before they can sign in.
  */
 export interface SignUpResponse {
+  /** The newly created user. */
   user: User;
+  /** Access token (only present if email confirmation is NOT required). */
   accessToken?: string;
+  /** Server message (e.g., 'Confirmation email sent'). */
   message?: string;
 }
 
@@ -75,10 +89,15 @@ export interface PasswordUpdateRequest {
 }
 
 /**
- * Token validation response
+ * Token validation response.
+ *
+ * @note The `user` object does NOT include relationships (role, avatar, profile).
+ *   Use `auth.getCurrentUser()` for user data with relationships.
  */
 export interface TokenValidationResponse {
+  /** The authenticated user (without relationships). */
   user: User;
+  /** Always `true` if the request succeeds (throws on invalid token). */
   valid: boolean;
 }
 

@@ -11,10 +11,40 @@ import { contextMapper } from '../mappers/context.mapper.js';
 import { groupMapper } from '../mappers/group.mapper.js';
 
 export interface ContextsService {
+  /**
+   * List all contexts
+   * @param params - Optional filtering, sorting, and pagination parameters
+   * @returns Paginated list of Context records with pagination metadata
+   */
   list(params?: ListContextsParams): Promise<PageResult<Context>>;
+
+  /**
+   * Get a context by unique ID
+   * @param uniqueId - Unique ID of the context to retrieve
+   * @returns The matching Context record
+   */
   get(uniqueId: string): Promise<Context>;
+
+  /**
+   * Create a new context
+   * @param data - Context creation payload including name, type, and metadata
+   * @returns The newly created Context record
+   */
   create(data: CreateContextRequest): Promise<Context>;
+
+  /**
+   * Update a context
+   * @param uniqueId - Unique ID of the context to update
+   * @param data - Fields to update on the context
+   * @returns The updated Context record
+   */
   update(uniqueId: string, data: UpdateContextRequest): Promise<Context>;
+
+  /**
+   * List groups belonging to a context
+   * @param contextUniqueId - Unique ID of the context
+   * @returns Paginated list of Group records within the context
+   */
   listGroups(contextUniqueId: string): Promise<PageResult<Group>>;
 }
 

@@ -33,17 +33,28 @@ export interface JarvisSearchResult extends SearchResult {
  */
 export interface JarvisSearchService {
   /**
-   * Search entities using Jarvis AI-enhanced search
+   * Search entities using Jarvis AI-enhanced search.
+   * @param query - The search query including filters, sorting, pagination, and optional metadata/relation inclusion flags.
+   * @returns A paginated result containing an array of {@link JarvisSearchResult} items (with AI-enhanced fields like confidence and relevanceScore) and pagination metadata.
    */
   search(query: JarvisSearchQuery): Promise<PageResult<JarvisSearchResult>>;
 
   /**
-   * Get semantic suggestions based on query
+   * Get semantic suggestions based on a query string.
+   * @param query - The text to generate suggestions for.
+   * @param limit - Optional maximum number of suggestions to return.
+   * @returns An array of suggestion strings.
+   * @note Returns an empty array if the backend response contains no suggestions.
    */
   suggest(query: string, limit?: number): Promise<string[]>;
 
   /**
-   * Get related entities based on an entity
+   * Get related entities based on a source entity.
+   * @param entityUniqueId - The unique identifier of the source entity to find relations for.
+   * @param entityType - The type of the source entity.
+   * @param limit - Optional maximum number of related entities to return.
+   * @returns An array of {@link JarvisSearchResult} items related to the source entity.
+   * @note The response data is mapped individually rather than decoded as a JSON:API collection.
    */
   getRelated(entityUniqueId: string, entityType: string, limit?: number): Promise<JarvisSearchResult[]>;
 }

@@ -9,10 +9,41 @@ import type {
 import { referralMapper } from '../mappers/referral.mapper.js';
 
 export interface ReferralsService {
+  /**
+   * List referrals with optional filtering, pagination, and sorting.
+   * @param params - Optional filtering (status, referrerUniqueId, referredUniqueId, search), pagination, and sorting.
+   * @returns Paginated result containing Referral objects and metadata.
+   */
   list(params?: ListReferralsParams): Promise<PageResult<Referral>>;
+
+  /**
+   * Retrieve a single referral by its unique identifier.
+   * @param uniqueId - The unique identifier of the referral.
+   * @returns The matching Referral object.
+   */
   get(uniqueId: string): Promise<Referral>;
+
+  /**
+   * Create a new referral.
+   * @param data - The referral creation payload with referrer, referred, code, and source.
+   * @returns The newly created Referral object.
+   */
   create(data: CreateReferralRequest): Promise<Referral>;
+
+  /**
+   * Update an existing referral.
+   * @param uniqueId - The unique identifier of the referral to update.
+   * @param data - The fields to update on the referral.
+   * @returns The updated Referral object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(uniqueId: string, data: UpdateReferralRequest): Promise<Referral>;
+
+  /**
+   * Delete a referral.
+   * @param uniqueId - The unique identifier of the referral to delete.
+   * @returns Resolves when the referral has been deleted.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

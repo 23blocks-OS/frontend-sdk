@@ -10,17 +10,23 @@ import { categoryMapper } from '../mappers/category.mapper.js';
 export interface CategoriesService {
   /**
    * List all categories
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated list of Category records with pagination metadata
    */
   list(params?: ListCategoriesParams): Promise<PageResult<Category>>;
 
   /**
    * Get a category by unique ID
+   * @param uniqueId - Unique ID of the category to retrieve
+   * @returns The matching Category record
    */
   get(uniqueId: string): Promise<Category>;
 
   /**
    * Create a new category
-   * Note: The API does not support update or delete operations for categories
+   * @param data - Category creation payload
+   * @returns The newly created Category record
+   * @note The API does not support update or delete operations for categories
    */
   create(data: CreateCategoryRequest): Promise<Category>;
 }

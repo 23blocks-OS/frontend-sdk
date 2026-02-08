@@ -7,8 +7,22 @@ import type {
 } from '../types/mercadopago.js';
 
 export interface MercadoPagoService {
+  /**
+   * List available MercadoPago payment methods.
+   * @returns Array of MercadoPagoPaymentMethod records.
+   */
   listPaymentMethods(): Promise<MercadoPagoPaymentMethod[]>;
+
+  /**
+   * Create a MercadoPago payment intent.
+   * @returns MercadoPagoPaymentIntent with status, amounts, and redirect URLs.
+   */
   createPaymentIntent(data: CreateMercadoPagoPaymentRequest): Promise<MercadoPagoPaymentIntent>;
+
+  /**
+   * Create a MercadoPago PSE (bank transfer) payment intent.
+   * @returns MercadoPagoPaymentIntent with PSE-specific redirect URLs.
+   */
   createPSEIntent(data: CreateMercadoPagoPSERequest): Promise<MercadoPagoPaymentIntent>;
 }
 

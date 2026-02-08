@@ -10,11 +10,37 @@ import type {
 import { workflowStepMapper } from '../mappers/workflow-step.mapper.js';
 
 export interface WorkflowStepsService {
+  /**
+   * Get a single workflow step by unique ID.
+   * @returns The matching WorkflowStep record.
+   */
   get(workflowUniqueId: string, stepUniqueId: string): Promise<WorkflowStep>;
+
+  /**
+   * Add a new step to a workflow.
+   * @returns The newly created WorkflowStep record.
+   */
   add(workflowUniqueId: string, data: AddWorkflowStepRequest): Promise<WorkflowStep>;
+
+  /**
+   * Update an existing workflow step.
+   * @returns The updated WorkflowStep record.
+   */
   update(workflowUniqueId: string, stepUniqueId: string, data: UpdateWorkflowStepRequest): Promise<WorkflowStep>;
+
+  /**
+   * Remove a step from a workflow.
+   */
   remove(workflowUniqueId: string, stepUniqueId: string): Promise<void>;
+
+  /**
+   * Associate a prompt with a workflow step.
+   */
   addPrompt(stepUniqueId: string, data: AddStepPromptRequest): Promise<void>;
+
+  /**
+   * Associate an agent with a workflow step.
+   */
   addAgent(stepUniqueId: string, data: AddStepAgentRequest): Promise<void>;
 }
 

@@ -10,18 +10,39 @@ import {
   type WebhooksService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Wallet block.
+ */
 export interface WalletBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * Digital wallet and transaction management block interface.
+ */
 export interface WalletBlock {
+  /** Wallet CRUD operations */
   wallets: WalletsService;
+  /** Transaction management */
   transactions: TransactionsService;
+  /** Authorization code management */
   authorizationCodes: AuthorizationCodesService;
+  /** Webhook management */
   webhooks: WebhooksService;
 }
 
+/**
+ * Create the Wallet block.
+ *
+ * @example
+ * ```typescript
+ * const block = createWalletBlock(transport, { appId: 'xxx' });
+ * const wallets = await block.wallets.list({ page: 1 });
+ * ```
+ */
 export function createWalletBlock(
   transport: Transport,
   config: WalletBlockConfig

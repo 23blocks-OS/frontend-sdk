@@ -13,15 +13,62 @@ import type {
 import { campaignTemplateMapper, templateDetailMapper } from '../mappers/campaign-template.mapper.js';
 
 export interface CampaignTemplatesService {
+  /**
+   * List campaign templates with optional filtering and sorting.
+   * @returns Paginated list of CampaignTemplate records with metadata.
+   */
   list(params?: ListCampaignTemplatesParams): Promise<PageResult<CampaignTemplate>>;
+
+  /**
+   * Get a single campaign template by unique ID.
+   * @returns The matching CampaignTemplate record.
+   */
   get(uniqueId: string): Promise<CampaignTemplate>;
+
+  /**
+   * Create a new campaign template.
+   * @returns The newly created CampaignTemplate record.
+   */
   create(data: CreateCampaignTemplateRequest): Promise<CampaignTemplate>;
+
+  /**
+   * Update an existing campaign template.
+   * @returns The updated CampaignTemplate record.
+   */
   update(uniqueId: string, data: UpdateCampaignTemplateRequest): Promise<CampaignTemplate>;
+
+  /**
+   * Delete a campaign template.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List template details with optional filtering and sorting.
+   * @returns Paginated list of TemplateDetail records with metadata.
+   */
   listDetails(params?: ListTemplateDetailsParams): Promise<PageResult<TemplateDetail>>;
+
+  /**
+   * Get a single template detail by unique ID.
+   * @returns The matching TemplateDetail record.
+   */
   getDetail(uniqueId: string): Promise<TemplateDetail>;
+
+  /**
+   * Create a new template detail field.
+   * @returns The newly created TemplateDetail record.
+   */
   createDetail(data: CreateTemplateDetailRequest): Promise<TemplateDetail>;
+
+  /**
+   * Update an existing template detail.
+   * @returns The updated TemplateDetail record.
+   */
   updateDetail(uniqueId: string, data: UpdateTemplateDetailRequest): Promise<TemplateDetail>;
+
+  /**
+   * Delete a template detail.
+   */
   deleteDetail(uniqueId: string): Promise<void>;
 }
 

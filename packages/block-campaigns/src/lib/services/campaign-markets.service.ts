@@ -9,10 +9,33 @@ import type {
 import { campaignMarketMapper } from '../mappers/campaign-market.mapper.js';
 
 export interface CampaignMarketsService {
+  /**
+   * List campaign markets with optional filtering and sorting.
+   * @returns Paginated list of CampaignMarket records with metadata.
+   */
   list(params?: ListCampaignMarketsParams): Promise<PageResult<CampaignMarket>>;
+
+  /**
+   * Get a single campaign market by unique ID.
+   * @returns The matching CampaignMarket record.
+   */
   get(uniqueId: string): Promise<CampaignMarket>;
+
+  /**
+   * Create a new campaign market.
+   * @returns The newly created CampaignMarket record.
+   */
   create(data: CreateCampaignMarketRequest): Promise<CampaignMarket>;
+
+  /**
+   * Update an existing campaign market.
+   * @returns The updated CampaignMarket record.
+   */
   update(uniqueId: string, data: UpdateCampaignMarketRequest): Promise<CampaignMarket>;
+
+  /**
+   * Delete a campaign market.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

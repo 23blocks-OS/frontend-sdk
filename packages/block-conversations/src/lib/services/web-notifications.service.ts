@@ -9,13 +9,60 @@ import type {
 import { webNotificationMapper } from '../mappers/web-notification.mapper.js';
 
 export interface WebNotificationsService {
+  /**
+   * List all web notifications
+   * @param params - Optional filtering, sorting, and pagination parameters
+   * @returns Paginated list of WebNotification records with pagination metadata
+   */
   list(params?: ListWebNotificationsParams): Promise<PageResult<WebNotification>>;
+
+  /**
+   * Get a web notification by unique ID
+   * @param uniqueId - Unique ID of the web notification to retrieve
+   * @returns The matching WebNotification record
+   */
   get(uniqueId: string): Promise<WebNotification>;
+
+  /**
+   * Send a web notification to a single recipient
+   * @param data - Notification payload including recipient, title, body, and optional action URL
+   * @returns The newly created WebNotification record
+   */
   send(data: CreateWebNotificationRequest): Promise<WebNotification>;
+
+  /**
+   * Send a web notification to multiple recipients
+   * @param data - Bulk notification payload including recipient IDs, title, body, and optional action URL
+   * @returns Object with sent and failed counts indicating delivery results
+   */
   sendBulk(data: BulkWebNotificationRequest): Promise<{ sent: number; failed: number }>;
+
+  /**
+   * Mark a web notification as read
+   * @param uniqueId - Unique ID of the web notification to mark as read
+   * @returns The updated WebNotification record with read status
+   */
   markAsRead(uniqueId: string): Promise<WebNotification>;
+
+  /**
+   * Mark a web notification as clicked
+   * @param uniqueId - Unique ID of the web notification to mark as clicked
+   * @returns The updated WebNotification record with clicked status
+   */
   markAsClicked(uniqueId: string): Promise<WebNotification>;
+
+  /**
+   * Mark all web notifications as read for a recipient
+   * @param recipientUniqueId - Unique ID of the recipient whose notifications should be marked as read
+   * @returns Object with the count of updated notifications
+   */
   markAllAsRead(recipientUniqueId: string): Promise<{ updated: number }>;
+
+  /**
+   * Delete a web notification
+   * @param uniqueId - Unique ID of the web notification to delete
+   * @returns void on successful deletion
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

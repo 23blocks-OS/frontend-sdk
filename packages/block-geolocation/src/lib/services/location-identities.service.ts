@@ -9,15 +9,82 @@ import type {
 import { locationIdentityMapper } from '../mappers/location-identity.mapper.js';
 
 export interface LocationIdentitiesService {
+  /**
+   * List all location-identity associations
+   * @param params - Optional filtering by location, identity, role, presence, status, and pagination
+   * @returns Paginated result containing LocationIdentity items and metadata
+   */
   list(params?: ListLocationIdentitiesParams): Promise<PageResult<LocationIdentity>>;
+
+  /**
+   * Get a specific location-identity association
+   * @param uniqueId - The unique identifier of the association
+   * @returns The matching LocationIdentity record
+   */
   get(uniqueId: string): Promise<LocationIdentity>;
+
+  /**
+   * Create a new location-identity association
+   * @param data - Association details including location, identity, role, and device info
+   * @returns The newly created LocationIdentity record
+   */
   create(data: CreateLocationIdentityRequest): Promise<LocationIdentity>;
+
+  /**
+   * Update a location-identity association
+   * @param uniqueId - The unique identifier of the association to update
+   * @param data - Fields to update such as role, device info, or status
+   * @returns The updated LocationIdentity record
+   */
   update(uniqueId: string, data: UpdateLocationIdentityRequest): Promise<LocationIdentity>;
+
+  /**
+   * Delete a location-identity association
+   * @param uniqueId - The unique identifier of the association to delete
+   * @returns Resolves when the association has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Check in an identity at a location
+   * @param locationUniqueId - The unique identifier of the location
+   * @param identityUniqueId - The unique identifier of the identity
+   * @param identityType - The type of identity (e.g., user, device)
+   * @returns The LocationIdentity record with check-in recorded
+   */
   checkIn(locationUniqueId: string, identityUniqueId: string, identityType: string): Promise<LocationIdentity>;
+
+  /**
+   * Check out an identity from its current location
+   * @param uniqueId - The unique identifier of the location-identity association
+   * @returns The LocationIdentity record with check-out recorded
+   */
   checkOut(uniqueId: string): Promise<LocationIdentity>;
+
+  /**
+   * List all identities at a specific location
+   * @param locationUniqueId - The unique identifier of the location
+   * @param params - Optional filtering by identity type, role, presence, and pagination
+   * @returns Paginated result of LocationIdentity records at the given location
+   */
   listByLocation(locationUniqueId: string, params?: ListLocationIdentitiesParams): Promise<PageResult<LocationIdentity>>;
+
+  /**
+   * List all location associations for a specific identity
+   * @param identityUniqueId - The unique identifier of the identity
+   * @param identityType - The type of identity
+   * @param params - Optional filtering by location, role, presence, and pagination
+   * @returns Paginated result of LocationIdentity records for the given identity
+   */
   listByIdentity(identityUniqueId: string, identityType: string, params?: ListLocationIdentitiesParams): Promise<PageResult<LocationIdentity>>;
+
+  /**
+   * Get the current location of an identity
+   * @param identityUniqueId - The unique identifier of the identity
+   * @param identityType - The type of identity
+   * @returns The current LocationIdentity record, or null if not checked in anywhere
+   * @note Returns null instead of throwing when no current location exists
+   */
   getCurrentLocation(identityUniqueId: string, identityType: string): Promise<LocationIdentity | null>;
 }
 

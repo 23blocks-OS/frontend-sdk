@@ -40,33 +40,69 @@ import {
   type GeoCitiesService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Geolocation block.
+ */
 export interface GeolocationBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * Geolocation and premises management block interface.
+ */
 export interface GeolocationBlock {
+  /** Location CRUD operations */
   locations: LocationsService;
+  /** Address management */
   addresses: AddressesService;
+  /** Geographic area management */
   areas: AreasService;
+  /** Geographic region management */
   regions: RegionsService;
+  /** Travel route management */
   routes: TravelRoutesService;
+  /** Premise booking management */
   bookings: PremiseBookingsService;
+  /** Premise management */
   premises: PremisesService;
+  /** Premise event tracking */
   premiseEvents: PremiseEventsService;
+  /** Route location tracker */
   routeTracker: RouteTrackerService;
+  /** Location operating hours management */
   locationHours: LocationHoursService;
+  /** Location image management */
   locationImages: LocationImagesService;
+  /** Location time-slot management */
   locationSlots: LocationSlotsService;
+  /** Location tax configuration */
   locationTaxes: LocationTaxesService;
+  /** Location group management */
   locationGroups: LocationGroupsService;
+  /** Geo identity management */
   identities: GeoIdentitiesService;
+  /** Location-identity association management */
   locationIdentities: LocationIdentitiesService;
+  /** Country lookup */
   geoCountries: GeoCountriesService;
+  /** State/province lookup */
   geoStates: GeoStatesService;
+  /** City lookup */
   geoCities: GeoCitiesService;
 }
 
+/**
+ * Create the Geolocation block.
+ *
+ * @example
+ * ```typescript
+ * const block = createGeolocationBlock(transport, { appId: 'xxx' });
+ * const locations = await block.locations.list({ page: 1 });
+ * ```
+ */
 export function createGeolocationBlock(
   transport: Transport,
   config: GeolocationBlockConfig

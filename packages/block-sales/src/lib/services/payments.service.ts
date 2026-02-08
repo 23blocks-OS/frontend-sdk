@@ -4,10 +4,35 @@ import type { Payment, CreatePaymentRequest, ListPaymentsParams } from '../types
 import { paymentMapper } from '../mappers/payment.mapper.js';
 
 export interface PaymentsService {
+  /**
+   * List payments with optional filtering and sorting.
+   * @returns Paginated list of Payment records with metadata.
+   */
   list(params?: ListPaymentsParams): Promise<PageResult<Payment>>;
+
+  /**
+   * Get a single payment by unique ID.
+   * @returns The matching Payment record.
+   */
   get(uniqueId: string): Promise<Payment>;
+
+  /**
+   * Create a new payment for an order.
+   * @returns The newly created Payment record.
+   */
   create(data: CreatePaymentRequest): Promise<Payment>;
+
+  /**
+   * Refund a payment, optionally for a partial amount.
+   * @returns The updated Payment record with refund status.
+   * @note If amount is omitted, a full refund is processed.
+   */
   refund(uniqueId: string, amount?: number): Promise<Payment>;
+
+  /**
+   * List payments for a specific order.
+   * @returns Array of Payment records for the order.
+   */
   listByOrder(orderUniqueId: string): Promise<Payment[]>;
 }
 

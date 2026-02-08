@@ -9,11 +9,47 @@ import type {
 import { productFilterMapper } from '../mappers/product-filter.mapper.js';
 
 export interface ProductFiltersService {
+  /**
+   * List product filters with optional filtering, sorting, and pagination.
+   * @param params - Filter, sort, and pagination options including status, filter type, and active state
+   * @returns Paginated result containing an array of ProductFilter items and page metadata
+   */
   list(params?: ListProductFiltersParams): Promise<PageResult<ProductFilter>>;
+
+  /**
+   * Get a single product filter by its unique identifier.
+   * @param uniqueId - The filter unique ID
+   * @returns The matching ProductFilter
+   */
   get(uniqueId: string): Promise<ProductFilter>;
+
+  /**
+   * Create a new product filter.
+   * @param data - Filter creation payload including name, key, type, options, and value range
+   * @returns The newly created ProductFilter
+   */
   create(data: CreateProductFilterRequest): Promise<ProductFilter>;
+
+  /**
+   * Update an existing product filter.
+   * @param uniqueId - The filter unique ID
+   * @param data - Fields to update on the filter
+   * @returns The updated ProductFilter
+   */
   update(uniqueId: string, data: UpdateProductFilterRequest): Promise<ProductFilter>;
+
+  /**
+   * Delete a product filter.
+   * @param uniqueId - The filter unique ID
+   * @returns Resolves when the filter has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Reorder product filters by providing the desired order of filter IDs.
+   * @param filterIds - Array of filter unique IDs in the desired display order
+   * @returns Resolves when the reorder has been applied
+   */
   reorder(filterIds: string[]): Promise<void>;
 }
 

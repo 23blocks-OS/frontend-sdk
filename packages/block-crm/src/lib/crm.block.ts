@@ -50,38 +50,79 @@ import {
   type CalendarSyncService,
 } from './services/index.js';
 
+/**
+ * Configuration for the CRM block.
+ */
 export interface CrmBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * Customer relationship management block interface.
+ */
 export interface CrmBlock {
+  /** Account CRUD operations */
   accounts: AccountsService;
+  /** Contact management */
   contacts: ContactsService;
+  /** Contact event tracking */
   contactEvents: ContactEventsService;
+  /** Lead management */
   leads: LeadsService;
+  /** Lead follow-up tracking */
   leadFollows: LeadFollowsService;
+  /** Sales opportunity management */
   opportunities: OpportunitiesService;
+  /** Meeting scheduling and management */
   meetings: MeetingsService;
+  /** Meeting participant management */
   meetingParticipants: MeetingParticipantsService;
+  /** Meeting billing management */
   meetingBillings: MeetingBillingsService;
+  /** Quote/proposal management */
   quotes: QuotesService;
+  /** Subscriber management */
   subscribers: SubscribersService;
+  /** Referral tracking */
   referrals: ReferralsService;
+  /** Touch-point tracking */
   touches: TouchesService;
+  /** CRM category management */
   categories: CategoriesService;
+  /** Calendar account integration */
   calendarAccounts: CalendarAccountsService;
+  /** Calendar busy-block management */
   busyBlocks: BusyBlocksService;
+  /** ICS calendar token management */
   icsTokens: IcsTokensService;
+  /** Zoom meeting integration */
   zoomMeetings: ZoomMeetingsService;
+  /** Zoom host management */
   zoomHosts: ZoomHostsService;
+  /** CRM mail template management */
   mailTemplates: CrmMailTemplatesService;
+  /** Communication log management */
   communications: CommunicationsService;
+  /** CRM user management */
   users: CrmUsersService;
+  /** Billing report generation */
   billingReports: BillingReportsService;
+  /** Calendar sync operations */
   calendarSync: CalendarSyncService;
 }
 
+/**
+ * Create the CRM block.
+ *
+ * @example
+ * ```typescript
+ * const block = createCrmBlock(transport, { appId: 'xxx' });
+ * const leads = await block.leads.list({ page: 1 });
+ * ```
+ */
 export function createCrmBlock(
   transport: Transport,
   config: CrmBlockConfig

@@ -11,14 +11,80 @@ import type {
 import { surveyMapper } from '../mappers/survey.mapper.js';
 
 export interface SurveysService {
+  /**
+   * List all survey instances for a form
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param params - Optional filtering by status, user, and pagination
+   * @returns Paginated result containing Survey items and metadata
+   */
   list(formUniqueId: string, params?: ListSurveysParams): Promise<PageResult<Survey>>;
+
+  /**
+   * List survey instances filtered by a specific status
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param status - The survey status to filter by
+   * @param params - Optional additional filtering by user and pagination
+   * @returns Paginated result containing Survey items matching the status
+   */
   listByStatus(formUniqueId: string, status: SurveyStatus, params?: ListSurveysParams): Promise<PageResult<Survey>>;
+
+  /**
+   * Get a specific survey instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the survey instance
+   * @returns The matching Survey record
+   */
   get(formUniqueId: string, uniqueId: string): Promise<Survey>;
+
+  /**
+   * Create a new survey instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param data - Survey details including user/contact info and initial data
+   * @returns The newly created Survey record
+   */
   create(formUniqueId: string, data: CreateSurveyRequest): Promise<Survey>;
+
+  /**
+   * Update a survey instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the survey to update
+   * @param data - Fields to update such as contact info, data, or status
+   * @returns The updated Survey record
+   */
   update(formUniqueId: string, uniqueId: string, data: UpdateSurveyRequest): Promise<Survey>;
+
+  /**
+   * Delete a survey instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the survey to delete
+   * @returns Resolves when the survey has been deleted
+   */
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
+
+  /**
+   * Update only the status of a survey instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the survey
+   * @param data - The new status value
+   * @returns The updated Survey record with the new status
+   */
   updateStatus(formUniqueId: string, uniqueId: string, data: UpdateSurveyStatusRequest): Promise<Survey>;
+
+  /**
+   * Resend magic link for a survey instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the survey
+   * @returns Resolves when the magic link email has been sent
+   */
   resendMagicLink(formUniqueId: string, uniqueId: string): Promise<void>;
+
+  /**
+   * List all surveys assigned to a specific user
+   * @param userUniqueId - The unique identifier of the user
+   * @param params - Optional filtering by status and pagination
+   * @returns Paginated result of Survey records for the given user
+   * @note Uses POST to query across all forms for a user
+   */
   listByUser(userUniqueId: string, params?: ListSurveysParams): Promise<PageResult<Survey>>;
 }
 

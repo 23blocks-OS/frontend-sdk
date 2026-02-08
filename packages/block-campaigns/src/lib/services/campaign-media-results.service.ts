@@ -9,10 +9,33 @@ import type {
 import { campaignMediaResultMapper } from '../mappers/campaign-media-result.mapper.js';
 
 export interface CampaignMediaResultsService {
+  /**
+   * List campaign media results with optional date-range filtering and sorting.
+   * @returns Paginated list of CampaignMediaResult records with metadata.
+   */
   list(params?: ListCampaignMediaResultsParams): Promise<PageResult<CampaignMediaResult>>;
+
+  /**
+   * Get a single campaign media result by unique ID.
+   * @returns The matching CampaignMediaResult record.
+   */
   get(uniqueId: string): Promise<CampaignMediaResult>;
+
+  /**
+   * Create a new campaign media result entry.
+   * @returns The newly created CampaignMediaResult record.
+   */
   create(data: CreateCampaignMediaResultRequest): Promise<CampaignMediaResult>;
+
+  /**
+   * Update an existing campaign media result.
+   * @returns The updated CampaignMediaResult record.
+   */
   update(uniqueId: string, data: UpdateCampaignMediaResultRequest): Promise<CampaignMediaResult>;
+
+  /**
+   * Delete a campaign media result.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

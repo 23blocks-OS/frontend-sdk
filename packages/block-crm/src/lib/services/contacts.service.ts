@@ -9,13 +9,64 @@ import type {
 import { contactMapper } from '../mappers/contact.mapper.js';
 
 export interface ContactsService {
+  /**
+   * List contacts with optional filtering, pagination, and sorting.
+   * @param params - Optional filtering (status, contactStatus, search), pagination, and sorting parameters.
+   * @returns Paginated result containing Contact objects and metadata.
+   */
   list(params?: ListContactsParams): Promise<PageResult<Contact>>;
+
+  /**
+   * Retrieve a single contact by its unique identifier.
+   * @param uniqueId - The unique identifier of the contact.
+   * @returns The matching Contact object.
+   */
   get(uniqueId: string): Promise<Contact>;
+
+  /**
+   * Create a new contact.
+   * @param data - The contact creation payload with name, email, phone, and other fields.
+   * @returns The newly created Contact object.
+   */
   create(data: CreateContactRequest): Promise<Contact>;
+
+  /**
+   * Update an existing contact.
+   * @param uniqueId - The unique identifier of the contact to update.
+   * @param data - The fields to update on the contact.
+   * @returns The updated Contact object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(uniqueId: string, data: UpdateContactRequest): Promise<Contact>;
+
+  /**
+   * Soft-delete a contact.
+   * @param uniqueId - The unique identifier of the contact to delete.
+   * @returns Resolves when the contact has been deleted.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously soft-deleted contact.
+   * @param uniqueId - The unique identifier of the contact to recover.
+   * @returns The recovered Contact object.
+   */
   recover(uniqueId: string): Promise<Contact>;
+
+  /**
+   * Search contacts by a query string with optional pagination.
+   * @param query - The search query string.
+   * @param params - Optional pagination parameters.
+   * @returns Paginated result containing matching Contact objects.
+   * @note Performs a server-side POST-based search.
+   */
   search(query: string, params?: ListContactsParams): Promise<PageResult<Contact>>;
+
+  /**
+   * List soft-deleted contacts with optional pagination.
+   * @param params - Optional pagination parameters.
+   * @returns Paginated result containing soft-deleted Contact objects.
+   */
   listDeleted(params?: ListContactsParams): Promise<PageResult<Contact>>;
 }
 

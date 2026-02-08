@@ -12,6 +12,7 @@ export interface WebhooksService {
    * @param companyUrlId - The company URL identifier
    * @param walletCode - The wallet code to credit/debit
    * @param data - Transaction webhook payload
+   * @returns TransactionWebhookResponse with `success`, `transactionUniqueId`, and `message`.
    */
   processTransaction(
     companyUrlId: string,

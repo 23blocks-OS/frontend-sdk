@@ -9,10 +9,41 @@ import type {
 import { subscriberMapper } from '../mappers/subscriber.mapper.js';
 
 export interface SubscribersService {
+  /**
+   * List subscribers with optional filtering, pagination, and sorting.
+   * @param params - Optional filtering (status, source, search), pagination, and sorting parameters.
+   * @returns Paginated result containing Subscriber objects and metadata.
+   */
   list(params?: ListSubscribersParams): Promise<PageResult<Subscriber>>;
+
+  /**
+   * Retrieve a single subscriber by its unique identifier.
+   * @param uniqueId - The unique identifier of the subscriber.
+   * @returns The matching Subscriber object.
+   */
   get(uniqueId: string): Promise<Subscriber>;
+
+  /**
+   * Create a new subscriber.
+   * @param data - The subscriber creation payload with email, name, phone, source, and tags.
+   * @returns The newly created Subscriber object.
+   */
   create(data: CreateSubscriberRequest): Promise<Subscriber>;
+
+  /**
+   * Update an existing subscriber.
+   * @param uniqueId - The unique identifier of the subscriber to update.
+   * @param data - The fields to update on the subscriber.
+   * @returns The updated Subscriber object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(uniqueId: string, data: UpdateSubscriberRequest): Promise<Subscriber>;
+
+  /**
+   * Delete a subscriber.
+   * @param uniqueId - The unique identifier of the subscriber to delete.
+   * @returns Resolves when the subscriber has been deleted.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

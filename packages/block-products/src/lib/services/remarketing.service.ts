@@ -19,6 +19,11 @@ export interface AbandonedCartsParams {
 }
 
 export interface RemarketingService {
+  /**
+   * Retrieve abandoned carts with optional date range, amount, and pagination filters.
+   * @param params - Filter options including start/end date, minimum amount, and pagination
+   * @returns Object containing an array of AbandonedCart items and a total count
+   */
   getAbandonedCarts(params?: AbandonedCartsParams): Promise<{ carts: AbandonedCart[]; total: number }>;
 }
 

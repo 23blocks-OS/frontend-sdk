@@ -10,17 +10,57 @@ import type {
 import { promptCommentMapper } from '../mappers/comment.mapper.js';
 
 export interface PromptCommentsService {
+  /**
+   * List comments on a prompt with optional filtering and sorting.
+   * @returns Paginated list of PromptComment records with metadata.
+   */
   list(promptUniqueId: string, params?: ListPromptCommentsParams): Promise<PageResult<PromptComment>>;
+
+  /**
+   * Get a single prompt comment by unique ID.
+   * @returns The matching PromptComment record.
+   */
   get(promptUniqueId: string, uniqueId: string): Promise<PromptComment>;
+
+  /**
+   * Create a new comment on a prompt.
+   * @returns The newly created PromptComment record.
+   */
   create(promptUniqueId: string, data: CreatePromptCommentRequest): Promise<PromptComment>;
+
+  /**
+   * Update an existing prompt comment.
+   * @returns The updated PromptComment record.
+   */
   update(promptUniqueId: string, uniqueId: string, data: UpdatePromptCommentRequest): Promise<PromptComment>;
+
+  /**
+   * Delete a prompt comment.
+   */
   delete(promptUniqueId: string, uniqueId: string): Promise<void>;
+
+  /** Like a prompt comment. */
   like(promptUniqueId: string, uniqueId: string): Promise<void>;
+
+  /** Remove a like from a prompt comment. */
   dislike(promptUniqueId: string, uniqueId: string): Promise<void>;
+
+  /**
+   * Reply to a prompt comment.
+   * @returns The newly created reply PromptComment record.
+   */
   reply(promptUniqueId: string, uniqueId: string, data: ReplyToCommentRequest): Promise<PromptComment>;
+
+  /** Follow a prompt comment to receive notifications. */
   follow(promptUniqueId: string, uniqueId: string): Promise<void>;
+
+  /** Unfollow a prompt comment. */
   unfollow(promptUniqueId: string, uniqueId: string): Promise<void>;
+
+  /** Save a prompt comment to bookmarks. */
   save(promptUniqueId: string, uniqueId: string): Promise<void>;
+
+  /** Remove a prompt comment from bookmarks. */
   unsave(promptUniqueId: string, uniqueId: string): Promise<void>;
 }
 

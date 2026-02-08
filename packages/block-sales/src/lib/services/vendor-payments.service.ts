@@ -18,17 +18,75 @@ import type {
 } from '../types/report.js';
 
 export interface VendorPaymentsService {
+  /**
+   * Get a vendor payment by unique ID.
+   * @returns The matching VendorPayment record.
+   */
   get(paymentUniqueId: string): Promise<VendorPayment>;
+
+  /**
+   * Create a vendor payment for an order detail.
+   * @returns The newly created VendorPayment record.
+   */
   create(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, data: CreateVendorPaymentRequest): Promise<VendorPayment>;
+
+  /**
+   * Update an existing vendor payment.
+   * @returns The updated VendorPayment record.
+   */
   update(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string, data: UpdateVendorPaymentRequest): Promise<VendorPayment>;
+
+  /**
+   * Mark a vendor payment as paid.
+   * @returns The VendorPayment record with paid status and paidAt timestamp.
+   */
   pay(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string): Promise<VendorPayment>;
+
+  /**
+   * Delete a vendor payment.
+   */
   delete(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string): Promise<void>;
+
+  /**
+   * Create a provider (vendor) assignment for an order detail.
+   * @returns The newly created OrderDetailVendor record.
+   */
   createProvider(orderUniqueId: string, orderDetailUniqueId: string, data: CreateOrderDetailVendorRequest): Promise<OrderDetailVendor>;
+
+  /**
+   * Create a provider assignment by source ID.
+   * @returns The newly created OrderDetailVendor record.
+   */
   createProviderBySource(sourceId: string, data: CreateOrderDetailVendorBySourceRequest): Promise<OrderDetailVendor>;
+
+  /**
+   * Update a provider assignment for an order detail.
+   * @returns The updated OrderDetailVendor record.
+   */
   updateProvider(orderUniqueId: string, orderDetailUniqueId: string, providerUniqueId: string, data: UpdateOrderDetailVendorRequest): Promise<OrderDetailVendor>;
+
+  /**
+   * Get a detailed vendor payment report list.
+   * @returns VendorPaymentReportList with payments array, summary, and pagination meta.
+   */
   reportList(params: VendorPaymentReportParams): Promise<VendorPaymentReportList>;
+
+  /**
+   * Get a vendor payment report summary.
+   * @returns VendorPaymentReportSummary with totals and breakdown by status.
+   */
   reportSummary(params: VendorPaymentReportParams): Promise<VendorPaymentReportSummary>;
+
+  /**
+   * Get a detailed provider report list.
+   * @returns ProviderReportList with providers array, summary, and pagination meta.
+   */
   providerReportList(params: ProviderReportParams): Promise<ProviderReportList>;
+
+  /**
+   * Get a provider report summary.
+   * @returns ProviderReportSummary with totals, commissions, and breakdown by status.
+   */
   providerReportSummary(params: ProviderReportParams): Promise<ProviderReportSummary>;
 }
 

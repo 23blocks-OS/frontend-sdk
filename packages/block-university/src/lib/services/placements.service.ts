@@ -26,33 +26,120 @@ import {
 
 export interface PlacementsService {
   // Placement Tests
+
+  /**
+   * Get a placement test by unique ID.
+   * @returns The matching PlacementTest record.
+   */
   get(uniqueId: string): Promise<PlacementTest>;
+
+  /**
+   * List placement tests for a course.
+   * @returns Paginated list of PlacementTest records.
+   */
   listByCourse(courseUniqueId: string, params?: ListPlacementsParams): Promise<PageResult<PlacementTest>>;
+
+  /**
+   * Create a new placement test for a course.
+   * @returns The newly created PlacementTest record.
+   */
   create(courseUniqueId: string, data: CreatePlacementRequest): Promise<PlacementTest>;
 
   // Sections
+
+  /**
+   * Get a section within a placement test.
+   * @returns The matching PlacementSection record.
+   */
   getSection(placementUniqueId: string, sectionId: string): Promise<PlacementSection>;
+
+  /**
+   * Create a section for a placement test.
+   * @returns The newly created PlacementSection record.
+   */
   createSection(placementUniqueId: string, data: CreatePlacementSectionRequest): Promise<PlacementSection>;
 
   // Questions
+
+  /**
+   * Get a question within a placement test.
+   * @returns The matching PlacementQuestion record.
+   */
   getQuestion(placementUniqueId: string, questionId: string): Promise<PlacementQuestion>;
+
+  /**
+   * Create a question for a placement test.
+   * @returns The newly created PlacementQuestion record.
+   */
   createQuestion(placementUniqueId: string, data: CreatePlacementQuestionRequest): Promise<PlacementQuestion>;
+
+  /**
+   * Add a question to a section in a placement test.
+   */
   addQuestionToSection(placementUniqueId: string, sectionId: string, questionId: string): Promise<void>;
 
   // Options
+
+  /**
+   * List all available placement options.
+   * @returns Array of PlacementOption records.
+   */
   listOptions(): Promise<PlacementOption[]>;
+
+  /**
+   * Create a new placement option.
+   * @returns The newly created PlacementOption record.
+   */
   createOption(data: CreatePlacementOptionRequest): Promise<PlacementOption>;
+
+  /**
+   * Add an option to a question.
+   */
   addOptionToQuestion(placementUniqueId: string, questionId: string, optionId: string): Promise<void>;
+
+  /**
+   * Set an option as the correct answer for a question.
+   */
   setRightOption(placementUniqueId: string, questionId: string, optionId: string): Promise<void>;
+
+  /**
+   * Remove an option from a question.
+   */
   removeOption(placementUniqueId: string, questionId: string, optionId: string): Promise<void>;
 
   // Rules
+
+  /**
+   * Create a placement rule for score-based assignment.
+   * @returns The newly created PlacementRule record.
+   */
   createRule(placementUniqueId: string, data: CreatePlacementRuleRequest): Promise<PlacementRule>;
 
   // User Placements
+
+  /**
+   * Get the current placement instance for a user.
+   * @returns The PlacementInstance record, or null if none exists.
+   * @note Returns null instead of throwing when no placement is found.
+   */
   getUserPlacement(userUniqueId: string): Promise<PlacementInstance | null>;
+
+  /**
+   * Start a placement test for a user.
+   * @returns The newly created PlacementInstance record.
+   */
   startPlacement(userUniqueId: string, placementUniqueId: string): Promise<PlacementInstance>;
+
+  /**
+   * Submit responses for a placement test instance.
+   * @returns The updated PlacementInstance record.
+   */
   submitResponse(userUniqueId: string, instanceUniqueId: string, responses: PlacementResponse[]): Promise<PlacementInstance>;
+
+  /**
+   * Finish a placement test instance and trigger scoring.
+   * @returns The PlacementInstance record with final results.
+   */
   finishPlacement(userUniqueId: string, instanceUniqueId: string): Promise<PlacementInstance>;
 }
 

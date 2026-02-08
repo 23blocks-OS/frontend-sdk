@@ -9,14 +9,70 @@ import type {
 import { messageMapper } from '../mappers/message.mapper.js';
 
 export interface MessagesService {
+  /**
+   * List all messages
+   * @param params - Optional filtering, sorting, and pagination parameters
+   * @returns Paginated list of Message records with pagination metadata
+   */
   list(params?: ListMessagesParams): Promise<PageResult<Message>>;
+
+  /**
+   * Get a message by unique ID
+   * @param uniqueId - Unique ID of the message to retrieve
+   * @returns The matching Message record
+   */
   get(uniqueId: string): Promise<Message>;
+
+  /**
+   * Create a new message
+   * @param data - Message creation payload including content, source, target, and routing fields
+   * @returns The newly created Message record
+   */
   create(data: CreateMessageRequest): Promise<Message>;
+
+  /**
+   * Update a message
+   * @param uniqueId - Unique ID of the message to update
+   * @param data - Fields to update (content, status, enabled, payload)
+   * @returns The updated Message record
+   */
   update(uniqueId: string, data: UpdateMessageRequest): Promise<Message>;
+
+  /**
+   * Delete a message (soft delete)
+   * @param uniqueId - Unique ID of the message to delete
+   * @returns void on successful deletion
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously deleted message
+   * @param uniqueId - Unique ID of the deleted message to recover
+   * @returns The recovered Message record
+   */
   recover(uniqueId: string): Promise<Message>;
+
+  /**
+   * List messages filtered by context
+   * @param contextId - Context identifier to filter by
+   * @param params - Optional sorting and pagination parameters
+   * @returns Paginated list of Message records for the given context
+   */
   listByContext(contextId: string, params?: ListMessagesParams): Promise<PageResult<Message>>;
+
+  /**
+   * List messages filtered by parent message
+   * @param parentId - Parent message ID to filter replies
+   * @param params - Optional sorting and pagination parameters
+   * @returns Paginated list of child Message records for the given parent
+   */
   listByParent(parentId: string, params?: ListMessagesParams): Promise<PageResult<Message>>;
+
+  /**
+   * List soft-deleted messages
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of deleted Message records with pagination metadata
+   */
   listDeleted(params?: ListMessagesParams): Promise<PageResult<Message>>;
 }
 

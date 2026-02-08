@@ -14,18 +14,80 @@ import { courseMapper } from '../mappers/course.mapper.js';
 import { courseGroupMapper } from '../mappers/course-group.mapper.js';
 
 export interface TeachersService {
+  /**
+   * List teachers with optional filtering and sorting.
+   * @returns Paginated list of Teacher records with metadata.
+   */
   list(params?: ListTeachersParams): Promise<PageResult<Teacher>>;
+
+  /**
+   * List archived teachers.
+   * @returns Paginated list of archived Teacher records.
+   */
   listArchived(params?: ListTeachersParams): Promise<PageResult<Teacher>>;
+
+  /**
+   * Get a single teacher by unique ID.
+   * @returns The matching Teacher record.
+   */
   get(uniqueId: string): Promise<Teacher>;
+
+  /**
+   * Get courses assigned to a teacher.
+   * @returns Array of Course records.
+   */
   getCourses(uniqueId: string): Promise<Course[]>;
+
+  /**
+   * Get course groups a teacher belongs to.
+   * @returns Array of CourseGroup records.
+   */
   getGroups(uniqueId: string): Promise<CourseGroup[]>;
+
+  /**
+   * Get availability slots for a teacher.
+   * @returns Array of TeacherAvailability records.
+   */
   getAvailability(uniqueId: string): Promise<TeacherAvailability[]>;
+
+  /**
+   * Add an availability slot for a teacher.
+   * @returns The newly created TeacherAvailability record.
+   */
   addAvailability(uniqueId: string, data: CreateAvailabilityRequest): Promise<TeacherAvailability>;
+
+  /**
+   * Update a specific availability slot for a teacher.
+   * @returns The updated TeacherAvailability record.
+   */
   updateAvailability(uniqueId: string, availabilityUniqueId: string, data: UpdateAvailabilityRequest): Promise<TeacherAvailability>;
+
+  /**
+   * Delete a specific availability slot for a teacher.
+   */
   deleteAvailability(uniqueId: string, availabilityUniqueId: string): Promise<void>;
+
+  /**
+   * Delete all availability slots for a teacher.
+   */
   deleteAllAvailability(uniqueId: string): Promise<void>;
+
+  /**
+   * Get the content tree for a teacher in a course group.
+   * @returns Hierarchical content structure.
+   */
   getContentTree(uniqueId: string, courseGroupUniqueId: string): Promise<unknown>;
+
+  /**
+   * Get a student's content tree as seen by a teacher.
+   * @returns Hierarchical content structure with student progress.
+   */
   getStudentContentTree(uniqueId: string, userUniqueId: string, courseGroupUniqueId: string): Promise<unknown>;
+
+  /**
+   * Promote a student within the teacher's scope.
+   * @returns The promotion result data.
+   */
   promoteStudent(uniqueId: string, userUniqueId: string): Promise<unknown>;
 }
 

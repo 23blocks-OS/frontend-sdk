@@ -11,11 +11,16 @@ import { geoCountryMapper, geoStateMapper, geoCityMapper } from '../mappers/geo-
 export interface GeoCountriesService {
   /**
    * List all countries with locations
+   * @param params - Optional pagination and sorting parameters
+   * @returns Paginated result containing GeoCountry items and metadata
    */
   list(params?: GeoLookupParams): Promise<PageResult<GeoCountry>>;
 
   /**
    * Get locations in a specific country
+   * @param countryCode - The ISO country code
+   * @param params - Optional filtering by status and pagination
+   * @returns Paginated result of Location records within the country
    */
   getLocations(countryCode: string, params?: ListLocationsParams): Promise<PageResult<Location>>;
 }
@@ -26,16 +31,24 @@ export interface GeoCountriesService {
 export interface GeoStatesService {
   /**
    * List all states with locations
+   * @param params - Optional pagination and sorting parameters
+   * @returns Paginated result containing GeoState items and metadata
    */
   list(params?: GeoLookupParams): Promise<PageResult<GeoState>>;
 
   /**
    * List states in a specific country
+   * @param countryCode - The ISO country code to filter by
+   * @param params - Optional pagination and sorting parameters
+   * @returns Paginated result of GeoState records within the country
    */
   listByCountry(countryCode: string, params?: GeoLookupParams): Promise<PageResult<GeoState>>;
 
   /**
    * Get locations in a specific state
+   * @param stateCode - The state/province code
+   * @param params - Optional filtering by status and pagination
+   * @returns Paginated result of Location records within the state
    */
   getLocations(stateCode: string, params?: ListLocationsParams): Promise<PageResult<Location>>;
 }
@@ -46,21 +59,32 @@ export interface GeoStatesService {
 export interface GeoCitiesService {
   /**
    * List all cities with locations
+   * @param params - Optional pagination and sorting parameters
+   * @returns Paginated result containing GeoCity items and metadata
    */
   list(params?: GeoLookupParams): Promise<PageResult<GeoCity>>;
 
   /**
    * List cities in a specific country
+   * @param countryCode - The ISO country code to filter by
+   * @param params - Optional pagination and sorting parameters
+   * @returns Paginated result of GeoCity records within the country
    */
   listByCountry(countryCode: string, params?: GeoLookupParams): Promise<PageResult<GeoCity>>;
 
   /**
    * List cities in a specific state
+   * @param stateCode - The state/province code to filter by
+   * @param params - Optional pagination and sorting parameters
+   * @returns Paginated result of GeoCity records within the state
    */
   listByState(stateCode: string, params?: GeoLookupParams): Promise<PageResult<GeoCity>>;
 
   /**
    * Get locations in a specific city
+   * @param cityCode - The city code
+   * @param params - Optional filtering by status and pagination
+   * @returns Paginated result of Location records within the city
    */
   getLocations(cityCode: string, params?: ListLocationsParams): Promise<PageResult<Location>>;
 }

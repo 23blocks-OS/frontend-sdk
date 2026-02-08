@@ -10,12 +10,45 @@ import type {
 import { campaignMediaMapper } from '../mappers/campaign-media.mapper.js';
 
 export interface CampaignMediaService {
+  /**
+   * List campaign media with optional filtering.
+   * @returns Paginated list of CampaignMedia records with metadata.
+   */
   list(params?: ListCampaignMediaParams): Promise<PageResult<CampaignMedia>>;
+
+  /**
+   * Get a single campaign media by unique ID.
+   * @returns The matching CampaignMedia record.
+   */
   get(uniqueId: string): Promise<CampaignMedia>;
+
+  /**
+   * Create a new campaign media attachment.
+   * @returns The newly created CampaignMedia record.
+   */
   create(data: CreateCampaignMediaRequest): Promise<CampaignMedia>;
+
+  /**
+   * Update an existing campaign media.
+   * @returns The updated CampaignMedia record.
+   */
   update(uniqueId: string, data: UpdateCampaignMediaRequest): Promise<CampaignMedia>;
+
+  /**
+   * Delete a campaign media.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List all media attached to a specific campaign.
+   * @returns Array of CampaignMedia records for the campaign.
+   */
   listByCampaign(campaignUniqueId: string): Promise<CampaignMedia[]>;
+
+  /**
+   * Get aggregated results for a campaign media.
+   * @returns CampaignMediaResults with performance metrics.
+   */
   getResults(uniqueId: string): Promise<CampaignMediaResults>;
 }
 

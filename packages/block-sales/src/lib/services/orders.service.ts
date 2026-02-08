@@ -4,14 +4,58 @@ import type { Order, CreateOrderRequest, UpdateOrderRequest, ListOrdersParams } 
 import { orderMapper } from '../mappers/order.mapper.js';
 
 export interface OrdersService {
+  /**
+   * List orders with optional filtering and sorting.
+   * @returns Paginated list of Order records with metadata.
+   */
   list(params?: ListOrdersParams): Promise<PageResult<Order>>;
+
+  /**
+   * Get a single order by unique ID.
+   * @returns The matching Order record.
+   */
   get(uniqueId: string): Promise<Order>;
+
+  /**
+   * Create a new order with line items.
+   * @returns The newly created Order record.
+   */
   create(data: CreateOrderRequest): Promise<Order>;
+
+  /**
+   * Update an existing order.
+   * @returns The updated Order record.
+   */
   update(uniqueId: string, data: UpdateOrderRequest): Promise<Order>;
+
+  /**
+   * Cancel an order.
+   * @returns The Order record with cancelled status.
+   */
   cancel(uniqueId: string): Promise<Order>;
+
+  /**
+   * Confirm an order.
+   * @returns The Order record with confirmed status.
+   */
   confirm(uniqueId: string): Promise<Order>;
+
+  /**
+   * Mark an order as shipped with an optional tracking number.
+   * @returns The Order record with shipped status.
+   */
   ship(uniqueId: string, trackingNumber?: string): Promise<Order>;
+
+  /**
+   * Mark an order as delivered.
+   * @returns The Order record with delivered status.
+   */
   deliver(uniqueId: string): Promise<Order>;
+
+  /**
+   * List orders for a specific user.
+   * @returns Paginated list of Order records for the user.
+   */
   listByUser(userUniqueId: string, params?: ListOrdersParams): Promise<PageResult<Order>>;
 }
 

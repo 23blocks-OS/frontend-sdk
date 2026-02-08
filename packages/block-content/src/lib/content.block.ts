@@ -22,24 +22,51 @@ import {
   type SeriesService,
 } from './services/index.js';
 
+/**
+ * Configuration for the Content block.
+ */
 export interface ContentBlockConfig extends BlockConfig {
+  /** Application ID */
   appId: string;
+  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
+/**
+ * Content management block interface.
+ */
 export interface ContentBlock {
+  /** Post CRUD operations */
   posts: PostsService;
+  /** Post version history management */
   postVersions: PostVersionsService;
+  /** Post template management */
   postTemplates: PostTemplatesService;
+  /** Comment management */
   comments: CommentsService;
+  /** Content category management */
   categories: CategoriesService;
+  /** Content tag management */
   tags: TagsService;
+  /** Content user management */
   users: ContentUsersService;
+  /** Content moderation operations */
   moderation: ModerationService;
+  /** Activity feed management */
   activity: ActivityService;
+  /** Content series management */
   series: SeriesService;
 }
 
+/**
+ * Create the Content block.
+ *
+ * @example
+ * ```typescript
+ * const block = createContentBlock(transport, { appId: 'xxx' });
+ * const posts = await block.posts.list({ page: 1 });
+ * ```
+ */
 export function createContentBlock(
   transport: Transport,
   config: ContentBlockConfig

@@ -5,6 +5,10 @@ import type {
 } from '../types/remarketing.js';
 
 export interface RemarketingService {
+  /**
+   * List abandoned onboarding journeys for remarketing purposes.
+   * @returns Paginated list of AbandonedJourney records with user and progress info.
+   */
   listAbandonedJourneys(params?: ListAbandonedJourneysParams): Promise<PageResult<AbandonedJourney>>;
 }
 

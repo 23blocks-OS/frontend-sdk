@@ -9,14 +9,58 @@ import type {
 import { enrollmentMapper } from '../mappers/enrollment.mapper.js';
 
 export interface EnrollmentsService {
+  /**
+   * List enrollments with optional filtering and sorting.
+   * @returns Paginated list of Enrollment records with metadata.
+   */
   list(params?: ListEnrollmentsParams): Promise<PageResult<Enrollment>>;
+
+  /**
+   * Get a single enrollment by unique ID.
+   * @returns The matching Enrollment record.
+   */
   get(uniqueId: string): Promise<Enrollment>;
+
+  /**
+   * Enroll a user in a course.
+   * @returns The newly created Enrollment record.
+   */
   enroll(data: EnrollRequest): Promise<Enrollment>;
+
+  /**
+   * Update lesson progress for an enrollment.
+   * @returns The updated Enrollment record.
+   */
   updateProgress(uniqueId: string, data: UpdateEnrollmentProgressRequest): Promise<Enrollment>;
+
+  /**
+   * Mark an enrollment as complete.
+   * @returns The Enrollment record with completed status.
+   */
   complete(uniqueId: string): Promise<Enrollment>;
+
+  /**
+   * Drop an enrollment.
+   * @returns The Enrollment record with dropped status.
+   */
   drop(uniqueId: string): Promise<Enrollment>;
+
+  /**
+   * List enrollments for a specific course.
+   * @returns Paginated list of Enrollment records for the course.
+   */
   listByCourse(courseUniqueId: string, params?: ListEnrollmentsParams): Promise<PageResult<Enrollment>>;
+
+  /**
+   * List enrollments for a specific user.
+   * @returns Paginated list of Enrollment records for the user.
+   */
   listByUser(userUniqueId: string, params?: ListEnrollmentsParams): Promise<PageResult<Enrollment>>;
+
+  /**
+   * Get the certificate URL for a completed enrollment.
+   * @returns Object with `certificateUrl` string.
+   */
   getCertificate(uniqueId: string): Promise<{ certificateUrl: string }>;
 }
 

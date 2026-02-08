@@ -9,13 +9,64 @@ import type {
 import { quoteMapper } from '../mappers/quote.mapper.js';
 
 export interface QuotesService {
+  /**
+   * List quotes with optional filtering, pagination, and sorting.
+   * @param params - Optional filtering (status, accountUniqueId, contactUniqueId, ownerUniqueId, search), pagination, and sorting.
+   * @returns Paginated result containing Quote objects and metadata.
+   */
   list(params?: ListQuotesParams): Promise<PageResult<Quote>>;
+
+  /**
+   * Retrieve a single quote by its unique identifier.
+   * @param uniqueId - The unique identifier of the quote.
+   * @returns The matching Quote object.
+   */
   get(uniqueId: string): Promise<Quote>;
+
+  /**
+   * Create a new quote.
+   * @param data - The quote creation payload with account, contact, budget, duration, and other fields.
+   * @returns The newly created Quote object.
+   */
   create(data: CreateQuoteRequest): Promise<Quote>;
+
+  /**
+   * Update an existing quote.
+   * @param uniqueId - The unique identifier of the quote to update.
+   * @param data - The fields to update on the quote.
+   * @returns The updated Quote object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(uniqueId: string, data: UpdateQuoteRequest): Promise<Quote>;
+
+  /**
+   * Soft-delete a quote.
+   * @param uniqueId - The unique identifier of the quote to delete.
+   * @returns Resolves when the quote has been deleted.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously soft-deleted quote.
+   * @param uniqueId - The unique identifier of the quote to recover.
+   * @returns The recovered Quote object.
+   */
   recover(uniqueId: string): Promise<Quote>;
+
+  /**
+   * Search quotes by a query string with optional pagination.
+   * @param query - The search query string.
+   * @param params - Optional pagination parameters.
+   * @returns Paginated result containing matching Quote objects.
+   * @note Performs a server-side POST-based search.
+   */
   search(query: string, params?: ListQuotesParams): Promise<PageResult<Quote>>;
+
+  /**
+   * List soft-deleted quotes with optional pagination.
+   * @param params - Optional pagination parameters.
+   * @returns Paginated result containing soft-deleted Quote objects.
+   */
   listDeleted(params?: ListQuotesParams): Promise<PageResult<Quote>>;
 }
 

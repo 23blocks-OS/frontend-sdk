@@ -5,8 +5,25 @@ import type {
 } from '../types/availability.js';
 
 export interface AvailabilitiesService {
+  /**
+   * Get the availability status of a user
+   * @param userUniqueId - Unique ID of the user to check
+   * @returns UserAvailability with status, last seen timestamp, and optional custom status
+   */
   get(userUniqueId: string): Promise<UserAvailability>;
+
+  /**
+   * Set the current user's status to online
+   * @param data - Optional availability settings including custom status and payload
+   * @returns Updated UserAvailability reflecting the online state
+   * @note Defaults to status "online" if no specific status is provided in the request
+   */
   goOnline(data?: SetAvailabilityRequest): Promise<UserAvailability>;
+
+  /**
+   * Set the current user's status to offline
+   * @returns void on successful status change
+   */
   goOffline(): Promise<void>;
 }
 

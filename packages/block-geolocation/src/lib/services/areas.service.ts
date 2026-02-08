@@ -9,13 +9,62 @@ import type {
 import { areaMapper } from '../mappers/area.mapper.js';
 
 export interface AreasService {
+  /**
+   * List all geographic areas
+   * @param params - Optional filtering by area type, address, search, and pagination
+   * @returns Paginated result containing Area items and metadata
+   */
   list(params?: ListAreasParams): Promise<PageResult<Area>>;
+
+  /**
+   * Get a specific area
+   * @param uniqueId - The unique identifier of the area
+   * @returns The matching Area record
+   */
   get(uniqueId: string): Promise<Area>;
+
+  /**
+   * Create a new geographic area
+   * @param data - Area details including name, code, type, and boundary points
+   * @returns The newly created Area record
+   */
   create(data: CreateAreaRequest): Promise<Area>;
+
+  /**
+   * Update an existing area
+   * @param uniqueId - The unique identifier of the area to update
+   * @param data - Fields to update such as name, boundary points, or status
+   * @returns The updated Area record
+   */
   update(uniqueId: string, data: UpdateAreaRequest): Promise<Area>;
+
+  /**
+   * Delete an area (soft delete)
+   * @param uniqueId - The unique identifier of the area to delete
+   * @returns Resolves when the area has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously deleted area
+   * @param uniqueId - The unique identifier of the deleted area
+   * @returns The recovered Area record
+   */
   recover(uniqueId: string): Promise<Area>;
+
+  /**
+   * Search areas by query string
+   * @param query - The search query text
+   * @param params - Optional additional filtering and pagination
+   * @returns Paginated result of Area records matching the search query
+   */
   search(query: string, params?: ListAreasParams): Promise<PageResult<Area>>;
+
+  /**
+   * List soft-deleted areas
+   * @param params - Optional pagination parameters
+   * @returns Paginated result of deleted Area records
+   */
   listDeleted(params?: ListAreasParams): Promise<PageResult<Area>>;
 }
 

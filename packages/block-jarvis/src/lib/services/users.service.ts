@@ -14,18 +14,81 @@ import type {
 import { jarvisUserMapper } from '../mappers/user.mapper.js';
 
 export interface JarvisUsersService {
+  /**
+   * List Jarvis users with optional filtering and sorting.
+   * @returns Paginated list of JarvisUser records with metadata.
+   */
   list(params?: ListJarvisUsersParams): Promise<PageResult<JarvisUser>>;
+
+  /**
+   * Get a single Jarvis user by unique ID.
+   * @returns The matching JarvisUser record.
+   */
   get(uniqueId: string): Promise<JarvisUser>;
+
+  /**
+   * Register a user in the Jarvis system.
+   * @returns The newly registered JarvisUser record.
+   */
   register(uniqueId: string, data?: RegisterJarvisUserRequest): Promise<JarvisUser>;
+
+  /**
+   * Update a Jarvis user.
+   * @returns The updated JarvisUser record.
+   */
   update(uniqueId: string, data: UpdateJarvisUserRequest): Promise<JarvisUser>;
+
+  /**
+   * Associate a prompt with a user.
+   */
   addPrompt(uniqueId: string, promptUniqueId: string): Promise<void>;
+
+  /**
+   * Get an existing user context by unique ID.
+   * @returns The UserContext with messages and metadata.
+   */
   getContext(uniqueId: string, contextUniqueId: string): Promise<UserContext>;
+
+  /**
+   * Create a new context for user conversations.
+   * @returns The newly created UserContext.
+   */
   createContext(uniqueId: string, data?: CreateUserContextRequest): Promise<UserContext>;
+
+  /**
+   * Get the conversation history for a user context.
+   * @returns The UserContext with full message history.
+   */
   getConversation(uniqueId: string, contextUniqueId: string): Promise<UserContext>;
+
+  /**
+   * Send a message within a user context.
+   * @returns SendUserMessageResponse with the sent message, optional AI response, and cost.
+   */
   sendMessage(uniqueId: string, contextUniqueId: string, data: SendUserMessageRequest): Promise<SendUserMessageResponse>;
+
+  /**
+   * Get an existing content-scoped context for a user.
+   * @returns The UserContext with messages and metadata.
+   */
   getContentContext(uniqueId: string, contentIdentityUniqueId: string, contextUniqueId: string): Promise<UserContext>;
+
+  /**
+   * Create a new content-scoped context for a user.
+   * @returns The newly created UserContext.
+   */
   createContentContext(uniqueId: string, contentIdentityUniqueId: string, data?: CreateUserContentContextRequest): Promise<UserContext>;
+
+  /**
+   * Get the content-scoped conversation history for a user.
+   * @returns The UserContext with full message history.
+   */
   getContentConversation(uniqueId: string, contentIdentityUniqueId: string, contextUniqueId: string): Promise<UserContext>;
+
+  /**
+   * Send a message within a content-scoped user context.
+   * @returns SendUserMessageResponse with the sent message, optional AI response, and cost.
+   */
   sendContentMessage(uniqueId: string, contentIdentityUniqueId: string, contextUniqueId: string, data: SendUserMessageRequest): Promise<SendUserMessageResponse>;
 }
 

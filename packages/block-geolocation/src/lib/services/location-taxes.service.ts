@@ -8,8 +8,29 @@ import type {
 import { locationTaxMapper } from '../mappers/location-tax.mapper.js';
 
 export interface LocationTaxesService {
+  /**
+   * Create a new tax configuration for a location
+   * @param locationUniqueId - The unique identifier of the location
+   * @param data - Tax details including name, rate, type, and inclusive/default flags
+   * @returns The newly created LocationTax record
+   */
   create(locationUniqueId: string, data: CreateLocationTaxRequest): Promise<LocationTax>;
+
+  /**
+   * Update a location tax configuration
+   * @param locationUniqueId - The unique identifier of the location
+   * @param taxUniqueId - The unique identifier of the tax to update
+   * @param data - Fields to update such as rate, type, or inclusive flag
+   * @returns The updated LocationTax record
+   */
   update(locationUniqueId: string, taxUniqueId: string, data: UpdateLocationTaxRequest): Promise<LocationTax>;
+
+  /**
+   * Delete a location tax configuration
+   * @param locationUniqueId - The unique identifier of the location
+   * @param taxUniqueId - The unique identifier of the tax to delete
+   * @returns Resolves when the tax configuration has been deleted
+   */
   delete(locationUniqueId: string, taxUniqueId: string): Promise<void>;
 }
 

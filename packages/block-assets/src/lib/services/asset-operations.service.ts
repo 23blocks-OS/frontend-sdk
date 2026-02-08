@@ -10,9 +10,28 @@ import type {
 import { assetOperationMapper } from '../mappers/asset-operation.mapper.js';
 
 export interface AssetOperationsService {
+  /**
+   * List operations for a specific asset.
+   * @returns Paginated list of AssetOperation records with metadata.
+   */
   list(assetUniqueId: string, params?: ListAssetOperationsParams): Promise<PageResult<AssetOperation>>;
+
+  /**
+   * Get a specific operation for an asset.
+   * @returns The matching AssetOperation record.
+   */
   get(assetUniqueId: string, operationUniqueId: string): Promise<AssetOperation>;
+
+  /**
+   * Create a new operation for an asset.
+   * @returns The newly created AssetOperation record.
+   */
   create(assetUniqueId: string, data: CreateAssetOperationRequest): Promise<AssetOperation>;
+
+  /**
+   * Get an operation report summary.
+   * @returns OperationReportSummary with totals and breakdown by operation type.
+   */
   reportSummary(params: OperationReportParams): Promise<OperationReportSummary>;
 }
 

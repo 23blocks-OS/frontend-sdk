@@ -9,10 +9,50 @@ import type {
 import { premiseEventMapper } from '../mappers/premise-event.mapper.js';
 
 export interface PremiseEventsService {
+  /**
+   * List all events for a premise within a location
+   * @param locationUniqueId - The unique identifier of the parent location
+   * @param premiseUniqueId - The unique identifier of the premise
+   * @param params - Optional filtering by event type, date range, organizer, status, and pagination
+   * @returns Paginated result containing PremiseEvent items and metadata
+   */
   list(locationUniqueId: string, premiseUniqueId: string, params?: ListPremiseEventsParams): Promise<PageResult<PremiseEvent>>;
+
+  /**
+   * Get a specific premise event
+   * @param locationUniqueId - The unique identifier of the parent location
+   * @param premiseUniqueId - The unique identifier of the premise
+   * @param uniqueId - The unique identifier of the event
+   * @returns The matching PremiseEvent record
+   */
   get(locationUniqueId: string, premiseUniqueId: string, uniqueId: string): Promise<PremiseEvent>;
+
+  /**
+   * Create a new event for a premise
+   * @param locationUniqueId - The unique identifier of the parent location
+   * @param premiseUniqueId - The unique identifier of the premise
+   * @param data - Event details including type, title, times, capacity, and recurrence
+   * @returns The newly created PremiseEvent record
+   */
   create(locationUniqueId: string, premiseUniqueId: string, data: CreatePremiseEventRequest): Promise<PremiseEvent>;
+
+  /**
+   * Update a premise event
+   * @param locationUniqueId - The unique identifier of the parent location
+   * @param premiseUniqueId - The unique identifier of the premise
+   * @param uniqueId - The unique identifier of the event to update
+   * @param data - Fields to update such as title, times, capacity, or status
+   * @returns The updated PremiseEvent record
+   */
   update(locationUniqueId: string, premiseUniqueId: string, uniqueId: string, data: UpdatePremiseEventRequest): Promise<PremiseEvent>;
+
+  /**
+   * Delete a premise event
+   * @param locationUniqueId - The unique identifier of the parent location
+   * @param premiseUniqueId - The unique identifier of the premise
+   * @param uniqueId - The unique identifier of the event to delete
+   * @returns Resolves when the event has been deleted
+   */
   delete(locationUniqueId: string, premiseUniqueId: string, uniqueId: string): Promise<void>;
 }
 

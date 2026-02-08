@@ -10,10 +10,34 @@ import type {
 import { salesCustomerMapper } from '../mappers/customer.mapper.js';
 
 export interface SalesCustomersService {
+  /**
+   * Get a sales customer by unique ID.
+   * @returns The matching SalesCustomer record.
+   */
   get(uniqueId: string): Promise<SalesCustomer>;
+
+  /**
+   * Register a user as a sales customer.
+   * @returns The newly registered SalesCustomer record.
+   */
   register(uniqueId: string, data?: RegisterSalesCustomerRequest): Promise<SalesCustomer>;
+
+  /**
+   * Get a specific subscription for a customer.
+   * @returns The matching CustomerSubscription record.
+   */
   getSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<CustomerSubscription>;
+
+  /**
+   * Create a new subscription for a customer.
+   * @returns The newly created CustomerSubscription record.
+   */
   createSubscription(uniqueId: string, data: CreateCustomerSubscriptionRequest): Promise<CustomerSubscription>;
+
+  /**
+   * Update an existing customer subscription.
+   * @returns The updated CustomerSubscription record.
+   */
   updateSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateCustomerSubscriptionRequest): Promise<CustomerSubscription>;
 }
 

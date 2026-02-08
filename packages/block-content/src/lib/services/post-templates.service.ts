@@ -9,10 +9,40 @@ import type {
 import { postTemplateMapper } from '../mappers/post-template.mapper.js';
 
 export interface PostTemplatesService {
+  /**
+   * List all post templates
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated list of PostTemplate records with pagination metadata
+   */
   list(params?: ListPostTemplatesParams): Promise<PageResult<PostTemplate>>;
+
+  /**
+   * Get a post template by unique ID
+   * @param uniqueId - Unique ID of the template to retrieve
+   * @returns The matching PostTemplate record
+   */
   get(uniqueId: string): Promise<PostTemplate>;
+
+  /**
+   * Create a new post template
+   * @param data - Template creation payload including name, slug, and field definitions
+   * @returns The newly created PostTemplate record
+   */
   create(data: CreatePostTemplateRequest): Promise<PostTemplate>;
+
+  /**
+   * Update a post template
+   * @param uniqueId - Unique ID of the template to update
+   * @param data - Fields to update on the template
+   * @returns The updated PostTemplate record
+   */
   update(uniqueId: string, data: UpdatePostTemplateRequest): Promise<PostTemplate>;
+
+  /**
+   * Delete a post template
+   * @param uniqueId - Unique ID of the template to delete
+   * @returns void on successful deletion
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

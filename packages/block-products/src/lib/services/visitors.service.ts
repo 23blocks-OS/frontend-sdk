@@ -21,6 +21,11 @@ export interface Visitor {
 }
 
 export interface VisitorsService {
+  /**
+   * Create a new visitor tracking record.
+   * @param data - Visitor details including optional session ID, user agent, IP, referrer, and landing page
+   * @returns The newly created Visitor with assigned uniqueId and sessionId
+   */
   create(data: CreateVisitorRequest): Promise<Visitor>;
 }
 

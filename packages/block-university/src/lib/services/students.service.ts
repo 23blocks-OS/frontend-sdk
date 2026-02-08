@@ -14,22 +14,104 @@ import { courseMapper } from '../mappers/course.mapper.js';
 import { courseGroupMapper } from '../mappers/course-group.mapper.js';
 
 export interface StudentsService {
+  /**
+   * List students with optional filtering and sorting.
+   * @returns Paginated list of Student records with metadata.
+   */
   list(params?: ListStudentsParams): Promise<PageResult<Student>>;
+
+  /**
+   * List archived students.
+   * @returns Paginated list of archived Student records.
+   */
   listArchived(params?: ListStudentsParams): Promise<PageResult<Student>>;
+
+  /**
+   * Get a single student by unique ID.
+   * @returns The matching Student record.
+   */
   get(uniqueId: string): Promise<Student>;
+
+  /**
+   * Register a new student.
+   * @returns The newly registered Student record.
+   */
   register(uniqueId: string, data: RegisterStudentRequest): Promise<Student>;
+
+  /**
+   * Update a student's profile.
+   * @returns The updated Student record.
+   */
   update(uniqueId: string, data: UpdateStudentRequest): Promise<Student>;
+
+  /**
+   * Archive a student.
+   */
   archive(uniqueId: string): Promise<void>;
+
+  /**
+   * Restore an archived student.
+   * @returns The restored Student record.
+   */
   restore(uniqueId: string): Promise<Student>;
+
+  /**
+   * Get courses the student is enrolled in.
+   * @returns Array of Course records.
+   */
   getCourses(uniqueId: string): Promise<Course[]>;
+
+  /**
+   * Get courses available for the student to enroll in.
+   * @returns Array of available Course records.
+   */
   getAvailableCourses(uniqueId: string): Promise<Course[]>;
+
+  /**
+   * Get course groups the student belongs to.
+   * @returns Array of CourseGroup records.
+   */
   getGroups(uniqueId: string): Promise<CourseGroup[]>;
+
+  /**
+   * Get the content tree for a student in a course group.
+   * @returns Hierarchical content structure.
+   */
   getContentTree(uniqueId: string, courseGroupUniqueId: string): Promise<unknown>;
+
+  /**
+   * Get availability slots for a student.
+   * @returns Array of StudentAvailability records.
+   */
   getAvailability(uniqueId: string): Promise<StudentAvailability[]>;
+
+  /**
+   * Add an availability slot for a student.
+   * @returns The newly created StudentAvailability record.
+   */
   addAvailability(uniqueId: string, data: { dayOfWeek: number; startTime: string; endTime: string; timezone?: string }): Promise<StudentAvailability>;
+
+  /**
+   * Update a specific availability slot for a student.
+   * @returns The updated StudentAvailability record.
+   */
   updateAvailability(uniqueId: string, availabilityUniqueId: string, data: { dayOfWeek?: number; startTime?: string; endTime?: string; timezone?: string }): Promise<StudentAvailability>;
+
+  /**
+   * Replace all availability slots for a student.
+   * @returns Array of updated StudentAvailability records.
+   * @note Replaces all existing slots with the provided set.
+   */
   updateAvailabilitySlots(uniqueId: string, slots: { dayOfWeek: number; startTime: string; endTime: string }[]): Promise<StudentAvailability[]>;
+
+  /**
+   * Delete a specific availability slot.
+   */
   deleteAvailability(uniqueId: string, availabilityUniqueId: string): Promise<void>;
+
+  /**
+   * Delete all availability slots for a student.
+   */
   deleteAllAvailability(uniqueId: string): Promise<void>;
 }
 

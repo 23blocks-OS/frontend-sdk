@@ -9,11 +9,39 @@ import type {
 import { teamMapper } from '../mappers/team.mapper.js';
 
 export interface TeamsService {
+  /**
+   * List teams with optional filtering and sorting.
+   * @returns Paginated list of Team records with metadata.
+   */
   list(params?: ListTeamsParams): Promise<PageResult<Team>>;
+
+  /**
+   * Get a single team by unique ID.
+   * @returns The matching Team record.
+   */
   get(uniqueId: string): Promise<Team>;
+
+  /**
+   * Create a new team.
+   * @returns The newly created Team record.
+   */
   create(data: CreateTeamRequest): Promise<Team>;
+
+  /**
+   * Update an existing team.
+   * @returns The updated Team record.
+   */
   update(uniqueId: string, data: UpdateTeamRequest): Promise<Team>;
+
+  /**
+   * Delete a team.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List all teams belonging to a specific department.
+   * @returns Array of Team records for the department.
+   */
   listByDepartment(departmentUniqueId: string): Promise<Team[]>;
 }
 

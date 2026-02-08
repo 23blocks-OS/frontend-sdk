@@ -11,13 +11,66 @@ import type {
 import { searchEntityMapper } from '../mappers/entity.mapper.js';
 
 export interface EntitiesService {
+  /**
+   * List search entities with optional filtering, pagination, and sorting.
+   * @param params - Optional filtering, pagination, and sorting parameters.
+   * @returns A paginated result containing an array of {@link SearchEntity} items and pagination metadata.
+   * @note The `perPage` param is sent as `records` to the backend API.
+   * @note Sort order is expressed via a `-` prefix on the field name for descending (JSON:API convention).
+   */
   list(params?: ListEntitiesParams): Promise<PageResult<SearchEntity>>;
+
+  /**
+   * Get a single search entity by its unique ID.
+   * @param uniqueId - The unique identifier of the entity.
+   * @returns The matching {@link SearchEntity}.
+   */
   get(uniqueId: string): Promise<SearchEntity>;
+
+  /**
+   * Register a new search entity under a given unique ID.
+   * @param uniqueId - The unique identifier to assign to the entity.
+   * @param data - The entity registration payload including entityType, alias, description, and optional fields.
+   * @returns The newly created {@link SearchEntity} as persisted by the backend.
+   * @note The `uniqueId` is part of the URL path (`/entities/{uniqueId}/register/`), not the request body.
+   */
   register(uniqueId: string, data: RegisterEntityRequest): Promise<SearchEntity>;
+
+  /**
+   * Update an existing search entity.
+   * @param uniqueId - The unique identifier of the entity to update.
+   * @param data - The fields to update. All fields are optional.
+   * @returns The updated {@link SearchEntity}.
+   * @note Uses PUT (not PATCH) for the update request.
+   */
   update(uniqueId: string, data: UpdateEntityRequest): Promise<SearchEntity>;
+
+  /**
+   * Delete a search entity by its unique ID.
+   * @param uniqueId - The unique identifier of the entity to delete.
+   * @returns Resolves with no value on successful deletion.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List all available entity types.
+   * @returns An array of objects each containing an `entityType` string.
+   * @note Returns an empty array if the backend response is not an array.
+   */
   listEntityTypes(): Promise<{ entityType: string }[]>;
+
+  /**
+   * Get the schema definition for a specific entity type.
+   * @param entityType - The entity type identifier to retrieve the schema for.
+   * @returns The {@link EntityTypeSchema} containing field definitions and metadata for the given type.
+   */
   getEntityTypeSchema(entityType: string): Promise<EntityTypeSchema>;
+
+  /**
+   * Search entities using AI copilot-assisted search.
+   * @param data - The copilot search request containing a query string, optional entity type filters, and limit.
+   * @returns An array of {@link SearchEntity} items matching the copilot query.
+   */
   searchByCopilot(data: CopilotSearchRequest): Promise<SearchEntity[]>;
 }
 

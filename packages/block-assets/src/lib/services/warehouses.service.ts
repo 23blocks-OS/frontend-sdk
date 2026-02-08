@@ -9,10 +9,33 @@ import type {
 import { warehouseMapper } from '../mappers/warehouse.mapper.js';
 
 export interface WarehousesService {
+  /**
+   * List warehouses with optional filtering and sorting.
+   * @returns Paginated list of Warehouse records with metadata.
+   */
   list(params?: ListWarehousesParams): Promise<PageResult<Warehouse>>;
+
+  /**
+   * Get a single warehouse by unique ID.
+   * @returns The matching Warehouse record.
+   */
   get(uniqueId: string): Promise<Warehouse>;
+
+  /**
+   * Create a new warehouse.
+   * @returns The newly created Warehouse record.
+   */
   create(data: CreateWarehouseRequest): Promise<Warehouse>;
+
+  /**
+   * Update an existing warehouse.
+   * @returns The updated Warehouse record.
+   */
   update(uniqueId: string, data: UpdateWarehouseRequest): Promise<Warehouse>;
+
+  /**
+   * Delete a warehouse.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

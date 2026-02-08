@@ -8,11 +8,40 @@ import type {
 import { courseGroupMapper } from '../mappers/course-group.mapper.js';
 
 export interface CourseGroupsService {
+  /**
+   * Get a course group by unique ID.
+   * @returns The matching CourseGroup record.
+   */
   get(uniqueId: string): Promise<CourseGroup>;
+
+  /**
+   * Create a new course group.
+   * @returns The newly created CourseGroup record.
+   */
   create(data: CreateCourseGroupRequest): Promise<CourseGroup>;
+
+  /**
+   * Enroll a student in a course group.
+   * @returns The updated CourseGroup record.
+   */
   addStudent(uniqueId: string, studentUniqueId: string): Promise<CourseGroup>;
+
+  /**
+   * Assign a teacher to a course group.
+   * @returns The updated CourseGroup record.
+   */
   addTeacher(uniqueId: string, teacherUniqueId: string): Promise<CourseGroup>;
+
+  /**
+   * Get tests for a course group.
+   * @returns Array of test objects.
+   */
   getTests(uniqueId: string): Promise<unknown[]>;
+
+  /**
+   * Get test responses for a specific test in a course group.
+   * @returns Array of response objects.
+   */
   getTestResponses(uniqueId: string, testUniqueId: string): Promise<unknown[]>;
 }
 

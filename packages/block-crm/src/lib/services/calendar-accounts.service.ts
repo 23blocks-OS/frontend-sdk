@@ -11,12 +11,61 @@ import type {
 import { calendarAccountMapper } from '../mappers/calendar-account.mapper.js';
 
 export interface CalendarAccountsService {
+  /**
+   * List calendar accounts for a specific user with optional filtering, pagination, and sorting.
+   * @param userUniqueId - The unique identifier of the user.
+   * @param params - Optional filtering (status, provider, syncEnabled, search), pagination, and sorting.
+   * @returns Paginated result containing CalendarAccount objects and metadata.
+   */
   list(userUniqueId: string, params?: ListCalendarAccountsParams): Promise<PageResult<CalendarAccount>>;
+
+  /**
+   * Retrieve a single calendar account for a user.
+   * @param userUniqueId - The unique identifier of the user.
+   * @param uniqueId - The unique identifier of the calendar account.
+   * @returns The matching CalendarAccount object.
+   */
   get(userUniqueId: string, uniqueId: string): Promise<CalendarAccount>;
+
+  /**
+   * Create a new calendar account for a user.
+   * @param userUniqueId - The unique identifier of the user.
+   * @param data - The calendar account creation payload with provider, email, tokens, and sync settings.
+   * @returns The newly created CalendarAccount object.
+   */
   create(userUniqueId: string, data: CreateCalendarAccountRequest): Promise<CalendarAccount>;
+
+  /**
+   * Update an existing calendar account for a user.
+   * @param userUniqueId - The unique identifier of the user.
+   * @param uniqueId - The unique identifier of the calendar account to update.
+   * @param data - The fields to update on the calendar account.
+   * @returns The updated CalendarAccount object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(userUniqueId: string, uniqueId: string, data: UpdateCalendarAccountRequest): Promise<CalendarAccount>;
+
+  /**
+   * Delete a calendar account for a user.
+   * @param userUniqueId - The unique identifier of the user.
+   * @param uniqueId - The unique identifier of the calendar account to delete.
+   * @returns Resolves when the calendar account has been deleted.
+   */
   delete(userUniqueId: string, uniqueId: string): Promise<void>;
+
+  /**
+   * Trigger a calendar sync for a specific user's calendar accounts.
+   * @param userUniqueId - The unique identifier of the user.
+   * @param request - Optional sync parameters (forceRefresh, date range).
+   * @returns A SyncCalendarResponse with sync results.
+   */
   syncUser(userUniqueId: string, request?: SyncCalendarRequest): Promise<SyncCalendarResponse>;
+
+  /**
+   * Trigger a calendar sync for all calendar accounts across the tenant.
+   * @param request - Optional sync parameters (forceRefresh, date range).
+   * @returns A SyncCalendarResponse with sync results.
+   */
   syncTenant(request?: SyncCalendarRequest): Promise<SyncCalendarResponse>;
 }
 

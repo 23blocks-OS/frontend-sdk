@@ -11,26 +11,43 @@ import { routeLocationMapper } from '../mappers/route-tracker.mapper.js';
 export interface RouteTrackerService {
   /**
    * Record a location point for a route
+   * @param userUniqueId - The unique identifier of the user
+   * @param routeUniqueId - The unique identifier of the route
+   * @param data - GPS data including coordinates, accuracy, altitude, speed, and heading
+   * @returns The newly created RouteLocation point record
    */
   recordLocation(userUniqueId: string, routeUniqueId: string, data: CreateRouteLocationRequest): Promise<RouteLocation>;
 
   /**
    * Get route tracking status
+   * @param userUniqueId - The unique identifier of the user
+   * @param routeUniqueId - The unique identifier of the route
+   * @returns Tracking status including active flag, last location, distance, elapsed time, and speed
    */
   getStatus(userUniqueId: string, routeUniqueId: string): Promise<RouteTrackerStatus>;
 
   /**
    * List all recorded locations for a route
+   * @param userUniqueId - The unique identifier of the user
+   * @param routeUniqueId - The unique identifier of the route
+   * @param params - Optional filtering by time range and pagination
+   * @returns Paginated result containing RouteLocation items and metadata
    */
   listLocations(userUniqueId: string, routeUniqueId: string, params?: ListRouteLocationsParams): Promise<PageResult<RouteLocation>>;
 
   /**
    * Start tracking for a route
+   * @param userUniqueId - The unique identifier of the user
+   * @param routeUniqueId - The unique identifier of the route
+   * @returns Tracking status with isTracking set to true
    */
   startTracking(userUniqueId: string, routeUniqueId: string): Promise<RouteTrackerStatus>;
 
   /**
    * Stop tracking for a route
+   * @param userUniqueId - The unique identifier of the user
+   * @param routeUniqueId - The unique identifier of the route
+   * @returns Final tracking status with isTracking set to false and cumulative metrics
    */
   stopTracking(userUniqueId: string, routeUniqueId: string): Promise<RouteTrackerStatus>;
 }

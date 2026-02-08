@@ -10,13 +10,65 @@ import type {
 import { storageFileMapper } from '../mappers/storage-file.mapper.js';
 
 export interface StorageFilesService {
+  /**
+   * List all storage files
+   * @param params - Optional filtering by owner, file/MIME type, status, and pagination
+   * @returns Paginated result containing StorageFile items and metadata
+   */
   list(params?: ListStorageFilesParams): Promise<PageResult<StorageFile>>;
+
+  /**
+   * Get a specific storage file
+   * @param uniqueId - The unique identifier of the storage file
+   * @returns The matching StorageFile record
+   */
   get(uniqueId: string): Promise<StorageFile>;
+
+  /**
+   * Upload a file using multipart form data
+   * @param data - Upload payload including the File object, owner info, and optional processing flags
+   * @returns The newly created StorageFile record
+   * @note Sends the request as multipart/form-data with the file binary
+   */
   upload(data: UploadFileRequest): Promise<StorageFile>;
+
+  /**
+   * Create a storage file record from metadata (without binary upload)
+   * @param data - File metadata including owner, name, type, size, and content URL
+   * @returns The newly created StorageFile record
+   * @note Use this when the file binary is already hosted externally
+   */
   create(data: CreateStorageFileRequest): Promise<StorageFile>;
+
+  /**
+   * Update an existing storage file record
+   * @param uniqueId - The unique identifier of the storage file to update
+   * @param data - Fields to update such as file name, URLs, or status
+   * @returns The updated StorageFile record
+   */
   update(uniqueId: string, data: UpdateStorageFileRequest): Promise<StorageFile>;
+
+  /**
+   * Delete a storage file
+   * @param uniqueId - The unique identifier of the storage file to delete
+   * @returns Resolves when the file has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Download a storage file as a binary Blob
+   * @param uniqueId - The unique identifier of the storage file to download
+   * @returns The file contents as a Blob
+   */
   download(uniqueId: string): Promise<Blob>;
+
+  /**
+   * List storage files belonging to a specific owner
+   * @param ownerUniqueId - The unique identifier of the owner
+   * @param ownerType - The type of owner entity
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated result of StorageFile records for the given owner
+   */
   listByOwner(ownerUniqueId: string, ownerType: string, params?: ListStorageFilesParams): Promise<PageResult<StorageFile>>;
 }
 

@@ -4,6 +4,11 @@ import type { Source } from '../types/source.js';
 import { sourceMapper } from '../mappers/source.mapper.js';
 
 export interface SourcesService {
+  /**
+   * Get a source by unique ID
+   * @param uniqueId - Unique ID of the source to retrieve
+   * @returns The matching Source record
+   */
   get(uniqueId: string): Promise<Source>;
 }
 

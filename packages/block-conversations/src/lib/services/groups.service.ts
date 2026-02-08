@@ -9,15 +9,78 @@ import type {
 import { groupMapper } from '../mappers/group.mapper.js';
 
 export interface GroupsService {
+  /**
+   * List all groups
+   * @param params - Optional filtering, sorting, and pagination parameters
+   * @returns Paginated list of Group records with pagination metadata
+   */
   list(params?: ListGroupsParams): Promise<PageResult<Group>>;
+
+  /**
+   * Get a group by unique ID
+   * @param uniqueId - Unique ID of the group to retrieve
+   * @returns The matching Group record
+   */
   get(uniqueId: string): Promise<Group>;
+
+  /**
+   * Create a new group
+   * @param data - Group creation payload including name, type, and initial members
+   * @returns The newly created Group record
+   */
   create(data: CreateGroupRequest): Promise<Group>;
+
+  /**
+   * Update a group
+   * @param uniqueId - Unique ID of the group to update
+   * @param data - Fields to update on the group
+   * @returns The updated Group record
+   */
   update(uniqueId: string, data: UpdateGroupRequest): Promise<Group>;
+
+  /**
+   * Delete a group (soft delete)
+   * @param uniqueId - Unique ID of the group to delete
+   * @returns void on successful deletion
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously deleted group
+   * @param uniqueId - Unique ID of the deleted group to recover
+   * @returns The recovered Group record
+   */
   recover(uniqueId: string): Promise<Group>;
+
+  /**
+   * Search groups by query string
+   * @param query - Search query text
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of matching Group records with pagination metadata
+   */
   search(query: string, params?: ListGroupsParams): Promise<PageResult<Group>>;
+
+  /**
+   * List soft-deleted groups
+   * @param params - Optional pagination parameters
+   * @returns Paginated list of deleted Group records with pagination metadata
+   */
   listDeleted(params?: ListGroupsParams): Promise<PageResult<Group>>;
+
+  /**
+   * Add a member to a group
+   * @param uniqueId - Unique ID of the group
+   * @param memberId - ID of the member to add
+   * @returns The updated Group record
+   */
   addMember(uniqueId: string, memberId: string): Promise<Group>;
+
+  /**
+   * Remove a member from a group
+   * @param uniqueId - Unique ID of the group
+   * @param memberId - ID of the member to remove
+   * @returns The updated Group record
+   */
   removeMember(uniqueId: string, memberId: string): Promise<Group>;
 }
 

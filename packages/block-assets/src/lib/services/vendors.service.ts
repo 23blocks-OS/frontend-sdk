@@ -9,10 +9,33 @@ import type {
 import { vendorMapper } from '../mappers/vendor.mapper.js';
 
 export interface VendorsService {
+  /**
+   * List vendors with optional filtering and sorting.
+   * @returns Paginated list of Vendor records with metadata.
+   */
   list(params?: ListVendorsParams): Promise<PageResult<Vendor>>;
+
+  /**
+   * Get a single vendor by unique ID.
+   * @returns The matching Vendor record.
+   */
   get(uniqueId: string): Promise<Vendor>;
+
+  /**
+   * Create a new vendor.
+   * @returns The newly created Vendor record.
+   */
   create(data: CreateVendorRequest): Promise<Vendor>;
+
+  /**
+   * Update an existing vendor.
+   * @returns The updated Vendor record.
+   */
   update(uniqueId: string, data: UpdateVendorRequest): Promise<Vendor>;
+
+  /**
+   * Delete a vendor.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

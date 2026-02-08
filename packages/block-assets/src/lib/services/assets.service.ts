@@ -20,22 +20,105 @@ import type {
 import { assetMapper } from '../mappers/asset.mapper.js';
 
 export interface AssetsService {
+  /**
+   * List assets with optional filtering and sorting.
+   * @returns Paginated list of Asset records with metadata.
+   */
   list(params?: ListAssetsParams): Promise<PageResult<Asset>>;
+
+  /**
+   * Get a single asset by unique ID.
+   * @returns The matching Asset record.
+   */
   get(uniqueId: string): Promise<Asset>;
+
+  /**
+   * Create a new asset.
+   * @returns The newly created Asset record.
+   */
   create(data: CreateAssetRequest): Promise<Asset>;
+
+  /**
+   * Update an existing asset.
+   * @returns The updated Asset record.
+   */
   update(uniqueId: string, data: UpdateAssetRequest): Promise<Asset>;
+
+  /**
+   * Delete an asset (moves to trash).
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * List trashed (soft-deleted) assets.
+   * @returns Paginated list of trashed Asset records.
+   */
   listTrash(): Promise<PageResult<Asset>>;
+
+  /**
+   * Transfer an asset to a new location.
+   * @returns The Asset record with the updated location.
+   */
   transfer(uniqueId: string, data: TransferAssetRequest): Promise<Asset>;
+
+  /**
+   * Assign an asset to a user.
+   * @returns The Asset record with the assignment.
+   */
   assign(uniqueId: string, data: AssignAssetRequest): Promise<Asset>;
+
+  /**
+   * Unassign an asset from its current assignee.
+   * @returns The Asset record with the assignment removed.
+   */
   unassign(uniqueId: string): Promise<Asset>;
+
+  /**
+   * List assets at a specific location.
+   * @returns Paginated list of Asset records at the location.
+   */
   listByLocation(locationUniqueId: string, params?: ListAssetsParams): Promise<PageResult<Asset>>;
+
+  /**
+   * List assets assigned to a specific user.
+   * @returns Paginated list of Asset records for the assignee.
+   */
   listByAssignee(assignedToUniqueId: string, params?: ListAssetsParams): Promise<PageResult<Asset>>;
+
+  /**
+   * Add an asset to a category.
+   * @returns The updated Asset record.
+   */
   addToCategory(uniqueId: string, data: AddToCategoryRequest): Promise<Asset>;
+
+  /**
+   * Add parts (sub-assets) to an asset.
+   * @returns The updated Asset record.
+   */
   addParts(uniqueId: string, data: AddPartsRequest): Promise<Asset>;
+
+  /**
+   * Remove parts (sub-assets) from an asset.
+   * @returns The updated Asset record.
+   */
   removeParts(uniqueId: string, data: RemovePartsRequest): Promise<Asset>;
+
+  /**
+   * Update maintenance information for an asset.
+   * @returns The updated Asset record.
+   */
   updateMaintenance(uniqueId: string, data: UpdateMaintenanceRequest): Promise<Asset>;
+
+  /**
+   * Lend an asset to a user.
+   * @returns The Asset record with lending information.
+   */
   lend(uniqueId: string, data: LendAssetRequest): Promise<Asset>;
+
+  /**
+   * Create a one-time password for asset verification.
+   * @returns OTPResponse with `code` and `expiresAt`.
+   */
   createOTP(uniqueId: string, data?: CreateOTPRequest): Promise<OTPResponse>;
 }
 

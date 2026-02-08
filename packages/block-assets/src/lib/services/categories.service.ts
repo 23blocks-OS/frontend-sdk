@@ -12,14 +12,56 @@ import type {
 import { categoryMapper } from '../mappers/category.mapper.js';
 
 export interface CategoriesService {
+  /**
+   * List categories with optional filtering and sorting.
+   * @returns Paginated list of Category records with metadata.
+   */
   list(params?: ListCategoriesParams): Promise<PageResult<Category>>;
+
+  /**
+   * Get a single category by unique ID.
+   * @returns The matching Category record.
+   */
   get(uniqueId: string): Promise<Category>;
+
+  /**
+   * Create a new category.
+   * @returns The newly created Category record.
+   */
   create(data: CreateCategoryRequest): Promise<Category>;
+
+  /**
+   * Update an existing category.
+   * @returns The updated Category record.
+   */
   update(uniqueId: string, data: UpdateCategoryRequest): Promise<Category>;
+
+  /**
+   * Delete a category.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Delete a category and all its associated assets.
+   * @note This is a cascading delete that removes all assets in the category.
+   */
   deleteCascade(uniqueId: string): Promise<void>;
+
+  /**
+   * Get a presigned URL for uploading a category image.
+   * @returns CategoryPresignResponse with `url`, `fields`, and `key`.
+   */
   presignImage(uniqueId: string): Promise<CategoryPresignResponse>;
+
+  /**
+   * Create a category image record after upload.
+   * @returns The newly created CategoryImage record with URL.
+   */
   createImage(uniqueId: string, data: CreateCategoryImageRequest): Promise<CategoryImage>;
+
+  /**
+   * Delete a category image.
+   */
   deleteImage(uniqueId: string, imageUniqueId: string): Promise<void>;
 }
 

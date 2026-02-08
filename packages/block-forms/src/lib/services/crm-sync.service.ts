@@ -10,36 +10,47 @@ import type {
 export interface CrmSyncService {
   /**
    * Sync a landing record to CRM
+   * @param uniqueId - The unique identifier of the landing record to sync
+   * @returns Sync outcome including success flag, timestamp, and optional CRM record ID
    */
   syncLanding(uniqueId: string): Promise<CrmSyncResult>;
 
   /**
    * Sync a subscription record to CRM
+   * @param uniqueId - The unique identifier of the subscription record to sync
+   * @returns Sync outcome including success flag, timestamp, and optional CRM record ID
    */
   syncSubscription(uniqueId: string): Promise<CrmSyncResult>;
 
   /**
    * Sync an appointment record to CRM
+   * @param uniqueId - The unique identifier of the appointment record to sync
+   * @returns Sync outcome including success flag, timestamp, and optional CRM record ID
    */
   syncAppointment(uniqueId: string): Promise<CrmSyncResult>;
 
   /**
    * Batch sync multiple records to CRM
+   * @param data - Batch request specifying record type and array of unique IDs
+   * @returns Batch result with total, synced, and failed counts plus per-record results
    */
   batchSync(data: CrmSyncBatchRequest): Promise<CrmSyncBatchResult>;
 
   /**
-   * Retry failed sync operations
+   * Retry all previously failed sync operations
+   * @returns Batch result with total, synced, and failed counts plus per-record results
    */
   retryFailed(): Promise<CrmSyncBatchResult>;
 
   /**
    * Test CRM connection
+   * @returns Connection status including provider, connectivity, and any errors
    */
   testConnection(): Promise<CrmConnectionStatus>;
 
   /**
-   * Get CRM sync status
+   * Get CRM sync status overview
+   * @returns Status summary including pending/failed counts and next scheduled sync time
    */
   status(): Promise<CrmSyncStatus>;
 }

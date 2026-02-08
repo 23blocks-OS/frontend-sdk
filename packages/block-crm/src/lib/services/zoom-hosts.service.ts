@@ -12,13 +12,61 @@ import type {
 import { zoomHostMapper } from '../mappers/zoom-host.mapper.js';
 
 export interface ZoomHostsService {
+  /**
+   * List Zoom hosts with optional filtering, pagination, and sorting.
+   * @param params - Optional filtering (status, licenseType, available, search), pagination, and sorting.
+   * @returns Paginated result containing ZoomHost objects and metadata.
+   */
   list(params?: ListZoomHostsParams): Promise<PageResult<ZoomHost>>;
+
+  /**
+   * Retrieve a single Zoom host by its unique identifier.
+   * @param uniqueId - The unique identifier of the Zoom host.
+   * @returns The matching ZoomHost object.
+   */
   get(uniqueId: string): Promise<ZoomHost>;
+
+  /**
+   * Create a new Zoom host.
+   * @param data - The Zoom host creation payload with user reference, Zoom user ID, email, name, license, and capacity.
+   * @returns The newly created ZoomHost object.
+   */
   create(data: CreateZoomHostRequest): Promise<ZoomHost>;
+
+  /**
+   * Update an existing Zoom host.
+   * @param uniqueId - The unique identifier of the Zoom host to update.
+   * @param data - The fields to update on the Zoom host.
+   * @returns The updated ZoomHost object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(uniqueId: string, data: UpdateZoomHostRequest): Promise<ZoomHost>;
+
+  /**
+   * Delete a Zoom host.
+   * @param uniqueId - The unique identifier of the Zoom host to delete.
+   * @returns Resolves when the Zoom host has been deleted.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Retrieve the availability status of a Zoom host.
+   * @param uniqueId - The unique identifier of the Zoom host.
+   * @returns A ZoomHostAvailability object with the host's current availability details.
+   */
   getAvailability(uniqueId: string): Promise<ZoomHostAvailability>;
+
+  /**
+   * Retrieve the meeting allocations for a Zoom host.
+   * @param uniqueId - The unique identifier of the Zoom host.
+   * @returns An array of ZoomHostAllocation objects representing assigned meetings.
+   */
   getAllocations(uniqueId: string): Promise<ZoomHostAllocation[]>;
+
+  /**
+   * Retrieve users who are available to become Zoom hosts.
+   * @returns An array of AvailableUser objects representing eligible users.
+   */
   getAvailableUsers(): Promise<AvailableUser[]>;
 }
 

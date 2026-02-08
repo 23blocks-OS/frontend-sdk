@@ -16,36 +16,56 @@ import { contentFlagMapper } from '../mappers/moderation.mapper.js';
 export interface ModerationService {
   /**
    * Moderate a post
+   * @param postUniqueId - Unique ID of the post to moderate
+   * @param request - Moderation action and reason
+   * @returns ModerationResult with success status, action taken, and timestamp
    */
   moderatePost(postUniqueId: string, request: ModerateContentRequest): Promise<ModerationResult>;
 
   /**
    * Moderate a comment
+   * @param postUniqueId - Unique ID of the parent post
+   * @param commentUniqueId - Unique ID of the comment to moderate
+   * @param request - Moderation action and reason
+   * @returns ModerationResult with success status, action taken, and timestamp
+   * @note Uses HTTP DELETE internally despite accepting a request body
    */
   moderateComment(postUniqueId: string, commentUniqueId: string, request: ModerateContentRequest): Promise<ModerationResult>;
 
   /**
    * List content flags
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated list of ContentFlag records with pagination metadata
    */
   listFlags(params?: ListContentFlagsParams): Promise<PageResult<ContentFlag>>;
 
   /**
    * Get a specific flag
+   * @param flagUniqueId - Unique ID of the flag to retrieve
+   * @returns The matching ContentFlag record
    */
   getFlag(flagUniqueId: string): Promise<ContentFlag>;
 
   /**
    * Create a content flag (report content)
+   * @param request - Flag details including content type, content ID, reason, and category
+   * @returns The newly created ContentFlag record
    */
   createFlag(request: CreateContentFlagRequest): Promise<ContentFlag>;
 
   /**
    * Resolve a content flag
+   * @param flagUniqueId - Unique ID of the flag to resolve
+   * @param resolution - Resolution description
+   * @returns The updated ContentFlag record with resolution applied
    */
   resolveFlag(flagUniqueId: string, resolution: string): Promise<ContentFlag>;
 
   /**
    * Dismiss a content flag
+   * @param flagUniqueId - Unique ID of the flag to dismiss
+   * @param reason - Optional reason for dismissal
+   * @returns void on successful dismissal
    */
   dismissFlag(flagUniqueId: string, reason?: string): Promise<void>;
 }

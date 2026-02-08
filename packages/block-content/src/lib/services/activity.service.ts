@@ -11,16 +11,25 @@ import { commentMapper } from '../mappers/comment.mapper.js';
 export interface ActivityService {
   /**
    * Get activities for an identity (user)
+   * @param identityUniqueId - Unique ID of the identity to retrieve activities for
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated list of Activity records with pagination metadata
    */
   getActivities(identityUniqueId: string, params?: ListActivitiesParams): Promise<PageResult<Activity>>;
 
   /**
    * Get comments by an identity (user)
+   * @param identityUniqueId - Unique ID of the identity to retrieve comments for
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated list of Comment records with pagination metadata
    */
   getComments(identityUniqueId: string, params?: ListCommentsParams): Promise<PageResult<Comment>>;
 
   /**
    * Get the user's activity feed (activities from followed users)
+   * @param params - Optional filtering and pagination parameters
+   * @returns Paginated list of Activity records from followed users with pagination metadata
+   * @note Returns activities from users the current user follows, not the user's own activities
    */
   getFeed(params?: ListActivitiesParams): Promise<PageResult<Activity>>;
 }

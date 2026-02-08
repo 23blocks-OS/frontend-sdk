@@ -9,10 +9,33 @@ import type {
 import { mediaMapper } from '../mappers/media.mapper.js';
 
 export interface MediaService {
+  /**
+   * List media with optional filtering and sorting.
+   * @returns Paginated list of Media records with metadata.
+   */
   list(params?: ListMediaParams): Promise<PageResult<Media>>;
+
+  /**
+   * Get a single media record by unique ID.
+   * @returns The matching Media record.
+   */
   get(uniqueId: string): Promise<Media>;
+
+  /**
+   * Create a new media record.
+   * @returns The newly created Media record.
+   */
   create(data: CreateMediaRequest): Promise<Media>;
+
+  /**
+   * Update an existing media record.
+   * @returns The updated Media record.
+   */
   update(uniqueId: string, data: UpdateMediaRequest): Promise<Media>;
+
+  /**
+   * Delete a media record.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

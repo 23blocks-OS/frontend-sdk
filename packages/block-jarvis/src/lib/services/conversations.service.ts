@@ -10,11 +10,40 @@ import type {
 import { conversationMapper } from '../mappers/conversation.mapper.js';
 
 export interface ConversationsService {
+  /**
+   * List conversations with optional filtering and sorting.
+   * @returns Paginated list of Conversation records with metadata.
+   */
   list(params?: ListConversationsParams): Promise<PageResult<Conversation>>;
+
+  /**
+   * Get a single conversation by unique ID.
+   * @returns The matching Conversation record.
+   */
   get(uniqueId: string): Promise<Conversation>;
+
+  /**
+   * Create a new conversation.
+   * @returns The newly created Conversation record.
+   */
   create(data: CreateConversationRequest): Promise<Conversation>;
+
+  /**
+   * Send a message in a conversation.
+   * @returns SendMessageResponse with the sent message, optional AI response, and cost.
+   */
   sendMessage(uniqueId: string, data: SendMessageRequest): Promise<SendMessageResponse>;
+
+  /**
+   * List conversations belonging to a specific user.
+   * @returns Paginated list of Conversation records with metadata.
+   */
   listByUser(userUniqueId: string, params?: ListConversationsParams): Promise<PageResult<Conversation>>;
+
+  /**
+   * Clear all messages in a conversation.
+   * @returns The updated Conversation record with messages cleared.
+   */
   clear(uniqueId: string): Promise<Conversation>;
 }
 

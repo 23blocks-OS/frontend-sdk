@@ -18,51 +18,276 @@ import type {
 import { userFileMapper } from '../mappers/user-file.mapper.js';
 
 export interface UserFilesService {
-  // File CRUD
+  // ---- File CRUD ----
+
+  /**
+   * List all files for a user
+   * @param userUniqueId - The unique identifier of the user
+   * @param params - Optional filtering by status, file type, schema, and pagination
+   * @returns Paginated result containing UserFile items and metadata
+   */
   list(userUniqueId: string, params?: ListUserFilesParams): Promise<PageResult<UserFile>>;
+
+  /**
+   * Get a specific user file
+   * @param userUniqueId - The unique identifier of the user
+   * @param fileUniqueId - The unique identifier of the file
+   * @returns The matching UserFile record
+   */
   get(userUniqueId: string, fileUniqueId: string): Promise<UserFile>;
+
+  /**
+   * Add a new file record to a user
+   * @param userUniqueId - The unique identifier of the user
+   * @param data - File details including name, type, size, and URL
+   * @returns The newly created UserFile record
+   */
   add(userUniqueId: string, data: AddUserFileRequest): Promise<UserFile>;
+
+  /**
+   * Update a user file record
+   * @param userUniqueId - The unique identifier of the user
+   * @param fileUniqueId - The unique identifier of the file to update
+   * @param data - Fields to update such as file name, type, or thumbnail
+   * @returns The updated UserFile record
+   */
   update(userUniqueId: string, fileUniqueId: string, data: UpdateUserFileRequest): Promise<UserFile>;
+
+  /**
+   * Delete a user file
+   * @param userUniqueId - The unique identifier of the user
+   * @param fileUniqueId - The unique identifier of the file to delete
+   * @returns Resolves when the file has been deleted
+   */
   delete(userUniqueId: string, fileUniqueId: string): Promise<void>;
 
-  // Upload
+  // ---- Upload ----
+
+  /**
+   * Get a presigned URL for single-part file upload
+   * @param userUniqueId - The unique identifier of the user
+   * @param data - Upload metadata including file name, type, and MIME type
+   * @returns Presigned upload URL, file key, optional form fields, and expiration
+   */
   presignUpload(userUniqueId: string, data: PresignUploadRequest): Promise<PresignUploadResponse>;
+
+  /**
+   * Get presigned URLs for multipart file upload
+   * @param userUniqueId - The unique identifier of the user
+   * @param data - Upload metadata including file name, size, and part size
+   * @returns Upload ID, file key, and array of part-level presigned URLs
+   * @note Use this for large files that need to be uploaded in chunks
+   */
   multipartPresign(userUniqueId: string, data: MultipartPresignRequest): Promise<MultipartPresignResponse>;
+
+  /**
+   * Complete a multipart upload after all parts have been uploaded
+   * @param userUniqueId - The unique identifier of the user
+   * @param data - Completion data including upload ID, file key, and part ETags
+   * @returns The finalized UserFile record
+   */
   multipartComplete(userUniqueId: string, data: MultipartCompleteRequest): Promise<UserFile>;
 
-  // File status
+  // ---- File status ----
+
+  /**
+   * Approve a user file
+   * @param userUniqueId - The unique identifier of the user
+   * @param fileUniqueId - The unique identifier of the file to approve
+   * @returns The updated UserFile record with approved status
+   */
   approve(userUniqueId: string, fileUniqueId: string): Promise<UserFile>;
+
+  /**
+   * Reject a user file
+   * @param userUniqueId - The unique identifier of the user
+   * @param fileUniqueId - The unique identifier of the file to reject
+   * @returns The updated UserFile record with rejected status
+   */
   reject(userUniqueId: string, fileUniqueId: string): Promise<UserFile>;
+
+  /**
+   * Publish a user file
+   * @param userUniqueId - The unique identifier of the user
+   * @param fileUniqueId - The unique identifier of the file to publish
+   * @returns The updated UserFile record with published status
+   */
   publish(userUniqueId: string, fileUniqueId: string): Promise<UserFile>;
+
+  /**
+   * Unpublish a user file
+   * @param userUniqueId - The unique identifier of the user
+   * @param fileUniqueId - The unique identifier of the file to unpublish
+   * @returns The updated UserFile record with unpublished status
+   */
   unpublish(userUniqueId: string, fileUniqueId: string): Promise<UserFile>;
 
-  // Tags
+  // ---- Tags ----
+
+  /**
+   * Add a tag to a user file
+   * @param userUniqueId - The unique identifier of the user
+   * @param fileUniqueId - The unique identifier of the file
+   * @param tagUniqueId - The unique identifier of the tag to add
+   * @returns The updated UserFile record with the tag applied
+   */
   addTag(userUniqueId: string, fileUniqueId: string, tagUniqueId: string): Promise<UserFile>;
+
+  /**
+   * Remove a tag from a user file
+   * @param userUniqueId - The unique identifier of the user
+   * @param fileUniqueId - The unique identifier of the file
+   * @param tagUniqueId - The unique identifier of the tag to remove
+   * @returns Resolves when the tag has been removed
+   */
   removeTag(userUniqueId: string, fileUniqueId: string, tagUniqueId: string): Promise<void>;
+
+  /**
+   * Bulk update tags for a user
+   * @param userUniqueId - The unique identifier of the user
+   * @param tagUniqueIds - Array of tag unique identifiers to set
+   * @returns Resolves when tags have been updated
+   */
   bulkUpdateTags(userUniqueId: string, tagUniqueIds: string[]): Promise<void>;
 
-  // Access control
+  // ---- Access control ----
+
+  /**
+   * Request access to a file
+   * @param userUniqueId - The unique identifier of the requesting user
+   * @param fileUniqueId - The unique identifier of the file
+   * @returns Resolves when the access request has been submitted
+   */
   requestAccess(userUniqueId: string, fileUniqueId: string): Promise<void>;
+
+  /**
+   * Get all access grants for a file
+   * @param userUniqueId - The unique identifier of the file owner
+   * @param fileUniqueId - The unique identifier of the file
+   * @returns Array of FileAccess records for the given file
+   */
   getAccess(userUniqueId: string, fileUniqueId: string): Promise<FileAccess[]>;
+
+  /**
+   * Grant access to a file for a specific grantee
+   * @param userUniqueId - The unique identifier of the file owner
+   * @param fileUniqueId - The unique identifier of the file
+   * @param data - Access details including grantee, access type, and optional expiry
+   * @returns The newly created FileAccess record
+   */
   grantAccess(userUniqueId: string, fileUniqueId: string, data: FileAccessRequest): Promise<FileAccess>;
+
+  /**
+   * Revoke a specific access grant on a file
+   * @param userUniqueId - The unique identifier of the file owner
+   * @param fileUniqueId - The unique identifier of the file
+   * @param accessUniqueId - The unique identifier of the access grant to revoke
+   * @returns Resolves when the access grant has been revoked
+   */
   revokeAccess(userUniqueId: string, fileUniqueId: string, accessUniqueId: string): Promise<void>;
+
+  /**
+   * Make a file publicly accessible
+   * @param userUniqueId - The unique identifier of the file owner
+   * @param fileUniqueId - The unique identifier of the file
+   * @returns The updated UserFile record with public access
+   */
   makePublic(userUniqueId: string, fileUniqueId: string): Promise<UserFile>;
+
+  /**
+   * Make a file private (remove public access)
+   * @param userUniqueId - The unique identifier of the file owner
+   * @param fileUniqueId - The unique identifier of the file
+   * @returns The updated UserFile record with private access
+   */
   makePrivate(userUniqueId: string, fileUniqueId: string): Promise<UserFile>;
 
-  // Bulk access operations
+  // ---- Bulk access operations ----
+
+  /**
+   * Grant access to multiple files for multiple grantees in one operation
+   * @param userUniqueId - The unique identifier of the file owner
+   * @param fileUniqueIds - Array of file unique identifiers
+   * @param granteeUniqueIds - Array of grantee unique identifiers
+   * @returns Resolves when all access grants have been created
+   */
   bulkGrantAccess(userUniqueId: string, fileUniqueIds: string[], granteeUniqueIds: string[]): Promise<void>;
+
+  /**
+   * Revoke access to multiple files for multiple grantees in one operation
+   * @param userUniqueId - The unique identifier of the file owner
+   * @param fileUniqueIds - Array of file unique identifiers
+   * @param granteeUniqueIds - Array of grantee unique identifiers
+   * @returns Resolves when all access grants have been revoked
+   */
   bulkRevokeAccess(userUniqueId: string, fileUniqueIds: string[], granteeUniqueIds: string[]): Promise<void>;
 
-  // Access requests management
+  // ---- Access requests management ----
+
+  /**
+   * List pending access requests for a file
+   * @param userUniqueId - The unique identifier of the file owner
+   * @param fileUniqueId - The unique identifier of the file
+   * @returns Array of FileAccess records representing pending requests
+   */
   listAccessRequests(userUniqueId: string, fileUniqueId: string): Promise<FileAccess[]>;
+
+  /**
+   * Approve an access request for a file
+   * @param userUniqueId - The unique identifier of the file owner
+   * @param fileUniqueId - The unique identifier of the file
+   * @param requestUniqueId - The unique identifier of the request to approve
+   * @returns The resulting FileAccess record after approval
+   */
   approveAccessRequest(userUniqueId: string, fileUniqueId: string, requestUniqueId: string): Promise<FileAccess>;
+
+  /**
+   * Deny an access request for a file
+   * @param userUniqueId - The unique identifier of the file owner
+   * @param fileUniqueId - The unique identifier of the file
+   * @param requestUniqueId - The unique identifier of the request to deny
+   * @returns Resolves when the request has been denied
+   */
   denyAccessRequest(userUniqueId: string, fileUniqueId: string, requestUniqueId: string): Promise<void>;
 
-  // Delegations
+  // ---- Delegations ----
+
+  /**
+   * List delegations granted by a user to others
+   * @param userUniqueId - The unique identifier of the granting user
+   * @returns Array of FileDelegation records granted by this user
+   */
   listGrantedDelegations(userUniqueId: string): Promise<FileDelegation[]>;
+
+  /**
+   * List delegations received by a user from others
+   * @param userUniqueId - The unique identifier of the receiving user
+   * @returns Array of FileDelegation records received by this user
+   */
   listReceivedDelegations(userUniqueId: string): Promise<FileDelegation[]>;
+
+  /**
+   * Get a specific delegation
+   * @param userUniqueId - The unique identifier of the user
+   * @param delegationUniqueId - The unique identifier of the delegation
+   * @returns The matching FileDelegation record
+   */
   getDelegation(userUniqueId: string, delegationUniqueId: string): Promise<FileDelegation>;
+
+  /**
+   * Create a new delegation to another user
+   * @param userUniqueId - The unique identifier of the granting user
+   * @param data - Delegation details including grantee, access level, and optional expiry
+   * @returns The newly created FileDelegation record
+   */
   createDelegation(userUniqueId: string, data: CreateDelegationRequest): Promise<FileDelegation>;
+
+  /**
+   * Revoke a delegation
+   * @param userUniqueId - The unique identifier of the granting user
+   * @param delegationUniqueId - The unique identifier of the delegation to revoke
+   * @returns Resolves when the delegation has been revoked
+   */
   revokeDelegation(userUniqueId: string, delegationUniqueId: string): Promise<void>;
 }
 

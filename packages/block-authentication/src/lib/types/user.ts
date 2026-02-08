@@ -1,7 +1,20 @@
 import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 
 /**
- * User entity
+ * User entity - the central identity object in 23blocks.
+ *
+ * Relationships (`role`, `avatar`, `profile`) are only populated when explicitly
+ * included via the `include` parameter or when using endpoints that include them
+ * by default (e.g., `auth.getCurrentUser()`, `users.get()`).
+ *
+ * @example
+ * // Get user with relationships
+ * const user = await auth.auth.getCurrentUser();
+ * console.log(user.email);                // Always present
+ * console.log(user.role?.name);           // Only if included
+ * console.log(user.avatar?.url);          // Only if included
+ * console.log(user.profile?.firstName);   // Only if included
+ * console.log(user.profile?.payload);     // Custom JSON object
  */
 export interface User extends IdentityCore {
   email: string;
@@ -9,8 +22,11 @@ export interface User extends IdentityCore {
   name: string | null;
   nickname: string | null;
   bio: string | null;
+  /** Authentication provider (e.g., 'email', 'google', 'facebook') */
   provider: string;
+  /** Provider-specific user identifier */
   uid: string;
+  /** Role ID (use `role?.name` for the role name when relationship is included) */
   roleId: string | null;
   status: EntityStatus;
   mailStatus: string | null;
@@ -23,9 +39,11 @@ export interface User extends IdentityCore {
   invitationAcceptedAt: Date | null;
   invitationCreatedAt: Date | null;
 
-  // Relationships (when included)
+  /** User's role. Only populated when included (e.g., `include: ['role']`). */
   role?: Role | null;
+  /** User's avatar. Only populated when included (e.g., `include: ['user_avatar']`). */
   avatar?: UserAvatar | null;
+  /** User's profile. Only populated when included (e.g., `include: ['user_profile']`). */
   profile?: UserProfile | null;
 }
 
@@ -78,7 +96,13 @@ export interface UserAvatar extends IdentityCore {
 }
 
 /**
- * User profile
+ * User profile - extended demographic and contact information.
+ *
+ * Accessible via `user.profile` when the relationship is included, or directly
+ * via `users.getProfile(userUniqueId)`.
+ *
+ * @note The `payload` field is a JSON object for storing custom data.
+ *   When writing, pass an object (not a JSON string).
  */
 export interface UserProfile extends IdentityCore {
   userUniqueId: string;

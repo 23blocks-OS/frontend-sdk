@@ -9,10 +9,33 @@ import type {
 import { campaignLocationMapper } from '../mappers/campaign-location.mapper.js';
 
 export interface CampaignLocationsService {
+  /**
+   * List campaign locations with optional filtering and sorting.
+   * @returns Paginated list of CampaignLocation records with metadata.
+   */
   list(params?: ListCampaignLocationsParams): Promise<PageResult<CampaignLocation>>;
+
+  /**
+   * Get a single campaign location by unique ID.
+   * @returns The matching CampaignLocation record.
+   */
   get(uniqueId: string): Promise<CampaignLocation>;
+
+  /**
+   * Create a new campaign location.
+   * @returns The newly created CampaignLocation record.
+   */
   create(data: CreateCampaignLocationRequest): Promise<CampaignLocation>;
+
+  /**
+   * Update an existing campaign location.
+   * @returns The updated CampaignLocation record.
+   */
   update(uniqueId: string, data: UpdateCampaignLocationRequest): Promise<CampaignLocation>;
+
+  /**
+   * Delete a campaign location.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

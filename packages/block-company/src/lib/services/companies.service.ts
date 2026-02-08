@@ -9,10 +9,33 @@ import type {
 import { companyMapper } from '../mappers/company.mapper.js';
 
 export interface CompaniesService {
+  /**
+   * List companies with optional filtering and sorting.
+   * @returns Paginated list of Company records with metadata.
+   */
   list(params?: ListCompaniesParams): Promise<PageResult<Company>>;
+
+  /**
+   * Get a single company by unique ID.
+   * @returns The matching Company record.
+   */
   get(uniqueId: string): Promise<Company>;
+
+  /**
+   * Create a new company.
+   * @returns The newly created Company record.
+   */
   create(data: CreateCompanyRequest): Promise<Company>;
+
+  /**
+   * Update an existing company.
+   * @returns The updated Company record.
+   */
   update(uniqueId: string, data: UpdateCompanyRequest): Promise<Company>;
+
+  /**
+   * Delete a company.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 

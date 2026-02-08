@@ -9,13 +9,64 @@ import type {
 import { leadMapper } from '../mappers/lead.mapper.js';
 
 export interface LeadsService {
+  /**
+   * List leads with optional filtering, pagination, and sorting.
+   * @param params - Optional filtering (status, contactStatus, source, search), pagination, and sorting parameters.
+   * @returns Paginated result containing Lead objects and metadata.
+   */
   list(params?: ListLeadsParams): Promise<PageResult<Lead>>;
+
+  /**
+   * Retrieve a single lead by its unique identifier.
+   * @param uniqueId - The unique identifier of the lead.
+   * @returns The matching Lead object.
+   */
   get(uniqueId: string): Promise<Lead>;
+
+  /**
+   * Create a new lead.
+   * @param data - The lead creation payload with name, email, social profiles, and other fields.
+   * @returns The newly created Lead object.
+   */
   create(data: CreateLeadRequest): Promise<Lead>;
+
+  /**
+   * Update an existing lead.
+   * @param uniqueId - The unique identifier of the lead to update.
+   * @param data - The fields to update on the lead.
+   * @returns The updated Lead object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(uniqueId: string, data: UpdateLeadRequest): Promise<Lead>;
+
+  /**
+   * Soft-delete a lead.
+   * @param uniqueId - The unique identifier of the lead to delete.
+   * @returns Resolves when the lead has been deleted.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously soft-deleted lead.
+   * @param uniqueId - The unique identifier of the lead to recover.
+   * @returns The recovered Lead object.
+   */
   recover(uniqueId: string): Promise<Lead>;
+
+  /**
+   * Search leads by a query string with optional pagination.
+   * @param query - The search query string.
+   * @param params - Optional pagination parameters.
+   * @returns Paginated result containing matching Lead objects.
+   * @note Performs a server-side POST-based search.
+   */
   search(query: string, params?: ListLeadsParams): Promise<PageResult<Lead>>;
+
+  /**
+   * List soft-deleted leads with optional pagination.
+   * @param params - Optional pagination parameters.
+   * @returns Paginated result containing soft-deleted Lead objects.
+   */
   listDeleted(params?: ListLeadsParams): Promise<PageResult<Lead>>;
 }
 

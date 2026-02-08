@@ -12,11 +12,41 @@ import { authorizationCodeMapper } from '../mappers/authorization-code.mapper.js
 import { transactionMapper } from '../mappers/transaction.mapper.js';
 
 export interface AuthorizationCodesService {
+  /**
+   * List authorization codes with optional filtering.
+   * @returns Paginated list of AuthorizationCode records with metadata.
+   */
   list(params?: ListAuthorizationCodesParams): Promise<PageResult<AuthorizationCode>>;
+
+  /**
+   * Get a single authorization code by unique ID.
+   * @returns The matching AuthorizationCode record.
+   */
   get(uniqueId: string): Promise<AuthorizationCode>;
+
+  /**
+   * Create a new authorization code for a wallet.
+   * @returns The newly created AuthorizationCode record.
+   */
   create(data: CreateAuthorizationCodeRequest): Promise<AuthorizationCode>;
+
+  /**
+   * Validate an authorization code and amount.
+   * @returns Object with `valid` boolean and the matching `authorizationCode` if valid.
+   * @note Returns `{ valid: false }` on any validation error instead of throwing.
+   */
   validate(data: ValidateAuthorizationCodeRequest): Promise<{ valid: boolean; authorizationCode?: AuthorizationCode }>;
+
+  /**
+   * Use an authorization code to execute a transaction.
+   * @returns The resulting Transaction record.
+   */
   use(data: UseAuthorizationCodeRequest): Promise<Transaction>;
+
+  /**
+   * Invalidate an authorization code so it can no longer be used.
+   * @returns The updated AuthorizationCode record with invalidated status.
+   */
   invalidate(uniqueId: string): Promise<AuthorizationCode>;
 }
 

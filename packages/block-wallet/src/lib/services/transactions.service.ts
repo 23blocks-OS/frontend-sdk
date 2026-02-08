@@ -4,9 +4,28 @@ import type { Transaction, ListTransactionsParams } from '../types/transaction.j
 import { transactionMapper } from '../mappers/transaction.mapper.js';
 
 export interface TransactionsService {
+  /**
+   * List transactions with optional filtering and sorting.
+   * @returns Paginated list of Transaction records with metadata.
+   */
   list(params?: ListTransactionsParams): Promise<PageResult<Transaction>>;
+
+  /**
+   * Get a single transaction by unique ID.
+   * @returns The matching Transaction record.
+   */
   get(uniqueId: string): Promise<Transaction>;
+
+  /**
+   * List transactions belonging to a specific wallet.
+   * @returns Paginated list of Transaction records scoped to the wallet.
+   */
   listByWallet(walletUniqueId: string, params?: ListTransactionsParams): Promise<PageResult<Transaction>>;
+
+  /**
+   * List transactions by reference type and reference unique ID.
+   * @returns Paginated list of Transaction records matching the reference.
+   */
   listByReference(referenceType: string, referenceUniqueId: string, params?: ListTransactionsParams): Promise<PageResult<Transaction>>;
 }
 

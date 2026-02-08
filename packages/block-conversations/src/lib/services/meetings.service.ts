@@ -10,24 +10,60 @@ import type {
 import { meetingMapper } from '../mappers/meeting.mapper.js';
 
 export interface MeetingsService {
+  /**
+   * List all meetings
+   * @param params - Optional filtering, sorting, and pagination parameters
+   * @returns Paginated list of Meeting records with pagination metadata
+   */
   list(params?: ListMeetingsParams): Promise<PageResult<Meeting>>;
+
+  /**
+   * Get a meeting by unique ID
+   * @param uniqueId - Unique ID of the meeting to retrieve
+   * @returns The matching Meeting record
+   */
   get(uniqueId: string): Promise<Meeting>;
+
+  /**
+   * Create a new meeting
+   * @param data - Meeting creation payload including title, schedule, and provider details
+   * @returns The newly created Meeting record
+   */
   create(data: CreateMeetingRequest): Promise<Meeting>;
+
+  /**
+   * Update a meeting
+   * @param uniqueId - Unique ID of the meeting to update
+   * @param data - Fields to update on the meeting
+   * @returns The updated Meeting record
+   */
   update(uniqueId: string, data: UpdateMeetingRequest): Promise<Meeting>;
+
+  /**
+   * Delete a meeting
+   * @param uniqueId - Unique ID of the meeting to delete
+   * @returns void on successful deletion
+   */
   delete(uniqueId: string): Promise<void>;
 
   /**
    * Create a session for joining a meeting
+   * @param uniqueId - Unique ID of the meeting to join
+   * @returns MeetingSession with session ID, token, join URL, and expiration
    */
   createSession(uniqueId: string): Promise<MeetingSession>;
 
   /**
    * Start a meeting
+   * @param uniqueId - Unique ID of the meeting to start
+   * @returns The updated Meeting record with active status
    */
   start(uniqueId: string): Promise<Meeting>;
 
   /**
    * End a meeting
+   * @param uniqueId - Unique ID of the meeting to end
+   * @returns The updated Meeting record with ended status
    */
   end(uniqueId: string): Promise<Meeting>;
 }

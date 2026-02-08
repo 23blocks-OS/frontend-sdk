@@ -18,19 +18,88 @@ import { walletMapper } from '../mappers/wallet.mapper.js';
 import { transactionMapper } from '../mappers/transaction.mapper.js';
 
 export interface WalletsService {
+  /**
+   * List wallets with optional filtering.
+   * @returns Paginated list of Wallet records with metadata.
+   */
   list(params?: ListWalletsParams): Promise<PageResult<Wallet>>;
+
+  /**
+   * Get a single wallet by unique ID.
+   * @returns The matching Wallet record.
+   */
   get(uniqueId: string): Promise<Wallet>;
+
+  /**
+   * Get a wallet by user unique ID.
+   * @returns The Wallet record belonging to the user.
+   */
   getByUser(userUniqueId: string): Promise<Wallet>;
+
+  /**
+   * Get a specific wallet by user unique ID and wallet code.
+   * @returns The matching Wallet record.
+   */
   getUserWallet(userUniqueId: string, walletCode: string): Promise<Wallet>;
+
+  /**
+   * Create a new wallet.
+   * @returns The newly created Wallet record.
+   */
   create(data: CreateWalletRequest): Promise<Wallet>;
+
+  /**
+   * Update an existing wallet.
+   * @returns The updated Wallet record.
+   */
   update(uniqueId: string, data: UpdateWalletRequest): Promise<Wallet>;
+
+  /**
+   * Credit (add funds to) a wallet.
+   * @returns The resulting credit Transaction record.
+   */
   credit(uniqueId: string, data: CreditWalletRequest): Promise<Transaction>;
+
+  /**
+   * Debit (withdraw funds from) a wallet.
+   * @returns The resulting debit Transaction record.
+   */
   debit(uniqueId: string, data: DebitWalletRequest): Promise<Transaction>;
+
+  /**
+   * Get the current balance of a wallet.
+   * @returns Object with `balance` (number) and `currency` (string).
+   */
   getBalance(uniqueId: string): Promise<{ balance: number; currency: string }>;
+
+  /**
+   * Validate a wallet code and amount.
+   * @returns ValidateWalletResponse with `valid`, `message`, `balance`, and `currency`.
+   */
   validate(data: ValidateWalletRequest): Promise<ValidateWalletResponse>;
+
+  /**
+   * Transfer funds between wallets for a given user.
+   * @returns The resulting transfer Transaction record.
+   */
   transfer(userUniqueId: string, walletCode: string, data: TransferWalletRequest): Promise<Transaction>;
+
+  /**
+   * Get content stored in a user's wallet.
+   * @returns Array of WalletContent items.
+   */
   getContent(userUniqueId: string, walletCode: string): Promise<WalletContent[]>;
+
+  /**
+   * Store content in a user's wallet.
+   * @returns The stored WalletContent item.
+   */
   storeContent(userUniqueId: string, walletCode: string, data: StoreWalletContentRequest): Promise<WalletContent>;
+
+  /**
+   * List transactions for a user's wallet.
+   * @returns Paginated list of Transaction records.
+   */
   listTransactions(userUniqueId: string, walletCode: string): Promise<PageResult<Transaction>>;
 }
 

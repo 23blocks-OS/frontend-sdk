@@ -9,15 +9,80 @@ import type {
 import { productSetMapper } from '../mappers/product-set.mapper.js';
 
 export interface ProductSetsService {
+  /**
+   * List product sets with optional filtering, sorting, and pagination.
+   * @param params - Filter options including status, search query, and pagination
+   * @returns Paginated result containing an array of ProductSet items and page metadata
+   */
   list(params?: ListProductSetsParams): Promise<PageResult<ProductSet>>;
+
+  /**
+   * Get a single product set by its unique identifier.
+   * @param uniqueId - The product set unique ID
+   * @returns The matching ProductSet
+   */
   get(uniqueId: string): Promise<ProductSet>;
+
+  /**
+   * Create a new product set (bundle).
+   * @param data - Product set creation payload including name, SKU, pricing, and optional image
+   * @returns The newly created ProductSet
+   */
   create(data: CreateProductSetRequest): Promise<ProductSet>;
+
+  /**
+   * Update an existing product set.
+   * @param uniqueId - The product set unique ID
+   * @param data - Fields to update on the product set
+   * @returns The updated ProductSet
+   */
   update(uniqueId: string, data: UpdateProductSetRequest): Promise<ProductSet>;
+
+  /**
+   * Soft-delete a product set.
+   * @param uniqueId - The product set unique ID
+   * @returns Resolves when the product set has been deleted
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously soft-deleted product set.
+   * @param uniqueId - The product set unique ID
+   * @returns The recovered ProductSet
+   */
   recover(uniqueId: string): Promise<ProductSet>;
+
+  /**
+   * Add a product to the set with an optional quantity.
+   * @param uniqueId - The product set unique ID
+   * @param productUniqueId - The product unique ID to add
+   * @param quantity - Quantity of the product in the set (defaults to 1)
+   * @returns The updated ProductSet
+   */
   addProduct(uniqueId: string, productUniqueId: string, quantity?: number): Promise<ProductSet>;
+
+  /**
+   * Remove a product from the set.
+   * @param uniqueId - The product set unique ID
+   * @param productUniqueId - The product unique ID to remove
+   * @returns Resolves when the product has been removed from the set
+   */
   removeProduct(uniqueId: string, productUniqueId: string): Promise<void>;
+
+  /**
+   * Add a category association to the product set.
+   * @param uniqueId - The product set unique ID
+   * @param categoryUniqueId - The category unique ID to associate
+   * @returns The updated ProductSet
+   */
   addCategory(uniqueId: string, categoryUniqueId: string): Promise<ProductSet>;
+
+  /**
+   * Remove a category association from the product set.
+   * @param uniqueId - The product set unique ID
+   * @param categoryUniqueId - The category unique ID to disassociate
+   * @returns Resolves when the category has been removed from the set
+   */
   removeCategory(uniqueId: string, categoryUniqueId: string): Promise<void>;
 }
 

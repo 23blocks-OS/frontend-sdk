@@ -9,11 +9,39 @@ import type {
 import { teamMemberMapper } from '../mappers/team-member.mapper.js';
 
 export interface TeamMembersService {
+  /**
+   * List team members with optional filtering and sorting.
+   * @returns Paginated list of TeamMember records with metadata.
+   */
   list(params?: ListTeamMembersParams): Promise<PageResult<TeamMember>>;
+
+  /**
+   * Get a single team member by unique ID.
+   * @returns The matching TeamMember record.
+   */
   get(uniqueId: string): Promise<TeamMember>;
+
+  /**
+   * Add a user as a member of a team.
+   * @returns The newly created TeamMember record.
+   */
   add(data: AddTeamMemberRequest): Promise<TeamMember>;
+
+  /**
+   * Update an existing team member's role or status.
+   * @returns The updated TeamMember record.
+   */
   update(uniqueId: string, data: UpdateTeamMemberRequest): Promise<TeamMember>;
+
+  /**
+   * Remove a member from a team.
+   */
   remove(uniqueId: string): Promise<void>;
+
+  /**
+   * List all members of a specific team.
+   * @returns Array of TeamMember records for the team.
+   */
   listByTeam(teamUniqueId: string): Promise<TeamMember[]>;
 }
 

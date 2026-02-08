@@ -8,7 +8,7 @@ import type {
 } from '../types/oidc.js';
 
 /**
- * OIDC Service Interface - OpenID Connect operations
+ * OIDC service - OpenID Connect discovery, authorization, token exchange, userinfo, and session management.
  */
 export interface OidcService {
   /**

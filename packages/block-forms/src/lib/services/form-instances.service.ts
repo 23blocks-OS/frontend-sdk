@@ -11,46 +11,74 @@ import { formInstanceMapper } from '../mappers/form-instance.mapper.js';
 export interface FormInstancesService {
   /**
    * List all instances for a form
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param params - Optional filtering by schema, user, status, and pagination
+   * @returns Paginated result containing FormInstance items and metadata
    */
   list(formUniqueId: string, params?: ListFormInstancesParams): Promise<PageResult<FormInstance>>;
 
   /**
    * Get a specific form instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the form instance
+   * @returns The matching FormInstance record
    */
   get(formUniqueId: string, uniqueId: string): Promise<FormInstance>;
 
   /**
    * Create a new form instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param data - Instance details including schema reference, user, and initial data
+   * @returns The newly created FormInstance record
    */
   create(formUniqueId: string, data: CreateFormInstanceRequest): Promise<FormInstance>;
 
   /**
    * Update a form instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the form instance to update
+   * @param data - Fields to update such as form data, status, or payload
+   * @returns The updated FormInstance record
    */
   update(formUniqueId: string, uniqueId: string, data: UpdateFormInstanceRequest): Promise<FormInstance>;
 
   /**
    * Delete a form instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the form instance to delete
+   * @returns Resolves when the instance has been deleted
    */
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
 
   /**
    * Start a form instance (begin filling)
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the form instance to start
+   * @returns The updated FormInstance record with started status
    */
   start(formUniqueId: string, uniqueId: string): Promise<FormInstance>;
 
   /**
    * Submit a form instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the form instance to submit
+   * @returns The updated FormInstance record with submitted status
    */
   submit(formUniqueId: string, uniqueId: string): Promise<FormInstance>;
 
   /**
    * Cancel a form instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the form instance to cancel
+   * @returns The updated FormInstance record with cancelled status
    */
   cancel(formUniqueId: string, uniqueId: string): Promise<FormInstance>;
 
   /**
    * Resend magic link for a form instance
+   * @param formUniqueId - The unique identifier of the parent form
+   * @param uniqueId - The unique identifier of the form instance
+   * @returns Resolves when the magic link email has been sent
    */
   resendMagicLink(formUniqueId: string, uniqueId: string): Promise<void>;
 }

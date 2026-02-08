@@ -9,13 +9,64 @@ import type {
 import { accountMapper } from '../mappers/account.mapper.js';
 
 export interface AccountsService {
+  /**
+   * List accounts with optional filtering, pagination, and sorting.
+   * @param params - Optional filtering, pagination, and sorting parameters.
+   * @returns Paginated result containing Account objects and metadata.
+   */
   list(params?: ListAccountsParams): Promise<PageResult<Account>>;
+
+  /**
+   * Retrieve a single account by its unique identifier.
+   * @param uniqueId - The unique identifier of the account.
+   * @returns The matching Account object.
+   */
   get(uniqueId: string): Promise<Account>;
+
+  /**
+   * Create a new account.
+   * @param data - The account creation payload.
+   * @returns The newly created Account object.
+   */
   create(data: CreateAccountRequest): Promise<Account>;
+
+  /**
+   * Update an existing account.
+   * @param uniqueId - The unique identifier of the account to update.
+   * @param data - The fields to update on the account.
+   * @returns The updated Account object.
+   * @note Uses PUT (not PATCH) as required by the 23blocks backend.
+   */
   update(uniqueId: string, data: UpdateAccountRequest): Promise<Account>;
+
+  /**
+   * Soft-delete an account.
+   * @param uniqueId - The unique identifier of the account to delete.
+   * @returns Resolves when the account has been deleted.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Recover a previously soft-deleted account.
+   * @param uniqueId - The unique identifier of the account to recover.
+   * @returns The recovered Account object.
+   */
   recover(uniqueId: string): Promise<Account>;
+
+  /**
+   * Search accounts by a query string with optional pagination.
+   * @param query - The search query string.
+   * @param params - Optional pagination parameters.
+   * @returns Paginated result containing matching Account objects.
+   * @note Performs a server-side POST-based search.
+   */
   search(query: string, params?: ListAccountsParams): Promise<PageResult<Account>>;
+
+  /**
+   * List soft-deleted accounts with optional pagination.
+   * @param params - Optional pagination parameters.
+   * @returns Paginated result containing soft-deleted Account objects.
+   */
   listDeleted(params?: ListAccountsParams): Promise<PageResult<Account>>;
 }
 

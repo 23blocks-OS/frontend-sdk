@@ -11,7 +11,10 @@ import { apiKeyMapper, apiKeyWithSecretMapper } from '../mappers/index.js';
 import type { AuthenticationBlockConfig } from '../authentication.block.js';
 
 /**
- * API Keys service
+ * API Keys service - create, manage, and monitor API keys with scopes, rate limits, and usage tracking.
+ *
+ * @note `create()` and `regenerate()` return `ApiKeyWithSecret` which includes the secret key.
+ *   The secret is only available at creation/regeneration time and cannot be retrieved later.
  */
 export interface ApiKeysService {
   /**

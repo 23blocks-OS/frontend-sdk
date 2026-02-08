@@ -8,11 +8,48 @@ import { contactMapper } from '../mappers/contact.mapper.js';
 import { meetingMapper } from '../mappers/meeting.mapper.js';
 
 export interface CrmUsersService {
+  /**
+   * List CRM users with optional filtering and pagination.
+   * @param params - Optional filtering (status, search) and pagination parameters.
+   * @returns Paginated result containing CrmUser objects and metadata.
+   */
   list(params?: ListCrmUsersParams): Promise<PageResult<CrmUser>>;
+
+  /**
+   * Retrieve a single CRM user by their unique identifier.
+   * @param uniqueId - The unique identifier of the CRM user.
+   * @returns The matching CrmUser object.
+   */
   get(uniqueId: string): Promise<CrmUser>;
+
+  /**
+   * Register a user in the CRM system.
+   * @param uniqueId - The unique identifier of the user to register.
+   * @param data - The registration payload with email, name, phone, and optional payload.
+   * @returns The newly registered CrmUser object.
+   * @note This associates an existing authentication user with the CRM block.
+   */
   register(uniqueId: string, data: RegisterCrmUserRequest): Promise<CrmUser>;
+
+  /**
+   * Delete a CRM user.
+   * @param uniqueId - The unique identifier of the CRM user to delete.
+   * @returns Resolves when the CRM user has been deleted.
+   */
   delete(uniqueId: string): Promise<void>;
+
+  /**
+   * Retrieve all contacts assigned to a CRM user.
+   * @param uniqueId - The unique identifier of the CRM user.
+   * @returns An array of Contact objects assigned to the user.
+   */
   getContacts(uniqueId: string): Promise<Contact[]>;
+
+  /**
+   * Retrieve all meetings associated with a CRM user.
+   * @param uniqueId - The unique identifier of the CRM user.
+   * @returns An array of Meeting objects associated with the user.
+   */
   getMeetings(uniqueId: string): Promise<Meeting[]>;
 }
 

@@ -4,8 +4,21 @@ import type { AssetAlert, CreateAssetAlertRequest } from '../types/alert.js';
 import { assetAlertMapper } from '../mappers/alert.mapper.js';
 
 export interface AlertsService {
+  /**
+   * Get an asset alert by unique ID.
+   * @returns The matching AssetAlert record.
+   */
   get(uniqueId: string): Promise<AssetAlert>;
+
+  /**
+   * Create and evaluate a new asset alert.
+   * @returns The newly created AssetAlert record.
+   */
   create(data: CreateAssetAlertRequest): Promise<AssetAlert>;
+
+  /**
+   * Delete an asset alert.
+   */
   delete(uniqueId: string): Promise<void>;
 }
 
