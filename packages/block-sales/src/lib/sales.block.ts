@@ -13,6 +13,7 @@ import {
   createStripeService,
   createMercadoPagoService,
   createVendorPaymentsService,
+  createPurchasesService,
   type OrdersService,
   type OrderDetailsService,
   type OrderTaxesService,
@@ -26,6 +27,7 @@ import {
   type StripeService,
   type MercadoPagoService,
   type VendorPaymentsService,
+  type PurchasesService,
 } from './services/index.js';
 
 /**
@@ -68,6 +70,8 @@ export interface SalesBlock {
   mercadopago: MercadoPagoService;
   /** Vendor payment management */
   vendorPayments: VendorPaymentsService;
+  /** Gateway-agnostic single-call purchases (Order + Payment + Subscription) */
+  purchases: PurchasesService;
 }
 
 /**
@@ -97,6 +101,7 @@ export function createSalesBlock(
     stripe: createStripeService(transport, config),
     mercadopago: createMercadoPagoService(transport, config),
     vendorPayments: createVendorPaymentsService(transport, config),
+    purchases: createPurchasesService(transport, config),
   };
 }
 
