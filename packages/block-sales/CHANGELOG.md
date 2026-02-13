@@ -1,3 +1,14 @@
+## 3.3.2 (2026-02-13)
+
+### 🩹 Fixes
+
+- **@23blocks/block-sales:** use discriminated union for CreateStripeCustomerRequest identity types ([c3b73db](https://github.com/23blocks-OS/frontend-sdk/commit/c3b73db))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 3.3.1 (2026-02-13)
 
 ### 🩹 Fixes
