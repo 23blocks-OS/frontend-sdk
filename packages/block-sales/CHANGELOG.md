@@ -1,3 +1,14 @@
+## 3.3.0 (2026-02-13)
+
+### 🚀 Features
+
+- **@23blocks/block-sales:** add Stripe checkout session verification, coupons, and promotion codes ([b479098](https://github.com/23blocks-OS/frontend-sdk/commit/b479098))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 3.2.0 (2026-02-08)
 
 ### 🚀 Features
