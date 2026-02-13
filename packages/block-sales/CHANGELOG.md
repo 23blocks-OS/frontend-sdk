@@ -1,3 +1,14 @@
+## 3.3.1 (2026-02-13)
+
+### 🩹 Fixes
+
+- **@23blocks/block-sales:** nest Stripe request params under resource keys for Rails strong parameters ([752f3bb](https://github.com/23blocks-OS/frontend-sdk/commit/752f3bb))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 3.3.0 (2026-02-13)
 
 ### 🚀 Features
