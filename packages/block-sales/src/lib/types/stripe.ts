@@ -12,6 +12,12 @@ export interface CreateStripeCustomerRequest {
   email: string;
   name?: string;
   phone?: string;
+  token?: string;
+  userUniqueId?: string;
+  identityType?: string;
+  companyUniqueId?: string;
+  entityUniqueId?: string;
+  entityType?: string;
   metadata?: Record<string, unknown>;
 }
 
@@ -87,6 +93,13 @@ export interface CreateStripePaymentIntentRequest {
   customerUniqueId?: string;
   stripeCustomerId?: string;
   paymentMethodTypes?: string[];
+  orderUniqueId?: string;
+  orderId?: string;
+  identityType?: string;
+  userUniqueId?: string;
+  companyUniqueId?: string;
+  entityUniqueId?: string;
+  entityType?: string;
   metadata?: Record<string, unknown>;
 }
 
@@ -109,6 +122,15 @@ export interface CreateStripeSubscriptionRequest {
   priceUniqueId?: string;
   quantity?: number;
   trialPeriodDays?: number;
+  customerId?: string;
+  setupPriceId?: string;
+  subscriptionPriceId?: string;
+  cardToken?: string;
+  subscriptionType?: string;
+  identityType?: string;
+  companyUniqueId?: string;
+  entityUniqueId?: string;
+  entityType?: string;
   metadata?: Record<string, unknown>;
 }
 
@@ -126,6 +148,7 @@ export interface StripeCustomerPortalSession {
 
 export interface CreateStripeCustomerPortalRequest {
   returnUrl: string;
+  customerId?: string;
 }
 
 export interface StripeWebhook {

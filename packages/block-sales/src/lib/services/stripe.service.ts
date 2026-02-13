@@ -88,10 +88,18 @@ export function createStripeService(transport: Transport, _config: { appId: stri
   return {
     async createCustomer(data: CreateStripeCustomerRequest): Promise<CreateStripeCustomerResponse> {
       const response = await transport.post<any>('/stripe/customers', {
-        email: data.email,
-        name: data.name,
-        phone: data.phone,
-        metadata: data.metadata,
+        customer: {
+          email: data.email,
+          name: data.name,
+          phone: data.phone,
+          token: data.token,
+          user_unique_id: data.userUniqueId,
+          identity_type: data.identityType,
+          company_unique_id: data.companyUniqueId,
+          entity_unique_id: data.entityUniqueId,
+          entity_type: data.entityType,
+          metadata: data.metadata,
+        },
       });
       return {
         customerId: response.customer_id,
@@ -109,37 +117,39 @@ export function createStripeService(transport: Transport, _config: { appId: stri
 
     async createCheckoutSession(data: CreateStripeCheckoutSessionRequest): Promise<StripeCheckoutSession> {
       const response = await transport.post<any>('/stripe/sessions', {
-        customer_unique_id: data.customerUniqueId,
-        stripe_customer_id: data.stripeCustomerId,
-        success_url: data.successUrl,
-        cancel_url: data.cancelUrl,
-        mode: data.mode,
-        line_items: data.lineItems?.map(item => ({
-          price_id: item.priceId,
-          quantity: item.quantity,
-          price_data: item.priceData ? {
-            currency: item.priceData.currency,
-            unit_amount: item.priceData.unitAmount,
-            product_data: item.priceData.productData,
-            recurring: item.priceData.recurring,
+        session: {
+          customer_unique_id: data.customerUniqueId,
+          stripe_customer_id: data.stripeCustomerId,
+          success_url: data.successUrl,
+          cancel_url: data.cancelUrl,
+          mode: data.mode,
+          line_items: data.lineItems?.map(item => ({
+            price_id: item.priceId,
+            quantity: item.quantity,
+            price_data: item.priceData ? {
+              currency: item.priceData.currency,
+              unit_amount: item.priceData.unitAmount,
+              product_data: item.priceData.productData,
+              recurring: item.priceData.recurring,
+            } : undefined,
+          })),
+          subscription_data: data.subscriptionData ? {
+            trial_period_days: data.subscriptionData.trialPeriodDays,
+            metadata: data.subscriptionData.metadata,
           } : undefined,
-        })),
-        subscription_data: data.subscriptionData ? {
-          trial_period_days: data.subscriptionData.trialPeriodDays,
-          metadata: data.subscriptionData.metadata,
-        } : undefined,
-        metadata: data.metadata,
-        subscription_model_code: data.subscriptionModelCode,
-        price_unique_id: data.priceUniqueId,
-        price: data.price,
-        customer: data.customer,
-        quantity: data.quantity,
-        trial_period_days: data.trialPeriodDays,
-        subscription_type: data.subscriptionType,
-        identity_type: data.identityType,
-        description: data.description,
-        allow_promotion_codes: data.allowPromotionCodes,
-        coupon_id: data.couponId,
+          metadata: data.metadata,
+          subscription_model_code: data.subscriptionModelCode,
+          price_unique_id: data.priceUniqueId,
+          price: data.price,
+          customer: data.customer,
+          quantity: data.quantity,
+          trial_period_days: data.trialPeriodDays,
+          subscription_type: data.subscriptionType,
+          identity_type: data.identityType,
+          description: data.description,
+          allow_promotion_codes: data.allowPromotionCodes,
+          coupon_id: data.couponId,
+        },
       });
       return {
         id: response.id,
@@ -169,12 +179,21 @@ export function createStripeService(transport: Transport, _config: { appId: stri
 
     async createPaymentIntent(data: CreateStripePaymentIntentRequest): Promise<StripePaymentIntent> {
       const response = await transport.post<any>('/stripe/payments', {
-        amount: data.amount,
-        currency: data.currency,
-        customer_unique_id: data.customerUniqueId,
-        stripe_customer_id: data.stripeCustomerId,
-        payment_method_types: data.paymentMethodTypes,
-        metadata: data.metadata,
+        payment: {
+          amount: data.amount,
+          currency: data.currency,
+          customer_unique_id: data.customerUniqueId,
+          stripe_customer_id: data.stripeCustomerId,
+          payment_method_types: data.paymentMethodTypes,
+          order_unique_id: data.orderUniqueId,
+          order_id: data.orderId,
+          identity_type: data.identityType,
+          user_unique_id: data.userUniqueId,
+          company_unique_id: data.companyUniqueId,
+          entity_unique_id: data.entityUniqueId,
+          entity_type: data.entityType,
+          metadata: data.metadata,
+        },
       });
       return {
         id: response.id,
@@ -187,7 +206,10 @@ export function createStripeService(transport: Transport, _config: { appId: stri
 
     async createCustomerPortal(uniqueId: string, data: CreateStripeCustomerPortalRequest): Promise<StripeCustomerPortalSession> {
       const response = await transport.post<any>(`/stripe/customers/${uniqueId}/portal`, {
-        return_url: data.returnUrl,
+        portal: {
+          return_url: data.returnUrl,
+          customer_id: data.customerId,
+        },
       });
       return {
         id: response.id,
@@ -227,13 +249,24 @@ export function createStripeService(transport: Transport, _config: { appId: stri
 
     async createSubscription(data: CreateStripeSubscriptionRequest): Promise<StripeSubscription> {
       const response = await transport.post<any>('/stripe/subscriptions', {
-        customer_unique_id: data.customerUniqueId,
-        stripe_customer_id: data.stripeCustomerId,
-        price_id: data.priceId,
-        price_unique_id: data.priceUniqueId,
-        quantity: data.quantity,
-        trial_period_days: data.trialPeriodDays,
-        metadata: data.metadata,
+        subscription: {
+          customer_unique_id: data.customerUniqueId,
+          stripe_customer_id: data.stripeCustomerId,
+          price_id: data.priceId,
+          price_unique_id: data.priceUniqueId,
+          quantity: data.quantity,
+          trial_period_days: data.trialPeriodDays,
+          customer_id: data.customerId,
+          setup_price_id: data.setupPriceId,
+          subscription_price_id: data.subscriptionPriceId,
+          card_token: data.cardToken,
+          subscription_type: data.subscriptionType,
+          identity_type: data.identityType,
+          company_unique_id: data.companyUniqueId,
+          entity_unique_id: data.entityUniqueId,
+          entity_type: data.entityType,
+          metadata: data.metadata,
+        },
       });
       return {
         id: response.id,
@@ -250,10 +283,12 @@ export function createStripeService(transport: Transport, _config: { appId: stri
 
     async updateSubscription(stripeSubscriptionId: string, data: UpdateStripeSubscriptionRequest): Promise<StripeSubscription> {
       const response = await transport.put<any>(`/stripe/subscriptions/${stripeSubscriptionId}`, {
-        price_id: data.priceId,
-        quantity: data.quantity,
-        cancel_at_period_end: data.cancelAtPeriodEnd,
-        metadata: data.metadata,
+        subscription: {
+          price_id: data.priceId,
+          quantity: data.quantity,
+          cancel_at_period_end: data.cancelAtPeriodEnd,
+          metadata: data.metadata,
+        },
       });
       return {
         id: response.id,
@@ -285,8 +320,10 @@ export function createStripeService(transport: Transport, _config: { appId: stri
 
     async createWebhook(data: CreateStripeWebhookRequest): Promise<StripeWebhook> {
       const response = await transport.post<any>('/stripe/webhooks', {
-        url: data.url,
-        enabled_events: data.enabledEvents,
+        webhook: {
+          url: data.url,
+          enabled_events: data.enabledEvents,
+        },
       });
       return {
         id: response.id,
