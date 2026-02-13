@@ -67,6 +67,7 @@ export function createSubscriptionModelsService(transport: Transport, _config: {
           features: data.features,
           limits: data.limits,
           payload: data.payload,
+          allow_promotion_codes: data.allowPromotionCodes,
         },
       });
       return decodeOne(response, subscriptionModelMapper);
@@ -87,6 +88,7 @@ export function createSubscriptionModelsService(transport: Transport, _config: {
           enabled: data.enabled,
           status: data.status,
           payload: data.payload,
+          allow_promotion_codes: data.allowPromotionCodes,
         },
       });
       return decodeOne(response, subscriptionModelMapper);

@@ -12,6 +12,7 @@ export interface SubscriptionModel {
   features?: string[];
   limits?: Record<string, number>;
   enabled: boolean;
+  allowPromotionCodes: boolean;
   status: string;
   payload?: Record<string, unknown>;
   createdAt: Date;
@@ -30,6 +31,7 @@ export interface CreateSubscriptionModelRequest {
   features?: string[];
   limits?: Record<string, number>;
   payload?: Record<string, unknown>;
+  allowPromotionCodes?: boolean;
 }
 
 export interface UpdateSubscriptionModelRequest {
@@ -45,6 +47,7 @@ export interface UpdateSubscriptionModelRequest {
   enabled?: boolean;
   status?: string;
   payload?: Record<string, unknown>;
+  allowPromotionCodes?: boolean;
 }
 
 export interface ListSubscriptionModelsParams {

@@ -18,6 +18,7 @@ export const subscriptionModelMapper: ResourceMapper<SubscriptionModel> = {
     features: resource.attributes?.['features'] as string[] | undefined,
     limits: resource.attributes?.['limits'] as Record<string, number> | undefined,
     enabled: resource.attributes?.['enabled'] as boolean,
+    allowPromotionCodes: (resource.attributes?.['allow_promotion_codes'] as boolean) ?? false,
     status: resource.attributes?.['status'] as string,
     payload: resource.attributes?.['payload'] as Record<string, unknown> | undefined,
     createdAt: parseDate(resource.attributes?.['created_at']),

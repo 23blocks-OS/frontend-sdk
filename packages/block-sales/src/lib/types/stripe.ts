@@ -25,6 +25,10 @@ export interface StripeCheckoutSession {
   url: string;
   status: string;
   expiresAt?: Date;
+  mode?: string;
+  customer?: string;
+  paymentStatus?: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface CreateStripeCheckoutSessionRequest {
@@ -32,13 +36,24 @@ export interface CreateStripeCheckoutSessionRequest {
   stripeCustomerId?: string;
   successUrl: string;
   cancelUrl: string;
-  mode: 'payment' | 'subscription' | 'setup';
+  mode?: 'payment' | 'subscription' | 'setup';
   lineItems?: StripeLineItem[];
   subscriptionData?: {
     trialPeriodDays?: number;
     metadata?: Record<string, unknown>;
   };
   metadata?: Record<string, unknown>;
+  subscriptionModelCode?: string;
+  priceUniqueId?: string;
+  price?: string;
+  customer?: string;
+  quantity?: number;
+  trialPeriodDays?: number;
+  subscriptionType?: string;
+  identityType?: string;
+  description?: string;
+  allowPromotionCodes?: boolean;
+  couponId?: string;
 }
 
 export interface StripeLineItem {
@@ -90,7 +105,8 @@ export interface StripeSubscription {
 export interface CreateStripeSubscriptionRequest {
   customerUniqueId?: string;
   stripeCustomerId?: string;
-  priceId: string;
+  priceId?: string;
+  priceUniqueId?: string;
   quantity?: number;
   trialPeriodDays?: number;
   metadata?: Record<string, unknown>;

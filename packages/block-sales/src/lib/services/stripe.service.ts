@@ -31,6 +31,12 @@ export interface StripeService {
   createCheckoutSession(data: CreateStripeCheckoutSessionRequest): Promise<StripeCheckoutSession>;
 
   /**
+   * Verify/retrieve a Stripe checkout session by session ID.
+   * @returns StripeCheckoutSession with session details.
+   */
+  verifySession(sessionId: string): Promise<StripeCheckoutSession>;
+
+  /**
    * Create a Stripe payment intent.
    * @returns StripePaymentIntent with `id`, `clientSecret`, `status`, `amount`, and `currency`.
    */
@@ -123,12 +129,41 @@ export function createStripeService(transport: Transport, _config: { appId: stri
           metadata: data.subscriptionData.metadata,
         } : undefined,
         metadata: data.metadata,
+        subscription_model_code: data.subscriptionModelCode,
+        price_unique_id: data.priceUniqueId,
+        price: data.price,
+        customer: data.customer,
+        quantity: data.quantity,
+        trial_period_days: data.trialPeriodDays,
+        subscription_type: data.subscriptionType,
+        identity_type: data.identityType,
+        description: data.description,
+        allow_promotion_codes: data.allowPromotionCodes,
+        coupon_id: data.couponId,
       });
       return {
         id: response.id,
         url: response.url,
         status: response.status,
         expiresAt: response.expires_at ? new Date(response.expires_at) : undefined,
+        mode: response.mode,
+        customer: response.customer,
+        paymentStatus: response.payment_status,
+        metadata: response.metadata,
+      };
+    },
+
+    async verifySession(sessionId: string): Promise<StripeCheckoutSession> {
+      const response = await transport.get<any>(`/stripe/sessions/${sessionId}`);
+      return {
+        id: response.id,
+        url: response.url,
+        status: response.status,
+        expiresAt: response.expires_at ? new Date(response.expires_at) : undefined,
+        mode: response.mode,
+        customer: response.customer,
+        paymentStatus: response.payment_status,
+        metadata: response.metadata,
       };
     },
 
@@ -195,6 +230,7 @@ export function createStripeService(transport: Transport, _config: { appId: stri
         customer_unique_id: data.customerUniqueId,
         stripe_customer_id: data.stripeCustomerId,
         price_id: data.priceId,
+        price_unique_id: data.priceUniqueId,
         quantity: data.quantity,
         trial_period_days: data.trialPeriodDays,
         metadata: data.metadata,
