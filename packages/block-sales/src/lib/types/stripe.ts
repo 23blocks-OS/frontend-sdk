@@ -8,18 +8,90 @@ export interface StripeCustomer {
   createdAt: Date;
 }
 
-export interface CreateStripeCustomerRequest {
-  email: string;
+/** Common optional fields shared across all identity types. */
+interface CreateStripeCustomerBase {
   name?: string;
   phone?: string;
   token?: string;
-  userUniqueId?: string;
-  identityType?: string;
-  companyUniqueId?: string;
-  entityUniqueId?: string;
-  entityType?: string;
   metadata?: Record<string, unknown>;
 }
+
+/**
+ * Create a Stripe customer as an individual user (B2C).
+ *
+ * @remarks
+ * This is the default identity type when `identityType` is omitted.
+ *
+ * Required fields: `email`, `userUniqueId`
+ */
+export interface CreateStripeCustomerUserRequest extends CreateStripeCustomerBase {
+  identityType?: 'user';
+  /** Email address for the customer. Required for identity type `'user'`. */
+  email: string;
+  /** Unique ID of the authenticated user. Required for identity type `'user'`. */
+  userUniqueId: string;
+  companyUniqueId?: never;
+  entityUniqueId?: never;
+  entityType?: never;
+}
+
+/**
+ * Create a Stripe customer as a company (B2B).
+ *
+ * Required fields: `email`, `companyUniqueId`
+ */
+export interface CreateStripeCustomerCompanyRequest extends CreateStripeCustomerBase {
+  identityType: 'customer';
+  /** Email address for the customer. Required for identity type `'customer'`. */
+  email: string;
+  /** Unique ID of the company. Required for identity type `'customer'`. */
+  companyUniqueId: string;
+  userUniqueId?: never;
+  entityUniqueId?: never;
+  entityType?: never;
+}
+
+/**
+ * Create a Stripe customer as an entity (AI agents, autonomous systems).
+ *
+ * Required fields: `entityUniqueId`
+ */
+export interface CreateStripeCustomerEntityRequest extends CreateStripeCustomerBase {
+  identityType: 'entity';
+  /** Unique ID of the entity. Required for identity type `'entity'`. */
+  entityUniqueId: string;
+  /** Entity classification (default: `'Item'`). */
+  entityType?: string;
+  email?: string;
+  userUniqueId?: never;
+  companyUniqueId?: never;
+}
+
+/**
+ * Request to create a Stripe customer.
+ *
+ * The required fields depend on the `identityType`:
+ *
+ * - **`'user'`** (default) — individual B2C: requires `email`, `userUniqueId`
+ * - **`'customer'`** — company B2B: requires `email`, `companyUniqueId`
+ * - **`'entity'`** — AI agent / autonomous system: requires `entityUniqueId`
+ *
+ * @example
+ * ```ts
+ * // User (B2C) — identityType defaults to 'user'
+ * await stripe.createCustomer({ email: 'john@example.com', userUniqueId: 'uuid-...' });
+ *
+ * // Company (B2B)
+ * await stripe.createCustomer({ identityType: 'customer', email: 'billing@acme.com', companyUniqueId: 'uuid-...' });
+ *
+ * // Entity (AI agent)
+ * await stripe.createCustomer({ identityType: 'entity', entityUniqueId: 'uuid-...', name: 'Trading Bot' });
+ * ```
+ */
+export type CreateStripeCustomerRequest =
+  | CreateStripeCustomerUserRequest
+  | CreateStripeCustomerCompanyRequest
+  | CreateStripeCustomerEntityRequest;
 
 export interface CreateStripeCustomerResponse {
   customerId: string;
