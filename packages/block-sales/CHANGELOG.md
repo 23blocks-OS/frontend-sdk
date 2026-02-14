@@ -1,3 +1,14 @@
+## 3.4.0 (2026-02-14)
+
+### 🚀 Features
+
+- **@23blocks/block-sales:** add purchases service and refine customer identity types ([ca9a2c8](https://github.com/23blocks-OS/frontend-sdk/commit/ca9a2c8))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 3.3.2 (2026-02-13)
 
 ### 🩹 Fixes

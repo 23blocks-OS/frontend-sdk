@@ -1,3 +1,9 @@
+## 6.6.4 (2026-02-14)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 3.4.0
+
 ## 6.6.3 (2026-02-13)
 
 ### 🧱 Updated Dependencies
