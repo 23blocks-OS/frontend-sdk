@@ -35,12 +35,20 @@ export interface OrderReportItem {
   createdAt: Date;
 }
 
+/** Valid group_by column names for `POST /reports/orders/summary`. */
+export type OrderGroupBy =
+  | 'status' | 'logistics_status' | 'source'
+  | 'customer_unique_id' | 'promo_code' | 'referred_by'
+  | 'parent_unique_id' | 'display';
+
 export interface OrderReportParams {
   startDate: string;
   endDate: string;
   status?: string;
   customerUniqueId?: string;
   userUniqueId?: string;
+  /** Column to group summary results by. Must be a valid column name. */
+  groupBy?: OrderGroupBy;
   page?: number;
   perPage?: number;
 }
@@ -79,11 +87,17 @@ export interface VendorPaymentReportItem {
   createdAt: Date;
 }
 
+/** Valid group_by column names for `POST /reports/vendors/payments/summary`. */
+export type VendorPaymentGroupBy =
+  | 'status' | 'vendor_unique_id' | 'payment_type' | 'gateway_unique_id';
+
 export interface VendorPaymentReportParams {
   startDate: string;
   endDate: string;
   vendorUniqueId?: string;
   status?: string;
+  /** Column to group summary results by. Must be a valid column name. */
+  groupBy?: VendorPaymentGroupBy;
   page?: number;
   perPage?: number;
 }
@@ -123,11 +137,17 @@ export interface SubscriptionReportItem {
   createdAt: Date;
 }
 
+/** Valid group_by column names for `POST /reports/users/subscriptions/summary`. */
+export type SubscriptionGroupBy =
+  | 'status' | 'subscription_model_unique_id' | 'subscription_type' | 'enabled';
+
 export interface SubscriptionReportParams {
   startDate: string;
   endDate: string;
   status?: string;
   subscriptionModelUniqueId?: string;
+  /** Column to group summary results by. Must be a valid column name. */
+  groupBy?: SubscriptionGroupBy;
   page?: number;
   perPage?: number;
 }
@@ -163,11 +183,17 @@ export interface ProviderReportItem {
   createdAt: Date;
 }
 
+/** Valid group_by column names for `POST /reports/orders/providers/summary`. */
+export type ProviderGroupBy =
+  | 'status' | 'vendor_unique_id' | 'vendor_name' | 'source_alias';
+
 export interface ProviderReportParams {
   startDate: string;
   endDate: string;
   vendorUniqueId?: string;
   status?: string;
+  /** Column to group summary results by. Must be a valid column name. */
+  groupBy?: ProviderGroupBy;
   page?: number;
   perPage?: number;
 }

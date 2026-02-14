@@ -313,6 +313,7 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
         end_date: params.endDate,
         vendor_unique_id: params.vendorUniqueId,
         status: params.status,
+        group_by: params.groupBy,
       });
       return {
         totalPayments: response.total_payments,
@@ -371,6 +372,7 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
         end_date: params.endDate,
         vendor_unique_id: params.vendorUniqueId,
         status: params.status,
+        group_by: params.groupBy,
       });
       return {
         totalProviders: response.total_providers,
