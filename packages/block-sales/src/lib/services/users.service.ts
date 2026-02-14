@@ -68,7 +68,7 @@ export interface SalesUsersService {
    * Create a subscription for a user based on a subscription model.
    * @returns The newly created UserSubscription record.
    */
-  createSubscription(uniqueId: string, subscriptionUniqueId: string, data?: CreateUserSubscriptionRequest): Promise<UserSubscription>;
+  createSubscription(uniqueId: string, subscriptionUniqueId: string, data: CreateUserSubscriptionRequest): Promise<UserSubscription>;
 
   /**
    * Update a user subscription.
@@ -214,12 +214,13 @@ export function createSalesUsersService(transport: Transport, _config: { appId: 
       };
     },
 
-    async createSubscription(uniqueId: string, subscriptionUniqueId: string, data?: CreateUserSubscriptionRequest): Promise<UserSubscription> {
+    async createSubscription(uniqueId: string, subscriptionUniqueId: string, data: CreateUserSubscriptionRequest): Promise<UserSubscription> {
       const response = await transport.post<any>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}`, {
         subscription: {
-          start_date: data?.startDate,
-          trial_end_date: data?.trialEndDate,
-          payload: data?.payload,
+          subscription_model_unique_id: data.subscriptionModelUniqueId,
+          subscription_number: data.subscriptionNumber,
+          notes: data.notes,
+          payload: data.payload,
         },
       });
       return {
@@ -241,10 +242,9 @@ export function createSalesUsersService(transport: Transport, _config: { appId: 
     async updateSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateUserSubscriptionRequest): Promise<UserSubscription> {
       const response = await transport.put<any>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}`, {
         subscription: {
-          status: data.status,
-          end_date: data.endDate,
-          max_items: data.maxItems,
-          consumption: data.consumption,
+          subscription_model_unique_id: data.subscriptionModelUniqueId,
+          subscription_number: data.subscriptionNumber,
+          notes: data.notes,
           payload: data.payload,
         },
       });

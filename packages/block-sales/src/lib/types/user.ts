@@ -56,19 +56,41 @@ export interface SubscriptionConsumption {
   consumedAt: Date;
 }
 
+/**
+ * Request to create a user subscription.
+ *
+ * The `subscriptionModelUniqueId` is the only required field — the server
+ * resolves all plan details (max_items, pricing, type) from the model.
+ *
+ * Do **not** send server-managed fields like `status`, `max_items`,
+ * `consumption`, or payment/date fields — they will be ignored.
+ */
 export interface CreateUserSubscriptionRequest {
-  startDate?: string;
-  trialEndDate?: string;
+  /** UUID of the subscription model (plan) to subscribe to. Required. */
+  subscriptionModelUniqueId: string;
+  /** External reference number. */
+  subscriptionNumber?: string;
+  /** Free text notes. */
+  notes?: string;
   payload?: Record<string, unknown>;
 }
 
+/**
+ * Request to update a user subscription (e.g., plan change).
+ *
+ * The `subscriptionModelUniqueId` is the only required field — the server
+ * loads all plan details from the new model.
+ *
+ * Do **not** send server-managed fields like `status`, `max_items`,
+ * `consumption`, or payment/date fields — they will be ignored.
+ */
 export interface UpdateUserSubscriptionRequest {
-  status?: string;
-  endDate?: string;
-  /** Override the plan's default item limit. */
-  maxItems?: number;
-  /** Set consumption value (e.g., reset to 0 on monthly renewal). */
-  consumption?: number;
+  /** UUID of the new subscription model (plan). Required. */
+  subscriptionModelUniqueId: string;
+  /** External reference number. */
+  subscriptionNumber?: string;
+  /** Free text notes. */
+  notes?: string;
   payload?: Record<string, unknown>;
 }
 
