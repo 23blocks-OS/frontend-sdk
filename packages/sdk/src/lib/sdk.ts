@@ -39,6 +39,7 @@ export * from '@23blocks/transport-http';
 // Or import specific types from individual packages:
 //   import { User } from '@23blocks/block-authentication';
 //   import { Category } from '@23blocks/block-crm';
+//   import { CreatePurchaseRequest } from '@23blocks/block-sales';
 // ─────────────────────────────────────────────────────────────────────────────
 
 export * as authentication from '@23blocks/block-authentication';
