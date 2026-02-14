@@ -162,18 +162,17 @@ export interface StripePaymentIntent {
 /**
  * Request to create a Stripe payment intent.
  *
- * For entity purchases (`identityType: 'entity'`), `customerId` must be the
- * **payer's** Stripe customer ID (a user or company), not the entity's.
- * `entityId` must reference an existing entity and is validated server-side.
+ * **BREAKING (v4.1.0):** `amount` has been removed — the server derives it
+ * from `order.balance`. `orderUniqueId` (or `orderId`) is now **required**.
  *
  * @example
  * ```ts
- * // User payment
- * await stripe.createPaymentIntent({ amount: 999, currency: 'usd', customerUniqueId: 'user-uuid' });
+ * // User payment (amount derived from order balance)
+ * await stripe.createPaymentIntent({ orderUniqueId: 'order-uuid', currency: 'usd', customerId: 'cus_xxx' });
  *
  * // Entity purchase (user pays for an entity item)
  * await stripe.createPaymentIntent({
- *   amount: 999,
+ *   orderUniqueId: 'order-uuid',
  *   currency: 'usd',
  *   customerId: 'cus_payer_stripe_id',
  *   identityType: 'entity',
@@ -183,23 +182,17 @@ export interface StripePaymentIntent {
  * ```
  */
 export interface CreateStripePaymentIntentRequest {
-  amount: number;
+  /** Order unique ID. Required — payment amount is derived from `order.balance`. */
+  orderUniqueId: string;
   currency: string;
-  customerUniqueId?: string;
-  stripeCustomerId?: string;
-  paymentMethodTypes?: string[];
-  orderUniqueId?: string;
+  /** Alternative to `orderUniqueId` — numeric order ID. */
   orderId?: string;
-  identityType?: 'user' | 'customer' | 'entity';
-  userUniqueId?: string;
-  companyUniqueId?: string;
-  entityUniqueId?: string;
-  entityType?: string;
-  /** Payer's Stripe customer ID. For entity purchases, this is the user/company who pays. */
+  /** Payer's Stripe customer ID. */
   customerId?: string;
-  /** Entity unique ID. Required when `identityType` is `'entity'`. Must reference an existing entity. */
+  identityType?: 'user' | 'customer' | 'entity';
+  entityType?: string;
+  /** Entity unique ID. Required when `identityType` is `'entity'`. */
   entityId?: string;
-  metadata?: Record<string, unknown>;
 }
 
 export interface StripeSubscription {

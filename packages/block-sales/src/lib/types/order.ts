@@ -1,4 +1,4 @@
-import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
+import type { IdentityCore } from '@23blocks/contracts';
 
 export type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
 
@@ -35,7 +35,6 @@ export interface CreateOrderRequest {
 }
 
 export interface UpdateOrderRequest {
-  status?: OrderStatus;
   shippingAddressUniqueId?: string;
   billingAddressUniqueId?: string;
   notes?: string;

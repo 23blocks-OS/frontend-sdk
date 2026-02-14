@@ -28,8 +28,6 @@ export function createPurchasesService(transport: Transport, _config: { appId: s
           entity_unique_id: 'entityUniqueId' in data ? data.entityUniqueId : undefined,
           gateway: data.gateway,
           gateway_transaction_id: data.gatewayTransactionId,
-          amount: data.amount,
-          discount_amount: data.discountAmount,
           promo_code: data.promoCode,
           price_unique_id: data.priceUniqueId,
           metadata: data.metadata,

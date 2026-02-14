@@ -48,7 +48,6 @@ export function createOrderDetailsService(transport: Transport, _config: { appId
           unit_price: data.unitPrice,
           discount: data.discount,
           tax: data.tax,
-          status: data.status,
           payload: data.payload,
         },
       });

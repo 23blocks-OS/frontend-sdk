@@ -102,7 +102,6 @@ export function createOrdersService(transport: Transport, _config: { appId: stri
     async update(uniqueId: string, data: UpdateOrderRequest): Promise<Order> {
       const response = await transport.put<unknown>(`/orders/${uniqueId}`, {
         order: {
-          status: data.status,
           shipping_address_unique_id: data.shippingAddressUniqueId,
           billing_address_unique_id: data.billingAddressUniqueId,
           notes: data.notes,

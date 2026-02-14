@@ -21,6 +21,5 @@ export interface UpdateOrderDetailRequest {
   unitPrice?: number;
   discount?: number;
   tax?: number;
-  status?: EntityStatus;
   payload?: Record<string, unknown>;
 }

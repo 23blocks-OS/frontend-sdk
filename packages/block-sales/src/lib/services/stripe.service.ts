@@ -180,21 +180,13 @@ export function createStripeService(transport: Transport, _config: { appId: stri
     async createPaymentIntent(data: CreateStripePaymentIntentRequest): Promise<StripePaymentIntent> {
       const response = await transport.post<any>('/stripe/payments', {
         payment: {
-          amount: data.amount,
           currency: data.currency,
-          customer_unique_id: data.customerUniqueId,
-          stripe_customer_id: data.stripeCustomerId,
-          payment_method_types: data.paymentMethodTypes,
           order_unique_id: data.orderUniqueId,
           order_id: data.orderId,
           identity_type: data.identityType,
-          user_unique_id: data.userUniqueId,
-          company_unique_id: data.companyUniqueId,
-          entity_unique_id: data.entityUniqueId,
           entity_type: data.entityType,
           customer_id: data.customerId,
           entity_id: data.entityId,
-          metadata: data.metadata,
         },
       });
       return {

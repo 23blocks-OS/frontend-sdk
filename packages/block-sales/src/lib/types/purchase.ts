@@ -20,10 +20,6 @@ interface CreatePurchaseBase {
   gateway?: 'Stripe' | 'MercadoPago' | 'none';
   /** Gateway transaction ID for server-confirmed purchases. */
   gatewayTransactionId?: string;
-  /** Overrides the plan's recurring payment amount. */
-  amount?: number;
-  /** Discount amount. Default: `0`. */
-  discountAmount?: number;
   /** Promotional code. */
   promoCode?: string;
   /** Specific SubscriptionModelPrice UUID. */
