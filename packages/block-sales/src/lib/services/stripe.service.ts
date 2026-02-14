@@ -192,6 +192,8 @@ export function createStripeService(transport: Transport, _config: { appId: stri
           company_unique_id: data.companyUniqueId,
           entity_unique_id: data.entityUniqueId,
           entity_type: data.entityType,
+          customer_id: data.customerId,
+          entity_id: data.entityId,
           metadata: data.metadata,
         },
       });

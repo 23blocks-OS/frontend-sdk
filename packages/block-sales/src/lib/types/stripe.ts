@@ -159,6 +159,29 @@ export interface StripePaymentIntent {
   currency: string;
 }
 
+/**
+ * Request to create a Stripe payment intent.
+ *
+ * For entity purchases (`identityType: 'entity'`), `customerId` must be the
+ * **payer's** Stripe customer ID (a user or company), not the entity's.
+ * `entityId` must reference an existing entity and is validated server-side.
+ *
+ * @example
+ * ```ts
+ * // User payment
+ * await stripe.createPaymentIntent({ amount: 999, currency: 'usd', customerUniqueId: 'user-uuid' });
+ *
+ * // Entity purchase (user pays for an entity item)
+ * await stripe.createPaymentIntent({
+ *   amount: 999,
+ *   currency: 'usd',
+ *   customerId: 'cus_payer_stripe_id',
+ *   identityType: 'entity',
+ *   entityId: 'entity-unique-id',
+ *   entityType: 'Book',
+ * });
+ * ```
+ */
 export interface CreateStripePaymentIntentRequest {
   amount: number;
   currency: string;
@@ -167,11 +190,15 @@ export interface CreateStripePaymentIntentRequest {
   paymentMethodTypes?: string[];
   orderUniqueId?: string;
   orderId?: string;
-  identityType?: string;
+  identityType?: 'user' | 'customer' | 'entity';
   userUniqueId?: string;
   companyUniqueId?: string;
   entityUniqueId?: string;
   entityType?: string;
+  /** Payer's Stripe customer ID. For entity purchases, this is the user/company who pays. */
+  customerId?: string;
+  /** Entity unique ID. Required when `identityType` is `'entity'`. Must reference an existing entity. */
+  entityId?: string;
   metadata?: Record<string, unknown>;
 }
 

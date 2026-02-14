@@ -65,6 +65,10 @@ export interface CreateUserSubscriptionRequest {
 export interface UpdateUserSubscriptionRequest {
   status?: string;
   endDate?: string;
+  /** Override the plan's default item limit. */
+  maxItems?: number;
+  /** Set consumption value (e.g., reset to 0 on monthly renewal). */
+  consumption?: number;
   payload?: Record<string, unknown>;
 }
 

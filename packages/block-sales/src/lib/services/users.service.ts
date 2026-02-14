@@ -243,6 +243,8 @@ export function createSalesUsersService(transport: Transport, _config: { appId: 
         subscription: {
           status: data.status,
           end_date: data.endDate,
+          max_items: data.maxItems,
+          consumption: data.consumption,
           payload: data.payload,
         },
       });
