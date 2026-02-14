@@ -1,3 +1,9 @@
+## 7.1.7 (2026-02-14)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 4.0.0
+
 ## 7.1.6 (2026-02-14)
 
 ### 🧱 Updated Dependencies

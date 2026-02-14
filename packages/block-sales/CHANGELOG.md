@@ -1,3 +1,22 @@
+# 4.0.0 (2026-02-14)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-sales:** align user subscription create/update params with API permitted fields ([94c8e6e](https://github.com/23blocks-OS/frontend-sdk/commit/94c8e6e))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-sales:** align user subscription create/update params with API permitted fields  ([94c8e6e](https://github.com/23blocks-OS/frontend-sdk/commit/94c8e6e))
+  CreateUserSubscriptionRequest and UpdateUserSubscriptionRequest
+  fields changed. subscriptionModelUniqueId is now required, data param on
+  createSubscription is no longer optional.
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 3.6.0 (2026-02-14)
 
 ### 🚀 Features
