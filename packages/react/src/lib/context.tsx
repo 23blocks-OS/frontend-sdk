@@ -259,9 +259,10 @@ export function useRewardsBlock(): RewardsBlock {
 
 export function useSalesBlock(): SalesBlock {
   const { sales } = use23Blocks();
-  if (!sales) throw new Error('Sales block not configured. Pass `sales` prop to Blocks23Provider.');
+  if (!sales) throw new Error('Sales block not configured. Pass `sales` config prop to Blocks23Provider.');
   return sales;
 }
+
 export function useWalletBlock(): WalletBlock {
   const { wallet } = use23Blocks();
   if (!wallet) throw new Error('Wallet block not configured. Pass `wallet` prop to Blocks23Provider.');
