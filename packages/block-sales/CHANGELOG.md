@@ -1,3 +1,14 @@
+## 3.5.0 (2026-02-14)
+
+### 🚀 Features
+
+- **@23blocks/block-sales:** add subscription maxItems/consumption and entity payment fields ([ef7d538](https://github.com/23blocks-OS/frontend-sdk/commit/ef7d538))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 3.4.0 (2026-02-14)
 
 ### 🚀 Features
