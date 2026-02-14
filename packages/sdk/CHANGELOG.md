@@ -1,3 +1,18 @@
+## 6.6.9 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/sdk:** rebuild with block-sales payment intent breaking change ([66555f1](https://github.com/23blocks-OS/frontend-sdk/commit/66555f1))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 6.6.8 (2026-02-14)
 
 ### 🩹 Fixes

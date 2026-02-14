@@ -1,3 +1,18 @@
+## 7.1.9 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/angular:** rebuild with block-sales payment intent breaking change ([4dd45ec](https://github.com/23blocks-OS/frontend-sdk/commit/4dd45ec))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.1.8 (2026-02-14)
 
 ### 🩹 Fixes

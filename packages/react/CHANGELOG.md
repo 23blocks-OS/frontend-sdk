@@ -1,3 +1,18 @@
+## 7.6.9 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/react:** rebuild with block-sales payment intent breaking change ([ae591a3](https://github.com/23blocks-OS/frontend-sdk/commit/ae591a3))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.6.8 (2026-02-14)
 
 ### 🩹 Fixes

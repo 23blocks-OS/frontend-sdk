@@ -1,3 +1,18 @@
+# 5.0.0 (2026-02-14)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-sales:** remove amount from payment intent, require orderUniqueId, strip server-managed params ([338b81d](https://github.com/23blocks-OS/frontend-sdk/commit/338b81d))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-sales:** remove amount from payment intent, require orderUniqueId, strip server-managed params  ([338b81d](https://github.com/23blocks-OS/frontend-sdk/commit/338b81d))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 4.0.0 (2026-02-14)
 
 ### 🩹 Fixes
