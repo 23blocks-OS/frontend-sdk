@@ -280,7 +280,7 @@ export interface Blocks23Client {
   rewards: RewardsBlock;
 
   /**
-   * Sales, orders, invoices.
+   * Sales, orders, payments, and subscriptions.
    * Requires `urls.sales` to be configured.
    */
   sales: SalesBlock;
