@@ -8,6 +8,7 @@ import type {
   UpdateCustomerSubscriptionRequest,
 } from '../types/customer.js';
 import { salesCustomerMapper } from '../mappers/customer.mapper.js';
+import { customerSubscriptionMapper } from '../mappers/customer-subscription.mapper.js';
 
 export interface SalesCustomersService {
   /**
@@ -63,25 +64,12 @@ export function createSalesCustomersService(transport: Transport, _config: { app
     },
 
     async getSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<CustomerSubscription> {
-      const response = await transport.get<any>(`/customers/${uniqueId}/subscriptions/${subscriptionUniqueId}`);
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        customerUniqueId: response.customer_unique_id,
-        subscriptionModelUniqueId: response.subscription_model_unique_id,
-        status: response.status,
-        startDate: response.start_date ? new Date(response.start_date) : undefined,
-        endDate: response.end_date ? new Date(response.end_date) : undefined,
-        trialEndDate: response.trial_end_date ? new Date(response.trial_end_date) : undefined,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      const response = await transport.get<unknown>(`/customers/${uniqueId}/subscriptions/${subscriptionUniqueId}`);
+      return decodeOne(response, customerSubscriptionMapper);
     },
 
     async createSubscription(uniqueId: string, data: CreateCustomerSubscriptionRequest): Promise<CustomerSubscription> {
-      const response = await transport.post<any>(`/customers/${uniqueId}/subscriptions`, {
+      const response = await transport.post<unknown>(`/customers/${uniqueId}/subscriptions`, {
         subscription: {
           subscription_model_unique_id: data.subscriptionModelUniqueId,
           start_date: data.startDate,
@@ -89,44 +77,18 @@ export function createSalesCustomersService(transport: Transport, _config: { app
           payload: data.payload,
         },
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        customerUniqueId: response.customer_unique_id,
-        subscriptionModelUniqueId: response.subscription_model_unique_id,
-        status: response.status,
-        startDate: response.start_date ? new Date(response.start_date) : undefined,
-        endDate: response.end_date ? new Date(response.end_date) : undefined,
-        trialEndDate: response.trial_end_date ? new Date(response.trial_end_date) : undefined,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return decodeOne(response, customerSubscriptionMapper);
     },
 
     async updateSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateCustomerSubscriptionRequest): Promise<CustomerSubscription> {
-      const response = await transport.put<any>(`/customers/${uniqueId}/subscriptions/${subscriptionUniqueId}`, {
+      const response = await transport.put<unknown>(`/customers/${uniqueId}/subscriptions/${subscriptionUniqueId}`, {
         subscription: {
           status: data.status,
           end_date: data.endDate,
           payload: data.payload,
         },
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        customerUniqueId: response.customer_unique_id,
-        subscriptionModelUniqueId: response.subscription_model_unique_id,
-        status: response.status,
-        startDate: response.start_date ? new Date(response.start_date) : undefined,
-        endDate: response.end_date ? new Date(response.end_date) : undefined,
-        trialEndDate: response.trial_end_date ? new Date(response.trial_end_date) : undefined,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return decodeOne(response, customerSubscriptionMapper);
     },
   };
 }

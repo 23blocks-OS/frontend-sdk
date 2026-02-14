@@ -1,4 +1,5 @@
-import type { Transport, PageResult } from '@23blocks/contracts';
+import type { Transport } from '@23blocks/contracts';
+import { decodeOne } from '@23blocks/jsonapi-codec';
 import type {
   VendorPayment,
   CreateVendorPaymentRequest,
@@ -16,6 +17,8 @@ import type {
   ProviderReportList,
   ProviderReportParams,
 } from '../types/report.js';
+import { vendorPaymentMapper } from '../mappers/vendor-payment.mapper.js';
+import { orderDetailVendorMapper } from '../mappers/order-detail-vendor.mapper.js';
 
 export interface VendorPaymentsService {
   /**
@@ -93,27 +96,12 @@ export interface VendorPaymentsService {
 export function createVendorPaymentsService(transport: Transport, _config: { appId: string }): VendorPaymentsService {
   return {
     async get(paymentUniqueId: string): Promise<VendorPayment> {
-      const response = await transport.get<any>(`/payables/${paymentUniqueId}`);
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        orderUniqueId: response.order_unique_id,
-        detailUniqueId: response.detail_unique_id,
-        vendorUniqueId: response.vendor_unique_id,
-        amount: response.amount,
-        currency: response.currency,
-        status: response.status,
-        paidAt: response.paid_at ? new Date(response.paid_at) : undefined,
-        reference: response.reference,
-        notes: response.notes,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      const response = await transport.get<unknown>(`/payables/${paymentUniqueId}`);
+      return decodeOne(response, vendorPaymentMapper);
     },
 
     async create(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, data: CreateVendorPaymentRequest): Promise<VendorPayment> {
-      const response = await transport.post<any>(`/orders/${orderUniqueId}/details/${detailUniqueId}/vendors/${vendorUniqueId}/payments`, {
+      const response = await transport.post<unknown>(`/orders/${orderUniqueId}/details/${detailUniqueId}/vendors/${vendorUniqueId}/payments`, {
         payment: {
           amount: data.amount,
           currency: data.currency,
@@ -122,26 +110,11 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
           payload: data.payload,
         },
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        orderUniqueId: response.order_unique_id,
-        detailUniqueId: response.detail_unique_id,
-        vendorUniqueId: response.vendor_unique_id,
-        amount: response.amount,
-        currency: response.currency,
-        status: response.status,
-        paidAt: response.paid_at ? new Date(response.paid_at) : undefined,
-        reference: response.reference,
-        notes: response.notes,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return decodeOne(response, vendorPaymentMapper);
     },
 
     async update(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string, data: UpdateVendorPaymentRequest): Promise<VendorPayment> {
-      const response = await transport.put<any>(`/orders/${orderUniqueId}/details/${detailUniqueId}/vendors/${vendorUniqueId}/payments/${paymentUniqueId}`, {
+      const response = await transport.put<unknown>(`/orders/${orderUniqueId}/details/${detailUniqueId}/vendors/${vendorUniqueId}/payments/${paymentUniqueId}`, {
         payment: {
           amount: data.amount,
           reference: data.reference,
@@ -150,42 +123,12 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
           payload: data.payload,
         },
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        orderUniqueId: response.order_unique_id,
-        detailUniqueId: response.detail_unique_id,
-        vendorUniqueId: response.vendor_unique_id,
-        amount: response.amount,
-        currency: response.currency,
-        status: response.status,
-        paidAt: response.paid_at ? new Date(response.paid_at) : undefined,
-        reference: response.reference,
-        notes: response.notes,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return decodeOne(response, vendorPaymentMapper);
     },
 
     async pay(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string): Promise<VendorPayment> {
-      const response = await transport.put<any>(`/orders/${orderUniqueId}/details/${detailUniqueId}/vendors/${vendorUniqueId}/payments/${paymentUniqueId}/pay`, {});
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        orderUniqueId: response.order_unique_id,
-        detailUniqueId: response.detail_unique_id,
-        vendorUniqueId: response.vendor_unique_id,
-        amount: response.amount,
-        currency: response.currency,
-        status: response.status,
-        paidAt: response.paid_at ? new Date(response.paid_at) : undefined,
-        reference: response.reference,
-        notes: response.notes,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      const response = await transport.put<unknown>(`/orders/${orderUniqueId}/details/${detailUniqueId}/vendors/${vendorUniqueId}/payments/${paymentUniqueId}/pay`, {});
+      return decodeOne(response, vendorPaymentMapper);
     },
 
     async delete(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string): Promise<void> {
@@ -193,7 +136,7 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
     },
 
     async createProvider(orderUniqueId: string, orderDetailUniqueId: string, data: CreateOrderDetailVendorRequest): Promise<OrderDetailVendor> {
-      const response = await transport.post<any>(`/orders/${orderUniqueId}/details/${orderDetailUniqueId}/providers`, {
+      const response = await transport.post<unknown>(`/orders/${orderUniqueId}/details/${orderDetailUniqueId}/providers`, {
         provider: {
           vendor_unique_id: data.vendorUniqueId,
           amount: data.amount,
@@ -201,23 +144,11 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
           payload: data.payload,
         },
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        orderDetailUniqueId: response.order_detail_unique_id,
-        vendorUniqueId: response.vendor_unique_id,
-        vendorName: response.vendor_name,
-        amount: response.amount,
-        commission: response.commission,
-        status: response.status,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return decodeOne(response, orderDetailVendorMapper);
     },
 
     async createProviderBySource(sourceId: string, data: CreateOrderDetailVendorBySourceRequest): Promise<OrderDetailVendor> {
-      const response = await transport.post<any>(`/sources/${sourceId}/providers`, {
+      const response = await transport.post<unknown>(`/sources/${sourceId}/providers`, {
         provider: {
           vendor_unique_id: data.vendorUniqueId,
           order_unique_id: data.orderUniqueId,
@@ -227,24 +158,11 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
           payload: data.payload,
         },
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        sourceId: response.source_id,
-        orderDetailUniqueId: response.order_detail_unique_id,
-        vendorUniqueId: response.vendor_unique_id,
-        vendorName: response.vendor_name,
-        amount: response.amount,
-        commission: response.commission,
-        status: response.status,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return decodeOne(response, orderDetailVendorMapper);
     },
 
     async updateProvider(orderUniqueId: string, orderDetailUniqueId: string, providerUniqueId: string, data: UpdateOrderDetailVendorRequest): Promise<OrderDetailVendor> {
-      const response = await transport.put<any>(`/orders/${orderUniqueId}/details/${orderDetailUniqueId}/providers/${providerUniqueId}`, {
+      const response = await transport.put<unknown>(`/orders/${orderUniqueId}/details/${orderDetailUniqueId}/providers/${providerUniqueId}`, {
         provider: {
           amount: data.amount,
           commission: data.commission,
@@ -252,19 +170,7 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
           payload: data.payload,
         },
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        orderDetailUniqueId: response.order_detail_unique_id,
-        vendorUniqueId: response.vendor_unique_id,
-        vendorName: response.vendor_name,
-        amount: response.amount,
-        commission: response.commission,
-        status: response.status,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return decodeOne(response, orderDetailVendorMapper);
     },
 
     async reportList(params: VendorPaymentReportParams): Promise<VendorPaymentReportList> {
@@ -300,7 +206,7 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
         },
         meta: {
           totalCount: response.meta.total_count,
-          currentPage: response.meta.current_page,
+          page: response.meta.current_page,
           perPage: response.meta.per_page,
           totalPages: response.meta.total_pages,
         },
@@ -359,7 +265,7 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
         },
         meta: {
           totalCount: response.meta.total_count,
-          currentPage: response.meta.current_page,
+          page: response.meta.current_page,
           perPage: response.meta.per_page,
           totalPages: response.meta.total_pages,
         },

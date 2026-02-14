@@ -10,6 +10,7 @@ import type {
   UpdateEntitySubscriptionRequest,
 } from '../types/entity.js';
 import { salesEntityMapper } from '../mappers/entity.mapper.js';
+import { entitySubscriptionMapper } from '../mappers/entity-subscription.mapper.js';
 
 export interface SalesEntitiesService {
   /**
@@ -95,7 +96,7 @@ export function createSalesEntitiesService(transport: Transport, _config: { appI
     },
 
     async createSubscription(uniqueId: string, data: CreateEntitySubscriptionRequest): Promise<EntitySubscription> {
-      const response = await transport.post<any>(`/entities/${uniqueId}/subscriptions`, {
+      const response = await transport.post<unknown>(`/entities/${uniqueId}/subscriptions`, {
         subscription: {
           subscription_model_unique_id: data.subscriptionModelUniqueId,
           start_date: data.startDate,
@@ -103,44 +104,18 @@ export function createSalesEntitiesService(transport: Transport, _config: { appI
           payload: data.payload,
         },
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        entityUniqueId: response.entity_unique_id,
-        subscriptionModelUniqueId: response.subscription_model_unique_id,
-        status: response.status,
-        startDate: response.start_date ? new Date(response.start_date) : undefined,
-        endDate: response.end_date ? new Date(response.end_date) : undefined,
-        trialEndDate: response.trial_end_date ? new Date(response.trial_end_date) : undefined,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return decodeOne(response, entitySubscriptionMapper);
     },
 
     async updateSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateEntitySubscriptionRequest): Promise<EntitySubscription> {
-      const response = await transport.put<any>(`/entities/${uniqueId}/subscriptions/${subscriptionUniqueId}`, {
+      const response = await transport.put<unknown>(`/entities/${uniqueId}/subscriptions/${subscriptionUniqueId}`, {
         subscription: {
           status: data.status,
           end_date: data.endDate,
           payload: data.payload,
         },
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        entityUniqueId: response.entity_unique_id,
-        subscriptionModelUniqueId: response.subscription_model_unique_id,
-        status: response.status,
-        startDate: response.start_date ? new Date(response.start_date) : undefined,
-        endDate: response.end_date ? new Date(response.end_date) : undefined,
-        trialEndDate: response.trial_end_date ? new Date(response.trial_end_date) : undefined,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return decodeOne(response, entitySubscriptionMapper);
     },
   };
 }

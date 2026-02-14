@@ -10,4 +10,8 @@ export * from './customer.mapper.js';
 export * from './flexible-order.mapper.js';
 export * from './purchase.mapper.js';
 export * from './user-subscription.mapper.js';
+export * from './customer-subscription.mapper.js';
+export * from './entity-subscription.mapper.js';
+export * from './vendor-payment.mapper.js';
+export * from './order-detail-vendor.mapper.js';
 export * from './utils.js';
