@@ -1,3 +1,14 @@
+## 5.0.1 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/block-sales:** fix user subscription JSON:API mapping producing empty objects ([b446cec](https://github.com/23blocks-OS/frontend-sdk/commit/b446cec))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 5.0.0 (2026-02-14)
 
 ### 🩹 Fixes

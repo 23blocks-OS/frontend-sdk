@@ -1,3 +1,18 @@
+## 6.6.10 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/sdk:** rebuild with block-sales user subscription mapping fix ([0d8c10d](https://github.com/23blocks-OS/frontend-sdk/commit/0d8c10d))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.0.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 6.6.9 (2026-02-14)
 
 ### 🩹 Fixes

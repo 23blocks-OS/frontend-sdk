@@ -1,3 +1,18 @@
+## 7.6.10 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/react:** rebuild with block-sales user subscription mapping fix ([ae94b7c](https://github.com/23blocks-OS/frontend-sdk/commit/ae94b7c))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.0.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.6.9 (2026-02-14)
 
 ### 🩹 Fixes
