@@ -1,3 +1,14 @@
+## 7.1.8 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/angular:** expose purchases sub-service and rebuild with latest block-sales ([86f6dfc](https://github.com/23blocks-OS/frontend-sdk/commit/86f6dfc))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.1.7 (2026-02-14)
 
 ### 🧱 Updated Dependencies
