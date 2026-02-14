@@ -1,3 +1,18 @@
+## 6.6.11 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/sdk:** rebuild with customers, entities, vendor-payments mapping fixes ([cbd6f3c](https://github.com/23blocks-OS/frontend-sdk/commit/cbd6f3c))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.0.2
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 6.6.10 (2026-02-14)
 
 ### 🩹 Fixes

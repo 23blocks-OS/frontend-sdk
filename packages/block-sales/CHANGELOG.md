@@ -1,3 +1,14 @@
+## 5.0.2 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/block-sales:** fix JSON:API mapping in customers, entities, and vendor-payments services ([eacfbb5](https://github.com/23blocks-OS/frontend-sdk/commit/eacfbb5))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 5.0.1 (2026-02-14)
 
 ### 🩹 Fixes

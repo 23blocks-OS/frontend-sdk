@@ -1,3 +1,18 @@
+## 7.6.11 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/react:** rebuild with customers, entities, vendor-payments mapping fixes ([12b2079](https://github.com/23blocks-OS/frontend-sdk/commit/12b2079))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.0.2
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.6.10 (2026-02-14)
 
 ### 🩹 Fixes

@@ -1,3 +1,18 @@
+## 7.1.11 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/angular:** rebuild with customers, entities, vendor-payments mapping fixes ([6fa4403](https://github.com/23blocks-OS/frontend-sdk/commit/6fa4403))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.0.2
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.1.10 (2026-02-14)
 
 ### 🩹 Fixes
