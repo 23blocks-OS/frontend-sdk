@@ -54,6 +54,7 @@ export class SalesService {
   get stripe() { return this.ensureConfigured().stripe; }
   get mercadopago() { return this.ensureConfigured().mercadopago; }
   get vendorPayments() { return this.ensureConfigured().vendorPayments; }
+  get purchases() { return this.ensureConfigured().purchases; }
 
   /** Full block access */
   get salesBlock(): SalesBlock { return this.ensureConfigured(); }
