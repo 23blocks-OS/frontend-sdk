@@ -44,6 +44,12 @@ export interface UserSubscription {
   trialEndDate?: Date;
   cancelledAt?: Date;
   consumptions?: SubscriptionConsumption[];
+  maxItems?: number;
+  consumption?: number;
+  subscriptionNumber?: string;
+  code?: string;
+  recurringPaymentAmount?: number;
+  notes?: string;
   payload?: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;

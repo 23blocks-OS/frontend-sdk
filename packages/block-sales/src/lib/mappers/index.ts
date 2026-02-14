@@ -9,4 +9,5 @@ export * from './user.mapper.js';
 export * from './customer.mapper.js';
 export * from './flexible-order.mapper.js';
 export * from './purchase.mapper.js';
+export * from './user-subscription.mapper.js';
 export * from './utils.js';

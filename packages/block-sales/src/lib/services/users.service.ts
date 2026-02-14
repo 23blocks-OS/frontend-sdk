@@ -14,6 +14,7 @@ import type {
 import type { Order } from '../types/order.js';
 import { salesUserMapper } from '../mappers/user.mapper.js';
 import { orderMapper } from '../mappers/order.mapper.js';
+import { userSubscriptionMapper } from '../mappers/user-subscription.mapper.js';
 
 export interface SalesUsersService {
   /**
@@ -158,64 +159,17 @@ export function createSalesUsersService(transport: Transport, _config: { appId: 
       if (params?.status) queryParams['status'] = params.status;
       if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
 
-      const response = await transport.get<any>(`/users/${uniqueId}/subscriptions`, { params: queryParams });
-      const data = response.data || [];
-      return {
-        data: data.map((s: any) => ({
-          id: s.id,
-          uniqueId: s.unique_id,
-          userUniqueId: s.user_unique_id,
-          subscriptionModelUniqueId: s.subscription_model_unique_id,
-          status: s.status,
-          startDate: s.start_date ? new Date(s.start_date) : undefined,
-          endDate: s.end_date ? new Date(s.end_date) : undefined,
-          trialEndDate: s.trial_end_date ? new Date(s.trial_end_date) : undefined,
-          cancelledAt: s.cancelled_at ? new Date(s.cancelled_at) : undefined,
-          consumptions: (s.consumptions || []).map((c: any) => ({
-            id: c.id,
-            quantity: c.quantity,
-            description: c.description,
-            consumedAt: new Date(c.consumed_at),
-          })),
-          payload: s.payload,
-          createdAt: new Date(s.created_at),
-          updatedAt: new Date(s.updated_at),
-        })),
-        meta: {
-          totalCount: response.meta?.total_count || data.length,
-          currentPage: response.meta?.current_page || 1,
-          perPage: response.meta?.per_page || data.length,
-          totalPages: response.meta?.total_pages || 1,
-        },
-      };
+      const response = await transport.get<unknown>(`/users/${uniqueId}/subscriptions`, { params: queryParams });
+      return decodePageResult(response, userSubscriptionMapper);
     },
 
     async getSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<UserSubscription> {
-      const response = await transport.get<any>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}`);
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        userUniqueId: response.user_unique_id,
-        subscriptionModelUniqueId: response.subscription_model_unique_id,
-        status: response.status,
-        startDate: response.start_date ? new Date(response.start_date) : undefined,
-        endDate: response.end_date ? new Date(response.end_date) : undefined,
-        trialEndDate: response.trial_end_date ? new Date(response.trial_end_date) : undefined,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        consumptions: (response.consumptions || []).map((c: any) => ({
-          id: c.id,
-          quantity: c.quantity,
-          description: c.description,
-          consumedAt: new Date(c.consumed_at),
-        })),
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      const response = await transport.get<unknown>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}`);
+      return decodeOne(response, userSubscriptionMapper);
     },
 
     async createSubscription(uniqueId: string, subscriptionUniqueId: string, data: CreateUserSubscriptionRequest): Promise<UserSubscription> {
-      const response = await transport.post<any>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}`, {
+      const response = await transport.post<unknown>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}`, {
         subscription: {
           subscription_model_unique_id: data.subscriptionModelUniqueId,
           subscription_number: data.subscriptionNumber,
@@ -223,24 +177,11 @@ export function createSalesUsersService(transport: Transport, _config: { appId: 
           payload: data.payload,
         },
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        userUniqueId: response.user_unique_id,
-        subscriptionModelUniqueId: response.subscription_model_unique_id,
-        status: response.status,
-        startDate: response.start_date ? new Date(response.start_date) : undefined,
-        endDate: response.end_date ? new Date(response.end_date) : undefined,
-        trialEndDate: response.trial_end_date ? new Date(response.trial_end_date) : undefined,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return decodeOne(response, userSubscriptionMapper);
     },
 
     async updateSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateUserSubscriptionRequest): Promise<UserSubscription> {
-      const response = await transport.put<any>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}`, {
+      const response = await transport.put<unknown>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}`, {
         subscription: {
           subscription_model_unique_id: data.subscriptionModelUniqueId,
           subscription_number: data.subscriptionNumber,
@@ -248,68 +189,23 @@ export function createSalesUsersService(transport: Transport, _config: { appId: 
           payload: data.payload,
         },
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        userUniqueId: response.user_unique_id,
-        subscriptionModelUniqueId: response.subscription_model_unique_id,
-        status: response.status,
-        startDate: response.start_date ? new Date(response.start_date) : undefined,
-        endDate: response.end_date ? new Date(response.end_date) : undefined,
-        trialEndDate: response.trial_end_date ? new Date(response.trial_end_date) : undefined,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return decodeOne(response, userSubscriptionMapper);
     },
 
     async addConsumption(uniqueId: string, subscriptionUniqueId: string, data: AddSubscriptionConsumptionRequest): Promise<UserSubscription> {
-      const response = await transport.post<any>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}/consumption`, {
+      const response = await transport.post<unknown>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}/consumption`, {
         consumption: {
           quantity: data.quantity,
           description: data.description,
           payload: data.payload,
         },
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        userUniqueId: response.user_unique_id,
-        subscriptionModelUniqueId: response.subscription_model_unique_id,
-        status: response.status,
-        startDate: response.start_date ? new Date(response.start_date) : undefined,
-        endDate: response.end_date ? new Date(response.end_date) : undefined,
-        trialEndDate: response.trial_end_date ? new Date(response.trial_end_date) : undefined,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        consumptions: (response.consumptions || []).map((c: any) => ({
-          id: c.id,
-          quantity: c.quantity,
-          description: c.description,
-          consumedAt: new Date(c.consumed_at),
-        })),
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return decodeOne(response, userSubscriptionMapper);
     },
 
     async cancelSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<UserSubscription> {
-      const response = await transport.put<any>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}/cancel`, {});
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        userUniqueId: response.user_unique_id,
-        subscriptionModelUniqueId: response.subscription_model_unique_id,
-        status: response.status,
-        startDate: response.start_date ? new Date(response.start_date) : undefined,
-        endDate: response.end_date ? new Date(response.end_date) : undefined,
-        trialEndDate: response.trial_end_date ? new Date(response.trial_end_date) : undefined,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      const response = await transport.put<unknown>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}/cancel`, {});
+      return decodeOne(response, userSubscriptionMapper);
     },
 
     async deleteSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<void> {
