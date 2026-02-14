@@ -15,7 +15,8 @@ import { TRANSPORT, SALES_TRANSPORT, SALES_CONFIG } from '../tokens';
  *
  * @example
  * ```typescript
- * const order = await this.salesService.orders.create({ ... });
+ * const order = await this.salesService.orders.get('uuid');
+ * const purchase = await this.salesService.purchases.create({ ... });
  * ```
  */
 @Injectable({ providedIn: 'root' })
