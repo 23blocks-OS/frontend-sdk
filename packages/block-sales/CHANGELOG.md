@@ -1,3 +1,14 @@
+## 3.6.0 (2026-02-14)
+
+### 🚀 Features
+
+- **@23blocks/block-sales:** add typed groupBy unions for report summary endpoints ([fc87364](https://github.com/23blocks-OS/frontend-sdk/commit/fc87364))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 3.5.0 (2026-02-14)
 
 ### 🚀 Features
