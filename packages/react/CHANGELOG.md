@@ -1,3 +1,14 @@
+## 7.6.8 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/react:** rebuild with latest block-sales@4.0.0 fixes ([564d270](https://github.com/23blocks-OS/frontend-sdk/commit/564d270))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.6.7 (2026-02-14)
 
 ### 🧱 Updated Dependencies

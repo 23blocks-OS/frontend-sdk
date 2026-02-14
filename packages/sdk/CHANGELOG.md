@@ -1,3 +1,14 @@
+## 6.6.8 (2026-02-14)
+
+### 🩹 Fixes
+
+- **@23blocks/sdk:** correct sales block description and rebuild with latest block-sales ([6fe3fb6](https://github.com/23blocks-OS/frontend-sdk/commit/6fe3fb6))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 6.6.7 (2026-02-14)
 
 ### 🧱 Updated Dependencies
