@@ -1,3 +1,14 @@
+## 5.0.3 (2026-02-15)
+
+### 🩹 Fixes
+
+- **@23blocks/block-sales:** fix Stripe and MercadoPago JSON:API response decoding ([86e7c1d](https://github.com/23blocks-OS/frontend-sdk/commit/86e7c1d))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 5.0.2 (2026-02-14)
 
 ### 🩹 Fixes

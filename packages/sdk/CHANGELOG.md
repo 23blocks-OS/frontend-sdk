@@ -1,3 +1,18 @@
+## 6.6.12 (2026-02-15)
+
+### 🩹 Fixes
+
+- **@23blocks/sdk:** rebuild meta-packages with Stripe/MercadoPago decoding fix ([b333bf0](https://github.com/23blocks-OS/frontend-sdk/commit/b333bf0))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.0.3
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 6.6.11 (2026-02-14)
 
 ### 🩹 Fixes
