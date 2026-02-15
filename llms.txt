@@ -156,6 +156,80 @@ const user = await client.users.updateProfile(userUniqueId, {
 // Access updated profile: user.profile?.firstName === 'Jane'
 ```
 
+## Stripe Integration (block-sales)
+
+### Identity Types
+
+Stripe operations support three identity types for multi-entity billing:
+
+```typescript
+// User (B2C) - default when identityType omitted
+await client.sales.stripe.createCustomer({
+  email: 'john@example.com',
+  userUniqueId: 'user-uuid',
+});
+
+// Company (B2B)
+await client.sales.stripe.createCustomer({
+  identityType: 'customer',
+  email: 'billing@acme.com',
+  companyUniqueId: 'company-uuid',
+});
+
+// Entity (AI agent / autonomous system)
+await client.sales.stripe.createCustomer({
+  identityType: 'entity',
+  entityUniqueId: 'entity-uuid',
+  entityType: 'Bot',
+});
+```
+
+### Checkout Sessions
+
+```typescript
+const session = await client.sales.stripe.createCheckoutSession({
+  successUrl: 'https://app.example.com/success',
+  cancelUrl: 'https://app.example.com/cancel',
+  mode: 'subscription',              // 'payment' | 'subscription' | 'setup'
+  subscriptionModelCode: 'pro-plan',
+  allowPromotionCodes: true,         // Enable Stripe promo code input
+  couponId: 'WELCOME20',            // Pre-apply a coupon
+  identityType: 'user',
+});
+// session.url -> redirect user to Stripe checkout
+// session.id -> use to verify later
+
+// Verify a completed session
+const verified = await client.sales.stripe.verifySession(session.id);
+```
+
+### Payment Intents
+
+**Note:** `amount` is NOT a parameter. The server derives payment amount from the order's balance.
+
+```typescript
+const intent = await client.sales.stripe.createPaymentIntent({
+  orderUniqueId: 'order-uuid',    // Required - amount derived from order.balance
+  currency: 'usd',
+  customerId: 'cus_stripe_id',
+});
+// intent.clientSecret -> use with Stripe.js to confirm payment
+```
+
+### Purchases (Gateway-Agnostic)
+
+Single-call purchase that creates Order + Payment + Subscription:
+
+```typescript
+const purchase = await client.sales.purchases.create({
+  subscriptionModelCode: 'free-plan',
+  identityType: 'user',
+  userUniqueId: 'user-uuid',
+  gateway: 'stripe',                // or 'mercadopago', or omit for free
+  gatewayTransactionId: 'pi_xxx',  // Stripe payment intent ID
+});
+```
+
 ## Common Gotchas
 
 1. **No PATCH method.** The 23blocks API only supports PUT for updates. Never use PATCH.
@@ -166,6 +240,8 @@ const user = await client.users.updateProfile(userUniqueId, {
 6. **`create()` on ApiKeysService returns `ApiKeyWithSecret`.** The secret is only available once at creation time.
 7. **Service URLs are per-microservice.** Each block connects to its own backend URL.
 8. **Accessing unconfigured services throws.** If you didn't provide `urls.crm`, accessing `client.crm` throws an error.
+9. **Stripe `createPaymentIntent` has no `amount` param.** The server derives amount from the order's balance. Pass `orderUniqueId` instead.
+10. **`purchases.create()` is a single-call shortcut.** Use it for free plan activations or server-confirmed purchases instead of the multi-step register + subscribe + checkout flow.
 
 ## Error Handling
 
@@ -367,10 +443,12 @@ The client provides:
 - `orders`, `orderDetails`, `orderTaxes` - Order management
 - `payments` - Payment processing
 - `subscriptions`, `subscriptionModels` - Recurring billing
-- `entities`, `users`, `customers` - Sales entities
+- `entities`, `users`, `customers` - Sales entities with subscription management
 - `flexibleOrders` - Custom order workflows
-- `stripe`, `mercadopago` - Payment gateway integrations
-- `vendorPayments` - Vendor payment management
+- `stripe` - Stripe integration (customers, checkout sessions, payment intents, subscriptions, webhooks, customer portal)
+- `mercadopago` - MercadoPago integration (payment methods, payment intents, PSE bank transfers)
+- `vendorPayments` - Vendor payment management with reporting (payment reports, provider reports)
+- `purchases` - Gateway-agnostic single-call purchases (creates Order + Payment + Subscription in one call)
 
 ### wallet (block-wallet)
 - `wallets` - Digital wallet management
