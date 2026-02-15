@@ -258,9 +258,9 @@ export function useRewardsBlock(): RewardsBlock {
 }
 
 export function useSalesBlock(): SalesBlock {
-  const ctx = use23Blocks();
-  if (!ctx.sales) throw new Error('Sales block not configured. Pass `sales` prop to Blocks23Provider.');
-  return ctx.sales;
+  const { sales } = use23Blocks();
+  if (!sales) throw new Error('Sales block not configured. Pass `sales` prop to Blocks23Provider.');
+  return sales;
 }
 
 export function useWalletBlock(): WalletBlock {

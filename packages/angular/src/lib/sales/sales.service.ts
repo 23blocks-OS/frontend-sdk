@@ -18,6 +18,7 @@ import { TRANSPORT, SALES_TRANSPORT, SALES_CONFIG } from '../tokens';
  * const order = await this.salesService.orders.get('uuid');
  * const purchase = await this.salesService.purchases.create({ ... });
  * const subs = await this.salesService.users.listSubscriptions('user-uuid');
+ * const session = await this.salesService.stripe.createCheckoutSession({ ... });
  * const payment = await this.salesService.vendorPayments.get('payment-uuid');
  * ```
  */
