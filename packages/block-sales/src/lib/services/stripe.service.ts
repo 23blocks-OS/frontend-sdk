@@ -1,6 +1,6 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
-  StripeCustomer,
   CreateStripeCustomerRequest,
   CreateStripeCustomerResponse,
   StripeCheckoutSession,
@@ -16,6 +16,14 @@ import type {
   CreateStripeWebhookRequest,
   ListStripeSubscriptionsParams,
 } from '../types/stripe.js';
+import {
+  stripeCustomerResponseMapper,
+  stripeCheckoutSessionMapper,
+  stripePaymentIntentMapper,
+  stripeSubscriptionMapper,
+  stripeCustomerPortalMapper,
+  stripeWebhookMapper,
+} from '../mappers/stripe.mapper.js';
 
 export interface StripeService {
   /**
@@ -87,7 +95,7 @@ export interface StripeService {
 export function createStripeService(transport: Transport, _config: { appId: string }): StripeService {
   return {
     async createCustomer(data: CreateStripeCustomerRequest): Promise<CreateStripeCustomerResponse> {
-      const response = await transport.post<any>('/stripe/customers', {
+      const response = await transport.post<unknown>('/stripe/customers', {
         customer: {
           email: data.email,
           name: data.name,
@@ -101,22 +109,11 @@ export function createStripeService(transport: Transport, _config: { appId: stri
           metadata: data.metadata,
         },
       });
-      return {
-        customerId: response.customer_id,
-        customer: {
-          id: response.customer.id,
-          stripeId: response.customer.stripe_id,
-          email: response.customer.email,
-          name: response.customer.name,
-          defaultPaymentMethod: response.customer.default_payment_method,
-          metadata: response.customer.metadata,
-          createdAt: new Date(response.customer.created_at),
-        },
-      };
+      return decodeOne(response, stripeCustomerResponseMapper);
     },
 
     async createCheckoutSession(data: CreateStripeCheckoutSessionRequest): Promise<StripeCheckoutSession> {
-      const response = await transport.post<any>('/stripe/sessions', {
+      const response = await transport.post<unknown>('/stripe/sessions', {
         session: {
           customer_unique_id: data.customerUniqueId,
           stripe_customer_id: data.stripeCustomerId,
@@ -151,34 +148,16 @@ export function createStripeService(transport: Transport, _config: { appId: stri
           coupon_id: data.couponId,
         },
       });
-      return {
-        id: response.id,
-        url: response.url,
-        status: response.status,
-        expiresAt: response.expires_at ? new Date(response.expires_at) : undefined,
-        mode: response.mode,
-        customer: response.customer,
-        paymentStatus: response.payment_status,
-        metadata: response.metadata,
-      };
+      return decodeOne(response, stripeCheckoutSessionMapper);
     },
 
     async verifySession(sessionId: string): Promise<StripeCheckoutSession> {
-      const response = await transport.get<any>(`/stripe/sessions/${sessionId}`);
-      return {
-        id: response.id,
-        url: response.url,
-        status: response.status,
-        expiresAt: response.expires_at ? new Date(response.expires_at) : undefined,
-        mode: response.mode,
-        customer: response.customer,
-        paymentStatus: response.payment_status,
-        metadata: response.metadata,
-      };
+      const response = await transport.get<unknown>(`/stripe/sessions/${sessionId}`);
+      return decodeOne(response, stripeCheckoutSessionMapper);
     },
 
     async createPaymentIntent(data: CreateStripePaymentIntentRequest): Promise<StripePaymentIntent> {
-      const response = await transport.post<any>('/stripe/payments', {
+      const response = await transport.post<unknown>('/stripe/payments', {
         payment: {
           currency: data.currency,
           order_unique_id: data.orderUniqueId,
@@ -189,26 +168,17 @@ export function createStripeService(transport: Transport, _config: { appId: stri
           entity_id: data.entityId,
         },
       });
-      return {
-        id: response.id,
-        clientSecret: response.client_secret,
-        status: response.status,
-        amount: response.amount,
-        currency: response.currency,
-      };
+      return decodeOne(response, stripePaymentIntentMapper);
     },
 
     async createCustomerPortal(uniqueId: string, data: CreateStripeCustomerPortalRequest): Promise<StripeCustomerPortalSession> {
-      const response = await transport.post<any>(`/stripe/customers/${uniqueId}/portal`, {
+      const response = await transport.post<unknown>(`/stripe/customers/${uniqueId}/portal`, {
         portal: {
           return_url: data.returnUrl,
           customer_id: data.customerId,
         },
       });
-      return {
-        id: response.id,
-        url: response.url,
-      };
+      return decodeOne(response, stripeCustomerPortalMapper);
     },
 
     async listSubscriptions(params?: ListStripeSubscriptionsParams): Promise<PageResult<StripeSubscription>> {
@@ -218,31 +188,12 @@ export function createStripeService(transport: Transport, _config: { appId: stri
       if (params?.customerId) queryParams['customer_id'] = params.customerId;
       if (params?.status) queryParams['status'] = params.status;
 
-      const response = await transport.get<any>('/stripe/subscriptions', { params: queryParams });
-      const data = response.data || [];
-      return {
-        data: data.map((s: any) => ({
-          id: s.id,
-          stripeId: s.stripe_id,
-          customerId: s.customer_id,
-          status: s.status,
-          currentPeriodStart: s.current_period_start ? new Date(s.current_period_start) : undefined,
-          currentPeriodEnd: s.current_period_end ? new Date(s.current_period_end) : undefined,
-          cancelAtPeriodEnd: s.cancel_at_period_end,
-          cancelledAt: s.cancelled_at ? new Date(s.cancelled_at) : undefined,
-          metadata: s.metadata,
-        })),
-        meta: {
-          totalCount: response.meta?.total_count || data.length,
-          currentPage: response.meta?.current_page || 1,
-          perPage: response.meta?.per_page || data.length,
-          totalPages: response.meta?.total_pages || 1,
-        },
-      };
+      const response = await transport.get<unknown>('/stripe/subscriptions', { params: queryParams });
+      return decodePageResult(response, stripeSubscriptionMapper);
     },
 
     async createSubscription(data: CreateStripeSubscriptionRequest): Promise<StripeSubscription> {
-      const response = await transport.post<any>('/stripe/subscriptions', {
+      const response = await transport.post<unknown>('/stripe/subscriptions', {
         subscription: {
           customer_unique_id: data.customerUniqueId,
           stripe_customer_id: data.stripeCustomerId,
@@ -262,21 +213,11 @@ export function createStripeService(transport: Transport, _config: { appId: stri
           metadata: data.metadata,
         },
       });
-      return {
-        id: response.id,
-        stripeId: response.stripe_id,
-        customerId: response.customer_id,
-        status: response.status,
-        currentPeriodStart: response.current_period_start ? new Date(response.current_period_start) : undefined,
-        currentPeriodEnd: response.current_period_end ? new Date(response.current_period_end) : undefined,
-        cancelAtPeriodEnd: response.cancel_at_period_end,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        metadata: response.metadata,
-      };
+      return decodeOne(response, stripeSubscriptionMapper);
     },
 
     async updateSubscription(stripeSubscriptionId: string, data: UpdateStripeSubscriptionRequest): Promise<StripeSubscription> {
-      const response = await transport.put<any>(`/stripe/subscriptions/${stripeSubscriptionId}`, {
+      const response = await transport.put<unknown>(`/stripe/subscriptions/${stripeSubscriptionId}`, {
         subscription: {
           price_id: data.priceId,
           quantity: data.quantity,
@@ -284,17 +225,7 @@ export function createStripeService(transport: Transport, _config: { appId: stri
           metadata: data.metadata,
         },
       });
-      return {
-        id: response.id,
-        stripeId: response.stripe_id,
-        customerId: response.customer_id,
-        status: response.status,
-        currentPeriodStart: response.current_period_start ? new Date(response.current_period_start) : undefined,
-        currentPeriodEnd: response.current_period_end ? new Date(response.current_period_end) : undefined,
-        cancelAtPeriodEnd: response.cancel_at_period_end,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        metadata: response.metadata,
-      };
+      return decodeOne(response, stripeSubscriptionMapper);
     },
 
     async cancelSubscription(stripeSubscriptionId: string): Promise<void> {
@@ -302,30 +233,18 @@ export function createStripeService(transport: Transport, _config: { appId: stri
     },
 
     async listWebhooks(): Promise<StripeWebhook[]> {
-      const response = await transport.get<any>('/stripe/webhooks');
-      return (response.webhooks || response || []).map((w: any) => ({
-        id: w.id,
-        url: w.url,
-        enabledEvents: w.enabled_events,
-        status: w.status,
-        createdAt: new Date(w.created_at),
-      }));
+      const response = await transport.get<unknown>('/stripe/webhooks');
+      return decodeMany(response, stripeWebhookMapper);
     },
 
     async createWebhook(data: CreateStripeWebhookRequest): Promise<StripeWebhook> {
-      const response = await transport.post<any>('/stripe/webhooks', {
+      const response = await transport.post<unknown>('/stripe/webhooks', {
         webhook: {
           url: data.url,
           enabled_events: data.enabledEvents,
         },
       });
-      return {
-        id: response.id,
-        url: response.url,
-        enabledEvents: response.enabled_events,
-        status: response.status,
-        createdAt: new Date(response.created_at),
-      };
+      return decodeOne(response, stripeWebhookMapper);
     },
   };
 }

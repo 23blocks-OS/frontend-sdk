@@ -1,10 +1,12 @@
 import type { Transport } from '@23blocks/contracts';
+import { decodeOne, decodeMany } from '@23blocks/jsonapi-codec';
 import type {
   MercadoPagoPaymentMethod,
   MercadoPagoPaymentIntent,
   CreateMercadoPagoPaymentRequest,
   CreateMercadoPagoPSERequest,
 } from '../types/mercadopago.js';
+import { mercadoPagoPaymentMethodMapper, mercadoPagoPaymentIntentMapper } from '../mappers/mercadopago.mapper.js';
 
 export interface MercadoPagoService {
   /**
@@ -29,25 +31,12 @@ export interface MercadoPagoService {
 export function createMercadoPagoService(transport: Transport, _config: { appId: string }): MercadoPagoService {
   return {
     async listPaymentMethods(): Promise<MercadoPagoPaymentMethod[]> {
-      const response = await transport.get<any>('/mercadopago');
-      return (response.payment_methods || response || []).map((pm: any) => ({
-        id: pm.id,
-        name: pm.name,
-        paymentTypeId: pm.payment_type_id,
-        status: pm.status,
-        secureThumbnail: pm.secure_thumbnail,
-        thumbnail: pm.thumbnail,
-        deferredCapture: pm.deferred_capture,
-        settings: pm.settings,
-        additionalInfoNeeded: pm.additional_info_needed,
-        minAllowedAmount: pm.min_allowed_amount,
-        maxAllowedAmount: pm.max_allowed_amount,
-        processingModes: pm.processing_modes,
-      }));
+      const response = await transport.get<unknown>('/mercadopago');
+      return decodeMany(response, mercadoPagoPaymentMethodMapper);
     },
 
     async createPaymentIntent(data: CreateMercadoPagoPaymentRequest): Promise<MercadoPagoPaymentIntent> {
-      const response = await transport.post<any>('/mercadopago/payments', {
+      const response = await transport.post<unknown>('/mercadopago/payments', {
         transaction_amount: data.transactionAmount,
         description: data.description,
         payment_method_id: data.paymentMethodId,
@@ -85,26 +74,11 @@ export function createMercadoPagoService(transport: Transport, _config: { appId:
         } : undefined,
         metadata: data.metadata,
       });
-      return {
-        id: response.id,
-        status: response.status,
-        statusDetail: response.status_detail,
-        externalReference: response.external_reference,
-        transactionAmount: response.transaction_amount,
-        currencyId: response.currency_id,
-        paymentMethodId: response.payment_method_id,
-        paymentTypeId: response.payment_type_id,
-        installments: response.installments,
-        initPoint: response.init_point,
-        qrCodeBase64: response.qr_code_base64,
-        ticketUrl: response.ticket_url,
-        dateCreated: new Date(response.date_created),
-        dateApproved: response.date_approved ? new Date(response.date_approved) : undefined,
-      };
+      return decodeOne(response, mercadoPagoPaymentIntentMapper);
     },
 
     async createPSEIntent(data: CreateMercadoPagoPSERequest): Promise<MercadoPagoPaymentIntent> {
-      const response = await transport.post<any>('/mercadopago/payments/pse', {
+      const response = await transport.post<unknown>('/mercadopago/payments/pse', {
         transaction_amount: data.transactionAmount,
         description: data.description,
         payer: {
@@ -121,20 +95,7 @@ export function createMercadoPagoService(transport: Transport, _config: { appId:
         external_reference: data.externalReference,
         metadata: data.metadata,
       });
-      return {
-        id: response.id,
-        status: response.status,
-        statusDetail: response.status_detail,
-        externalReference: response.external_reference,
-        transactionAmount: response.transaction_amount,
-        currencyId: response.currency_id,
-        paymentMethodId: response.payment_method_id,
-        paymentTypeId: response.payment_type_id,
-        initPoint: response.init_point,
-        ticketUrl: response.ticket_url,
-        dateCreated: new Date(response.date_created),
-        dateApproved: response.date_approved ? new Date(response.date_approved) : undefined,
-      };
+      return decodeOne(response, mercadoPagoPaymentIntentMapper);
     },
   };
 }

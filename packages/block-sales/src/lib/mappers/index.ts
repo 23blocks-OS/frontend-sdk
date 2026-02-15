@@ -14,4 +14,6 @@ export * from './customer-subscription.mapper.js';
 export * from './entity-subscription.mapper.js';
 export * from './vendor-payment.mapper.js';
 export * from './order-detail-vendor.mapper.js';
+export * from './stripe.mapper.js';
+export * from './mercadopago.mapper.js';
 export * from './utils.js';
