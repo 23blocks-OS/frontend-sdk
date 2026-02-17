@@ -20,7 +20,7 @@ export const contactDocumentMapper: JsonApiMapper<ContactDocument> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']),
+      uniqueId: parseString(attrs['unique_id']) || '',
       contactUniqueId: parseString(attrs['contact_unique_id']) || '',
       name: parseString(attrs['name']) || '',
       originalName: parseString(attrs['original_name']),
@@ -31,8 +31,8 @@ export const contactDocumentMapper: JsonApiMapper<ContactDocument> = {
       status: parseStatus(attrs['status']),
       enabled: parseBoolean(attrs['enabled']),
       payload: attrs['payload'] as Record<string, unknown> | undefined,
-      createdAt: parseDate(attrs['created_at']),
-      updatedAt: parseDate(attrs['updated_at']),
+      createdAt: parseDate(attrs['created_at']) || new Date(),
+      updatedAt: parseDate(attrs['updated_at']) || new Date(),
       // Category fields
       categoryName: parseDocumentCategory(attrs['category_name']),
       categoryUniqueId: parseString(attrs['category_unique_id']),

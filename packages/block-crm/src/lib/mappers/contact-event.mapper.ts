@@ -8,7 +8,7 @@ export const contactEventMapper: JsonApiMapper<ContactEvent> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']),
+      uniqueId: parseString(attrs['unique_id']) || '',
       contactUniqueId: parseString(attrs['contact_unique_id']),
       userUniqueId: parseString(attrs['user_unique_id']),
       eventType: parseString(attrs['event_type']),
@@ -20,8 +20,8 @@ export const contactEventMapper: JsonApiMapper<ContactEvent> = {
       status: parseStatus(attrs['status']),
       enabled: parseBoolean(attrs['enabled']),
       payload: attrs['payload'] as Record<string, unknown> | undefined,
-      createdAt: parseDate(attrs['created_at']),
-      updatedAt: parseDate(attrs['updated_at']),
+      createdAt: parseDate(attrs['created_at']) || new Date(),
+      updatedAt: parseDate(attrs['updated_at']) || new Date(),
     };
   },
 };

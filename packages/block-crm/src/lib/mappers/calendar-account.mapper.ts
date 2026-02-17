@@ -8,7 +8,7 @@ export const calendarAccountMapper: JsonApiMapper<CalendarAccount> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']),
+      uniqueId: parseString(attrs['unique_id']) || '',
       userUniqueId: parseString(attrs['user_unique_id']) || '',
       provider: parseString(attrs['provider']) || '',
       email: parseString(attrs['email']),
@@ -21,8 +21,8 @@ export const calendarAccountMapper: JsonApiMapper<CalendarAccount> = {
       status: parseStatus(attrs['status']),
       enabled: parseBoolean(attrs['enabled']),
       payload: attrs['payload'] as Record<string, unknown> | undefined,
-      createdAt: parseDate(attrs['created_at']),
-      updatedAt: parseDate(attrs['updated_at']),
+      createdAt: parseDate(attrs['created_at']) || new Date(),
+      updatedAt: parseDate(attrs['updated_at']) || new Date(),
     };
   },
 };

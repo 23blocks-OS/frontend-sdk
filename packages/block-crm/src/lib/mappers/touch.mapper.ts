@@ -8,7 +8,7 @@ export const touchMapper: JsonApiMapper<Touch> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']),
+      uniqueId: parseString(attrs['unique_id']) || '',
       contactUniqueId: parseString(attrs['contact_unique_id']),
       userUniqueId: parseString(attrs['user_unique_id']),
       touchType: parseString(attrs['touch_type']),
@@ -19,8 +19,8 @@ export const touchMapper: JsonApiMapper<Touch> = {
       status: parseStatus(attrs['status']),
       enabled: parseBoolean(attrs['enabled']),
       payload: attrs['payload'] as Record<string, unknown> | undefined,
-      createdAt: parseDate(attrs['created_at']),
-      updatedAt: parseDate(attrs['updated_at']),
+      createdAt: parseDate(attrs['created_at']) || new Date(),
+      updatedAt: parseDate(attrs['updated_at']) || new Date(),
     };
   },
 };

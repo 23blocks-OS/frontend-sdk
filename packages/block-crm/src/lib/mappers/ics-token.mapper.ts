@@ -8,7 +8,7 @@ export const icsTokenMapper: JsonApiMapper<IcsToken> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']),
+      uniqueId: parseString(attrs['unique_id']) || '',
       userUniqueId: parseString(attrs['user_unique_id']) || '',
       token: parseString(attrs['token']) || '',
       name: parseString(attrs['name']),
@@ -19,8 +19,8 @@ export const icsTokenMapper: JsonApiMapper<IcsToken> = {
       status: parseStatus(attrs['status']),
       enabled: parseBoolean(attrs['enabled']),
       payload: attrs['payload'] as Record<string, unknown> | undefined,
-      createdAt: parseDate(attrs['created_at']),
-      updatedAt: parseDate(attrs['updated_at']),
+      createdAt: parseDate(attrs['created_at']) || new Date(),
+      updatedAt: parseDate(attrs['updated_at']) || new Date(),
     };
   },
 };

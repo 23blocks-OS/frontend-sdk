@@ -8,7 +8,7 @@ export const busyBlockMapper: JsonApiMapper<BusyBlock> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']),
+      uniqueId: parseString(attrs['unique_id']) || '',
       userUniqueId: parseString(attrs['user_unique_id']) || '',
       title: parseString(attrs['title']),
       description: parseString(attrs['description']),
@@ -20,8 +20,8 @@ export const busyBlockMapper: JsonApiMapper<BusyBlock> = {
       status: parseStatus(attrs['status']),
       enabled: parseBoolean(attrs['enabled']),
       payload: attrs['payload'] as Record<string, unknown> | undefined,
-      createdAt: parseDate(attrs['created_at']),
-      updatedAt: parseDate(attrs['updated_at']),
+      createdAt: parseDate(attrs['created_at']) || new Date(),
+      updatedAt: parseDate(attrs['updated_at']) || new Date(),
     };
   },
 };

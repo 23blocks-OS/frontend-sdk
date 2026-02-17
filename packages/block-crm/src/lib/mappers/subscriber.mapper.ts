@@ -8,7 +8,7 @@ export const subscriberMapper: JsonApiMapper<Subscriber> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']),
+      uniqueId: parseString(attrs['unique_id']) || '',
       email: parseString(attrs['email']) || '',
       firstName: parseString(attrs['first_name']),
       lastName: parseString(attrs['last_name']),
@@ -19,8 +19,8 @@ export const subscriberMapper: JsonApiMapper<Subscriber> = {
       enabled: parseBoolean(attrs['enabled']),
       payload: attrs['payload'] as Record<string, unknown> | undefined,
       tags: parseStringArray(attrs['tags']),
-      createdAt: parseDate(attrs['created_at']),
-      updatedAt: parseDate(attrs['updated_at']),
+      createdAt: parseDate(attrs['created_at']) || new Date(),
+      updatedAt: parseDate(attrs['updated_at']) || new Date(),
     };
   },
 };

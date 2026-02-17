@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — all blocks now expose health() for connectivity checks
+// Main API (Recommended) — blocks expose health() for connectivity checks, strict mapper types
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports

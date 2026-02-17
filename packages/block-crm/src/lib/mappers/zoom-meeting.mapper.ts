@@ -8,7 +8,7 @@ export const zoomMeetingMapper: JsonApiMapper<ZoomMeeting> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']),
+      uniqueId: parseString(attrs['unique_id']) || '',
       meetingUniqueId: parseString(attrs['meeting_unique_id']) || '',
       userUniqueId: parseString(attrs['user_unique_id']) || '',
       zoomMeetingId: parseString(attrs['zoom_meeting_id']),
@@ -25,8 +25,8 @@ export const zoomMeetingMapper: JsonApiMapper<ZoomMeeting> = {
       status: parseStatus(attrs['status']),
       enabled: parseBoolean(attrs['enabled']),
       payload: attrs['payload'] as Record<string, unknown> | undefined,
-      createdAt: parseDate(attrs['created_at']),
-      updatedAt: parseDate(attrs['updated_at']),
+      createdAt: parseDate(attrs['created_at']) || new Date(),
+      updatedAt: parseDate(attrs['updated_at']) || new Date(),
     };
   },
 };

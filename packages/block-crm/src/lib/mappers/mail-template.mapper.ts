@@ -18,7 +18,7 @@ export const crmMailTemplateMapper: ResourceMapper<CrmMailTemplate> = {
     status: parseStatus(resource.attributes['status'] as string | undefined),
     enabled: resource.attributes['enabled'] as boolean ?? true,
     payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
-    createdAt: parseDate(resource.attributes['created_at']),
-    updatedAt: parseDate(resource.attributes['updated_at']),
+    createdAt: parseDate(resource.attributes['created_at']) || new Date(),
+    updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
   }),
 };

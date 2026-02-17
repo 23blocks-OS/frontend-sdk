@@ -8,7 +8,7 @@ export const categoryMapper: JsonApiMapper<Category> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']),
+      uniqueId: parseString(attrs['unique_id']) || '',
       name: parseString(attrs['name']) || '',
       code: parseString(attrs['code']),
       description: parseString(attrs['description']),
@@ -19,8 +19,8 @@ export const categoryMapper: JsonApiMapper<Category> = {
       status: parseStatus(attrs['status']),
       enabled: parseBoolean(attrs['enabled']),
       payload: attrs['payload'] as Record<string, unknown> | undefined,
-      createdAt: parseDate(attrs['created_at']),
-      updatedAt: parseDate(attrs['updated_at']),
+      createdAt: parseDate(attrs['created_at']) || new Date(),
+      updatedAt: parseDate(attrs['updated_at']) || new Date(),
     };
   },
 };
@@ -31,14 +31,14 @@ export const accountCategoryMapper: JsonApiMapper<AccountCategory> = {
     const attrs = resource.attributes || {};
     return {
       id: resource.id,
-      uniqueId: parseString(attrs['unique_id']),
+      uniqueId: parseString(attrs['unique_id']) || '',
       accountUniqueId: parseString(attrs['account_unique_id']) || '',
       categoryUniqueId: parseString(attrs['category_unique_id']) || '',
       order: parseOptionalNumber(attrs['order']),
       status: parseStatus(attrs['status']),
       enabled: parseBoolean(attrs['enabled']),
-      createdAt: parseDate(attrs['created_at']),
-      updatedAt: parseDate(attrs['updated_at']),
+      createdAt: parseDate(attrs['created_at']) || new Date(),
+      updatedAt: parseDate(attrs['updated_at']) || new Date(),
     };
   },
 };
