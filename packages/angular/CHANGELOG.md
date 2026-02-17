@@ -1,3 +1,18 @@
+## 7.2.1 (2026-02-17)
+
+### 🩹 Fixes
+
+- **@23blocks/block-crm:** add strict type fallbacks to all CRM mappers ([00d1c9d](https://github.com/23blocks-OS/frontend-sdk/commit/00d1c9d))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-crm to 3.3.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.2.0 (2026-02-17)
 
 ### 🚀 Features
