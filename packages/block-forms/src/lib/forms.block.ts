@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createFormsService,
   createFormSchemasService,
@@ -80,6 +80,8 @@ export interface FormsBlock {
 
   /** CRM sync operations */
   crmSync: CrmSyncService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -109,6 +111,7 @@ export function createFormsBlock(
     mailTemplates: createMailTemplatesService(transport, config),
     applicationForms: createApplicationFormsService(transport, config),
     crmSync: createCrmSyncService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

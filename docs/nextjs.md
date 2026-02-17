@@ -472,6 +472,27 @@ export default async function ProductsPage() {
 }
 ```
 
+## Health Check
+
+Every block exposes a `health()` method to verify service connectivity:
+
+```tsx
+'use client';
+
+import { useSimpleBlocks23 } from '@23blocks/react';
+
+export function HealthStatus() {
+  const { authentication } = useSimpleBlocks23();
+
+  const checkHealth = async () => {
+    const status = await authentication.health();
+    console.log(status.service, status.status, status.version);
+  };
+
+  return <button onClick={checkHealth}>Check Health</button>;
+}
+```
+
 ## Error Handling
 
 ```tsx

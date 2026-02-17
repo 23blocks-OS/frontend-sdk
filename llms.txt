@@ -36,7 +36,7 @@ The SDK is organized as independent npm packages:
 
 ```
 @23blocks/sdk              Meta-package re-exporting all blocks + client factory
-@23blocks/contracts        Core types: Transport, BlockConfig, IdentityCore, PageResult, ListParams
+@23blocks/contracts        Core types: Transport, BlockConfig, HealthCheckResponse, IdentityCore, PageResult, ListParams
 @23blocks/jsonapi-codec    JSON:API v1.0 encoder/decoder
 @23blocks/transport-http   HTTP transport implementation (fetch-based)
 @23blocks/block-*          18 feature blocks (Promise-based, framework-agnostic)
@@ -96,6 +96,19 @@ interface ListParams {
   sort?: SortParam | SortParam[];     // { field: string, direction: 'asc' | 'desc' }
   filter?: Record<string, string | number | boolean | string[]>;
   include?: string[];                  // Related resources to include
+}
+```
+
+### HealthCheckResponse
+
+Every block exposes a `health()` method that pings the service's `GET /health` endpoint (plain JSON, not JSON:API):
+
+```typescript
+interface HealthCheckResponse {
+  service: string;   // e.g. "auth", "crm", "search"
+  status: string;    // e.g. "ok"
+  version: string;   // e.g. "v4.4.0"
+  timestamp: string; // ISO 8601
 }
 ```
 
@@ -280,6 +293,26 @@ The client provides:
 - `client.authentication` - Full authentication block
 - `client.{blockName}` - All other blocks
 - `client.getAccessToken()`, `client.setTokens()`, `client.clearSession()` - Token utilities
+
+## Health Check
+
+Every block has a `health()` method to verify service connectivity:
+
+```typescript
+// Via client factory
+const status = await client.authentication.health();
+// { service: "auth", status: "ok", version: "v4.4.0", timestamp: "2026-02-16T23:19:52Z" }
+
+// Via standalone block
+const auth = createAuthenticationBlock(transport, config);
+const status = await auth.health();
+
+// Check multiple services
+const [authHealth, crmHealth] = await Promise.all([
+  client.authentication.health(),
+  client.crm.health(),
+]);
+```
 
 ## All 18 Blocks and Their Sub-Services
 

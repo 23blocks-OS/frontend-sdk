@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createAgentsService,
   createPromptsService,
@@ -84,6 +84,8 @@ export interface JarvisBlock {
   promptComments: PromptCommentsService;
   /** Execution comment management */
   executionComments: ExecutionCommentsService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -117,6 +119,7 @@ export function createJarvisBlock(
     marvinChat: createMarvinChatService(transport, config),
     promptComments: createPromptCommentsService(transport, config),
     executionComments: createExecutionCommentsService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

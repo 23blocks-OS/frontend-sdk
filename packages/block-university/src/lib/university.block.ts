@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createCoursesService,
   createLessonsService,
@@ -84,6 +84,8 @@ export interface UniversityBlock {
   notes: NotesService;
   /** Registration token management */
   registrationTokens: RegistrationTokensService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -117,6 +119,7 @@ export function createUniversityBlock(
     attendance: createAttendanceService(transport, config),
     notes: createNotesService(transport, config),
     registrationTokens: createRegistrationTokensService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

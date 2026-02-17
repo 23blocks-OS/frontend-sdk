@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createMessagesService,
   createDraftMessagesService,
@@ -76,6 +76,8 @@ export interface ConversationsBlock {
   meetings: MeetingsService;
   /** Web push notification management */
   webNotifications: WebNotificationsService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -107,6 +109,7 @@ export function createConversationsBlock(
     users: createUsersService(transport, config),
     meetings: createMeetingsService(transport, config),
     webNotifications: createWebNotificationsService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

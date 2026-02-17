@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createOnboardingsService,
   createFlowsService,
@@ -44,6 +44,8 @@ export interface OnboardingBlock {
   mailTemplates: MailTemplatesService;
   /** Remarketing campaign management */
   remarketing: RemarketingService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -67,6 +69,7 @@ export function createOnboardingBlock(
     onboard: createOnboardService(transport, config),
     mailTemplates: createMailTemplatesService(transport, config),
     remarketing: createRemarketingService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

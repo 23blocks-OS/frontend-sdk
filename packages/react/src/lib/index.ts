@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended)
+// Main API (Recommended) — all blocks now expose health() for connectivity checks
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports

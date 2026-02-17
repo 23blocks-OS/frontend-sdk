@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createRewardsService,
   createCouponsService,
@@ -64,6 +64,8 @@ export interface RewardsBlock {
   productRules: ProductRulesService;
   /** Event-based reward rule management */
   eventRules: EventRulesService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -92,6 +94,7 @@ export function createRewardsBlock(
     moneyRules: createMoneyRulesService(transport, config),
     productRules: createProductRulesService(transport, config),
     eventRules: createEventRulesService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

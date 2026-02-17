@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig } from '@23blocks/contracts';
+import type { Transport, BlockConfig, HealthCheckResponse } from '@23blocks/contracts';
 import { createAuthService, type AuthService } from './services/auth.service.js';
 import { createUsersService, type UsersService } from './services/users.service.js';
 import { createRolesService, type RolesService } from './services/roles.service.js';
@@ -216,6 +216,9 @@ export interface AuthenticationBlock {
    * OpenID Connect operations
    */
   oidc: OidcService;
+
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -283,6 +286,7 @@ export function createAuthenticationBlock(
     jwks: createJwksService(transport),
     adminRsaKeys: createAdminRsaKeysService(transport),
     oidc: createOidcService(transport),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

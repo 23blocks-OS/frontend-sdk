@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createAssetsService,
   createAssetEventsService,
@@ -64,6 +64,8 @@ export interface AssetsBlock {
   users: AssetsUsersService;
   /** Asset image management */
   images: AssetImagesService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -92,6 +94,7 @@ export function createAssetsBlock(
     alerts: createAlertsService(transport, config),
     users: createAssetsUsersService(transport, config),
     images: createAssetImagesService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

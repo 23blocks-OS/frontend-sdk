@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createPostsService,
   createPostVersionsService,
@@ -56,6 +56,8 @@ export interface ContentBlock {
   activity: ActivityService;
   /** Content series management */
   series: SeriesService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -82,6 +84,7 @@ export function createContentBlock(
     moderation: createModerationService(transport, config),
     activity: createActivityService(transport, config),
     series: createSeriesService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

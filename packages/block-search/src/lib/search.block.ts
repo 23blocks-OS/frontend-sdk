@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig } from '@23blocks/contracts';
+import type { Transport, BlockConfig, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createSearchService,
   createSearchHistoryService,
@@ -57,6 +57,9 @@ export interface SearchBlock {
    * Jarvis AI-enhanced search
    */
   jarvis: JarvisSearchService;
+
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -109,6 +112,7 @@ export function createSearchBlock(
     entities: createEntitiesService(transport, config),
     identities: createIdentitiesService(transport, config),
     jarvis: createJarvisSearchService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

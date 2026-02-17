@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createProductsService,
   createCartService,
@@ -116,6 +116,8 @@ export interface ProductsBlock {
   visitors: VisitorsService;
   /** Product-vendor association management */
   productVendors: ProductVendorsService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -157,6 +159,7 @@ export function createProductsBlock(
     remarketing: createRemarketingService(transport, config),
     visitors: createVisitorsService(transport, config),
     productVendors: createProductVendorsService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

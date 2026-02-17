@@ -343,6 +343,24 @@ export class ProductsComponent implements OnInit {
 | `OnboardingService` | onboarding | User onboarding |
 | `UniversityService` | university | Learning management |
 
+## Health Check
+
+Every block exposes a `health()` method to verify service connectivity:
+
+```typescript
+import { AuthenticationService } from '@23blocks/angular';
+
+@Component({ ... })
+export class HealthComponent {
+  private auth = inject(AuthenticationService);
+
+  async checkHealth() {
+    const status = await this.auth.health();
+    console.log(status.service, status.status, status.version);
+  }
+}
+```
+
 ## Error Handling
 
 All services return RxJS Observables. Errors are instances of `BlockErrorException`:

@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createOrdersService,
   createOrderDetailsService,
@@ -72,6 +72,8 @@ export interface SalesBlock {
   vendorPayments: VendorPaymentsService;
   /** Gateway-agnostic single-call purchases (Order + Payment + Subscription) */
   purchases: PurchasesService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -102,6 +104,7 @@ export function createSalesBlock(
     mercadopago: createMercadoPagoService(transport, config),
     vendorPayments: createVendorPaymentsService(transport, config),
     purchases: createPurchasesService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

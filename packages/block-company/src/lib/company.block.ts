@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createCompaniesService,
   createDepartmentsService,
@@ -44,6 +44,8 @@ export interface CompanyBlock {
   positions: PositionsService;
   /** Employee-to-position assignment management */
   employeeAssignments: EmployeeAssignmentsService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -67,6 +69,7 @@ export function createCompanyBlock(
     quarters: createQuartersService(transport, config),
     positions: createPositionsService(transport, config),
     employeeAssignments: createEmployeeAssignmentsService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

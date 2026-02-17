@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createLocationsService,
   createAddressesService,
@@ -92,6 +92,8 @@ export interface GeolocationBlock {
   geoStates: GeoStatesService;
   /** City lookup */
   geoCities: GeoCitiesService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -127,6 +129,7 @@ export function createGeolocationBlock(
     geoCountries: createGeoCountriesService(transport, config),
     geoStates: createGeoStatesService(transport, config),
     geoCities: createGeoCitiesService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

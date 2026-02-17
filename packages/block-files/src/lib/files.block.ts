@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createStorageFilesService,
   createEntityFilesService,
@@ -52,6 +52,8 @@ export interface FilesBlock {
   fileAccess: FileAccessService;
   /** File access request management */
   fileAccessRequests: FileAccessRequestsService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -77,6 +79,7 @@ export function createFilesBlock(
     delegations: createDelegationsService(transport, config),
     fileAccess: createFileAccessService(transport, config),
     fileAccessRequests: createFileAccessRequestsService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

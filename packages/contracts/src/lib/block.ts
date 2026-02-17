@@ -41,3 +41,13 @@ export interface BlockRegistration<TBlock = unknown, TConfig extends BlockConfig
   /** Block factory function */
   factory: BlockFactory<TBlock, TConfig>;
 }
+
+/**
+ * Response from the /health endpoint exposed by every 23blocks API service.
+ */
+export interface HealthCheckResponse {
+  service: string;
+  status: string;
+  version: string;
+  timestamp: string;
+}

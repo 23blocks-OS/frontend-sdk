@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createWalletsService,
   createTransactionsService,
@@ -32,6 +32,8 @@ export interface WalletBlock {
   authorizationCodes: AuthorizationCodesService;
   /** Webhook management */
   webhooks: WebhooksService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -52,6 +54,7 @@ export function createWalletBlock(
     transactions: createTransactionsService(transport, config),
     authorizationCodes: createAuthorizationCodesService(transport, config),
     webhooks: createWebhooksService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

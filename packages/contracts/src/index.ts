@@ -45,6 +45,7 @@ export {
   type BlockFactory,
   type BlockMetadata,
   type BlockRegistration,
+  type HealthCheckResponse,
 } from './lib/block.js';
 
 // Logger

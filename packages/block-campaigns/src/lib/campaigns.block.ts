@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createCampaignsService,
   createCampaignMediaService,
@@ -64,6 +64,8 @@ export interface CampaignsBlock {
   mediaResults: CampaignMediaResultsService;
   /** Media channel management */
   media: MediaService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -92,6 +94,7 @@ export function createCampaignsBlock(
     templates: createCampaignTemplatesService(transport, config),
     mediaResults: createCampaignMediaResultsService(transport, config),
     media: createMediaService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 

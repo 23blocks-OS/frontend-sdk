@@ -218,6 +218,31 @@ const transport = createHttpTransport({
 });
 ```
 
+## Health Check
+
+Every block exposes a `health()` method to verify service connectivity before making real API calls:
+
+```typescript
+const status = await client.authentication.health();
+console.log(status);
+// { service: "auth", status: "ok", version: "v4.4.0", timestamp: "2026-02-16T23:19:52Z" }
+
+// Check multiple services in parallel
+const results = await Promise.all([
+  client.authentication.health(),
+  client.search.health(),
+  client.products.health(),
+]);
+results.forEach((r) => console.log(`${r.service}: ${r.status}`));
+```
+
+With standalone blocks:
+
+```typescript
+const auth = createAuthenticationBlock(transport, { apiKey: 'your-api-key' });
+const status = await auth.health();
+```
+
 ## Authentication Examples
 
 ### Sign In

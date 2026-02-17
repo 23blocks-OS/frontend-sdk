@@ -1,4 +1,4 @@
-import type { Transport, BlockConfig, BlockMetadata } from '@23blocks/contracts';
+import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createAccountsService,
   createContactsService,
@@ -112,6 +112,8 @@ export interface CrmBlock {
   billingReports: BillingReportsService;
   /** Calendar sync operations */
   calendarSync: CalendarSyncService;
+  /** Ping the service health endpoint */
+  health(): Promise<HealthCheckResponse>;
 }
 
 /**
@@ -152,6 +154,7 @@ export function createCrmBlock(
     users: createCrmUsersService(transport, config),
     billingReports: createBillingReportsService(transport, config),
     calendarSync: createCalendarSyncService(transport, config),
+    health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
 
