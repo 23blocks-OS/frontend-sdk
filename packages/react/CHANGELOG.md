@@ -1,3 +1,14 @@
+## 7.7.2 (2026-02-17)
+
+### 🩹 Fixes
+
+- pin block dependency minimums in meta-packages ([813719e](https://github.com/23blocks-OS/frontend-sdk/commit/813719e))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.7.1 (2026-02-17)
 
 ### 🩹 Fixes
