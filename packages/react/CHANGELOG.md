@@ -1,3 +1,37 @@
+## 7.7.0 (2026-02-17)
+
+### 🚀 Features
+
+- add health() method to all 18 blocks for service connectivity checks ([73514a3](https://github.com/23blocks-OS/frontend-sdk/commit/73514a3))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 6.5.0
+- Updated @23blocks/block-conversations to 3.5.0
+- Updated @23blocks/block-geolocation to 3.6.0
+- Updated @23blocks/block-onboarding to 3.3.0
+- Updated @23blocks/block-university to 3.6.0
+- Updated @23blocks/block-campaigns to 3.3.0
+- Updated @23blocks/block-products to 3.6.0
+- Updated @23blocks/transport-http to 3.3.0
+- Updated @23blocks/block-company to 3.4.0
+- Updated @23blocks/block-content to 3.5.0
+- Updated @23blocks/block-rewards to 3.4.0
+- Updated @23blocks/block-assets to 3.3.0
+- Updated @23blocks/block-jarvis to 3.3.0
+- Updated @23blocks/block-search to 4.4.0
+- Updated @23blocks/block-wallet to 3.3.0
+- Updated @23blocks/block-files to 3.6.0
+- Updated @23blocks/block-forms to 3.3.0
+- Updated @23blocks/block-sales to 5.1.0
+- Updated @23blocks/block-crm to 3.3.0
+- Updated @23blocks/contracts to 2.3.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.6.12 (2026-02-15)
 
 ### 🩹 Fixes

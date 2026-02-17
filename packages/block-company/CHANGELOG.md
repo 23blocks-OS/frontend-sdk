@@ -1,3 +1,19 @@
+## 3.4.0 (2026-02-17)
+
+### 🚀 Features
+
+- add health() method to all 18 blocks for service connectivity checks ([73514a3](https://github.com/23blocks-OS/frontend-sdk/commit/73514a3))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/jsonapi-codec to 3.3.0
+- Updated @23blocks/contracts to 2.3.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 3.3.0 (2026-02-08)
 
 ### 🚀 Features
