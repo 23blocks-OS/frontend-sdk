@@ -87,6 +87,31 @@ jobs:
             fi
           done
 
+      - name: Validate meta-package dependency ranges
+        run: |
+          FAILED=0
+          for meta in packages/sdk packages/react packages/angular; do
+            if [ -f "$meta/package.json" ]; then
+              STARS=$(node -e "
+                const deps = require('./$meta/package.json').dependencies || {};
+                Object.entries(deps).forEach(([k, v]) => {
+                  if (k.startsWith('@23blocks/') && v === '*') {
+                    console.log(k + ': ' + v);
+                  }
+                });
+              ")
+              if [ -n "$STARS" ]; then
+                echo "ERROR: $meta/package.json has wildcard (*) @23blocks dependencies:"
+                echo "$STARS"
+                echo "These MUST use >= ranges (e.g. >=2.3.0) so consumers get correct versions."
+                FAILED=1
+              else
+                echo "$meta: dependency ranges OK"
+              fi
+            fi
+          done
+          if [ "$FAILED" -eq 1 ]; then exit 1; fi
+
       - name: Run tests
         run: npm run test
 
