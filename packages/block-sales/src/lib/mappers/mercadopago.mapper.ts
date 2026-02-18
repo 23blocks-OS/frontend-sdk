@@ -1,7 +1,7 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
 import type {
   MercadoPagoPaymentMethod,
-  MercadoPagoPaymentIntent,
+  MercadoPagoPayment,
 } from '../types/mercadopago.js';
 import { parseDate, parseNumber, parseOptionalNumber, parseStringArray } from './utils.js';
 
@@ -23,7 +23,7 @@ export const mercadoPagoPaymentMethodMapper: ResourceMapper<MercadoPagoPaymentMe
   }),
 };
 
-export const mercadoPagoPaymentIntentMapper: ResourceMapper<MercadoPagoPaymentIntent> = {
+export const mercadoPagoPaymentMapper: ResourceMapper<MercadoPagoPayment> = {
   type: 'MercadoPagoPaymentIntent',
   map: (resource) => ({
     id: resource.id,

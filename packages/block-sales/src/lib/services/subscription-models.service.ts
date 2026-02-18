@@ -8,29 +8,36 @@ import type {
 } from '../types/subscription-model.js';
 import { subscriptionModelMapper } from '../mappers/subscription-model.mapper.js';
 
+function buildSubModelBody(data: CreateSubscriptionModelRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.uniqueId) body['unique_id'] = data.uniqueId;
+  if (data.code) body['code'] = data.code;
+  if (data.description) body['description'] = data.description;
+  if (data.promotional !== undefined) body['promotional'] = data.promotional;
+  if (data.programCode) body['program_code'] = data.programCode;
+  if (data.duration !== undefined) body['duration'] = data.duration;
+  if (data.durationUnit) body['duration_unit'] = data.durationUnit;
+  if (data.durationDescription) body['duration_description'] = data.durationDescription;
+  if (data.recurringPaymentFees !== undefined) body['recurring_payment_fees'] = data.recurringPaymentFees;
+  if (data.recurringPaymentAmount !== undefined) body['recurring_payment_amount'] = data.recurringPaymentAmount;
+  if (data.contentUrl) body['content_url'] = data.contentUrl;
+  if (data.startAt) body['start_at'] = data.startAt;
+  if (data.endAt) body['end_at'] = data.endAt;
+  if (data.initialPayment !== undefined) body['initial_payment'] = data.initialPayment;
+  if (data.subscriptionType) body['subscription_type'] = data.subscriptionType;
+  if (data.maxItems !== undefined) body['max_items'] = data.maxItems;
+  if (data.stripeProductId) body['stripe_product_id'] = data.stripeProductId;
+  if (data.productType) body['product_type'] = data.productType;
+  if (data.trialPeriodDays !== undefined) body['trial_period_days'] = data.trialPeriodDays;
+  if (data.allowPromotionCodes !== undefined) body['allow_promotion_codes'] = data.allowPromotionCodes;
+  if (data.features) body['features'] = data.features;
+  return body;
+}
+
 export interface SubscriptionModelsService {
-  /**
-   * List subscription models with optional filtering and sorting.
-   * @returns Paginated list of SubscriptionModel records with metadata.
-   */
   list(params?: ListSubscriptionModelsParams): Promise<PageResult<SubscriptionModel>>;
-
-  /**
-   * Get a single subscription model by unique ID.
-   * @returns The matching SubscriptionModel record.
-   */
   get(uniqueId: string): Promise<SubscriptionModel>;
-
-  /**
-   * Create a new subscription model.
-   * @returns The newly created SubscriptionModel record.
-   */
   create(data: CreateSubscriptionModelRequest): Promise<SubscriptionModel>;
-
-  /**
-   * Update an existing subscription model.
-   * @returns The updated SubscriptionModel record.
-   */
   update(uniqueId: string, data: UpdateSubscriptionModelRequest): Promise<SubscriptionModel>;
 }
 
@@ -55,41 +62,14 @@ export function createSubscriptionModelsService(transport: Transport, _config: {
 
     async create(data: CreateSubscriptionModelRequest): Promise<SubscriptionModel> {
       const response = await transport.post<unknown>('/subscription_models', {
-        subscription_model: {
-          code: data.code,
-          name: data.name,
-          description: data.description,
-          price: data.price,
-          currency: data.currency,
-          interval: data.interval,
-          interval_count: data.intervalCount,
-          trial_days: data.trialDays,
-          features: data.features,
-          limits: data.limits,
-          payload: data.payload,
-          allow_promotion_codes: data.allowPromotionCodes,
-        },
+        subscription_model: buildSubModelBody(data),
       });
       return decodeOne(response, subscriptionModelMapper);
     },
 
     async update(uniqueId: string, data: UpdateSubscriptionModelRequest): Promise<SubscriptionModel> {
       const response = await transport.put<unknown>(`/subscription_models/${uniqueId}`, {
-        subscription_model: {
-          name: data.name,
-          description: data.description,
-          price: data.price,
-          currency: data.currency,
-          interval: data.interval,
-          interval_count: data.intervalCount,
-          trial_days: data.trialDays,
-          features: data.features,
-          limits: data.limits,
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
-          allow_promotion_codes: data.allowPromotionCodes,
-        },
+        subscription_model: buildSubModelBody(data),
       });
       return decodeOne(response, subscriptionModelMapper);
     },

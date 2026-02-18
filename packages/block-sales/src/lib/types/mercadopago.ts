@@ -13,7 +13,7 @@ export interface MercadoPagoPaymentMethod {
   processingModes?: string[];
 }
 
-export interface MercadoPagoPaymentIntent {
+export interface MercadoPagoPayment {
   id: string;
   status: string;
   statusDetail?: string;
@@ -30,61 +30,18 @@ export interface MercadoPagoPaymentIntent {
   dateApproved?: Date;
 }
 
+/** Matches payment_params in mercado_pago_controller.rb */
 export interface CreateMercadoPagoPaymentRequest {
-  transactionAmount: number;
+  amount: number;
+  cardToken?: string;
   description?: string;
-  paymentMethodId?: string;
-  payerEmail: string;
   installments?: number;
-  token?: string;
-  issuerId?: string;
-  externalReference?: string;
-  statementDescriptor?: string;
-  notificationUrl?: string;
-  additionalInfo?: {
-    items?: MercadoPagoItem[];
-    payer?: MercadoPagoPayer;
-  };
-  metadata?: Record<string, unknown>;
-}
-
-export interface MercadoPagoItem {
-  id?: string;
-  title: string;
-  description?: string;
-  pictureUrl?: string;
-  categoryId?: string;
-  quantity: number;
-  unitPrice: number;
-}
-
-export interface MercadoPagoPayer {
-  firstName?: string;
-  lastName?: string;
+  paymentMethodId?: string;
   email?: string;
-  phone?: {
-    areaCode?: string;
-    number?: string;
-  };
-  identification?: {
-    type?: string;
-    number?: string;
-  };
-  address?: {
-    zipCode?: string;
-    streetName?: string;
-    streetNumber?: string;
-  };
-}
-
-export interface CreateMercadoPagoPSERequest {
-  transactionAmount: number;
-  description?: string;
-  payerEmail: string;
-  payerDocumentType: string;
-  payerDocumentNumber: string;
-  financialInstitution: string;
-  callbackUrl: string;
-  externalReference?: string;
-  metadata?: Record<string, unknown>;
+  documentType?: string;
+  documentNumber?: string;
+  orderUniqueId?: string;
+  displayUniqueId?: string;
+  financialInstitution?: string;
+  callbackUrl?: string;
 }

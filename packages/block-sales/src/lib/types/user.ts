@@ -1,28 +1,46 @@
 export interface SalesUser {
   id: string;
   uniqueId: string;
-  email?: string;
   name?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
   phone?: string;
-  status: string;
-  payload?: Record<string, unknown>;
+  avatarUrl?: string;
+  roleName?: string;
+  roleUniqueId?: string;
+  stripeId?: string;
+  timeZone?: string;
+  preferredLanguage?: string;
+  emailNotifications?: boolean;
+  smsNotifications?: boolean;
+  whatsappNotifications?: boolean;
+  otherNotifications?: boolean;
+  status?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
+/** Matches user_params in users_controller.rb */
 export interface RegisterSalesUserRequest {
-  email?: string;
   name?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
   phone?: string;
-  payload?: Record<string, unknown>;
+  avatarUrl?: string;
+  roleName?: string;
+  roleUniqueId?: string;
+  stripeId?: string;
+  timeZone?: string;
+  preferredLanguage?: string;
+  emailNotifications?: boolean;
+  smsNotifications?: boolean;
+  whatsappNotifications?: boolean;
+  otherNotifications?: boolean;
 }
 
-export interface UpdateSalesUserRequest {
-  name?: string;
-  phone?: string;
-  status?: string;
-  payload?: Record<string, unknown>;
-}
+export type UpdateSalesUserRequest = RegisterSalesUserRequest;
 
 export interface ListSalesUsersParams {
   page?: number;
@@ -50,7 +68,6 @@ export interface UserSubscription {
   code?: string;
   recurringPaymentAmount?: number;
   notes?: string;
-  payload?: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -62,48 +79,18 @@ export interface SubscriptionConsumption {
   consumedAt: Date;
 }
 
-/**
- * Request to create a user subscription.
- *
- * The `subscriptionModelUniqueId` is the only required field — the server
- * resolves all plan details (max_items, pricing, type) from the model.
- *
- * Do **not** send server-managed fields like `status`, `max_items`,
- * `consumption`, or payment/date fields — they will be ignored.
- */
+/** Matches user_subscription_params in users_subscriptions_controller.rb */
 export interface CreateUserSubscriptionRequest {
-  /** UUID of the subscription model (plan) to subscribe to. Required. */
   subscriptionModelUniqueId: string;
-  /** External reference number. */
   subscriptionNumber?: string;
-  /** Free text notes. */
   notes?: string;
-  payload?: Record<string, unknown>;
 }
 
-/**
- * Request to update a user subscription (e.g., plan change).
- *
- * The `subscriptionModelUniqueId` is the only required field — the server
- * loads all plan details from the new model.
- *
- * Do **not** send server-managed fields like `status`, `max_items`,
- * `consumption`, or payment/date fields — they will be ignored.
- */
-export interface UpdateUserSubscriptionRequest {
-  /** UUID of the new subscription model (plan). Required. */
-  subscriptionModelUniqueId: string;
-  /** External reference number. */
-  subscriptionNumber?: string;
-  /** Free text notes. */
-  notes?: string;
-  payload?: Record<string, unknown>;
-}
+export type UpdateUserSubscriptionRequest = CreateUserSubscriptionRequest;
 
+/** Matches user_consumption_params in users_subscriptions_controller.rb */
 export interface AddSubscriptionConsumptionRequest {
-  quantity: number;
-  description?: string;
-  payload?: Record<string, unknown>;
+  consumption: number;
 }
 
 export interface ListUserSubscriptionsParams {

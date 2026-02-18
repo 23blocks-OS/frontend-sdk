@@ -16,82 +16,39 @@ import { salesUserMapper } from '../mappers/user.mapper.js';
 import { orderMapper } from '../mappers/order.mapper.js';
 import { userSubscriptionMapper } from '../mappers/user-subscription.mapper.js';
 
+function buildUserBody(data: RegisterSalesUserRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.name) body['name'] = data.name;
+  if (data.firstName) body['first_name'] = data.firstName;
+  if (data.lastName) body['last_name'] = data.lastName;
+  if (data.email) body['email'] = data.email;
+  if (data.phone) body['phone'] = data.phone;
+  if (data.avatarUrl) body['avatar_url'] = data.avatarUrl;
+  if (data.roleName) body['role_name'] = data.roleName;
+  if (data.roleUniqueId) body['role_unique_id'] = data.roleUniqueId;
+  if (data.stripeId) body['stripe_id'] = data.stripeId;
+  if (data.timeZone) body['time_zone'] = data.timeZone;
+  if (data.preferredLanguage) body['preferred_language'] = data.preferredLanguage;
+  if (data.emailNotifications !== undefined) body['email_notifications'] = data.emailNotifications;
+  if (data.smsNotifications !== undefined) body['sms_notifications'] = data.smsNotifications;
+  if (data.whatsappNotifications !== undefined) body['whatsapp_notifications'] = data.whatsappNotifications;
+  if (data.otherNotifications !== undefined) body['other_notifications'] = data.otherNotifications;
+  return body;
+}
+
 export interface SalesUsersService {
-  /**
-   * List sales users with optional filtering and sorting.
-   * @returns Paginated list of SalesUser records with metadata.
-   */
   list(params?: ListSalesUsersParams): Promise<PageResult<SalesUser>>;
-
-  /**
-   * Get a sales user by unique ID.
-   * @returns The matching SalesUser record.
-   */
   get(uniqueId: string): Promise<SalesUser>;
-
-  /**
-   * Register a user in the sales system.
-   * @returns The newly registered SalesUser record.
-   */
   register(uniqueId: string, data?: RegisterSalesUserRequest): Promise<SalesUser>;
-
-  /**
-   * Update a sales user.
-   * @returns The updated SalesUser record.
-   */
   update(uniqueId: string, data: UpdateSalesUserRequest): Promise<SalesUser>;
-
-  /**
-   * List orders for a specific user.
-   * @returns Paginated list of Order records.
-   */
   listOrders(uniqueId: string, params?: { page?: number; perPage?: number }): Promise<PageResult<Order>>;
-
-  /**
-   * Get a specific order for a user.
-   * @returns The matching Order record.
-   */
   getOrder(uniqueId: string, orderUniqueId: string): Promise<Order>;
-
-  /**
-   * List subscriptions for a user.
-   * @returns Paginated list of UserSubscription records.
-   */
   listSubscriptions(uniqueId: string, params?: ListUserSubscriptionsParams): Promise<PageResult<UserSubscription>>;
-
-  /**
-   * Get a specific subscription for a user.
-   * @returns The matching UserSubscription record.
-   */
   getSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<UserSubscription>;
-
-  /**
-   * Create a subscription for a user based on a subscription model.
-   * @returns The newly created UserSubscription record.
-   */
   createSubscription(uniqueId: string, subscriptionUniqueId: string, data: CreateUserSubscriptionRequest): Promise<UserSubscription>;
-
-  /**
-   * Update a user subscription.
-   * @returns The updated UserSubscription record.
-   */
   updateSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateUserSubscriptionRequest): Promise<UserSubscription>;
-
-  /**
-   * Add a consumption record to a user subscription.
-   * @returns The updated UserSubscription record with consumption data.
-   */
   addConsumption(uniqueId: string, subscriptionUniqueId: string, data: AddSubscriptionConsumptionRequest): Promise<UserSubscription>;
-
-  /**
-   * Cancel a user subscription.
-   * @returns The UserSubscription record with cancelled status.
-   */
   cancelSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<UserSubscription>;
-
-  /**
-   * Delete a user subscription.
-   */
   deleteSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<void>;
 }
 
@@ -116,24 +73,14 @@ export function createSalesUsersService(transport: Transport, _config: { appId: 
 
     async register(uniqueId: string, data?: RegisterSalesUserRequest): Promise<SalesUser> {
       const response = await transport.post<unknown>(`/users/${uniqueId}/register`, {
-        user: {
-          email: data?.email,
-          name: data?.name,
-          phone: data?.phone,
-          payload: data?.payload,
-        },
+        user: data ? buildUserBody(data) : {},
       });
       return decodeOne(response, salesUserMapper);
     },
 
     async update(uniqueId: string, data: UpdateSalesUserRequest): Promise<SalesUser> {
       const response = await transport.put<unknown>(`/users/${uniqueId}`, {
-        user: {
-          name: data.name,
-          phone: data.phone,
-          status: data.status,
-          payload: data.payload,
-        },
+        user: buildUserBody(data),
       });
       return decodeOne(response, salesUserMapper);
     },
@@ -174,7 +121,6 @@ export function createSalesUsersService(transport: Transport, _config: { appId: 
           subscription_model_unique_id: data.subscriptionModelUniqueId,
           subscription_number: data.subscriptionNumber,
           notes: data.notes,
-          payload: data.payload,
         },
       });
       return decodeOne(response, userSubscriptionMapper);
@@ -186,7 +132,6 @@ export function createSalesUsersService(transport: Transport, _config: { appId: 
           subscription_model_unique_id: data.subscriptionModelUniqueId,
           subscription_number: data.subscriptionNumber,
           notes: data.notes,
-          payload: data.payload,
         },
       });
       return decodeOne(response, userSubscriptionMapper);
@@ -194,11 +139,7 @@ export function createSalesUsersService(transport: Transport, _config: { appId: 
 
     async addConsumption(uniqueId: string, subscriptionUniqueId: string, data: AddSubscriptionConsumptionRequest): Promise<UserSubscription> {
       const response = await transport.post<unknown>(`/users/${uniqueId}/subscriptions/${subscriptionUniqueId}/consumption`, {
-        consumption: {
-          quantity: data.quantity,
-          description: data.description,
-          payload: data.payload,
-        },
+        consumption: data.consumption,
       });
       return decodeOne(response, userSubscriptionMapper);
     },

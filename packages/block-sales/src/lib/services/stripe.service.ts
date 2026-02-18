@@ -25,70 +25,37 @@ import {
   stripeWebhookMapper,
 } from '../mappers/stripe.mapper.js';
 
+function buildSubscriptionBody(data: CreateStripeSubscriptionRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.customerId) body['customer_id'] = data.customerId;
+  if (data.setupPriceId) body['setup_price_id'] = data.setupPriceId;
+  if (data.subscriptionPriceId) body['subscription_price_id'] = data.subscriptionPriceId;
+  if (data.priceUniqueId) body['price_unique_id'] = data.priceUniqueId;
+  if (data.localPriceId) body['local_price_id'] = data.localPriceId;
+  if (data.cardToken) body['card_token'] = data.cardToken;
+  if (data.trialPeriodDays !== undefined) body['trial_period_days'] = data.trialPeriodDays;
+  if (data.multipleSubscriptions !== undefined) body['multiple_subscriptions'] = data.multipleSubscriptions;
+  if (data.appName) body['app_name'] = data.appName;
+  if (data.parentName) body['parent_name'] = data.parentName;
+  if (data.description) body['description'] = data.description;
+  if (data.subscriptionType) body['subscription_type'] = data.subscriptionType;
+  if (data.entityType) body['entity_type'] = data.entityType;
+  if (data.entityId) body['entity_id'] = data.entityId;
+  if (data.customerCompanyId) body['customer_company_id'] = data.customerCompanyId;
+  return body;
+}
+
 export interface StripeService {
-  /**
-   * Create a Stripe customer.
-   * @returns CreateStripeCustomerResponse with `customerId` and `customer` details.
-   */
   createCustomer(data: CreateStripeCustomerRequest): Promise<CreateStripeCustomerResponse>;
-
-  /**
-   * Create a Stripe checkout session.
-   * @returns StripeCheckoutSession with `id`, `url`, `status`, and `expiresAt`.
-   */
   createCheckoutSession(data: CreateStripeCheckoutSessionRequest): Promise<StripeCheckoutSession>;
-
-  /**
-   * Verify/retrieve a Stripe checkout session by session ID.
-   * @returns StripeCheckoutSession with session details.
-   */
   verifySession(sessionId: string): Promise<StripeCheckoutSession>;
-
-  /**
-   * Create a Stripe payment intent.
-   * @returns StripePaymentIntent with `id`, `clientSecret`, `status`, `amount`, and `currency`.
-   */
   createPaymentIntent(data: CreateStripePaymentIntentRequest): Promise<StripePaymentIntent>;
-
-  /**
-   * Create a Stripe customer portal session for managing billing.
-   * @returns StripeCustomerPortalSession with `id` and `url`.
-   */
   createCustomerPortal(uniqueId: string, data: CreateStripeCustomerPortalRequest): Promise<StripeCustomerPortalSession>;
-
-  /**
-   * List Stripe subscriptions with optional filtering.
-   * @returns Paginated list of StripeSubscription records.
-   */
   listSubscriptions(params?: ListStripeSubscriptionsParams): Promise<PageResult<StripeSubscription>>;
-
-  /**
-   * Create a Stripe subscription.
-   * @returns The newly created StripeSubscription record.
-   */
   createSubscription(data: CreateStripeSubscriptionRequest): Promise<StripeSubscription>;
-
-  /**
-   * Update an existing Stripe subscription.
-   * @returns The updated StripeSubscription record.
-   */
   updateSubscription(stripeSubscriptionId: string, data: UpdateStripeSubscriptionRequest): Promise<StripeSubscription>;
-
-  /**
-   * Cancel a Stripe subscription.
-   */
   cancelSubscription(stripeSubscriptionId: string): Promise<void>;
-
-  /**
-   * List configured Stripe webhooks.
-   * @returns Array of StripeWebhook records.
-   */
   listWebhooks(): Promise<StripeWebhook[]>;
-
-  /**
-   * Create a new Stripe webhook endpoint.
-   * @returns The newly created StripeWebhook record.
-   */
   createWebhook(data: CreateStripeWebhookRequest): Promise<StripeWebhook>;
 }
 
@@ -97,16 +64,15 @@ export function createStripeService(transport: Transport, _config: { appId: stri
     async createCustomer(data: CreateStripeCustomerRequest): Promise<CreateStripeCustomerResponse> {
       const response = await transport.post<unknown>('/stripe/customers', {
         customer: {
-          email: data.email,
           name: data.name,
           phone: data.phone,
+          email: data.email,
           token: data.token,
           user_unique_id: data.userUniqueId,
           identity_type: data.identityType,
           company_unique_id: data.companyUniqueId,
           entity_unique_id: data.entityUniqueId,
           entity_type: data.entityType,
-          metadata: data.metadata,
         },
       });
       return decodeOne(response, stripeCustomerResponseMapper);
@@ -115,35 +81,18 @@ export function createStripeService(transport: Transport, _config: { appId: stri
     async createCheckoutSession(data: CreateStripeCheckoutSessionRequest): Promise<StripeCheckoutSession> {
       const response = await transport.post<unknown>('/stripe/sessions', {
         session: {
-          customer_unique_id: data.customerUniqueId,
-          stripe_customer_id: data.stripeCustomerId,
+          price: data.price,
           success_url: data.successUrl,
           cancel_url: data.cancelUrl,
           mode: data.mode,
-          line_items: data.lineItems?.map(item => ({
-            price_id: item.priceId,
-            quantity: item.quantity,
-            price_data: item.priceData ? {
-              currency: item.priceData.currency,
-              unit_amount: item.priceData.unitAmount,
-              product_data: item.priceData.productData,
-              recurring: item.priceData.recurring,
-            } : undefined,
-          })),
-          subscription_data: data.subscriptionData ? {
-            trial_period_days: data.subscriptionData.trialPeriodDays,
-            metadata: data.subscriptionData.metadata,
-          } : undefined,
-          metadata: data.metadata,
-          subscription_model_code: data.subscriptionModelCode,
-          price_unique_id: data.priceUniqueId,
-          price: data.price,
           customer: data.customer,
           quantity: data.quantity,
           trial_period_days: data.trialPeriodDays,
           subscription_type: data.subscriptionType,
+          price_unique_id: data.priceUniqueId,
           identity_type: data.identityType,
           description: data.description,
+          subscription_model_code: data.subscriptionModelCode,
           allow_promotion_codes: data.allowPromotionCodes,
           coupon_id: data.couponId,
         },
@@ -159,12 +108,11 @@ export function createStripeService(transport: Transport, _config: { appId: stri
     async createPaymentIntent(data: CreateStripePaymentIntentRequest): Promise<StripePaymentIntent> {
       const response = await transport.post<unknown>('/stripe/payments', {
         payment: {
+          customer_id: data.customerId,
           currency: data.currency,
           order_unique_id: data.orderUniqueId,
-          order_id: data.orderId,
           identity_type: data.identityType,
           entity_type: data.entityType,
-          customer_id: data.customerId,
           entity_id: data.entityId,
         },
       });
@@ -174,8 +122,8 @@ export function createStripeService(transport: Transport, _config: { appId: stri
     async createCustomerPortal(uniqueId: string, data: CreateStripeCustomerPortalRequest): Promise<StripeCustomerPortalSession> {
       const response = await transport.post<unknown>(`/stripe/customers/${uniqueId}/portal`, {
         portal: {
-          return_url: data.returnUrl,
           customer_id: data.customerId,
+          return_url: data.returnUrl,
         },
       });
       return decodeOne(response, stripeCustomerPortalMapper);
@@ -194,36 +142,14 @@ export function createStripeService(transport: Transport, _config: { appId: stri
 
     async createSubscription(data: CreateStripeSubscriptionRequest): Promise<StripeSubscription> {
       const response = await transport.post<unknown>('/stripe/subscriptions', {
-        subscription: {
-          customer_unique_id: data.customerUniqueId,
-          stripe_customer_id: data.stripeCustomerId,
-          price_id: data.priceId,
-          price_unique_id: data.priceUniqueId,
-          quantity: data.quantity,
-          trial_period_days: data.trialPeriodDays,
-          customer_id: data.customerId,
-          setup_price_id: data.setupPriceId,
-          subscription_price_id: data.subscriptionPriceId,
-          card_token: data.cardToken,
-          subscription_type: data.subscriptionType,
-          identity_type: data.identityType,
-          company_unique_id: data.companyUniqueId,
-          entity_unique_id: data.entityUniqueId,
-          entity_type: data.entityType,
-          metadata: data.metadata,
-        },
+        subscription: buildSubscriptionBody(data),
       });
       return decodeOne(response, stripeSubscriptionMapper);
     },
 
     async updateSubscription(stripeSubscriptionId: string, data: UpdateStripeSubscriptionRequest): Promise<StripeSubscription> {
       const response = await transport.put<unknown>(`/stripe/subscriptions/${stripeSubscriptionId}`, {
-        subscription: {
-          price_id: data.priceId,
-          quantity: data.quantity,
-          cancel_at_period_end: data.cancelAtPeriodEnd,
-          metadata: data.metadata,
-        },
+        subscription: buildSubscriptionBody(data),
       });
       return decodeOne(response, stripeSubscriptionMapper);
     },

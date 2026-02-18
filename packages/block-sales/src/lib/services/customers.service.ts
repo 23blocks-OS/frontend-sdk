@@ -10,35 +10,33 @@ import type {
 import { salesCustomerMapper } from '../mappers/customer.mapper.js';
 import { customerSubscriptionMapper } from '../mappers/customer-subscription.mapper.js';
 
+function buildCustomerBody(data: RegisterSalesCustomerRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.name) body['name'] = data.name;
+  if (data.email) body['email'] = data.email;
+  if (data.phone) body['phone'] = data.phone;
+  if (data.companyUniqueId) body['company_unique_id'] = data.companyUniqueId;
+  if (data.stripeId) body['stripe_id'] = data.stripeId;
+  if (data.status) body['status'] = data.status;
+  if (data.timeZone) body['time_zone'] = data.timeZone;
+  if (data.preferredLanguage) body['preferred_language'] = data.preferredLanguage;
+  if (data.avatarUrl) body['avatar_url'] = data.avatarUrl;
+  if (data.emailNotifications !== undefined) body['email_notifications'] = data.emailNotifications;
+  if (data.smsNotifications !== undefined) body['sms_notifications'] = data.smsNotifications;
+  if (data.whatsappNotifications !== undefined) body['whatsapp_notifications'] = data.whatsappNotifications;
+  if (data.otherNotifications !== undefined) body['other_notifications'] = data.otherNotifications;
+  if (data.source) body['source'] = data.source;
+  if (data.sourceAlias) body['source_alias'] = data.sourceAlias;
+  if (data.sourceId) body['source_id'] = data.sourceId;
+  if (data.sourceType) body['source_type'] = data.sourceType;
+  return body;
+}
+
 export interface SalesCustomersService {
-  /**
-   * Get a sales customer by unique ID.
-   * @returns The matching SalesCustomer record.
-   */
   get(uniqueId: string): Promise<SalesCustomer>;
-
-  /**
-   * Register a user as a sales customer.
-   * @returns The newly registered SalesCustomer record.
-   */
   register(uniqueId: string, data?: RegisterSalesCustomerRequest): Promise<SalesCustomer>;
-
-  /**
-   * Get a specific subscription for a customer.
-   * @returns The matching CustomerSubscription record.
-   */
   getSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<CustomerSubscription>;
-
-  /**
-   * Create a new subscription for a customer.
-   * @returns The newly created CustomerSubscription record.
-   */
   createSubscription(uniqueId: string, data: CreateCustomerSubscriptionRequest): Promise<CustomerSubscription>;
-
-  /**
-   * Update an existing customer subscription.
-   * @returns The updated CustomerSubscription record.
-   */
   updateSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateCustomerSubscriptionRequest): Promise<CustomerSubscription>;
 }
 
@@ -51,14 +49,7 @@ export function createSalesCustomersService(transport: Transport, _config: { app
 
     async register(uniqueId: string, data?: RegisterSalesCustomerRequest): Promise<SalesCustomer> {
       const response = await transport.post<unknown>(`/customers/${uniqueId}/register`, {
-        customer: {
-          email: data?.email,
-          name: data?.name,
-          phone: data?.phone,
-          stripe_customer_id: data?.stripeCustomerId,
-          mercadopago_customer_id: data?.mercadopagoCustomerId,
-          payload: data?.payload,
-        },
+        customer: data ? buildCustomerBody(data) : {},
       });
       return decodeOne(response, salesCustomerMapper);
     },
@@ -72,9 +63,8 @@ export function createSalesCustomersService(transport: Transport, _config: { app
       const response = await transport.post<unknown>(`/customers/${uniqueId}/subscriptions`, {
         subscription: {
           subscription_model_unique_id: data.subscriptionModelUniqueId,
-          start_date: data.startDate,
-          trial_end_date: data.trialEndDate,
-          payload: data.payload,
+          subscription_number: data.subscriptionNumber,
+          notes: data.notes,
         },
       });
       return decodeOne(response, customerSubscriptionMapper);
@@ -83,9 +73,9 @@ export function createSalesCustomersService(transport: Transport, _config: { app
     async updateSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateCustomerSubscriptionRequest): Promise<CustomerSubscription> {
       const response = await transport.put<unknown>(`/customers/${uniqueId}/subscriptions/${subscriptionUniqueId}`, {
         subscription: {
-          status: data.status,
-          end_date: data.endDate,
-          payload: data.payload,
+          subscription_model_unique_id: data.subscriptionModelUniqueId,
+          subscription_number: data.subscriptionNumber,
+          notes: data.notes,
         },
       });
       return decodeOne(response, customerSubscriptionMapper);

@@ -4,10 +4,10 @@ import type {
   VendorPayment,
   CreateVendorPaymentRequest,
   UpdateVendorPaymentRequest,
+  PayVendorPaymentRequest,
   OrderDetailVendor,
   CreateOrderDetailVendorRequest,
   UpdateOrderDetailVendorRequest,
-  CreateOrderDetailVendorBySourceRequest,
 } from '../types/vendor-payment.js';
 import type {
   VendorPaymentReportSummary,
@@ -20,76 +20,84 @@ import type {
 import { vendorPaymentMapper } from '../mappers/vendor-payment.mapper.js';
 import { orderDetailVendorMapper } from '../mappers/order-detail-vendor.mapper.js';
 
+function buildVendorPaymentBody(data: CreateVendorPaymentRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.vendorUniqueId) body['vendor_unique_id'] = data.vendorUniqueId;
+  if (data.vendorName) body['vendor_name'] = data.vendorName;
+  if (data.vendorEmail) body['vendor_email'] = data.vendorEmail;
+  if (data.vendorPhone) body['vendor_phone'] = data.vendorPhone;
+  if (data.vendorContact) body['vendor_contact'] = data.vendorContact;
+  if (data.paymentType) body['payment_type'] = data.paymentType;
+  if (data.price !== undefined) body['price'] = data.price;
+  if (data.discount !== undefined) body['discount'] = data.discount;
+  if (data.discountValue !== undefined) body['discount_value'] = data.discountValue;
+  if (data.fees !== undefined) body['fees'] = data.fees;
+  if (data.feesValue !== undefined) body['fees_value'] = data.feesValue;
+  if (data.tips !== undefined) body['tips'] = data.tips;
+  if (data.tipsValue !== undefined) body['tips_value'] = data.tipsValue;
+  if (data.subtotal !== undefined) body['subtotal'] = data.subtotal;
+  if (data.delivery !== undefined) body['delivery'] = data.delivery;
+  if (data.tax !== undefined) body['tax'] = data.tax;
+  if (data.taxValue !== undefined) body['tax_value'] = data.taxValue;
+  if (data.payload) body['payload'] = data.payload;
+  return body;
+}
+
+function buildPayBody(data: PayVendorPaymentRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.paymentType) body['payment_type'] = data.paymentType;
+  if (data.gatewayUniqueId) body['gateway_unique_id'] = data.gatewayUniqueId;
+  if (data.gatewayName) body['gateway_name'] = data.gatewayName;
+  if (data.gatewayReference) body['gateway_reference'] = data.gatewayReference;
+  if (data.gatewayOrderId) body['gateway_order_id'] = data.gatewayOrderId;
+  if (data.gatewayFranchise) body['gateway_franchise'] = data.gatewayFranchise;
+  if (data.gatewayPaymentType) body['gateway_payment_type'] = data.gatewayPaymentType;
+  if (data.gatewayTransactionId) body['gateway_transaction_id'] = data.gatewayTransactionId;
+  if (data.gatewayDescription) body['gateway_description'] = data.gatewayDescription;
+  if (data.gatewayFees !== undefined) body['gateway_fees'] = data.gatewayFees;
+  if (data.gatewayFeesValue !== undefined) body['gateway_fees_value'] = data.gatewayFeesValue;
+  if (data.gatewayTips !== undefined) body['gateway_tips'] = data.gatewayTips;
+  if (data.gatewayTipsValue !== undefined) body['gateway_tips_value'] = data.gatewayTipsValue;
+  if (data.gatewaySubtotal !== undefined) body['gateway_subtotal'] = data.gatewaySubtotal;
+  if (data.gatewayDiscount !== undefined) body['gateway_discount'] = data.gatewayDiscount;
+  if (data.gatewayDiscountValue !== undefined) body['gateway_discount_value'] = data.gatewayDiscountValue;
+  if (data.gatewayDelivery !== undefined) body['gateway_delivery'] = data.gatewayDelivery;
+  if (data.gatewayTax !== undefined) body['gateway_tax'] = data.gatewayTax;
+  if (data.gatewayTaxValue !== undefined) body['gateway_tax_value'] = data.gatewayTaxValue;
+  if (data.gatewayTotal !== undefined) body['gateway_total'] = data.gatewayTotal;
+  if (data.gatewayBalance !== undefined) body['gateway_balance'] = data.gatewayBalance;
+  if (data.gatewayPaidAt) body['gateway_paid_at'] = data.gatewayPaidAt;
+  if (data.gatewayStatus) body['gateway_status'] = data.gatewayStatus;
+  if (data.gatewayResponse) body['gateway_response'] = data.gatewayResponse;
+  if (data.gatewayPayload) body['gateway_payload'] = data.gatewayPayload;
+  if (data.paidAt) body['paid_at'] = data.paidAt;
+  return body;
+}
+
+function buildProviderBody(data: CreateOrderDetailVendorRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.vendorUniqueId) body['vendor_unique_id'] = data.vendorUniqueId;
+  if (data.vendorName) body['vendor_name'] = data.vendorName;
+  if (data.vendorEmail) body['vendor_email'] = data.vendorEmail;
+  if (data.vendorPhone) body['vendor_phone'] = data.vendorPhone;
+  if (data.vendorContact) body['vendor_contact'] = data.vendorContact;
+  if (data.status) body['status'] = data.status;
+  if (data.referredBy) body['referred_by'] = data.referredBy;
+  if (data.promoCode) body['promo_code'] = data.promoCode;
+  return body;
+}
+
 export interface VendorPaymentsService {
-  /**
-   * Get a vendor payment by unique ID.
-   * @returns The matching VendorPayment record.
-   */
   get(paymentUniqueId: string): Promise<VendorPayment>;
-
-  /**
-   * Create a vendor payment for an order detail.
-   * @returns The newly created VendorPayment record.
-   */
   create(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, data: CreateVendorPaymentRequest): Promise<VendorPayment>;
-
-  /**
-   * Update an existing vendor payment.
-   * @returns The updated VendorPayment record.
-   */
   update(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string, data: UpdateVendorPaymentRequest): Promise<VendorPayment>;
-
-  /**
-   * Mark a vendor payment as paid.
-   * @returns The VendorPayment record with paid status and paidAt timestamp.
-   */
-  pay(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string): Promise<VendorPayment>;
-
-  /**
-   * Delete a vendor payment.
-   */
+  pay(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string, data?: PayVendorPaymentRequest): Promise<VendorPayment>;
   delete(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string): Promise<void>;
-
-  /**
-   * Create a provider (vendor) assignment for an order detail.
-   * @returns The newly created OrderDetailVendor record.
-   */
   createProvider(orderUniqueId: string, orderDetailUniqueId: string, data: CreateOrderDetailVendorRequest): Promise<OrderDetailVendor>;
-
-  /**
-   * Create a provider assignment by source ID.
-   * @returns The newly created OrderDetailVendor record.
-   */
-  createProviderBySource(sourceId: string, data: CreateOrderDetailVendorBySourceRequest): Promise<OrderDetailVendor>;
-
-  /**
-   * Update a provider assignment for an order detail.
-   * @returns The updated OrderDetailVendor record.
-   */
   updateProvider(orderUniqueId: string, orderDetailUniqueId: string, providerUniqueId: string, data: UpdateOrderDetailVendorRequest): Promise<OrderDetailVendor>;
-
-  /**
-   * Get a detailed vendor payment report list.
-   * @returns VendorPaymentReportList with payments array, summary, and pagination meta.
-   */
   reportList(params: VendorPaymentReportParams): Promise<VendorPaymentReportList>;
-
-  /**
-   * Get a vendor payment report summary.
-   * @returns VendorPaymentReportSummary with totals and breakdown by status.
-   */
   reportSummary(params: VendorPaymentReportParams): Promise<VendorPaymentReportSummary>;
-
-  /**
-   * Get a detailed provider report list.
-   * @returns ProviderReportList with providers array, summary, and pagination meta.
-   */
   providerReportList(params: ProviderReportParams): Promise<ProviderReportList>;
-
-  /**
-   * Get a provider report summary.
-   * @returns ProviderReportSummary with totals, commissions, and breakdown by status.
-   */
   providerReportSummary(params: ProviderReportParams): Promise<ProviderReportSummary>;
 }
 
@@ -102,32 +110,22 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
 
     async create(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, data: CreateVendorPaymentRequest): Promise<VendorPayment> {
       const response = await transport.post<unknown>(`/orders/${orderUniqueId}/details/${detailUniqueId}/vendors/${vendorUniqueId}/payments`, {
-        payment: {
-          amount: data.amount,
-          currency: data.currency,
-          reference: data.reference,
-          notes: data.notes,
-          payload: data.payload,
-        },
+        payment: buildVendorPaymentBody(data),
       });
       return decodeOne(response, vendorPaymentMapper);
     },
 
     async update(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string, data: UpdateVendorPaymentRequest): Promise<VendorPayment> {
       const response = await transport.put<unknown>(`/orders/${orderUniqueId}/details/${detailUniqueId}/vendors/${vendorUniqueId}/payments/${paymentUniqueId}`, {
-        payment: {
-          amount: data.amount,
-          reference: data.reference,
-          notes: data.notes,
-          status: data.status,
-          payload: data.payload,
-        },
+        payment: buildVendorPaymentBody(data),
       });
       return decodeOne(response, vendorPaymentMapper);
     },
 
-    async pay(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string): Promise<VendorPayment> {
-      const response = await transport.put<unknown>(`/orders/${orderUniqueId}/details/${detailUniqueId}/vendors/${vendorUniqueId}/payments/${paymentUniqueId}/pay`, {});
+    async pay(orderUniqueId: string, detailUniqueId: string, vendorUniqueId: string, paymentUniqueId: string, data?: PayVendorPaymentRequest): Promise<VendorPayment> {
+      const response = await transport.put<unknown>(`/orders/${orderUniqueId}/details/${detailUniqueId}/vendors/${vendorUniqueId}/payments/${paymentUniqueId}/pay`, {
+        payment: data ? buildPayBody(data) : {},
+      });
       return decodeOne(response, vendorPaymentMapper);
     },
 
@@ -137,38 +135,14 @@ export function createVendorPaymentsService(transport: Transport, _config: { app
 
     async createProvider(orderUniqueId: string, orderDetailUniqueId: string, data: CreateOrderDetailVendorRequest): Promise<OrderDetailVendor> {
       const response = await transport.post<unknown>(`/orders/${orderUniqueId}/details/${orderDetailUniqueId}/providers`, {
-        provider: {
-          vendor_unique_id: data.vendorUniqueId,
-          amount: data.amount,
-          commission: data.commission,
-          payload: data.payload,
-        },
-      });
-      return decodeOne(response, orderDetailVendorMapper);
-    },
-
-    async createProviderBySource(sourceId: string, data: CreateOrderDetailVendorBySourceRequest): Promise<OrderDetailVendor> {
-      const response = await transport.post<unknown>(`/sources/${sourceId}/providers`, {
-        provider: {
-          vendor_unique_id: data.vendorUniqueId,
-          order_unique_id: data.orderUniqueId,
-          order_detail_unique_id: data.orderDetailUniqueId,
-          amount: data.amount,
-          commission: data.commission,
-          payload: data.payload,
-        },
+        provider: buildProviderBody(data),
       });
       return decodeOne(response, orderDetailVendorMapper);
     },
 
     async updateProvider(orderUniqueId: string, orderDetailUniqueId: string, providerUniqueId: string, data: UpdateOrderDetailVendorRequest): Promise<OrderDetailVendor> {
       const response = await transport.put<unknown>(`/orders/${orderUniqueId}/details/${orderDetailUniqueId}/providers/${providerUniqueId}`, {
-        provider: {
-          amount: data.amount,
-          commission: data.commission,
-          status: data.status,
-          payload: data.payload,
-        },
+        provider: buildProviderBody(data),
       });
       return decodeOne(response, orderDetailVendorMapper);
     },

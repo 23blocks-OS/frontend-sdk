@@ -1,54 +1,57 @@
+/** Matches subscription_model_params in subscription_models_controller.rb */
 export interface SubscriptionModel {
   id: string;
   uniqueId: string;
-  code: string;
-  name: string;
+  code?: string;
   description?: string;
-  price: number;
-  currency: string;
-  interval: string;
-  intervalCount: number;
-  trialDays?: number;
-  features?: string[];
-  limits?: Record<string, number>;
-  enabled: boolean;
-  allowPromotionCodes: boolean;
-  status: string;
-  payload?: Record<string, unknown>;
+  promotional?: boolean;
+  programCode?: string;
+  duration?: number;
+  durationUnit?: string;
+  durationDescription?: string;
+  recurringPaymentFees?: number;
+  recurringPaymentAmount?: number;
+  contentUrl?: string;
+  startAt?: Date;
+  endAt?: Date;
+  initialPayment?: number;
+  subscriptionType?: string;
+  maxItems?: number;
+  stripeProductId?: string;
+  productType?: string;
+  trialPeriodDays?: number;
+  allowPromotionCodes?: boolean;
+  features?: Record<string, unknown>;
+  status?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface CreateSubscriptionModelRequest {
+  uniqueId?: string;
   code: string;
-  name: string;
   description?: string;
-  price: number;
-  currency?: string;
-  interval: string;
-  intervalCount?: number;
-  trialDays?: number;
-  features?: string[];
-  limits?: Record<string, number>;
-  payload?: Record<string, unknown>;
+  promotional?: boolean;
+  programCode?: string;
+  duration?: number;
+  durationUnit?: string;
+  durationDescription?: string;
+  recurringPaymentFees?: number;
+  recurringPaymentAmount?: number;
+  contentUrl?: string;
+  startAt?: string;
+  endAt?: string;
+  initialPayment?: number;
+  subscriptionType?: string;
+  maxItems?: number;
+  stripeProductId?: string;
+  productType?: string;
+  trialPeriodDays?: number;
   allowPromotionCodes?: boolean;
+  features?: Record<string, unknown>;
 }
 
-export interface UpdateSubscriptionModelRequest {
-  name?: string;
-  description?: string;
-  price?: number;
-  currency?: string;
-  interval?: string;
-  intervalCount?: number;
-  trialDays?: number;
-  features?: string[];
-  limits?: Record<string, number>;
-  enabled?: boolean;
-  status?: string;
-  payload?: Record<string, unknown>;
-  allowPromotionCodes?: boolean;
-}
+export type UpdateSubscriptionModelRequest = CreateSubscriptionModelRequest;
 
 export interface ListSubscriptionModelsParams {
   page?: number;

@@ -1,31 +1,33 @@
 export interface SalesEntity {
   id: string;
   uniqueId: string;
-  code?: string;
-  name?: string;
-  email?: string;
-  phone?: string;
-  status: string;
-  payload?: Record<string, unknown>;
+  entityType?: string;
+  entityAlias?: string;
+  entitySource?: string;
+  entityUrl?: string;
+  stripeId?: string;
+  status?: string;
+  timeZone?: string;
+  preferredLanguage?: string;
+  avatarUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
+/** Matches entity_params in entities_controller.rb */
 export interface RegisterSalesEntityRequest {
-  code?: string;
-  name?: string;
-  email?: string;
-  phone?: string;
-  payload?: Record<string, unknown>;
+  entityType?: string;
+  entityAlias?: string;
+  entitySource?: string;
+  entityUrl?: string;
+  stripeId?: string;
+  status?: string;
+  timeZone?: string;
+  preferredLanguage?: string;
+  avatarUrl?: string;
 }
 
-export interface UpdateSalesEntityRequest {
-  name?: string;
-  email?: string;
-  phone?: string;
-  status?: string;
-  payload?: Record<string, unknown>;
-}
+export type UpdateSalesEntityRequest = RegisterSalesEntityRequest;
 
 export interface ListSalesEntitiesParams {
   page?: number;
@@ -41,25 +43,22 @@ export interface EntitySubscription {
   uniqueId: string;
   entityUniqueId: string;
   subscriptionModelUniqueId: string;
+  ownerUniqueId?: string;
+  ownerType?: string;
   status: string;
   startDate?: Date;
   endDate?: Date;
   trialEndDate?: Date;
   cancelledAt?: Date;
-  payload?: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 }
 
+/** Matches subscription_params in entity_subscriptions_controller.rb */
 export interface CreateEntitySubscriptionRequest {
   subscriptionModelUniqueId: string;
-  startDate?: string;
-  trialEndDate?: string;
-  payload?: Record<string, unknown>;
+  ownerUniqueId?: string;
+  ownerType?: string;
 }
 
-export interface UpdateEntitySubscriptionRequest {
-  status?: string;
-  endDate?: string;
-  payload?: Record<string, unknown>;
-}
+export type UpdateEntitySubscriptionRequest = CreateEntitySubscriptionRequest;

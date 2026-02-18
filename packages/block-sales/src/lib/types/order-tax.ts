@@ -2,27 +2,28 @@ export interface OrderTax {
   id: string;
   uniqueId: string;
   orderUniqueId: string;
-  name: string;
-  rate: number;
-  amount: number;
-  type: string;
-  payload?: Record<string, unknown>;
+  taxUniqueId?: string;
+  name?: string;
+  description?: string;
+  level?: string;
+  taxValue?: number;
+  tax?: number;
+  displayOrder?: number;
+  status?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
+/** Matches tax_params in order_taxes_controller.rb */
 export interface CreateOrderTaxRequest {
-  name: string;
-  rate?: number;
-  amount?: number;
-  type: string;
-  payload?: Record<string, unknown>;
+  taxUniqueId?: string;
+  name?: string;
+  description?: string;
+  level?: string;
+  taxValue?: number;
+  tax?: number;
+  displayOrder?: number;
+  status?: string;
 }
 
-export interface UpdateOrderTaxRequest {
-  name?: string;
-  rate?: number;
-  amount?: number;
-  type?: string;
-  payload?: Record<string, unknown>;
-}
+export type UpdateOrderTaxRequest = CreateOrderTaxRequest;

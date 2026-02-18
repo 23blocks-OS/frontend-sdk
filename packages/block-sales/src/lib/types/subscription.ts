@@ -1,53 +1,69 @@
-import type { IdentityCore } from '@23blocks/contracts';
-
-export type SubscriptionInterval = 'monthly' | 'yearly';
-export type SubscriptionStatus = 'active' | 'cancelled' | 'expired' | 'paused';
-
-export interface Subscription extends IdentityCore {
-  userUniqueId: string;
-  planUniqueId: string;
-  planName: string;
-  price: number;
-  currency: string;
-  interval: SubscriptionInterval;
-  status: SubscriptionStatus;
-  startDate: Date;
-  endDate?: Date;
-  nextBillingDate?: Date;
-  cancelledAt?: Date;
-  payload?: Record<string, unknown>;
-}
-
-export interface CreateSubscriptionRequest {
-  userUniqueId: string;
-  planUniqueId: string;
-  planName: string;
-  price: number;
-  currency: string;
-  interval: SubscriptionInterval;
-  startDate?: Date;
-  payload?: Record<string, unknown>;
-}
-
-export interface UpdateSubscriptionRequest {
-  planUniqueId?: string;
-  planName?: string;
-  price?: number;
+export interface Subscription {
+  id: string;
+  uniqueId: string;
+  stripeCustomerId?: string;
+  accountUniqueId?: string;
+  accountCode?: string;
+  accountName?: string;
   currency?: string;
-  interval?: SubscriptionInterval;
-  status?: SubscriptionStatus;
-  endDate?: Date;
-  nextBillingDate?: Date;
-  payload?: Record<string, unknown>;
+  billingInterval?: string;
+  trialPeriodDays?: number;
+  status?: string;
+  metadata?: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface SubscriptionItem {
+  id: string;
+  uniqueId: string;
+  subscriptionUniqueId?: string;
+  stripePriceId?: string;
+  stripeProductId?: string;
+  blockCode?: string;
+  blockName?: string;
+  appUniqueId?: string;
+  appName?: string;
+  appBlockUniqueId?: string;
+  amountCents?: number;
+  quantity?: number;
+  status?: string;
+  metadata?: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+/** Matches subscription_params in subscriptions_controller.rb */
+export interface CreateSubscriptionRequest {
+  stripeCustomerId?: string;
+  accountUniqueId?: string;
+  accountCode?: string;
+  accountName?: string;
+  currency?: string;
+  billingInterval?: string;
+  trialPeriodDays?: number;
+  metadata?: Record<string, unknown>;
+  items?: CreateSubscriptionItemRequest[];
+}
+
+/** Matches item_params / create_item_params in subscriptions/subscription_items controllers */
+export interface CreateSubscriptionItemRequest {
+  stripePriceId?: string;
+  stripeProductId?: string;
+  blockCode?: string;
+  blockName?: string;
+  appUniqueId?: string;
+  appName?: string;
+  appBlockUniqueId?: string;
+  amountCents?: number;
+  quantity?: number;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ListSubscriptionsParams {
   page?: number;
   perPage?: number;
-  status?: SubscriptionStatus;
-  userUniqueId?: string;
-  planUniqueId?: string;
-  interval?: SubscriptionInterval;
+  status?: string;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }

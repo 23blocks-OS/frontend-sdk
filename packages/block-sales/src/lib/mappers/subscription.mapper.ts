@@ -1,26 +1,44 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Subscription } from '../types/subscription.js';
-import { parseString, parseDate, parseNumber, parseSubscriptionStatus, parseSubscriptionInterval } from './utils.js';
+import type { Subscription, SubscriptionItem } from '../types/subscription.js';
+import { parseString, parseDate, parseNumber } from './utils.js';
 
 export const subscriptionMapper: ResourceMapper<Subscription> = {
-  type: 'Subscription',
+  type: 'subscription',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']),
-    createdAt: parseDate(resource.attributes['created_at']) || new Date(),
-    updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
+    uniqueId: parseString(resource.attributes?.['unique_id']) || '',
+    stripeCustomerId: parseString(resource.attributes?.['stripe_customer_id']),
+    accountUniqueId: parseString(resource.attributes?.['account_unique_id']),
+    accountCode: parseString(resource.attributes?.['account_code']),
+    accountName: parseString(resource.attributes?.['account_name']),
+    currency: parseString(resource.attributes?.['currency']),
+    billingInterval: parseString(resource.attributes?.['billing_interval']),
+    trialPeriodDays: parseNumber(resource.attributes?.['trial_period_days']) || undefined,
+    status: parseString(resource.attributes?.['status']),
+    metadata: resource.attributes?.['metadata'] as Record<string, unknown> | undefined,
+    createdAt: parseDate(resource.attributes?.['created_at']) || new Date(),
+    updatedAt: parseDate(resource.attributes?.['updated_at']) || new Date(),
+  }),
+};
 
-    userUniqueId: parseString(resource.attributes['user_unique_id']) || '',
-    planUniqueId: parseString(resource.attributes['plan_unique_id']) || '',
-    planName: parseString(resource.attributes['plan_name']) || '',
-    price: parseNumber(resource.attributes['price']),
-    currency: parseString(resource.attributes['currency']) || 'USD',
-    interval: parseSubscriptionInterval(resource.attributes['interval']),
-    status: parseSubscriptionStatus(resource.attributes['status']),
-    startDate: parseDate(resource.attributes['start_date']) || new Date(),
-    endDate: parseDate(resource.attributes['end_date']),
-    nextBillingDate: parseDate(resource.attributes['next_billing_date']),
-    cancelledAt: parseDate(resource.attributes['cancelled_at']),
-    payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
+export const subscriptionItemMapper: ResourceMapper<SubscriptionItem> = {
+  type: 'subscription_item',
+  map: (resource) => ({
+    id: resource.id,
+    uniqueId: parseString(resource.attributes?.['unique_id']) || '',
+    subscriptionUniqueId: parseString(resource.attributes?.['subscription_unique_id']),
+    stripePriceId: parseString(resource.attributes?.['stripe_price_id']),
+    stripeProductId: parseString(resource.attributes?.['stripe_product_id']),
+    blockCode: parseString(resource.attributes?.['block_code']),
+    blockName: parseString(resource.attributes?.['block_name']),
+    appUniqueId: parseString(resource.attributes?.['app_unique_id']),
+    appName: parseString(resource.attributes?.['app_name']),
+    appBlockUniqueId: parseString(resource.attributes?.['app_block_unique_id']),
+    amountCents: parseNumber(resource.attributes?.['amount_cents']) || undefined,
+    quantity: parseNumber(resource.attributes?.['quantity']) || undefined,
+    status: parseString(resource.attributes?.['status']),
+    metadata: resource.attributes?.['metadata'] as Record<string, unknown> | undefined,
+    createdAt: parseDate(resource.attributes?.['created_at']) || new Date(),
+    updatedAt: parseDate(resource.attributes?.['updated_at']) || new Date(),
   }),
 };

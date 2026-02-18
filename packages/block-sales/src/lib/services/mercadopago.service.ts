@@ -2,30 +2,32 @@ import type { Transport } from '@23blocks/contracts';
 import { decodeOne, decodeMany } from '@23blocks/jsonapi-codec';
 import type {
   MercadoPagoPaymentMethod,
-  MercadoPagoPaymentIntent,
+  MercadoPagoPayment,
   CreateMercadoPagoPaymentRequest,
-  CreateMercadoPagoPSERequest,
 } from '../types/mercadopago.js';
-import { mercadoPagoPaymentMethodMapper, mercadoPagoPaymentIntentMapper } from '../mappers/mercadopago.mapper.js';
+import { mercadoPagoPaymentMethodMapper, mercadoPagoPaymentMapper } from '../mappers/mercadopago.mapper.js';
+
+function buildMercadoPagoBody(data: CreateMercadoPagoPaymentRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.amount !== undefined) body['amount'] = data.amount;
+  if (data.cardToken) body['card_token'] = data.cardToken;
+  if (data.description) body['description'] = data.description;
+  if (data.installments !== undefined) body['installments'] = data.installments;
+  if (data.paymentMethodId) body['paymentMethodId'] = data.paymentMethodId;
+  if (data.email) body['email'] = data.email;
+  if (data.documentType) body['document_type'] = data.documentType;
+  if (data.documentNumber) body['document_number'] = data.documentNumber;
+  if (data.orderUniqueId) body['order_unique_id'] = data.orderUniqueId;
+  if (data.displayUniqueId) body['display_unique_id'] = data.displayUniqueId;
+  if (data.financialInstitution) body['financial_institution'] = data.financialInstitution;
+  if (data.callbackUrl) body['callback_url'] = data.callbackUrl;
+  return body;
+}
 
 export interface MercadoPagoService {
-  /**
-   * List available MercadoPago payment methods.
-   * @returns Array of MercadoPagoPaymentMethod records.
-   */
   listPaymentMethods(): Promise<MercadoPagoPaymentMethod[]>;
-
-  /**
-   * Create a MercadoPago payment intent.
-   * @returns MercadoPagoPaymentIntent with status, amounts, and redirect URLs.
-   */
-  createPaymentIntent(data: CreateMercadoPagoPaymentRequest): Promise<MercadoPagoPaymentIntent>;
-
-  /**
-   * Create a MercadoPago PSE (bank transfer) payment intent.
-   * @returns MercadoPagoPaymentIntent with PSE-specific redirect URLs.
-   */
-  createPSEIntent(data: CreateMercadoPagoPSERequest): Promise<MercadoPagoPaymentIntent>;
+  createPayment(data: CreateMercadoPagoPaymentRequest): Promise<MercadoPagoPayment>;
+  createPSEPayment(data: CreateMercadoPagoPaymentRequest): Promise<MercadoPagoPayment>;
 }
 
 export function createMercadoPagoService(transport: Transport, _config: { appId: string }): MercadoPagoService {
@@ -35,67 +37,18 @@ export function createMercadoPagoService(transport: Transport, _config: { appId:
       return decodeMany(response, mercadoPagoPaymentMethodMapper);
     },
 
-    async createPaymentIntent(data: CreateMercadoPagoPaymentRequest): Promise<MercadoPagoPaymentIntent> {
+    async createPayment(data: CreateMercadoPagoPaymentRequest): Promise<MercadoPagoPayment> {
       const response = await transport.post<unknown>('/mercadopago/payments', {
-        transaction_amount: data.transactionAmount,
-        description: data.description,
-        payment_method_id: data.paymentMethodId,
-        payer: {
-          email: data.payerEmail,
-        },
-        installments: data.installments,
-        token: data.token,
-        issuer_id: data.issuerId,
-        external_reference: data.externalReference,
-        statement_descriptor: data.statementDescriptor,
-        notification_url: data.notificationUrl,
-        additional_info: data.additionalInfo ? {
-          items: data.additionalInfo.items?.map(item => ({
-            id: item.id,
-            title: item.title,
-            description: item.description,
-            picture_url: item.pictureUrl,
-            category_id: item.categoryId,
-            quantity: item.quantity,
-            unit_price: item.unitPrice,
-          })),
-          payer: data.additionalInfo.payer ? {
-            first_name: data.additionalInfo.payer.firstName,
-            last_name: data.additionalInfo.payer.lastName,
-            email: data.additionalInfo.payer.email,
-            phone: data.additionalInfo.payer.phone,
-            identification: data.additionalInfo.payer.identification,
-            address: data.additionalInfo.payer.address ? {
-              zip_code: data.additionalInfo.payer.address.zipCode,
-              street_name: data.additionalInfo.payer.address.streetName,
-              street_number: data.additionalInfo.payer.address.streetNumber,
-            } : undefined,
-          } : undefined,
-        } : undefined,
-        metadata: data.metadata,
+        payment: buildMercadoPagoBody(data),
       });
-      return decodeOne(response, mercadoPagoPaymentIntentMapper);
+      return decodeOne(response, mercadoPagoPaymentMapper);
     },
 
-    async createPSEIntent(data: CreateMercadoPagoPSERequest): Promise<MercadoPagoPaymentIntent> {
+    async createPSEPayment(data: CreateMercadoPagoPaymentRequest): Promise<MercadoPagoPayment> {
       const response = await transport.post<unknown>('/mercadopago/payments/pse', {
-        transaction_amount: data.transactionAmount,
-        description: data.description,
-        payer: {
-          email: data.payerEmail,
-          identification: {
-            type: data.payerDocumentType,
-            number: data.payerDocumentNumber,
-          },
-        },
-        transaction_details: {
-          financial_institution: data.financialInstitution,
-        },
-        callback_url: data.callbackUrl,
-        external_reference: data.externalReference,
-        metadata: data.metadata,
+        payment: buildMercadoPagoBody(data),
       });
-      return decodeOne(response, mercadoPagoPaymentIntentMapper);
+      return decodeOne(response, mercadoPagoPaymentMapper);
     },
   };
 }

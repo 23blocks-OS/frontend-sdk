@@ -1,24 +1,46 @@
 export interface SalesCustomer {
   id: string;
   uniqueId: string;
-  email?: string;
   name?: string;
+  email?: string;
   phone?: string;
-  stripeCustomerId?: string;
-  mercadopagoCustomerId?: string;
-  status: string;
-  payload?: Record<string, unknown>;
+  companyUniqueId?: string;
+  stripeId?: string;
+  status?: string;
+  timeZone?: string;
+  preferredLanguage?: string;
+  avatarUrl?: string;
+  emailNotifications?: boolean;
+  smsNotifications?: boolean;
+  whatsappNotifications?: boolean;
+  otherNotifications?: boolean;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
+/** Matches customer_params in customers_controller.rb */
 export interface RegisterSalesCustomerRequest {
-  email?: string;
   name?: string;
+  email?: string;
   phone?: string;
-  stripeCustomerId?: string;
-  mercadopagoCustomerId?: string;
-  payload?: Record<string, unknown>;
+  companyUniqueId?: string;
+  stripeId?: string;
+  status?: string;
+  timeZone?: string;
+  preferredLanguage?: string;
+  avatarUrl?: string;
+  emailNotifications?: boolean;
+  smsNotifications?: boolean;
+  whatsappNotifications?: boolean;
+  otherNotifications?: boolean;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
 }
 
 export interface CustomerSubscription {
@@ -26,25 +48,22 @@ export interface CustomerSubscription {
   uniqueId: string;
   customerUniqueId: string;
   subscriptionModelUniqueId: string;
+  subscriptionNumber?: string;
+  notes?: string;
   status: string;
   startDate?: Date;
   endDate?: Date;
   trialEndDate?: Date;
   cancelledAt?: Date;
-  payload?: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 }
 
+/** Matches customer_subscription_params in customers_controller.rb */
 export interface CreateCustomerSubscriptionRequest {
   subscriptionModelUniqueId: string;
-  startDate?: string;
-  trialEndDate?: string;
-  payload?: Record<string, unknown>;
+  subscriptionNumber?: string;
+  notes?: string;
 }
 
-export interface UpdateCustomerSubscriptionRequest {
-  status?: string;
-  endDate?: string;
-  payload?: Record<string, unknown>;
-}
+export type UpdateCustomerSubscriptionRequest = CreateCustomerSubscriptionRequest;
