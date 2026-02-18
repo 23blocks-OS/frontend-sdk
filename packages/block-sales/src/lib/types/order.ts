@@ -10,6 +10,7 @@ export interface Order extends IdentityCore {
   subtotal: number;
   tax: number;
   shipping: number;
+  delivery?: number;
   discount: number;
   total: number;
   source?: string;
@@ -55,6 +56,8 @@ export interface CreateOrderRequest {
   discount?: number;
   /** Discount value */
   discountValue?: number;
+  /** Delivery cost */
+  delivery?: number;
   /** Tax percentage or fixed */
   tax?: number;
   /** Tax value */

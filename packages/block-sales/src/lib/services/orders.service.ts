@@ -93,6 +93,7 @@ export function createOrdersService(transport: Transport, _config: { appId: stri
       if (data.code) order['code'] = data.code;
       if (data.discount !== undefined) order['discount'] = data.discount;
       if (data.discountValue !== undefined) order['discount_value'] = data.discountValue;
+      if (data.delivery !== undefined) order['delivery'] = data.delivery;
       if (data.tax !== undefined) order['tax'] = data.tax;
       if (data.taxValue !== undefined) order['tax_value'] = data.taxValue;
       if (data.fees !== undefined) order['fees'] = data.fees;

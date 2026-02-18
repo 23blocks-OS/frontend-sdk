@@ -17,6 +17,7 @@ export const orderMapper: ResourceMapper<Order> = {
     subtotal: parseNumber(resource.attributes['subtotal']),
     tax: parseNumber(resource.attributes['tax']),
     shipping: parseNumber(resource.attributes['shipping']),
+    delivery: parseNumber(resource.attributes['delivery']) || undefined,
     discount: parseNumber(resource.attributes['discount']),
     total: parseNumber(resource.attributes['total']),
     source: parseString(resource.attributes['source']),
