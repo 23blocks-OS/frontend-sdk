@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — blocks expose health() for connectivity checks, strict mapper types
+// Main API (Recommended) — blocks expose health(), CreateOrderRequest supports flat + items[]
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
