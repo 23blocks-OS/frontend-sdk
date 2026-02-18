@@ -1,3 +1,18 @@
+## 6.7.4 (2026-02-18)
+
+### 🩹 Fixes
+
+- **@23blocks/block-sales:** remove items[] from CreateOrderRequest ([db4743a](https://github.com/23blocks-OS/frontend-sdk/commit/db4743a))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.2.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 6.7.3 (2026-02-18)
 
 ### 🩹 Fixes

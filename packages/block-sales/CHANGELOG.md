@@ -1,3 +1,15 @@
+## 5.2.1 (2026-02-18)
+
+### 🩹 Fixes
+
+- **@23blocks/block-sales:** add delivery field to Order type and CreateOrderRequest ([28fffbe](https://github.com/23blocks-OS/frontend-sdk/commit/28fffbe))
+- **@23blocks/block-sales:** remove items[] from CreateOrderRequest ([db4743a](https://github.com/23blocks-OS/frontend-sdk/commit/db4743a))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 5.2.0 (2026-02-18)
 
 ### 🚀 Features
