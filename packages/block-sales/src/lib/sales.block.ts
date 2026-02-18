@@ -1,3 +1,4 @@
+// v2 — all types, services, and mappers match API strong params 1:1
 import type { Transport, BlockConfig, BlockMetadata, HealthCheckResponse } from '@23blocks/contracts';
 import {
   createOrdersService,
