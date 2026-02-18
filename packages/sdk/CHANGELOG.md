@@ -1,3 +1,18 @@
+## 6.7.3 (2026-02-18)
+
+### 🩹 Fixes
+
+- **@23blocks/sdk:** rebuild with flat CreateOrderRequest support ([12e1cf6](https://github.com/23blocks-OS/frontend-sdk/commit/12e1cf6))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.2.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 6.7.2 (2026-02-17)
 
 ### 🩹 Fixes

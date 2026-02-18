@@ -1,3 +1,14 @@
+## 5.2.0 (2026-02-18)
+
+### 🚀 Features
+
+- **@23blocks/block-sales:** support flat order format in CreateOrderRequest ([f64dbd0](https://github.com/23blocks-OS/frontend-sdk/commit/f64dbd0))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 5.1.0 (2026-02-17)
 
 ### 🚀 Features
