@@ -4,44 +4,58 @@ export interface WorkflowStep {
   workflowUniqueId: string;
   name: string;
   description?: string;
-  stepType: string;
-  order: number;
-  config?: Record<string, unknown>;
-  promptUniqueId?: string;
+  source?: string;
+  sourceId?: string;
+  sourceType?: string;
+  sourceAlias?: string;
+  order?: number;
+  stepUrl?: string;
+  stepParams?: string;
   agentUniqueId?: string;
-  enabled: boolean;
+  agentName?: string;
+  promptUniqueId?: string;
+  promptName?: string;
+  customPrompt?: string;
+  contentUrl?: string;
+  imageUrl?: string;
+  videoUrl?: string;
   status: string;
-  payload?: Record<string, unknown>;
+  enabled?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
+/** Matches step_params in workflows_controller.rb (add_step, update_step) */
 export interface AddWorkflowStepRequest {
   name: string;
   description?: string;
-  stepType: string;
+  source?: string;
+  sourceId?: string;
+  sourceType?: string;
+  sourceAlias?: string;
   order?: number;
-  config?: Record<string, unknown>;
-  payload?: Record<string, unknown>;
-}
-
-export interface UpdateWorkflowStepRequest {
-  name?: string;
-  description?: string;
-  stepType?: string;
-  order?: number;
-  config?: Record<string, unknown>;
-  enabled?: boolean;
+  stepUrl?: string;
+  stepParams?: string;
+  agentUniqueId?: string;
+  agentName?: string;
+  promptUniqueId?: string;
+  promptName?: string;
+  customPrompt?: string;
+  contentUrl?: string;
+  imageUrl?: string;
+  videoUrl?: string;
   status?: string;
-  payload?: Record<string, unknown>;
+  enabled?: boolean;
 }
 
+export type UpdateWorkflowStepRequest = AddWorkflowStepRequest;
+
+/** Matches prompt_params in steps_controller.rb (add_prompt) */
 export interface AddStepPromptRequest {
-  promptUniqueId: string;
-  payload?: Record<string, unknown>;
+  uniqueId: string;
 }
 
+/** Matches agent_params in steps_controller.rb (add_agent) */
 export interface AddStepAgentRequest {
-  agentUniqueId: string;
-  payload?: Record<string, unknown>;
+  uniqueId: string;
 }

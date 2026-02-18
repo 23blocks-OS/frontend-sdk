@@ -1,65 +1,35 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Prompt, TemplateInfo } from '../types/prompt.js';
-import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils.js';
-
-function parseTemplateInfo(value: unknown): TemplateInfo | undefined {
-  if (value && typeof value === 'object') {
-    const obj = value as Record<string, unknown>;
-    return {
-      name: parseString(obj['name']),
-      type: parseString(obj['type']),
-      description: parseString(obj['description']),
-    };
-  }
-  return undefined;
-}
+import type { Prompt } from '../types/prompt.js';
+import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const promptMapper: ResourceMapper<Prompt> = {
   type: 'Prompt',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']),
+    uniqueId: parseString(resource.attributes['unique_id']) || '',
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
     updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
 
-    // Core identifiers
     promptVersionUniqueId: parseString(resource.attributes['prompt_version_unique_id']),
     agentUniqueId: parseString(resource.attributes['agent_unique_id']),
 
-    // Basic info
     name: parseString(resource.attributes['name']) || '',
-    code: parseString(resource.attributes['code']),
     promptType: parseString(resource.attributes['prompt_type']),
     abstract: parseString(resource.attributes['abstract']),
     keywords: parseString(resource.attributes['keywords']),
-    description: parseString(resource.attributes['description']),
-
-    // Content
     content: parseString(resource.attributes['content']),
-    template: parseString(resource.attributes['template']),
-    variables: parseStringArray(resource.attributes['variables']),
 
-    // Template system
-    templateData: resource.attributes['template_data'] as Record<string, unknown> | undefined,
-    templateSchema: resource.attributes['template_schema'] as Record<string, unknown> | undefined,
-    templateInfo: parseTemplateInfo(resource.attributes['template_info']),
-    placeholders: parseStringArray(resource.attributes['placeholders']),
-    provider: parseString(resource.attributes['provider']),
-
-    // Media
     thumbnailUrl: parseString(resource.attributes['thumbnail_url']),
     imageUrl: parseString(resource.attributes['image_url']),
     mediaUrl: parseString(resource.attributes['media_url']),
     contentUrl: parseString(resource.attributes['content_url']),
     repoUrl: parseString(resource.attributes['repo_url']),
 
-    // Publishing
     publishAt: parseDate(resource.attributes['publish_at']),
     publishUntil: parseDate(resource.attributes['publish_until']),
     isPublic: parseBoolean(resource.attributes['is_public']),
     source: parseString(resource.attributes['source']),
 
-    // AI Model Settings
     model: parseString(resource.attributes['model']),
     frequencyPenalty: parseOptionalNumber(resource.attributes['frequency_penalty']),
     maxTokens: parseOptionalNumber(resource.attributes['max_tokens']),
@@ -69,7 +39,6 @@ export const promptMapper: ResourceMapper<Prompt> = {
     temperature: parseOptionalNumber(resource.attributes['temperature']),
     topP: parseOptionalNumber(resource.attributes['top_p']),
 
-    // Prompt Components
     user: parseString(resource.attributes['user']),
     persona: parseString(resource.attributes['persona']),
     guidelines: parseString(resource.attributes['guidelines']),
@@ -79,23 +48,20 @@ export const promptMapper: ResourceMapper<Prompt> = {
     outputTemplate: parseString(resource.attributes['output_template']),
     safeguard: parseString(resource.attributes['safeguard']),
 
-    // Versioning & Status
+    promptTemplateId: parseString(resource.attributes['prompt_template_id']),
+    templateData: resource.attributes['template_data'] as Record<string, unknown> | undefined,
+
     version: parseOptionalNumber(resource.attributes['version']),
     status: parseStatus(resource.attributes['status']),
     enabled: parseBoolean(resource.attributes['enabled']),
 
-    // Engagement
     likes: parseOptionalNumber(resource.attributes['likes']),
     dislikes: parseOptionalNumber(resource.attributes['dislikes']),
     comments: parseOptionalNumber(resource.attributes['comments']),
 
-    // Author info
     userUniqueId: parseString(resource.attributes['user_unique_id']),
     userName: parseString(resource.attributes['user_name']),
     userAlias: parseString(resource.attributes['user_alias']),
     userAvatarUrl: parseString(resource.attributes['user_avatar_url']),
-
-    // Custom data
-    payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
   }),
 };

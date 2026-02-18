@@ -1,90 +1,87 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import type {
   AgentThread,
-  AgentRun,
   AgentMessage,
   AgentContext,
   CreateAgentThreadRequest,
   CreateAgentContextRequest,
-  SendAgentThreadMessageRequest,
-  SendAgentThreadMessageResponse,
-  RunAgentThreadRequest,
-  RunAgentThreadResponse,
+  SendAgentMessageRequest,
   AgentRunExecution,
   ListAgentRunExecutionsParams,
 } from '../types/agent-runtime.js';
+import { buildContextBody } from './entities.service.js';
+
+function buildRuntimeMessageBody(data: SendAgentMessageRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.role) body['role'] = data.role;
+  if (data.content) body['content'] = data.content;
+  if (data.fileIds) body['file_ids'] = data.fileIds;
+  if (data.metadata) body['metadata'] = data.metadata;
+  if (data.source) body['source'] = data.source;
+  if (data.sourceAlias) body['source_alias'] = data.sourceAlias;
+  if (data.sourceId) body['source_id'] = data.sourceId;
+  if (data.sourceType) body['source_type'] = data.sourceType;
+  if (data.sourceEmail) body['source_email'] = data.sourceEmail;
+  if (data.sourcePhone) body['source_phone'] = data.sourcePhone;
+  if (data.target) body['target'] = data.target;
+  if (data.targetAlias) body['target_alias'] = data.targetAlias;
+  if (data.targetId) body['target_id'] = data.targetId;
+  if (data.targetType) body['target_type'] = data.targetType;
+  if (data.targetEmail) body['target_email'] = data.targetEmail;
+  if (data.targetPhone) body['target_phone'] = data.targetPhone;
+  if (data.targetDeviceId) body['target_device_id'] = data.targetDeviceId;
+  if (data.parentId) body['parent_id'] = data.parentId;
+  if (data.value) body['value'] = data.value;
+  if (data.dataSource) body['data_source'] = data.dataSource;
+  if (data.dataSourceAlias) body['data_source_alias'] = data.dataSourceAlias;
+  if (data.dataSourceId) body['data_source_id'] = data.dataSourceId;
+  if (data.dataSourceType) body['data_source_type'] = data.dataSourceType;
+  if (data.contextId) body['context_id'] = data.contextId;
+  if (data.notificationContent) body['notification_content'] = data.notificationContent;
+  if (data.notificationUrl) body['notification_url'] = data.notificationUrl;
+  if (data.additionalData) body['additional_data'] = data.additionalData;
+  return body;
+}
+
+function parseAgentThread(response: any): AgentThread {
+  return {
+    id: response.id,
+    threadId: response.thread_id,
+    agentUniqueId: response.agent_unique_id,
+    contextUniqueId: response.context_unique_id,
+    status: response.status,
+    metadata: response.metadata,
+    createdAt: new Date(response.created_at),
+    updatedAt: new Date(response.updated_at),
+  };
+}
+
+function parseAgentMessage(m: any): AgentMessage {
+  return {
+    id: m.id,
+    threadId: m.thread_id,
+    role: m.role,
+    content: (m.content || []).map((c: any) => ({
+      type: c.type,
+      text: c.text,
+      imageFile: c.image_file,
+      imageUrl: c.image_url,
+    })),
+    metadata: m.metadata,
+    createdAt: new Date(m.created_at),
+  };
+}
 
 export interface AgentRuntimeService {
-  /**
-   * Get an existing agent context by unique ID.
-   * @returns The AgentContext with thread and optional conversation data.
-   */
   getContext(agentUniqueId: string, contextUniqueId: string): Promise<AgentContext>;
-
-  /**
-   * Create a new agent context for conversations.
-   * @returns The newly created AgentContext with thread info.
-   */
   createContext(agentUniqueId: string, data?: CreateAgentContextRequest): Promise<AgentContext>;
-
-  /**
-   * Get the conversation history for an agent context.
-   * @returns Object containing an array of AgentMessage records.
-   */
   getConversation(agentUniqueId: string, contextUniqueId: string): Promise<{ messages: AgentMessage[] }>;
-
-  /**
-   * Get an existing agent thread by ID.
-   * @returns The AgentThread record.
-   */
   getThread(agentUniqueId: string, threadId: string): Promise<AgentThread>;
-
-  /**
-   * Create a new agent thread.
-   * @returns The newly created AgentThread record.
-   */
   createThread(agentUniqueId: string, data?: CreateAgentThreadRequest): Promise<AgentThread>;
-
-  /**
-   * Send a message to an agent thread.
-   * @returns SendAgentThreadMessageResponse with the sent message.
-   */
-  sendMessage(agentUniqueId: string, threadId: string, data: SendAgentThreadMessageRequest): Promise<SendAgentThreadMessageResponse>;
-
-  /**
-   * Send a message to an agent thread and receive a streaming response.
-   * @returns ReadableStream of string chunks for real-time output.
-   */
-  sendMessageStream(agentUniqueId: string, threadId: string, data: SendAgentThreadMessageRequest): Promise<ReadableStream<string>>;
-
-  /**
-   * Run an agent thread to generate a response.
-   * @returns RunAgentThreadResponse with run details and status.
-   */
-  runThread(agentUniqueId: string, threadId: string, data?: RunAgentThreadRequest): Promise<RunAgentThreadResponse>;
-
-  /**
-   * Get the status and details of an agent run.
-   * @returns The AgentRun record with status and usage info.
-   */
-  getRun(agentUniqueId: string, threadId: string, runId: string): Promise<AgentRun>;
-
-  /**
-   * Get all messages in an agent thread.
-   * @returns Array of AgentMessage records.
-   */
+  sendMessage(agentUniqueId: string, threadId: string, data: SendAgentMessageRequest): Promise<unknown>;
+  sendMessageStream(agentUniqueId: string, threadId: string, data: SendAgentMessageRequest): Promise<ReadableStream<string>>;
   getMessages(agentUniqueId: string, threadId: string): Promise<AgentMessage[]>;
-
-  /**
-   * List agent run executions with optional filtering and sorting.
-   * @returns Paginated list of AgentRunExecution records with metadata.
-   */
   listExecutions(agentUniqueId: string, params?: ListAgentRunExecutionsParams): Promise<PageResult<AgentRunExecution>>;
-
-  /**
-   * Get a single agent run execution by unique ID.
-   * @returns The AgentRunExecution record with input, output, and cost details.
-   */
   getExecution(agentUniqueId: string, executionUniqueId: string): Promise<AgentRunExecution>;
 }
 
@@ -93,129 +90,65 @@ export function createAgentRuntimeService(transport: Transport, _config: { appId
     async getContext(agentUniqueId: string, contextUniqueId: string): Promise<AgentContext> {
       const response = await transport.get<any>(`/agents/${agentUniqueId}/context/${contextUniqueId}`);
       return {
-        thread: {
-          id: response.thread?.id,
-          threadId: response.thread?.thread_id,
-          agentUniqueId: response.thread?.agent_unique_id,
-          contextUniqueId: response.thread?.context_unique_id,
-          status: response.thread?.status,
-          metadata: response.thread?.metadata,
-          createdAt: new Date(response.thread?.created_at),
-          updatedAt: new Date(response.thread?.updated_at),
-        },
+        thread: parseAgentThread(response.thread || response),
         conversation: response.conversation ? {
           uniqueId: response.conversation.unique_id,
-          messages: (response.conversation.messages || []).map((m: any) => ({
-            id: m.id,
-            threadId: m.thread_id,
-            role: m.role,
-            content: (m.content || []).map((c: any) => ({
-              type: c.type,
-              text: c.text,
-              imageFile: c.image_file,
-              imageUrl: c.image_url,
-            })),
-            metadata: m.metadata,
-            createdAt: new Date(m.created_at),
-          })),
+          messages: (response.conversation.messages || []).map(parseAgentMessage),
         } : undefined,
       };
     },
 
     async createContext(agentUniqueId: string, data?: CreateAgentContextRequest): Promise<AgentContext> {
-      const response = await transport.post<any>(`/agents/${agentUniqueId}/context`, {
-        metadata: data?.metadata,
-      });
+      const response = await transport.post<any>(`/agents/${agentUniqueId}/context`, data ? {
+        context: buildContextBody(data),
+      } : {});
       return {
-        thread: {
-          id: response.thread?.id,
-          threadId: response.thread?.thread_id,
-          agentUniqueId: response.thread?.agent_unique_id,
-          contextUniqueId: response.thread?.context_unique_id,
-          status: response.thread?.status,
-          metadata: response.thread?.metadata,
-          createdAt: new Date(response.thread?.created_at),
-          updatedAt: new Date(response.thread?.updated_at),
-        },
+        thread: parseAgentThread(response.thread || response),
       };
     },
 
     async getConversation(agentUniqueId: string, contextUniqueId: string): Promise<{ messages: AgentMessage[] }> {
       const response = await transport.get<any>(`/agents/${agentUniqueId}/conversations/${contextUniqueId}`);
       return {
-        messages: (response.messages || []).map((m: any) => ({
-          id: m.id,
-          threadId: m.thread_id,
-          role: m.role,
-          content: (m.content || []).map((c: any) => ({
-            type: c.type,
-            text: c.text,
-            imageFile: c.image_file,
-            imageUrl: c.image_url,
-          })),
-          metadata: m.metadata,
-          createdAt: new Date(m.created_at),
-        })),
+        messages: (response.messages || []).map(parseAgentMessage),
       };
     },
 
     async getThread(agentUniqueId: string, threadId: string): Promise<AgentThread> {
       const response = await transport.get<any>(`/agents/${agentUniqueId}/threads/${threadId}`);
-      return {
-        id: response.id,
-        threadId: response.thread_id,
-        agentUniqueId: response.agent_unique_id,
-        contextUniqueId: response.context_unique_id,
-        status: response.status,
-        metadata: response.metadata,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      return parseAgentThread(response);
     },
 
     async createThread(agentUniqueId: string, data?: CreateAgentThreadRequest): Promise<AgentThread> {
-      const response = await transport.post<any>(`/agents/${agentUniqueId}/thread`, {
-        metadata: data?.metadata,
-      });
-      return {
-        id: response.id,
-        threadId: response.thread_id,
-        agentUniqueId: response.agent_unique_id,
-        contextUniqueId: response.context_unique_id,
-        status: response.status,
-        metadata: response.metadata,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      const body: Record<string, unknown> = {};
+      if (data?.metadata) body['metadata'] = data.metadata;
+      if (data?.fileIds) body['file_ids'] = data.fileIds;
+      const response = await transport.post<any>(`/agents/${agentUniqueId}/thread`, body);
+      return parseAgentThread(response);
     },
 
-    async sendMessage(agentUniqueId: string, threadId: string, data: SendAgentThreadMessageRequest): Promise<SendAgentThreadMessageResponse> {
-      const response = await transport.post<any>(`/agents/${agentUniqueId}/threads/${threadId}/messages`, {
-        message: data.message,
-        metadata: data.metadata,
-      });
-      return {
-        message: {
-          id: response.id,
-          threadId: response.thread_id,
-          role: response.role,
-          content: (response.content || []).map((c: any) => ({
-            type: c.type,
-            text: c.text,
-            imageFile: c.image_file,
-            imageUrl: c.image_url,
-          })),
-          metadata: response.metadata,
-          createdAt: new Date(response.created_at),
-        },
+    async sendMessage(agentUniqueId: string, threadId: string, data: SendAgentMessageRequest): Promise<unknown> {
+      const requestBody: Record<string, unknown> = {
+        message: buildRuntimeMessageBody(data),
       };
+      if (data.promptUniqueId) {
+        requestBody['prompt'] = { unique_id: data.promptUniqueId };
+      }
+      return transport.post<unknown>(`/agents/${agentUniqueId}/threads/${threadId}/messages`, requestBody);
     },
 
-    async sendMessageStream(agentUniqueId: string, threadId: string, data: SendAgentThreadMessageRequest): Promise<ReadableStream<string>> {
-      const response = await transport.post<Response>(`/agents/${agentUniqueId}/threads/${threadId}/messages/stream`, {
-        message: data.message,
-        metadata: data.metadata,
-      }, { responseType: 'stream' } as any);
+    async sendMessageStream(agentUniqueId: string, threadId: string, data: SendAgentMessageRequest): Promise<ReadableStream<string>> {
+      const requestBody: Record<string, unknown> = {
+        message: buildRuntimeMessageBody(data),
+      };
+      if (data.promptUniqueId) {
+        requestBody['prompt'] = { unique_id: data.promptUniqueId };
+      }
+      const response = await transport.post<Response>(
+        `/agents/${agentUniqueId}/threads/${threadId}/messages/stream`,
+        requestBody,
+        { responseType: 'stream' } as any,
+      );
 
       if (response.body) {
         return response.body.pipeThrough(new TextDecoderStream());
@@ -223,82 +156,9 @@ export function createAgentRuntimeService(transport: Transport, _config: { appId
       throw new Error('Streaming not supported');
     },
 
-    async runThread(agentUniqueId: string, threadId: string, data?: RunAgentThreadRequest): Promise<RunAgentThreadResponse> {
-      const response = await transport.post<any>(`/agents/${agentUniqueId}/threads/${threadId}/runs`, {
-        instructions: data?.instructions,
-        additional_instructions: data?.additionalInstructions,
-        tools: data?.tools,
-        metadata: data?.metadata,
-      });
-      return {
-        run: {
-          id: response.id,
-          runId: response.run_id,
-          threadId: response.thread_id,
-          agentUniqueId: response.agent_unique_id,
-          status: response.status,
-          model: response.model,
-          instructions: response.instructions,
-          tools: response.tools,
-          startedAt: response.started_at ? new Date(response.started_at) : undefined,
-          completedAt: response.completed_at ? new Date(response.completed_at) : undefined,
-          failedAt: response.failed_at ? new Date(response.failed_at) : undefined,
-          cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-          expiresAt: response.expires_at ? new Date(response.expires_at) : undefined,
-          lastError: response.last_error,
-          usage: response.usage ? {
-            promptTokens: response.usage.prompt_tokens,
-            completionTokens: response.usage.completion_tokens,
-            totalTokens: response.usage.total_tokens,
-          } : undefined,
-          metadata: response.metadata,
-          createdAt: new Date(response.created_at),
-        },
-      };
-    },
-
-    async getRun(agentUniqueId: string, threadId: string, runId: string): Promise<AgentRun> {
-      const response = await transport.get<any>(`/agents/${agentUniqueId}/threads/${threadId}/runs/${runId}`);
-      return {
-        id: response.id,
-        runId: response.run_id,
-        threadId: response.thread_id,
-        agentUniqueId: response.agent_unique_id,
-        status: response.status,
-        model: response.model,
-        instructions: response.instructions,
-        tools: response.tools,
-        startedAt: response.started_at ? new Date(response.started_at) : undefined,
-        completedAt: response.completed_at ? new Date(response.completed_at) : undefined,
-        failedAt: response.failed_at ? new Date(response.failed_at) : undefined,
-        cancelledAt: response.cancelled_at ? new Date(response.cancelled_at) : undefined,
-        expiresAt: response.expires_at ? new Date(response.expires_at) : undefined,
-        lastError: response.last_error,
-        usage: response.usage ? {
-          promptTokens: response.usage.prompt_tokens,
-          completionTokens: response.usage.completion_tokens,
-          totalTokens: response.usage.total_tokens,
-        } : undefined,
-        metadata: response.metadata,
-        createdAt: new Date(response.created_at),
-      };
-    },
-
     async getMessages(agentUniqueId: string, threadId: string): Promise<AgentMessage[]> {
       const response = await transport.get<any>(`/agents/${agentUniqueId}/threads/${threadId}/messages`);
-      return (response.messages || response || []).map((m: any) => ({
-        id: m.id,
-        threadId: m.thread_id,
-        role: m.role,
-        content: (m.content || []).map((c: any) => ({
-          type: c.type,
-          text: c.text,
-          imageFile: c.image_file,
-          imageUrl: c.image_url,
-        })),
-        metadata: m.metadata,
-        createdAt: new Date(m.created_at),
-      }));
+      return (response.messages || response || []).map(parseAgentMessage);
     },
 
     async listExecutions(agentUniqueId: string, params?: ListAgentRunExecutionsParams): Promise<PageResult<AgentRunExecution>> {

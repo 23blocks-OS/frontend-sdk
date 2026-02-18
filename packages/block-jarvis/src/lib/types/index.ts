@@ -14,3 +14,8 @@ export * from './agent-runtime.js';
 export * from './mail-template.js';
 export * from './marvin-chat.js';
 export * from './comment.js';
+export * from './tool.js';
+export * from './agent-tool.js';
+export * from './agent-tool-assignment.js';
+export * from './condition.js';
+export * from './step-transition.js';

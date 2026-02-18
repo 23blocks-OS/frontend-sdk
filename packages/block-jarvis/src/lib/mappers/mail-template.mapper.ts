@@ -1,24 +1,30 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
 import type { MailTemplate } from '../types/mail-template.js';
-import { parseDate } from './utils.js';
+import { parseString, parseDate, parseBoolean } from './utils.js';
 
 export const mailTemplateMapper: ResourceMapper<MailTemplate> = {
   type: 'mail_template',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: resource.attributes?.['unique_id'] as string,
-    code: resource.attributes?.['code'] as string,
-    name: resource.attributes?.['name'] as string,
-    subject: resource.attributes?.['subject'] as string,
-    fromEmail: resource.attributes?.['from_email'] as string | undefined,
-    fromName: resource.attributes?.['from_name'] as string | undefined,
-    htmlContent: resource.attributes?.['html_content'] as string | undefined,
-    textContent: resource.attributes?.['text_content'] as string | undefined,
-    mandrillSlug: resource.attributes?.['mandrill_slug'] as string | undefined,
-    enabled: resource.attributes?.['enabled'] as boolean,
-    status: resource.attributes?.['status'] as string,
-    payload: resource.attributes?.['payload'] as Record<string, unknown> | undefined,
-    createdAt: parseDate(resource.attributes?.['created_at']),
-    updatedAt: parseDate(resource.attributes?.['updated_at']),
+    uniqueId: parseString(resource.attributes['unique_id']) || '',
+    eventName: parseString(resource.attributes['event_name']),
+    name: parseString(resource.attributes['name']) || '',
+    source: parseString(resource.attributes['source']),
+    sourceAlias: parseString(resource.attributes['source_alias']),
+    sourceId: parseString(resource.attributes['source_id']),
+    sourceType: parseString(resource.attributes['source_type']),
+    templateName: parseString(resource.attributes['template_name']),
+    templateHtml: parseString(resource.attributes['template_html']),
+    templateText: parseString(resource.attributes['template_text']),
+    fromDomain: parseString(resource.attributes['from_domain']),
+    fromAddress: parseString(resource.attributes['from_address']),
+    fromName: parseString(resource.attributes['from_name']),
+    fromSubject: parseString(resource.attributes['from_subject']),
+    preferredLanguage: parseString(resource.attributes['preferred_language']),
+    provider: parseString(resource.attributes['provider']),
+    status: parseString(resource.attributes['status']) || 'active',
+    enabled: resource.attributes['enabled'] != null ? parseBoolean(resource.attributes['enabled']) : undefined,
+    createdAt: parseDate(resource.attributes['created_at']) || new Date(),
+    updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
   }),
 };

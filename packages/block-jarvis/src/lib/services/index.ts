@@ -15,3 +15,8 @@ export * from './mail-templates.service.js';
 export * from './marvin-chat.service.js';
 export * from './prompt-comments.service.js';
 export * from './execution-comments.service.js';
+export * from './tools.service.js';
+export * from './agent-tools.service.js';
+export * from './agent-tool-assignments.service.js';
+export * from './conditions.service.js';
+export * from './step-transitions.service.js';

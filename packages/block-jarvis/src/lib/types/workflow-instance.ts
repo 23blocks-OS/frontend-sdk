@@ -10,7 +10,6 @@ export interface WorkflowInstance {
   status: string;
   startedAt?: Date;
   completedAt?: Date;
-  payload?: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -44,24 +43,36 @@ export interface WorkflowStepStatus {
   completedAt?: Date;
 }
 
+/** Matches user_params + data_params in workflow_instances_controller.rb (create) */
 export interface StartWorkflowRequest {
-  input?: Record<string, unknown>;
-  payload?: Record<string, unknown>;
+  userUniqueId?: string;
+  source?: string;
+  sourceId?: string;
+  sourceType?: string;
+  sourceAlias?: string;
 }
 
-export interface StartWorkflowResponse {
-  instance: WorkflowInstance;
-}
-
+/** Matches steps_params in workflow_instances_controller.rb (step, log_step) */
 export interface StepWorkflowRequest {
-  input?: Record<string, unknown>;
-  payload?: Record<string, unknown>;
+  stepUniqueId?: string;
+  stepParams?: Record<string, unknown>;
+  stepStatus?: string;
+  source?: string;
+  sourceId?: string;
+  sourceType?: string;
+  sourceAlias?: string;
+  redirectUrl?: string;
 }
 
-export interface LogWorkflowStepRequest {
-  stepUniqueId: string;
-  status: string;
-  output?: Record<string, unknown>;
-  error?: string;
-  payload?: Record<string, unknown>;
+export type LogWorkflowStepRequest = StepWorkflowRequest;
+
+/** Matches execute_params in workflow_instances_controller.rb (execute_step) */
+export interface ExecuteStepRequest {
+  placeholders?: Record<string, unknown>;
+}
+
+/** Matches execute_next_params in workflow_instances_controller.rb (execute_next_step) */
+export interface ExecuteNextStepRequest {
+  transitionUniqueId?: string;
+  placeholders?: Record<string, unknown>;
 }

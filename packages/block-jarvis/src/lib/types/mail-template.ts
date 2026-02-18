@@ -1,43 +1,47 @@
 export interface MailTemplate {
   id: string;
   uniqueId: string;
-  code: string;
+  eventName?: string;
   name: string;
-  subject: string;
-  fromEmail?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  templateName?: string;
+  templateHtml?: string;
+  templateText?: string;
+  fromDomain?: string;
+  fromAddress?: string;
   fromName?: string;
-  htmlContent?: string;
-  textContent?: string;
-  mandrillSlug?: string;
-  enabled: boolean;
+  fromSubject?: string;
+  preferredLanguage?: string;
+  provider?: string;
   status: string;
-  payload?: Record<string, unknown>;
+  enabled?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
+/** Matches mail_template_params in mail_templates_controller.rb */
 export interface CreateMailTemplateRequest {
-  code: string;
+  eventName?: string;
   name: string;
-  subject: string;
-  fromEmail?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  templateName?: string;
+  templateHtml?: string;
+  templateText?: string;
+  fromDomain?: string;
+  fromAddress?: string;
   fromName?: string;
-  htmlContent?: string;
-  textContent?: string;
-  payload?: Record<string, unknown>;
+  fromSubject?: string;
+  preferredLanguage?: string;
+  provider?: string;
 }
 
-export interface UpdateMailTemplateRequest {
-  name?: string;
-  subject?: string;
-  fromEmail?: string;
-  fromName?: string;
-  htmlContent?: string;
-  textContent?: string;
-  enabled?: boolean;
-  status?: string;
-  payload?: Record<string, unknown>;
-}
+export type UpdateMailTemplateRequest = CreateMailTemplateRequest;
 
 export interface ListMailTemplatesParams {
   page?: number;
@@ -48,27 +52,13 @@ export interface ListMailTemplatesParams {
   sortOrder?: 'asc' | 'desc';
 }
 
+/** Matches mandrill_params in mail_templates_controller.rb */
 export interface CreateMandrillTemplateRequest {
-  slug?: string;
-  labels?: string[];
-  payload?: Record<string, unknown>;
+  fromEmail?: string;
+  fromName?: string;
+  fromSubject?: string;
+  templateHtml?: string;
+  templateText?: string;
 }
 
-export interface UpdateMandrillTemplateRequest {
-  slug?: string;
-  labels?: string[];
-  payload?: Record<string, unknown>;
-}
-
-export interface MandrillStats {
-  slug: string;
-  sentCount: number;
-  openCount: number;
-  clickCount: number;
-  hardBounceCount: number;
-  softBounceCount: number;
-  rejectCount: number;
-  spamCount: number;
-  unsubCount: number;
-  lastSentAt?: Date;
-}
+export type UpdateMandrillTemplateRequest = CreateMandrillTemplateRequest;

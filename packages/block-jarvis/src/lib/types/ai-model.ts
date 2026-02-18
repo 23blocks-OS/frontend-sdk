@@ -1,48 +1,42 @@
 export interface AIModel {
   id: string;
   uniqueId: string;
-  code: string;
   name: string;
-  provider: string;
-  modelId: string;
-  description?: string;
+  vendorName?: string;
+  vendorUniqueId?: string;
+  contentUrl?: string;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  videoUrl?: string;
   inputTokenCost?: number;
   outputTokenCost?: number;
-  maxTokens?: number;
-  enabled: boolean;
+  apiUrl?: string;
   status: string;
-  payload?: Record<string, unknown>;
+  enabled?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
+/** Matches aimodels_params in ai_models_controller.rb */
 export interface CreateAIModelRequest {
-  code: string;
   name: string;
-  provider: string;
-  modelId: string;
-  description?: string;
+  vendorName?: string;
+  vendorUniqueId?: string;
+  contentUrl?: string;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  videoUrl?: string;
   inputTokenCost?: number;
   outputTokenCost?: number;
-  maxTokens?: number;
-  payload?: Record<string, unknown>;
+  apiUrl?: string;
+  status?: string;
 }
 
-export interface UpdateAIModelRequest {
-  name?: string;
-  description?: string;
-  inputTokenCost?: number;
-  outputTokenCost?: number;
-  maxTokens?: number;
-  enabled?: boolean;
-  status?: string;
-  payload?: Record<string, unknown>;
-}
+export type UpdateAIModelRequest = CreateAIModelRequest;
 
 export interface ListAIModelsParams {
   page?: number;
   perPage?: number;
-  provider?: string;
   status?: string;
   search?: string;
   sortBy?: string;

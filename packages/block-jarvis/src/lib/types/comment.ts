@@ -3,32 +3,43 @@ export interface PromptComment {
   uniqueId: string;
   promptUniqueId: string;
   parentUniqueId?: string;
-  userUniqueId: string;
   content: string;
-  likesCount: number;
-  repliesCount: number;
-  isLiked?: boolean;
-  isFollowed?: boolean;
-  isSaved?: boolean;
-  enabled: boolean;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
+  userUniqueId?: string;
+  userName?: string;
+  userAlias?: string;
+  userAvatarUrl?: string;
+  aiGenerated?: boolean;
+  aiModel?: string;
+  likesCount?: number;
+  repliesCount?: number;
   status: string;
-  payload?: Record<string, unknown>;
+  enabled?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
+/** Matches comment_params in comments_controller.rb */
 export interface CreatePromptCommentRequest {
   content: string;
-  userUniqueId: string;
-  payload?: Record<string, unknown>;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
+  userUniqueId?: string;
+  userName?: string;
+  userAlias?: string;
+  userAvatarUrl?: string;
+  status?: string;
+  aiGenerated?: boolean;
+  aiModel?: string;
 }
 
-export interface UpdatePromptCommentRequest {
-  content?: string;
-  enabled?: boolean;
-  status?: string;
-  payload?: Record<string, unknown>;
-}
+export type UpdatePromptCommentRequest = CreatePromptCommentRequest;
+export type ReplyToCommentRequest = CreatePromptCommentRequest;
 
 export interface ListPromptCommentsParams {
   page?: number;
@@ -40,44 +51,34 @@ export interface ListPromptCommentsParams {
   sortOrder?: 'asc' | 'desc';
 }
 
-export interface ReplyToCommentRequest {
-  content: string;
-  userUniqueId: string;
-  payload?: Record<string, unknown>;
-}
-
 export interface ExecutionComment {
   id: string;
   uniqueId: string;
   promptUniqueId: string;
   executionUniqueId: string;
   parentUniqueId?: string;
-  userUniqueId: string;
   content: string;
-  likesCount: number;
-  repliesCount: number;
-  isLiked?: boolean;
-  isFollowed?: boolean;
-  isSaved?: boolean;
-  enabled: boolean;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
+  userUniqueId?: string;
+  userName?: string;
+  userAlias?: string;
+  userAvatarUrl?: string;
+  aiGenerated?: boolean;
+  aiModel?: string;
+  likesCount?: number;
+  repliesCount?: number;
   status: string;
-  payload?: Record<string, unknown>;
+  enabled?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface CreateExecutionCommentRequest {
-  content: string;
-  userUniqueId: string;
-  payload?: Record<string, unknown>;
-}
-
-export interface UpdateExecutionCommentRequest {
-  content?: string;
-  enabled?: boolean;
-  status?: string;
-  payload?: Record<string, unknown>;
-}
+/** Matches comment_params in execution_comments_controller.rb */
+export type CreateExecutionCommentRequest = CreatePromptCommentRequest;
+export type UpdateExecutionCommentRequest = CreatePromptCommentRequest;
 
 export interface ListExecutionCommentsParams {
   page?: number;

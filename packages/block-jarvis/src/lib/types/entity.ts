@@ -1,36 +1,38 @@
 export interface Entity {
   id: string;
   uniqueId: string;
-  code: string;
-  name: string;
-  description?: string;
-  systemPrompt?: string;
-  model?: string;
-  enabled: boolean;
+  code?: string;
+  entityType?: string;
+  entityAlias?: string;
+  entitySource?: string;
+  entityUrl?: string;
+  content?: string;
+  stripeId?: string;
   status: string;
-  payload?: Record<string, unknown>;
+  timeZone?: string;
+  preferredLanguage?: string;
+  entityAvatarUrl?: string;
+  enabled?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
+/** Matches entity_params in entities_controller.rb */
 export interface RegisterEntityRequest {
   code?: string;
-  name?: string;
-  description?: string;
-  systemPrompt?: string;
-  model?: string;
-  payload?: Record<string, unknown>;
+  entityType?: string;
+  entityAlias?: string;
+  entitySource?: string;
+  entityUrl?: string;
+  content?: string;
+  stripeId?: string;
+  status?: string;
+  timeZone?: string;
+  preferredLanguage?: string;
+  entityAvatarUrl?: string;
 }
 
-export interface UpdateEntityRequest {
-  name?: string;
-  description?: string;
-  systemPrompt?: string;
-  model?: string;
-  enabled?: boolean;
-  status?: string;
-  payload?: Record<string, unknown>;
-}
+export type UpdateEntityRequest = RegisterEntityRequest;
 
 export interface ListEntitiesParams {
   page?: number;
@@ -41,48 +43,45 @@ export interface ListEntitiesParams {
   sortOrder?: 'asc' | 'desc';
 }
 
-export interface EntityContext {
-  id: string;
-  uniqueId: string;
-  entityUniqueId: string;
-  messages: EntityMessage[];
-  payload?: Record<string, unknown>;
-  createdAt: Date;
-  updatedAt: Date;
+/** Shared context_params across entities/users/clusters controllers */
+export interface CreateContextRequest {
+  uniqueId?: string;
+  name?: string;
+  reference?: string;
+  source?: string;
+  sourceId?: string;
+  sourceAlias?: string;
+  sourceType?: string;
+  members?: string;
 }
 
-export interface EntityMessage {
-  role: string;
+/** Shared message_params across entities/users/clusters controllers */
+export interface SendMessageRequest {
+  role?: string;
   content: string;
-  timestamp: Date;
-  payload?: Record<string, unknown>;
-}
-
-export interface CreateEntityContextRequest {
-  systemPrompt?: string;
-  payload?: Record<string, unknown>;
-}
-
-export interface SendEntityMessageRequest {
-  message: string;
-  payload?: Record<string, unknown>;
-}
-
-export interface SendEntityMessageResponse {
-  message: EntityMessage;
-  response?: EntityMessage;
-  tokens?: number;
-  cost?: number;
-}
-
-export interface QueryEntityFileRequest {
-  query: string;
-  payload?: Record<string, unknown>;
-}
-
-export interface QueryEntityFileResponse {
-  answer: string;
-  sources?: string[];
-  tokens?: number;
-  cost?: number;
+  fileIds?: string[];
+  metadata?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  sourceEmail?: string;
+  sourcePhone?: string;
+  target?: string;
+  targetAlias?: string;
+  targetId?: string;
+  targetType?: string;
+  targetEmail?: string;
+  targetPhone?: string;
+  targetDeviceId?: string;
+  parentId?: string;
+  value?: string;
+  dataSource?: string;
+  dataSourceAlias?: string;
+  dataSourceId?: string;
+  dataSourceType?: string;
+  contextId?: string;
+  notificationContent?: string;
+  notificationUrl?: string;
+  additionalData?: string;
 }

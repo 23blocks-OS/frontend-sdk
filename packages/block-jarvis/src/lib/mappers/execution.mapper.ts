@@ -1,15 +1,12 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
 import type { Execution } from '../types/execution.js';
-import { parseString, parseDate, parseOptionalNumber, parseExecutionStatus } from './utils.js';
+import { parseString, parseDate, parseOptionalNumber } from './utils.js';
 
 export const executionMapper: ResourceMapper<Execution> = {
-  type: 'Execution',
+  type: 'execution',
   map: (resource) => ({
     id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']),
-    createdAt: parseDate(resource.attributes['created_at']) || new Date(),
-    updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
-
+    uniqueId: parseString(resource.attributes['unique_id']) || '',
     agentUniqueId: parseString(resource.attributes['agent_unique_id']),
     promptUniqueId: parseString(resource.attributes['prompt_unique_id']),
     input: parseString(resource.attributes['input']),
@@ -17,9 +14,10 @@ export const executionMapper: ResourceMapper<Execution> = {
     tokens: parseOptionalNumber(resource.attributes['tokens']),
     cost: parseOptionalNumber(resource.attributes['cost']),
     duration: parseOptionalNumber(resource.attributes['duration']),
-    status: parseExecutionStatus(resource.attributes['status']),
+    status: parseString(resource.attributes['status']) || 'pending',
     startedAt: parseDate(resource.attributes['started_at']),
     completedAt: parseDate(resource.attributes['completed_at']),
-    payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
+    createdAt: parseDate(resource.attributes['created_at']) || new Date(),
+    updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
   }),
 };

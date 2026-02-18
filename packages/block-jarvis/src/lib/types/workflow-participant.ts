@@ -2,37 +2,30 @@ export interface WorkflowParticipant {
   id: string;
   uniqueId: string;
   workflowUniqueId: string;
-  entityType: string;
-  entityUniqueId: string;
   role?: string;
-  permissions?: string[];
-  enabled: boolean;
+  roleName?: string;
+  participantUniqueId?: string;
+  participantName?: string;
   status: string;
-  payload?: Record<string, unknown>;
+  enabled?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
+/** Matches workflow_participant_params in workflow_participants_controller.rb */
 export interface AddWorkflowParticipantRequest {
-  entityType: string;
-  entityUniqueId: string;
   role?: string;
-  permissions?: string[];
-  payload?: Record<string, unknown>;
+  roleName?: string;
+  participantUniqueId?: string;
+  participantName?: string;
+  status?: string;
 }
 
-export interface UpdateWorkflowParticipantRequest {
-  role?: string;
-  permissions?: string[];
-  enabled?: boolean;
-  status?: string;
-  payload?: Record<string, unknown>;
-}
+export type UpdateWorkflowParticipantRequest = AddWorkflowParticipantRequest;
 
 export interface ListWorkflowParticipantsParams {
   page?: number;
   perPage?: number;
-  entityType?: string;
   role?: string;
   status?: string;
   sortBy?: string;

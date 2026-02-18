@@ -1,36 +1,33 @@
-import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
-
 export interface ConversationMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: Date;
-  payload?: Record<string, unknown>;
 }
 
-export interface Conversation extends IdentityCore {
+export interface Conversation {
+  id: string;
+  uniqueId: string;
   agentUniqueId?: string;
   userUniqueId?: string;
   title?: string;
   messages: ConversationMessage[];
-  status: EntityStatus;
-  payload?: Record<string, unknown>;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Request types
 export interface CreateConversationRequest {
   agentUniqueId?: string;
   userUniqueId?: string;
   title?: string;
-  payload?: Record<string, unknown>;
 }
 
-export interface SendMessageRequest {
+export interface SendConversationMessageRequest {
   message: string;
   role?: 'user' | 'assistant' | 'system';
-  payload?: Record<string, unknown>;
 }
 
-export interface SendMessageResponse {
+export interface SendConversationMessageResponse {
   message: ConversationMessage;
   response?: ConversationMessage;
   executionUniqueId?: string;
@@ -43,7 +40,7 @@ export interface ListConversationsParams {
   perPage?: number;
   agentUniqueId?: string;
   userUniqueId?: string;
-  status?: EntityStatus;
+  status?: string;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }

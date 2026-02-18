@@ -5,54 +5,61 @@ import type {
   CreateAgentRequest,
   UpdateAgentRequest,
   ListAgentsParams,
-  ChatRequest,
-  ChatResponse,
-  CompleteRequest,
-  CompleteResponse,
+  AddAgentPromptRequest,
+  AddAgentEntityRequest,
 } from '../types/agent.js';
 import { agentMapper } from '../mappers/agent.mapper.js';
 
+function buildAgentBody(data: CreateAgentRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.name) body['name'] = data.name;
+  if (data.description) body['description'] = data.description;
+  if (data.instructions) body['instructions'] = data.instructions;
+  if (data.model) body['model'] = data.model;
+  if (data.source) body['source'] = data.source;
+  if (data.sourceId) body['source_id'] = data.sourceId;
+  if (data.sourceType) body['source_type'] = data.sourceType;
+  if (data.sourceAlias) body['source_alias'] = data.sourceAlias;
+  if (data.contentUrl) body['content_url'] = data.contentUrl;
+  if (data.imageUrl) body['image_url'] = data.imageUrl;
+  if (data.videoUrl) body['video_url'] = data.videoUrl;
+  if (data.agentIdentifier) body['agent_identifier'] = data.agentIdentifier;
+  if (data.ragEnabled !== undefined) body['rag_enabled'] = data.ragEnabled;
+  if (data.contextWindow !== undefined) body['context_window'] = data.contextWindow;
+  if (data.encryptionKey) body['encryption_key'] = data.encryptionKey;
+  if (data.rateLimitPerHour !== undefined) body['rate_limit_per_hour'] = data.rateLimitPerHour;
+  if (data.communicationEnabled !== undefined) body['communication_enabled'] = data.communicationEnabled;
+  if (data.email) body['email'] = data.email;
+  if (data.emailProcessorUrl) body['email_processor_url'] = data.emailProcessorUrl;
+  if (data.allowedDomains) body['allowed_domains'] = data.allowedDomains;
+  if (data.phoneNumber) body['phone_number'] = data.phoneNumber;
+  if (data.smsProcessorUrl) body['sms_processor_url'] = data.smsProcessorUrl;
+  if (data.integrationServicesEnabled !== undefined) body['integration_services_enabled'] = data.integrationServicesEnabled;
+  if (data.webhookUrl) body['webhook_url'] = data.webhookUrl;
+  if (data.webhookSecret) body['webhook_secret'] = data.webhookSecret;
+  if (data.apiUrl) body['api_url'] = data.apiUrl;
+  if (data.imEnabled !== undefined) body['im_enabled'] = data.imEnabled;
+  if (data.imAppsConfig) body['im_apps_config'] = data.imAppsConfig;
+  if (data.supervisorEnabled !== undefined) body['supervisor_enabled'] = data.supervisorEnabled;
+  if (data.supervisorEmail) body['supervisor_email'] = data.supervisorEmail;
+  if (data.supervisorPhoneNumber) body['supervisor_phone_number'] = data.supervisorPhoneNumber;
+  if (data.lastActivityAt) body['last_activity_at'] = data.lastActivityAt;
+  if (data.totalMessagesProcessed !== undefined) body['total_messages_processed'] = data.totalMessagesProcessed;
+  if (data.averageResponseTime !== undefined) body['average_response_time'] = data.averageResponseTime;
+  if (data.errorCount !== undefined) body['error_count'] = data.errorCount;
+  if (data.successRate !== undefined) body['success_rate'] = data.successRate;
+  return body;
+}
+
 export interface AgentsService {
-  /**
-   * List agents with optional filtering and sorting.
-   * @returns Paginated list of Agent records with metadata.
-   */
   list(params?: ListAgentsParams): Promise<PageResult<Agent>>;
-
-  /**
-   * Get a single agent by unique ID.
-   * @returns The matching Agent record.
-   */
   get(uniqueId: string): Promise<Agent>;
-
-  /**
-   * Create a new agent.
-   * @returns The newly created Agent record.
-   */
   create(data: CreateAgentRequest): Promise<Agent>;
-
-  /**
-   * Update an existing agent.
-   * @returns The updated Agent record.
-   */
   update(uniqueId: string, data: UpdateAgentRequest): Promise<Agent>;
-
-  /**
-   * Delete an agent.
-   */
   delete(uniqueId: string): Promise<void>;
-
-  /**
-   * Send a chat message to an agent.
-   * @returns ChatResponse with the agent's reply, token usage, and cost.
-   */
-  chat(uniqueId: string, data: ChatRequest): Promise<ChatResponse>;
-
-  /**
-   * Send a completion request to an agent.
-   * @returns CompleteResponse with output, token usage, cost, and duration.
-   */
-  complete(uniqueId: string, data: CompleteRequest): Promise<CompleteResponse>;
+  addPrompt(uniqueId: string, data: AddAgentPromptRequest): Promise<Agent>;
+  addEntity(uniqueId: string, data: AddAgentEntityRequest): Promise<Agent>;
+  removeEntity(uniqueId: string, data: AddAgentEntityRequest): Promise<Agent>;
 }
 
 export function createAgentsService(transport: Transport, _config: { appId: string }): AgentsService {
@@ -76,35 +83,14 @@ export function createAgentsService(transport: Transport, _config: { appId: stri
 
     async create(data: CreateAgentRequest): Promise<Agent> {
       const response = await transport.post<unknown>('/agents', {
-        agent: {
-            code: data.code,
-            name: data.name,
-            description: data.description,
-            system_prompt: data.systemPrompt,
-            model: data.model,
-            temperature: data.temperature,
-            max_tokens: data.maxTokens,
-            tools: data.tools,
-            payload: data.payload,
-          },
+        agent: buildAgentBody(data),
       });
       return decodeOne(response, agentMapper);
     },
 
     async update(uniqueId: string, data: UpdateAgentRequest): Promise<Agent> {
       const response = await transport.put<unknown>(`/agents/${uniqueId}`, {
-        agent: {
-            name: data.name,
-            description: data.description,
-            system_prompt: data.systemPrompt,
-            model: data.model,
-            temperature: data.temperature,
-            max_tokens: data.maxTokens,
-            tools: data.tools,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        agent: buildAgentBody(data),
       });
       return decodeOne(response, agentMapper);
     },
@@ -113,36 +99,31 @@ export function createAgentsService(transport: Transport, _config: { appId: stri
       await transport.delete(`/agents/${uniqueId}`);
     },
 
-    async chat(uniqueId: string, data: ChatRequest): Promise<ChatResponse> {
-      const response = await transport.post<any>(`/agents/${uniqueId}/chat`, {
-        message: data.message,
-        conversation_unique_id: data.conversationUniqueId,
-        user_unique_id: data.userUniqueId,
-        payload: data.payload,
+    async addPrompt(uniqueId: string, data: AddAgentPromptRequest): Promise<Agent> {
+      const response = await transport.post<unknown>(`/agents/${uniqueId}/add_prompt`, {
+        prompt: { unique_id: data.uniqueId },
       });
-
-      return {
-        response: response.response,
-        conversationUniqueId: response.conversation_unique_id,
-        executionUniqueId: response.execution_unique_id,
-        tokens: response.tokens,
-        cost: response.cost,
-      };
+      return decodeOne(response, agentMapper);
     },
 
-    async complete(uniqueId: string, data: CompleteRequest): Promise<CompleteResponse> {
-      const response = await transport.post<any>(`/agents/${uniqueId}/complete`, {
-        input: data.input,
-        payload: data.payload,
+    async addEntity(uniqueId: string, data: AddAgentEntityRequest): Promise<Agent> {
+      const response = await transport.post<unknown>(`/agents/${uniqueId}/add_entity`, {
+        entity: {
+          entity_unique_id: data.entityUniqueId,
+          ...(data.relationType && { relation_type: data.relationType }),
+        },
       });
+      return decodeOne(response, agentMapper);
+    },
 
-      return {
-        output: response.output,
-        executionUniqueId: response.execution_unique_id,
-        tokens: response.tokens,
-        cost: response.cost,
-        duration: response.duration,
-      };
+    async removeEntity(uniqueId: string, data: AddAgentEntityRequest): Promise<Agent> {
+      const response = await transport.post<unknown>(`/agents/${uniqueId}/remove_entity`, {
+        entity: {
+          entity_unique_id: data.entityUniqueId,
+          ...(data.relationType && { relation_type: data.relationType }),
+        },
+      });
+      return decodeOne(response, agentMapper);
     },
   };
 }

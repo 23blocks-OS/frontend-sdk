@@ -17,6 +17,11 @@ import {
   createMarvinChatService,
   createPromptCommentsService,
   createExecutionCommentsService,
+  createToolsService,
+  createAgentToolsService,
+  createAgentToolAssignmentsService,
+  createConditionsService,
+  createStepTransitionsService,
   type AgentsService,
   type PromptsService,
   type WorkflowsService,
@@ -34,69 +39,44 @@ import {
   type MarvinChatService,
   type PromptCommentsService,
   type ExecutionCommentsService,
+  type ToolsService,
+  type AgentToolsService,
+  type AgentToolAssignmentsService,
+  type ConditionsService,
+  type StepTransitionsService,
 } from './services/index.js';
 
-/**
- * Configuration for the Jarvis block.
- */
 export interface JarvisBlockConfig extends BlockConfig {
-  /** Application ID */
   appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
   tenantId?: string;
 }
 
-/**
- * AI agents, prompts, and workflow management block interface.
- */
 export interface JarvisBlock {
-  /** AI agent management */
   agents: AgentsService;
-  /** Prompt template management */
   prompts: PromptsService;
-  /** Workflow definition management */
   workflows: WorkflowsService;
-  /** Workflow execution tracking */
   executions: ExecutionsService;
-  /** AI conversation management */
   conversations: ConversationsService;
-  /** AI model configuration */
   aiModels: AIModelsService;
-  /** Entity management for AI context */
   entities: EntitiesService;
-  /** Entity cluster management */
   clusters: ClustersService;
-  /** Jarvis user management */
   users: JarvisUsersService;
-  /** Workflow participant management */
   workflowParticipants: WorkflowParticipantsService;
-  /** Workflow step definition management */
   workflowSteps: WorkflowStepsService;
-  /** Workflow instance management */
   workflowInstances: WorkflowInstancesService;
-  /** Agent runtime execution */
   agentRuntime: AgentRuntimeService;
-  /** Mail template management */
   mailTemplates: MailTemplatesService;
-  /** Marvin chat interface */
   marvinChat: MarvinChatService;
-  /** Prompt comment management */
   promptComments: PromptCommentsService;
-  /** Execution comment management */
   executionComments: ExecutionCommentsService;
-  /** Ping the service health endpoint */
+  tools: ToolsService;
+  agentTools: AgentToolsService;
+  agentToolAssignments: AgentToolAssignmentsService;
+  conditions: ConditionsService;
+  stepTransitions: StepTransitionsService;
   health(): Promise<HealthCheckResponse>;
 }
 
-/**
- * Create the Jarvis block.
- *
- * @example
- * ```typescript
- * const block = createJarvisBlock(transport, { appId: 'xxx' });
- * const agents = await block.agents.list({ page: 1 });
- * ```
- */
 export function createJarvisBlock(
   transport: Transport,
   config: JarvisBlockConfig
@@ -119,6 +99,11 @@ export function createJarvisBlock(
     marvinChat: createMarvinChatService(transport, config),
     promptComments: createPromptCommentsService(transport, config),
     executionComments: createExecutionCommentsService(transport, config),
+    tools: createToolsService(transport, config),
+    agentTools: createAgentToolsService(transport, config),
+    agentToolAssignments: createAgentToolAssignmentsService(transport, config),
+    conditions: createConditionsService(transport, config),
+    stepTransitions: createStepTransitionsService(transport, config),
     health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }

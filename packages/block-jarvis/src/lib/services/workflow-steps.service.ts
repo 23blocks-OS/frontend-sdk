@@ -9,38 +9,36 @@ import type {
 } from '../types/workflow-step.js';
 import { workflowStepMapper } from '../mappers/workflow-step.mapper.js';
 
+function buildStepBody(data: AddWorkflowStepRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.name) body['name'] = data.name;
+  if (data.description) body['description'] = data.description;
+  if (data.source) body['source'] = data.source;
+  if (data.sourceId) body['source_id'] = data.sourceId;
+  if (data.sourceType) body['source_type'] = data.sourceType;
+  if (data.sourceAlias) body['source_alias'] = data.sourceAlias;
+  if (data.order !== undefined) body['order'] = data.order;
+  if (data.stepUrl) body['step_url'] = data.stepUrl;
+  if (data.stepParams) body['step_params'] = data.stepParams;
+  if (data.agentUniqueId) body['agent_unique_id'] = data.agentUniqueId;
+  if (data.agentName) body['agent_name'] = data.agentName;
+  if (data.promptUniqueId) body['prompt_unique_id'] = data.promptUniqueId;
+  if (data.promptName) body['prompt_name'] = data.promptName;
+  if (data.customPrompt) body['custom_prompt'] = data.customPrompt;
+  if (data.contentUrl) body['content_url'] = data.contentUrl;
+  if (data.imageUrl) body['image_url'] = data.imageUrl;
+  if (data.videoUrl) body['video_url'] = data.videoUrl;
+  if (data.status) body['status'] = data.status;
+  if (data.enabled !== undefined) body['enabled'] = data.enabled;
+  return body;
+}
+
 export interface WorkflowStepsService {
-  /**
-   * Get a single workflow step by unique ID.
-   * @returns The matching WorkflowStep record.
-   */
   get(workflowUniqueId: string, stepUniqueId: string): Promise<WorkflowStep>;
-
-  /**
-   * Add a new step to a workflow.
-   * @returns The newly created WorkflowStep record.
-   */
   add(workflowUniqueId: string, data: AddWorkflowStepRequest): Promise<WorkflowStep>;
-
-  /**
-   * Update an existing workflow step.
-   * @returns The updated WorkflowStep record.
-   */
   update(workflowUniqueId: string, stepUniqueId: string, data: UpdateWorkflowStepRequest): Promise<WorkflowStep>;
-
-  /**
-   * Remove a step from a workflow.
-   */
   remove(workflowUniqueId: string, stepUniqueId: string): Promise<void>;
-
-  /**
-   * Associate a prompt with a workflow step.
-   */
   addPrompt(stepUniqueId: string, data: AddStepPromptRequest): Promise<void>;
-
-  /**
-   * Associate an agent with a workflow step.
-   */
   addAgent(stepUniqueId: string, data: AddStepAgentRequest): Promise<void>;
 }
 
@@ -52,31 +50,15 @@ export function createWorkflowStepsService(transport: Transport, _config: { appI
     },
 
     async add(workflowUniqueId: string, data: AddWorkflowStepRequest): Promise<WorkflowStep> {
-      const response = await transport.put<unknown>(`/workflows/${workflowUniqueId}/steps`, {
-        step: {
-          name: data.name,
-          description: data.description,
-          step_type: data.stepType,
-          order: data.order,
-          config: data.config,
-          payload: data.payload,
-        },
+      const response = await transport.post<unknown>(`/workflows/${workflowUniqueId}/steps`, {
+        step: buildStepBody(data),
       });
       return decodeOne(response, workflowStepMapper);
     },
 
     async update(workflowUniqueId: string, stepUniqueId: string, data: UpdateWorkflowStepRequest): Promise<WorkflowStep> {
       const response = await transport.put<unknown>(`/workflows/${workflowUniqueId}/steps/${stepUniqueId}`, {
-        step: {
-          name: data.name,
-          description: data.description,
-          step_type: data.stepType,
-          order: data.order,
-          config: data.config,
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
-        },
+        step: buildStepBody(data),
       });
       return decodeOne(response, workflowStepMapper);
     },
@@ -87,15 +69,13 @@ export function createWorkflowStepsService(transport: Transport, _config: { appI
 
     async addPrompt(stepUniqueId: string, data: AddStepPromptRequest): Promise<void> {
       await transport.post(`/steps/${stepUniqueId}/prompts`, {
-        prompt_unique_id: data.promptUniqueId,
-        payload: data.payload,
+        prompt: { unique_id: data.uniqueId },
       });
     },
 
     async addAgent(stepUniqueId: string, data: AddStepAgentRequest): Promise<void> {
       await transport.post(`/steps/${stepUniqueId}/agents`, {
-        agent_unique_id: data.agentUniqueId,
-        payload: data.payload,
+        agent: { unique_id: data.uniqueId },
       });
     },
   };

@@ -7,59 +7,56 @@ import type {
   ListPromptsParams,
   ExecutePromptRequest,
   ExecutePromptResponse,
-  TestPromptRequest,
-  TestPromptResponse,
   RenderPromptRequest,
   RenderPromptResponse,
 } from '../types/prompt.js';
 import { promptMapper } from '../mappers/prompt.mapper.js';
 
+function buildPromptBody(data: CreatePromptRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.name) body['name'] = data.name;
+  if (data.promptType) body['prompt_type'] = data.promptType;
+  if (data.abstract) body['abstract'] = data.abstract;
+  if (data.keywords) body['keywords'] = data.keywords;
+  if (data.content) body['content'] = data.content;
+  if (data.thumbnailUrl) body['thumbnail_url'] = data.thumbnailUrl;
+  if (data.imageUrl) body['image_url'] = data.imageUrl;
+  if (data.mediaUrl) body['media_url'] = data.mediaUrl;
+  if (data.publishAt) body['publish_at'] = data.publishAt;
+  if (data.publishUntil) body['publish_until'] = data.publishUntil;
+  if (data.model) body['model'] = data.model;
+  if (data.frequencyPenalty !== undefined) body['frequency_penalty'] = data.frequencyPenalty;
+  if (data.maxTokens !== undefined) body['max_tokens'] = data.maxTokens;
+  if (data.responses !== undefined) body['responses'] = data.responses;
+  if (data.responseFormat) body['response_format'] = data.responseFormat;
+  if (data.seed !== undefined) body['seed'] = data.seed;
+  if (data.temperature !== undefined) body['temperature'] = data.temperature;
+  if (data.topP !== undefined) body['top_p'] = data.topP;
+  if (data.user) body['user'] = data.user;
+  if (data.persona) body['persona'] = data.persona;
+  if (data.guidelines) body['guidelines'] = data.guidelines;
+  if (data.actions) body['actions'] = data.actions;
+  if (data.references) body['references'] = data.references;
+  if (data.sample) body['sample'] = data.sample;
+  if (data.outputTemplate) body['output_template'] = data.outputTemplate;
+  if (data.safeguard) body['safeguard'] = data.safeguard;
+  if (data.promptTemplateId) body['prompt_template_id'] = data.promptTemplateId;
+  if (data.contentUrl) body['content_url'] = data.contentUrl;
+  if (data.repoUrl) body['repo_url'] = data.repoUrl;
+  if (data.status) body['status'] = data.status;
+  if (data.isPublic !== undefined) body['is_public'] = data.isPublic;
+  if (data.source) body['source'] = data.source;
+  if (data.templateData) body['template_data'] = data.templateData;
+  return body;
+}
+
 export interface PromptsService {
-  /**
-   * List prompts with optional filtering and sorting.
-   * @returns Paginated list of Prompt records with metadata.
-   */
   list(params?: ListPromptsParams): Promise<PageResult<Prompt>>;
-
-  /**
-   * Get a single prompt by unique ID.
-   * @returns The matching Prompt record.
-   */
   get(uniqueId: string): Promise<Prompt>;
-
-  /**
-   * Create a new prompt.
-   * @returns The newly created Prompt record.
-   */
   create(data: CreatePromptRequest): Promise<Prompt>;
-
-  /**
-   * Update an existing prompt.
-   * @returns The updated Prompt record.
-   */
   update(uniqueId: string, data: UpdatePromptRequest): Promise<Prompt>;
-
-  /**
-   * Delete a prompt.
-   */
   delete(uniqueId: string): Promise<void>;
-
-  /**
-   * Execute a prompt with variables against an agent.
-   * @returns ExecutePromptResponse with output, token usage, cost, and duration.
-   */
   execute(uniqueId: string, data: ExecutePromptRequest): Promise<ExecutePromptResponse>;
-
-  /**
-   * Test a prompt template for validity without executing it.
-   * @returns TestPromptResponse with rendered prompt, validation status, and errors.
-   */
-  test(data: TestPromptRequest): Promise<TestPromptResponse>;
-
-  /**
-   * Render a prompt template with placeholder values.
-   * @returns RenderPromptResponse with rendered content and placeholder metadata.
-   */
   render(uniqueId: string, data: RenderPromptRequest): Promise<RenderPromptResponse>;
 }
 
@@ -85,40 +82,14 @@ export function createPromptsService(transport: Transport, _config: { appId: str
 
     async create(data: CreatePromptRequest): Promise<Prompt> {
       const response = await transport.post<unknown>('/prompts', {
-        prompt: {
-            agent_unique_id: data.agentUniqueId,
-            code: data.code,
-            name: data.name,
-            description: data.description,
-            template: data.template,
-            variables: data.variables,
-            template_data: data.templateData,
-            template_schema: data.templateSchema,
-            template_info: data.templateInfo,
-            placeholders: data.placeholders,
-            provider: data.provider,
-            payload: data.payload,
-          },
+        prompt: buildPromptBody(data),
       });
       return decodeOne(response, promptMapper);
     },
 
     async update(uniqueId: string, data: UpdatePromptRequest): Promise<Prompt> {
       const response = await transport.put<unknown>(`/prompts/${uniqueId}`, {
-        prompt: {
-            name: data.name,
-            description: data.description,
-            template: data.template,
-            variables: data.variables,
-            template_data: data.templateData,
-            template_schema: data.templateSchema,
-            template_info: data.templateInfo,
-            placeholders: data.placeholders,
-            provider: data.provider,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        prompt: buildPromptBody(data),
       });
       return decodeOne(response, promptMapper);
     },
@@ -131,7 +102,6 @@ export function createPromptsService(transport: Transport, _config: { appId: str
       const response = await transport.post<any>(`/prompts/${uniqueId}/execute`, {
         agent_unique_id: data.agentUniqueId,
         variables: data.variables,
-        payload: data.payload,
       });
 
       return {
@@ -143,26 +113,11 @@ export function createPromptsService(transport: Transport, _config: { appId: str
       };
     },
 
-    async test(data: TestPromptRequest): Promise<TestPromptResponse> {
-      const response = await transport.post<any>('/prompts/test', {
-        template: data.template,
-        variables: data.variables,
-        agent_unique_id: data.agentUniqueId,
-      });
-
-      return {
-        renderedPrompt: response.rendered_prompt,
-        isValid: response.is_valid,
-        errors: response.errors,
-      };
-    },
-
     async render(uniqueId: string, data: RenderPromptRequest): Promise<RenderPromptResponse> {
       const response = await transport.post<any>(`/prompts/${uniqueId}/render`, {
         placeholders: data.placeholders,
       });
 
-      // Parse JSON:API response - the rendered prompt comes in data.attributes
       const attributes = response.data?.attributes || response;
 
       return {
@@ -175,7 +130,6 @@ export function createPromptsService(transport: Transport, _config: { appId: str
         model: attributes.model,
         temperature: attributes.temperature,
         maxTokens: attributes.max_tokens || attributes.maxTokens,
-        provider: attributes.provider,
         meta: {
           placeholdersProvided: response.data?.meta?.placeholders_provided || response.meta?.placeholders_provided || [],
           placeholdersMissing: response.data?.meta?.placeholders_missing || response.meta?.placeholders_missing || [],

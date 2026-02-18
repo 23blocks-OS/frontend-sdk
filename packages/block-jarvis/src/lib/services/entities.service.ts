@@ -5,79 +5,84 @@ import type {
   RegisterEntityRequest,
   UpdateEntityRequest,
   ListEntitiesParams,
-  EntityContext,
-  CreateEntityContextRequest,
-  SendEntityMessageRequest,
-  SendEntityMessageResponse,
-  QueryEntityFileRequest,
-  QueryEntityFileResponse,
+  CreateContextRequest,
+  SendMessageRequest,
 } from '../types/entity.js';
 import { entityMapper } from '../mappers/entity.mapper.js';
 
+function buildEntityBody(data: RegisterEntityRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.code) body['code'] = data.code;
+  if (data.entityType) body['entity_type'] = data.entityType;
+  if (data.entityAlias) body['entity_alias'] = data.entityAlias;
+  if (data.entitySource) body['entity_source'] = data.entitySource;
+  if (data.entityUrl) body['entity_url'] = data.entityUrl;
+  if (data.content) body['content'] = data.content;
+  if (data.stripeId) body['stripe_id'] = data.stripeId;
+  if (data.status) body['status'] = data.status;
+  if (data.timeZone) body['time_zone'] = data.timeZone;
+  if (data.preferredLanguage) body['preferred_language'] = data.preferredLanguage;
+  if (data.entityAvatarUrl) body['entity_avatar_url'] = data.entityAvatarUrl;
+  return body;
+}
+
+function buildContextBody(data: CreateContextRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.uniqueId) body['unique_id'] = data.uniqueId;
+  if (data.name) body['name'] = data.name;
+  if (data.reference) body['reference'] = data.reference;
+  if (data.source) body['source'] = data.source;
+  if (data.sourceId) body['source_id'] = data.sourceId;
+  if (data.sourceAlias) body['source_alias'] = data.sourceAlias;
+  if (data.sourceType) body['source_type'] = data.sourceType;
+  if (data.members) body['members'] = data.members;
+  return body;
+}
+
+function buildMessageBody(data: SendMessageRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.role) body['role'] = data.role;
+  if (data.content) body['content'] = data.content;
+  if (data.fileIds) body['file_ids'] = data.fileIds;
+  if (data.metadata) body['metadata'] = data.metadata;
+  if (data.source) body['source'] = data.source;
+  if (data.sourceAlias) body['source_alias'] = data.sourceAlias;
+  if (data.sourceId) body['source_id'] = data.sourceId;
+  if (data.sourceType) body['source_type'] = data.sourceType;
+  if (data.sourceEmail) body['source_email'] = data.sourceEmail;
+  if (data.sourcePhone) body['source_phone'] = data.sourcePhone;
+  if (data.target) body['target'] = data.target;
+  if (data.targetAlias) body['target_alias'] = data.targetAlias;
+  if (data.targetId) body['target_id'] = data.targetId;
+  if (data.targetType) body['target_type'] = data.targetType;
+  if (data.targetEmail) body['target_email'] = data.targetEmail;
+  if (data.targetPhone) body['target_phone'] = data.targetPhone;
+  if (data.targetDeviceId) body['target_device_id'] = data.targetDeviceId;
+  if (data.parentId) body['parent_id'] = data.parentId;
+  if (data.value) body['value'] = data.value;
+  if (data.dataSource) body['data_source'] = data.dataSource;
+  if (data.dataSourceAlias) body['data_source_alias'] = data.dataSourceAlias;
+  if (data.dataSourceId) body['data_source_id'] = data.dataSourceId;
+  if (data.dataSourceType) body['data_source_type'] = data.dataSourceType;
+  if (data.contextId) body['context_id'] = data.contextId;
+  if (data.notificationContent) body['notification_content'] = data.notificationContent;
+  if (data.notificationUrl) body['notification_url'] = data.notificationUrl;
+  if (data.additionalData) body['additional_data'] = data.additionalData;
+  return body;
+}
+
+export { buildContextBody, buildMessageBody };
+
 export interface EntitiesService {
-  /**
-   * List entities with optional filtering and sorting.
-   * @returns Paginated list of Entity records with metadata.
-   */
   list(params?: ListEntitiesParams): Promise<PageResult<Entity>>;
-
-  /**
-   * Get a single entity by unique ID.
-   * @returns The matching Entity record.
-   */
   get(uniqueId: string): Promise<Entity>;
-
-  /**
-   * Register an entity in the Jarvis system.
-   * @returns The newly registered Entity record.
-   */
   register(uniqueId: string, data?: RegisterEntityRequest): Promise<Entity>;
-
-  /**
-   * Update an existing entity.
-   * @returns The updated Entity record.
-   */
   update(uniqueId: string, data: UpdateEntityRequest): Promise<Entity>;
-
-  /**
-   * Delete an entity.
-   */
   delete(uniqueId: string): Promise<void>;
-
-  /**
-   * Associate a prompt with an entity.
-   */
   addPrompt(uniqueId: string, promptUniqueId: string): Promise<void>;
-
-  /**
-   * Get an existing entity context by unique ID.
-   * @returns The EntityContext with messages and metadata.
-   */
-  getContext(uniqueId: string, contextUniqueId: string): Promise<EntityContext>;
-
-  /**
-   * Create a new context for entity conversations.
-   * @returns The newly created EntityContext.
-   */
-  createContext(uniqueId: string, data?: CreateEntityContextRequest): Promise<EntityContext>;
-
-  /**
-   * Get the conversation history for an entity context.
-   * @returns The EntityContext with full message history.
-   */
-  getConversation(uniqueId: string, contextUniqueId: string): Promise<EntityContext>;
-
-  /**
-   * Send a message within an entity context.
-   * @returns SendEntityMessageResponse with the sent message, optional AI response, and cost.
-   */
-  sendMessage(uniqueId: string, contextUniqueId: string, data: SendEntityMessageRequest): Promise<SendEntityMessageResponse>;
-
-  /**
-   * Query an entity's file using natural language (RAG).
-   * @returns QueryEntityFileResponse with answer, sources, token usage, and cost.
-   */
-  queryFile(uniqueId: string, fileUniqueId: string, data: QueryEntityFileRequest): Promise<QueryEntityFileResponse>;
+  createContext(uniqueId: string, data?: CreateContextRequest): Promise<unknown>;
+  sendMessage(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<unknown>;
+  sendMessageStream(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<unknown>;
 }
 
 export function createEntitiesService(transport: Transport, _config: { appId: string }): EntitiesService {
@@ -101,29 +106,14 @@ export function createEntitiesService(transport: Transport, _config: { appId: st
 
     async register(uniqueId: string, data?: RegisterEntityRequest): Promise<Entity> {
       const response = await transport.post<unknown>(`/entities/${uniqueId}/register`, {
-        entity: {
-          code: data?.code,
-          name: data?.name,
-          description: data?.description,
-          system_prompt: data?.systemPrompt,
-          model: data?.model,
-          payload: data?.payload,
-        },
+        entity: data ? buildEntityBody(data) : {},
       });
       return decodeOne(response, entityMapper);
     },
 
     async update(uniqueId: string, data: UpdateEntityRequest): Promise<Entity> {
       const response = await transport.put<unknown>(`/entities/${uniqueId}`, {
-        entity: {
-          name: data.name,
-          description: data.description,
-          system_prompt: data.systemPrompt,
-          model: data.model,
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
-        },
+        entity: buildEntityBody(data),
       });
       return decodeOne(response, entityMapper);
     },
@@ -133,97 +123,27 @@ export function createEntitiesService(transport: Transport, _config: { appId: st
     },
 
     async addPrompt(uniqueId: string, promptUniqueId: string): Promise<void> {
-      await transport.post(`/entities/${uniqueId}/prompts`, {
-        prompt_unique_id: promptUniqueId,
+      await transport.post(`/entities/${uniqueId}/add_prompt`, {
+        prompt: { unique_id: promptUniqueId },
       });
     },
 
-    async getContext(uniqueId: string, contextUniqueId: string): Promise<EntityContext> {
-      const response = await transport.get<any>(`/entities/${uniqueId}/contexts/${contextUniqueId}`);
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        entityUniqueId: response.entity_unique_id,
-        messages: (response.messages || []).map((m: any) => ({
-          role: m.role,
-          content: m.content,
-          timestamp: new Date(m.timestamp),
-          payload: m.payload,
-        })),
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
-    },
-
-    async createContext(uniqueId: string, data?: CreateEntityContextRequest): Promise<EntityContext> {
-      const response = await transport.post<any>(`/entities/${uniqueId}/contexts`, {
-        system_prompt: data?.systemPrompt,
-        payload: data?.payload,
+    async createContext(uniqueId: string, data?: CreateContextRequest): Promise<unknown> {
+      return transport.post(`/entities/${uniqueId}/create_context`, {
+        context: data ? buildContextBody(data) : {},
       });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        entityUniqueId: response.entity_unique_id,
-        messages: [],
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
     },
 
-    async getConversation(uniqueId: string, contextUniqueId: string): Promise<EntityContext> {
-      const response = await transport.get<any>(`/entities/${uniqueId}/conversations/${contextUniqueId}`);
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        entityUniqueId: response.entity_unique_id,
-        messages: (response.messages || []).map((m: any) => ({
-          role: m.role,
-          content: m.content,
-          timestamp: new Date(m.timestamp),
-          payload: m.payload,
-        })),
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
-    },
-
-    async sendMessage(uniqueId: string, contextUniqueId: string, data: SendEntityMessageRequest): Promise<SendEntityMessageResponse> {
-      const response = await transport.post<any>(`/entities/${uniqueId}/contexts/${contextUniqueId}/messages`, {
-        message: data.message,
-        payload: data.payload,
+    async sendMessage(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<unknown> {
+      return transport.post(`/entities/${uniqueId}/contexts/${contextUniqueId}/send_message`, {
+        message: buildMessageBody(data),
       });
-      return {
-        message: {
-          role: response.message.role,
-          content: response.message.content,
-          timestamp: new Date(response.message.timestamp),
-          payload: response.message.payload,
-        },
-        response: response.response ? {
-          role: response.response.role,
-          content: response.response.content,
-          timestamp: new Date(response.response.timestamp),
-          payload: response.response.payload,
-        } : undefined,
-        tokens: response.tokens,
-        cost: response.cost,
-      };
     },
 
-    async queryFile(uniqueId: string, fileUniqueId: string, data: QueryEntityFileRequest): Promise<QueryEntityFileResponse> {
-      const response = await transport.post<any>(`/entities/${uniqueId}/files/${fileUniqueId}/query`, {
-        query: data.query,
-        payload: data.payload,
+    async sendMessageStream(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<unknown> {
+      return transport.post(`/entities/${uniqueId}/contexts/${contextUniqueId}/send_message_stream`, {
+        message: buildMessageBody(data),
       });
-      return {
-        answer: response.answer,
-        sources: response.sources,
-        tokens: response.tokens,
-        cost: response.cost,
-      };
     },
   };
 }

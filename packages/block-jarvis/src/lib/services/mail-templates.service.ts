@@ -7,58 +7,48 @@ import type {
   ListMailTemplatesParams,
   CreateMandrillTemplateRequest,
   UpdateMandrillTemplateRequest,
-  MandrillStats,
 } from '../types/mail-template.js';
 import { mailTemplateMapper } from '../mappers/mail-template.mapper.js';
 
+function buildMailTemplateBody(data: CreateMailTemplateRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.eventName) body['event_name'] = data.eventName;
+  if (data.name) body['name'] = data.name;
+  if (data.source) body['source'] = data.source;
+  if (data.sourceAlias) body['source_alias'] = data.sourceAlias;
+  if (data.sourceId) body['source_id'] = data.sourceId;
+  if (data.sourceType) body['source_type'] = data.sourceType;
+  if (data.templateName) body['template_name'] = data.templateName;
+  if (data.templateHtml) body['template_html'] = data.templateHtml;
+  if (data.templateText) body['template_text'] = data.templateText;
+  if (data.fromDomain) body['from_domain'] = data.fromDomain;
+  if (data.fromAddress) body['from_address'] = data.fromAddress;
+  if (data.fromName) body['from_name'] = data.fromName;
+  if (data.fromSubject) body['from_subject'] = data.fromSubject;
+  if (data.preferredLanguage) body['preferred_language'] = data.preferredLanguage;
+  if (data.provider) body['provider'] = data.provider;
+  return body;
+}
+
+function buildMandrillBody(data: CreateMandrillTemplateRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.fromEmail) body['from_email'] = data.fromEmail;
+  if (data.fromName) body['from_name'] = data.fromName;
+  if (data.fromSubject) body['from_subject'] = data.fromSubject;
+  if (data.templateHtml) body['template_html'] = data.templateHtml;
+  if (data.templateText) body['template_text'] = data.templateText;
+  return body;
+}
+
 export interface MailTemplatesService {
-  /**
-   * List mail templates with optional filtering and sorting.
-   * @returns Paginated list of MailTemplate records with metadata.
-   */
   list(params?: ListMailTemplatesParams): Promise<PageResult<MailTemplate>>;
-
-  /**
-   * Get a single mail template by unique ID.
-   * @returns The matching MailTemplate record.
-   */
   get(uniqueId: string): Promise<MailTemplate>;
-
-  /**
-   * Create a new mail template.
-   * @returns The newly created MailTemplate record.
-   */
   create(data: CreateMailTemplateRequest): Promise<MailTemplate>;
-
-  /**
-   * Update an existing mail template.
-   * @returns The updated MailTemplate record.
-   */
   update(uniqueId: string, data: UpdateMailTemplateRequest): Promise<MailTemplate>;
-
-  /**
-   * Create a Mandrill template linked to this mail template.
-   * @returns The updated MailTemplate record with Mandrill integration.
-   */
   createMandrillTemplate(uniqueId: string, data?: CreateMandrillTemplateRequest): Promise<MailTemplate>;
-
-  /**
-   * Update the linked Mandrill template.
-   * @returns The updated MailTemplate record.
-   */
   updateMandrillTemplate(uniqueId: string, data?: UpdateMandrillTemplateRequest): Promise<MailTemplate>;
-
-  /**
-   * Publish the Mandrill template to make it active.
-   * @returns The updated MailTemplate record with published status.
-   */
   publishMandrill(uniqueId: string): Promise<MailTemplate>;
-
-  /**
-   * Get delivery statistics for the linked Mandrill template.
-   * @returns MandrillStats with send, open, click, bounce, and spam counts.
-   */
-  getMandrillStats(uniqueId: string): Promise<MandrillStats>;
+  getMandrillStats(uniqueId: string): Promise<unknown>;
 }
 
 export function createMailTemplatesService(transport: Transport, _config: { appId: string }): MailTemplatesService {
@@ -82,52 +72,29 @@ export function createMailTemplatesService(transport: Transport, _config: { appI
 
     async create(data: CreateMailTemplateRequest): Promise<MailTemplate> {
       const response = await transport.post<unknown>('/mailtemplates', {
-        mail_template: {
-          code: data.code,
-          name: data.name,
-          subject: data.subject,
-          from_email: data.fromEmail,
-          from_name: data.fromName,
-          html_content: data.htmlContent,
-          text_content: data.textContent,
-          payload: data.payload,
-        },
+        mail_template: buildMailTemplateBody(data),
       });
       return decodeOne(response, mailTemplateMapper);
     },
 
     async update(uniqueId: string, data: UpdateMailTemplateRequest): Promise<MailTemplate> {
       const response = await transport.put<unknown>(`/mailtemplates/${uniqueId}`, {
-        mail_template: {
-          name: data.name,
-          subject: data.subject,
-          from_email: data.fromEmail,
-          from_name: data.fromName,
-          html_content: data.htmlContent,
-          text_content: data.textContent,
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
-        },
+        mail_template: buildMailTemplateBody(data),
       });
       return decodeOne(response, mailTemplateMapper);
     },
 
     async createMandrillTemplate(uniqueId: string, data?: CreateMandrillTemplateRequest): Promise<MailTemplate> {
-      const response = await transport.post<unknown>(`/mailtemplates/${uniqueId}/mandrill`, {
-        slug: data?.slug,
-        labels: data?.labels,
-        payload: data?.payload,
-      });
+      const response = await transport.post<unknown>(`/mailtemplates/${uniqueId}/mandrill`, data ? {
+        mandrill: buildMandrillBody(data),
+      } : {});
       return decodeOne(response, mailTemplateMapper);
     },
 
     async updateMandrillTemplate(uniqueId: string, data?: UpdateMandrillTemplateRequest): Promise<MailTemplate> {
-      const response = await transport.put<unknown>(`/mailtemplates/${uniqueId}/mandrill`, {
-        slug: data?.slug,
-        labels: data?.labels,
-        payload: data?.payload,
-      });
+      const response = await transport.put<unknown>(`/mailtemplates/${uniqueId}/mandrill`, data ? {
+        mandrill: buildMandrillBody(data),
+      } : {});
       return decodeOne(response, mailTemplateMapper);
     },
 
@@ -136,20 +103,8 @@ export function createMailTemplatesService(transport: Transport, _config: { appI
       return decodeOne(response, mailTemplateMapper);
     },
 
-    async getMandrillStats(uniqueId: string): Promise<MandrillStats> {
-      const response = await transport.get<any>(`/mailtemplates/${uniqueId}/mandrill/stats`);
-      return {
-        slug: response.slug,
-        sentCount: response.sent_count,
-        openCount: response.open_count,
-        clickCount: response.click_count,
-        hardBounceCount: response.hard_bounce_count,
-        softBounceCount: response.soft_bounce_count,
-        rejectCount: response.reject_count,
-        spamCount: response.spam_count,
-        unsubCount: response.unsub_count,
-        lastSentAt: response.last_sent_at ? new Date(response.last_sent_at) : undefined,
-      };
+    async getMandrillStats(uniqueId: string): Promise<unknown> {
+      return transport.get<unknown>(`/mailtemplates/${uniqueId}/mandrill/stats`);
     },
   };
 }

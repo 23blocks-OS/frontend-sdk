@@ -1,3 +1,5 @@
+import type { CreateContextRequest, SendMessageRequest } from './entity.js';
+
 export interface AgentThread {
   id: string;
   threadId: string;
@@ -7,33 +9,6 @@ export interface AgentThread {
   metadata?: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
-}
-
-export interface AgentRun {
-  id: string;
-  runId: string;
-  threadId: string;
-  agentUniqueId: string;
-  status: string;
-  model?: string;
-  instructions?: string;
-  tools?: unknown[];
-  startedAt?: Date;
-  completedAt?: Date;
-  failedAt?: Date;
-  cancelledAt?: Date;
-  expiresAt?: Date;
-  lastError?: {
-    code: string;
-    message: string;
-  };
-  usage?: {
-    promptTokens: number;
-    completionTokens: number;
-    totalTokens: number;
-  };
-  metadata?: Record<string, unknown>;
-  createdAt: Date;
 }
 
 export interface AgentMessage {
@@ -68,37 +43,45 @@ export interface AgentContext {
   };
 }
 
+/** Matches thread_params in agents_runtime_controller.rb (create_thread) */
 export interface CreateAgentThreadRequest {
   metadata?: Record<string, unknown>;
+  fileIds?: string[];
 }
 
-export interface CreateAgentContextRequest {
+/** Matches context_params in agents_runtime_controller.rb (create_context) */
+export type CreateAgentContextRequest = CreateContextRequest;
+
+/** Matches message_params + prompt_params in agents_runtime_controller.rb */
+export interface SendAgentMessageRequest {
+  promptUniqueId?: string;
+  role?: string;
+  content: string;
+  fileIds?: string[];
   metadata?: Record<string, unknown>;
-}
-
-export interface SendAgentThreadMessageRequest {
-  message: string;
-  metadata?: Record<string, unknown>;
-}
-
-export interface SendAgentThreadMessageResponse {
-  message: AgentMessage;
-}
-
-export interface SendAgentThreadMessageStreamRequest {
-  message: string;
-  metadata?: Record<string, unknown>;
-}
-
-export interface RunAgentThreadRequest {
-  instructions?: string;
-  additionalInstructions?: string;
-  tools?: unknown[];
-  metadata?: Record<string, unknown>;
-}
-
-export interface RunAgentThreadResponse {
-  run: AgentRun;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  sourceEmail?: string;
+  sourcePhone?: string;
+  target?: string;
+  targetAlias?: string;
+  targetId?: string;
+  targetType?: string;
+  targetEmail?: string;
+  targetPhone?: string;
+  targetDeviceId?: string;
+  parentId?: string;
+  value?: string;
+  dataSource?: string;
+  dataSourceAlias?: string;
+  dataSourceId?: string;
+  dataSourceType?: string;
+  contextId?: string;
+  notificationContent?: string;
+  notificationUrl?: string;
+  additionalData?: string;
 }
 
 export interface AgentRunExecution {
@@ -125,3 +108,5 @@ export interface ListAgentRunExecutionsParams {
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }
+
+export type { CreateContextRequest, SendMessageRequest };

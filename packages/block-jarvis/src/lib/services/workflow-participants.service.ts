@@ -8,34 +8,21 @@ import type {
 } from '../types/workflow-participant.js';
 import { workflowParticipantMapper } from '../mappers/workflow-participant.mapper.js';
 
+function buildParticipantBody(data: AddWorkflowParticipantRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.role) body['role'] = data.role;
+  if (data.roleName) body['role_name'] = data.roleName;
+  if (data.participantUniqueId) body['participant_unique_id'] = data.participantUniqueId;
+  if (data.participantName) body['participant_name'] = data.participantName;
+  if (data.status) body['status'] = data.status;
+  return body;
+}
+
 export interface WorkflowParticipantsService {
-  /**
-   * List participants in a workflow with optional filtering and sorting.
-   * @returns Paginated list of WorkflowParticipant records with metadata.
-   */
   list(workflowUniqueId: string, params?: ListWorkflowParticipantsParams): Promise<PageResult<WorkflowParticipant>>;
-
-  /**
-   * Get a single workflow participant by unique ID.
-   * @returns The matching WorkflowParticipant record.
-   */
   get(workflowUniqueId: string, uniqueId: string): Promise<WorkflowParticipant>;
-
-  /**
-   * Add a participant to a workflow.
-   * @returns The newly created WorkflowParticipant record.
-   */
   add(workflowUniqueId: string, data: AddWorkflowParticipantRequest): Promise<WorkflowParticipant>;
-
-  /**
-   * Update a workflow participant's role or permissions.
-   * @returns The updated WorkflowParticipant record.
-   */
   update(workflowUniqueId: string, uniqueId: string, data: UpdateWorkflowParticipantRequest): Promise<WorkflowParticipant>;
-
-  /**
-   * Remove a participant from a workflow.
-   */
   remove(workflowUniqueId: string, uniqueId: string): Promise<void>;
 }
 
@@ -45,7 +32,6 @@ export function createWorkflowParticipantsService(transport: Transport, _config:
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
-      if (params?.entityType) queryParams['entity_type'] = params.entityType;
       if (params?.role) queryParams['role'] = params.role;
       if (params?.status) queryParams['status'] = params.status;
       if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
@@ -61,26 +47,14 @@ export function createWorkflowParticipantsService(transport: Transport, _config:
 
     async add(workflowUniqueId: string, data: AddWorkflowParticipantRequest): Promise<WorkflowParticipant> {
       const response = await transport.post<unknown>(`/workflows/${workflowUniqueId}/participants`, {
-        participant: {
-          entity_type: data.entityType,
-          entity_unique_id: data.entityUniqueId,
-          role: data.role,
-          permissions: data.permissions,
-          payload: data.payload,
-        },
+        workflow_participant: buildParticipantBody(data),
       });
       return decodeOne(response, workflowParticipantMapper);
     },
 
     async update(workflowUniqueId: string, uniqueId: string, data: UpdateWorkflowParticipantRequest): Promise<WorkflowParticipant> {
       const response = await transport.put<unknown>(`/workflows/${workflowUniqueId}/participants/${uniqueId}`, {
-        participant: {
-          role: data.role,
-          permissions: data.permissions,
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
-        },
+        workflow_participant: buildParticipantBody(data),
       });
       return decodeOne(response, workflowParticipantMapper);
     },

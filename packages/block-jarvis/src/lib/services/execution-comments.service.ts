@@ -9,58 +9,35 @@ import type {
 } from '../types/comment.js';
 import { executionCommentMapper } from '../mappers/comment.mapper.js';
 
+function buildCommentBody(data: CreateExecutionCommentRequest): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (data.content) body['content'] = data.content;
+  if (data.thumbnailUrl) body['thumbnail_url'] = data.thumbnailUrl;
+  if (data.imageUrl) body['image_url'] = data.imageUrl;
+  if (data.contentUrl) body['content_url'] = data.contentUrl;
+  if (data.mediaUrl) body['media_url'] = data.mediaUrl;
+  if (data.userUniqueId) body['user_unique_id'] = data.userUniqueId;
+  if (data.userName) body['user_name'] = data.userName;
+  if (data.userAlias) body['user_alias'] = data.userAlias;
+  if (data.userAvatarUrl) body['user_avatar_url'] = data.userAvatarUrl;
+  if (data.status) body['status'] = data.status;
+  if (data.aiGenerated !== undefined) body['ai_generated'] = data.aiGenerated;
+  if (data.aiModel) body['ai_model'] = data.aiModel;
+  return body;
+}
+
 export interface ExecutionCommentsService {
-  /**
-   * List comments on an execution with optional filtering and sorting.
-   * @returns Paginated list of ExecutionComment records with metadata.
-   */
   list(promptUniqueId: string, executionUniqueId: string, params?: ListExecutionCommentsParams): Promise<PageResult<ExecutionComment>>;
-
-  /**
-   * Get a single execution comment by unique ID.
-   * @returns The matching ExecutionComment record.
-   */
   get(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<ExecutionComment>;
-
-  /**
-   * Create a new comment on an execution.
-   * @returns The newly created ExecutionComment record.
-   */
   create(promptUniqueId: string, executionUniqueId: string, data: CreateExecutionCommentRequest): Promise<ExecutionComment>;
-
-  /**
-   * Update an existing execution comment.
-   * @returns The updated ExecutionComment record.
-   */
   update(promptUniqueId: string, executionUniqueId: string, uniqueId: string, data: UpdateExecutionCommentRequest): Promise<ExecutionComment>;
-
-  /**
-   * Delete an execution comment.
-   */
   delete(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
-
-  /** Like an execution comment. */
   like(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
-
-  /** Remove a like from an execution comment. */
   dislike(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
-
-  /**
-   * Reply to an execution comment.
-   * @returns The newly created reply ExecutionComment record.
-   */
   reply(promptUniqueId: string, executionUniqueId: string, uniqueId: string, data: ReplyToCommentRequest): Promise<ExecutionComment>;
-
-  /** Follow an execution comment to receive notifications. */
   follow(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
-
-  /** Unfollow an execution comment. */
   unfollow(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
-
-  /** Save an execution comment to bookmarks. */
   save(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
-
-  /** Remove an execution comment from bookmarks. */
   unsave(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
 }
 
@@ -86,23 +63,14 @@ export function createExecutionCommentsService(transport: Transport, _config: { 
 
     async create(promptUniqueId: string, executionUniqueId: string, data: CreateExecutionCommentRequest): Promise<ExecutionComment> {
       const response = await transport.post<unknown>(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments`, {
-        comment: {
-          content: data.content,
-          user_unique_id: data.userUniqueId,
-          payload: data.payload,
-        },
+        comment: buildCommentBody(data),
       });
       return decodeOne(response, executionCommentMapper);
     },
 
     async update(promptUniqueId: string, executionUniqueId: string, uniqueId: string, data: UpdateExecutionCommentRequest): Promise<ExecutionComment> {
       const response = await transport.put<unknown>(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments/${uniqueId}`, {
-        comment: {
-          content: data.content,
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
-        },
+        comment: buildCommentBody(data),
       });
       return decodeOne(response, executionCommentMapper);
     },
@@ -121,11 +89,7 @@ export function createExecutionCommentsService(transport: Transport, _config: { 
 
     async reply(promptUniqueId: string, executionUniqueId: string, uniqueId: string, data: ReplyToCommentRequest): Promise<ExecutionComment> {
       const response = await transport.post<unknown>(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments/${uniqueId}/reply`, {
-        comment: {
-          content: data.content,
-          user_unique_id: data.userUniqueId,
-          payload: data.payload,
-        },
+        comment: buildCommentBody(data),
       });
       return decodeOne(response, executionCommentMapper);
     },

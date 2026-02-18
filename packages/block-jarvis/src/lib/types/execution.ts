@@ -1,8 +1,6 @@
-import type { IdentityCore } from '@23blocks/contracts';
-
-export type ExecutionStatus = 'pending' | 'running' | 'completed' | 'failed';
-
-export interface Execution extends IdentityCore {
+export interface Execution {
+  id: string;
+  uniqueId: string;
   agentUniqueId?: string;
   promptUniqueId?: string;
   input?: string;
@@ -10,19 +8,19 @@ export interface Execution extends IdentityCore {
   tokens?: number;
   cost?: number;
   duration?: number;
-  status: ExecutionStatus;
+  status: string;
   startedAt?: Date;
   completedAt?: Date;
-  payload?: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Request types
 export interface ListExecutionsParams {
   page?: number;
   perPage?: number;
   agentUniqueId?: string;
   promptUniqueId?: string;
-  status?: ExecutionStatus;
+  status?: string;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }

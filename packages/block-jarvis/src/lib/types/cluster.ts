@@ -1,38 +1,54 @@
+import type { CreateContextRequest, SendMessageRequest } from './entity.js';
+
 export interface Cluster {
   id: string;
   uniqueId: string;
-  userUniqueId: string;
-  code: string;
   name: string;
+  reference?: string;
   description?: string;
-  members: ClusterMember[];
-  enabled: boolean;
+  userUniqueId?: string;
+  abstract?: string;
+  keywords?: string;
+  content?: string;
+  contentUrl?: string;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  mediaUrl?: string;
+  source?: string;
+  sourceId?: string;
+  sourceType?: string;
+  sourceAlias?: string;
+  tags?: string;
+  members?: string;
   status: string;
-  payload?: Record<string, unknown>;
+  enabled?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface ClusterMember {
-  entityUniqueId: string;
-  role?: string;
-  addedAt: Date;
-}
-
+/** Matches cluster_params in clusters_controller.rb */
 export interface CreateClusterRequest {
-  code?: string;
   name: string;
+  reference?: string;
   description?: string;
-  payload?: Record<string, unknown>;
+  userUniqueId?: string;
+  abstract?: string;
+  keywords?: string;
+  content?: string;
+  contentUrl?: string;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  mediaUrl?: string;
+  source?: string;
+  sourceId?: string;
+  sourceType?: string;
+  sourceAlias?: string;
+  tags?: string;
+  members?: string;
+  status?: string;
 }
 
-export interface UpdateClusterRequest {
-  name?: string;
-  description?: string;
-  enabled?: boolean;
-  status?: string;
-  payload?: Record<string, unknown>;
-}
+export type UpdateClusterRequest = CreateClusterRequest;
 
 export interface ListClustersParams {
   page?: number;
@@ -43,36 +59,4 @@ export interface ListClustersParams {
   sortOrder?: 'asc' | 'desc';
 }
 
-export interface ClusterContext {
-  id: string;
-  uniqueId: string;
-  clusterUniqueId: string;
-  messages: ClusterMessage[];
-  payload?: Record<string, unknown>;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface ClusterMessage {
-  role: string;
-  content: string;
-  timestamp: Date;
-  payload?: Record<string, unknown>;
-}
-
-export interface CreateClusterContextRequest {
-  systemPrompt?: string;
-  payload?: Record<string, unknown>;
-}
-
-export interface SendClusterMessageRequest {
-  message: string;
-  payload?: Record<string, unknown>;
-}
-
-export interface SendClusterMessageResponse {
-  message: ClusterMessage;
-  response?: ClusterMessage;
-  tokens?: number;
-  cost?: number;
-}
+export type { CreateContextRequest, SendMessageRequest };

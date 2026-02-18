@@ -1,21 +1,21 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Workflow } from '../types/workflow.js';
+import type { Tool } from '../types/tool.js';
 import { parseString, parseDate, parseBoolean } from './utils.js';
 
-export const workflowMapper: ResourceMapper<Workflow> = {
-  type: 'Workflow',
+export const toolMapper: ResourceMapper<Tool> = {
+  type: 'tool',
   map: (resource) => ({
     id: resource.id,
     uniqueId: parseString(resource.attributes['unique_id']) || '',
     name: parseString(resource.attributes['name']) || '',
     description: parseString(resource.attributes['description']),
-    source: parseString(resource.attributes['source']),
-    sourceId: parseString(resource.attributes['source_id']),
-    sourceType: parseString(resource.attributes['source_type']),
-    sourceAlias: parseString(resource.attributes['source_alias']),
-    contentUrl: parseString(resource.attributes['content_url']),
-    imageUrl: parseString(resource.attributes['image_url']),
-    videoUrl: parseString(resource.attributes['video_url']),
+    toolType: parseString(resource.attributes['tool_type']),
+    apiMethod: parseString(resource.attributes['api_method']),
+    apiUrl: parseString(resource.attributes['api_url']),
+    requiresAuth: resource.attributes['requires_auth'] != null ? parseBoolean(resource.attributes['requires_auth']) : undefined,
+    responseMapping: parseString(resource.attributes['response_mapping']),
+    parameters: resource.attributes['parameters'] as Record<string, unknown> | undefined,
+    apiHeaders: resource.attributes['api_headers'] as Record<string, unknown> | undefined,
     status: parseString(resource.attributes['status']) || 'active',
     enabled: resource.attributes['enabled'] != null ? parseBoolean(resource.attributes['enabled']) : undefined,
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
