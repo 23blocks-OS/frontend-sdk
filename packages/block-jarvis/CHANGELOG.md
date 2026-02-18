@@ -1,3 +1,24 @@
+# 4.0.0 (2026-02-18)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/block-jarvis:** rewrite all types, services, and mappers to match API strong params 1:1 ([de37ab1](https://github.com/23blocks-OS/frontend-sdk/commit/de37ab1))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-jarvis:** rewrite all types, services, and mappers to match API strong params 1:1  ([de37ab1](https://github.com/23blocks-OS/frontend-sdk/commit/de37ab1))
+  Every type, mapper, and service in block-jarvis has been
+  rewritten to match the Rails API strong params exactly. This removes
+  fabricated fields (payload, IdentityCore, EntityStatus), adds missing
+  fields, fixes request body shapes, and adds 5 new services (tools,
+  agent-tools, agent-tool-assignments, conditions, step-transitions).
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 3.3.0 (2026-02-17)
 
 ### 🚀 Features

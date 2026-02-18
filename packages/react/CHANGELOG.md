@@ -1,3 +1,31 @@
+# 9.0.0 (2026-02-18)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/react:** rebuild with breaking jarvis block changes ([527eb61](https://github.com/23blocks-OS/frontend-sdk/commit/527eb61))
+- ⚠️  **@23blocks/sdk:** rebuild meta-packages with breaking jarvis block changes ([990f73c](https://github.com/23blocks-OS/frontend-sdk/commit/990f73c))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/react:** rebuild with breaking jarvis block changes  ([527eb61](https://github.com/23blocks-OS/frontend-sdk/commit/527eb61))
+  Jarvis block types, services, and mappers rewritten to
+  match API strong params.
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- **@23blocks/sdk:** rebuild meta-packages with breaking jarvis block changes  ([990f73c](https://github.com/23blocks-OS/frontend-sdk/commit/990f73c))
+  Jarvis block types, services, and mappers rewritten to
+  match API strong params. Meta-packages must be rebuilt for consumers to
+  receive the updated block-jarvis code.
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 4.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 8.0.0 (2026-02-18)
 
 ### 🩹 Fixes
