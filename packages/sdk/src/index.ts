@@ -1,2 +1,2 @@
-// Re-exports all blocks with strict type-safe mappers
+// Re-exports all blocks — CreateOrderRequest supports flat + items[] formats
 export * from './lib/sdk.js';
