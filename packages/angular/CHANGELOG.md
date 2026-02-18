@@ -1,3 +1,18 @@
+## 7.2.5 (2026-02-18)
+
+### 🩹 Fixes
+
+- **@23blocks/angular:** rebuild meta-package with sales block strong params rewrite ([ca9f856](https://github.com/23blocks-OS/frontend-sdk/commit/ca9f856))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.2.2
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.2.4 (2026-02-18)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,14 @@
+## 5.2.2 (2026-02-18)
+
+### 🩹 Fixes
+
+- **@23blocks/block-sales:** rewrite all types, services, and mappers to match API strong params 1:1 ([6fef3d3](https://github.com/23blocks-OS/frontend-sdk/commit/6fef3d3))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 5.2.1 (2026-02-18)
 
 ### 🩹 Fixes

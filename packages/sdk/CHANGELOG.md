@@ -1,3 +1,18 @@
+## 6.7.5 (2026-02-18)
+
+### 🩹 Fixes
+
+- **@23blocks/sdk:** rebuild meta-package with sales block strong params rewrite ([e3c0d77](https://github.com/23blocks-OS/frontend-sdk/commit/e3c0d77))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 5.2.2
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 6.7.4 (2026-02-18)
 
 ### 🩹 Fixes
