@@ -1,2 +1,2 @@
-// Re-exports all blocks — sales block types rewritten to match API strong params 1:1
+// Re-exports all blocks — v2 sales block (breaking: types match API strong params)
 export * from './lib/sdk.js';
