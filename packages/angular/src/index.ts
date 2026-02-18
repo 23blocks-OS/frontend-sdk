@@ -1,2 +1,2 @@
-// Sales block types rewritten to match API strong params 1:1
+// v2 sales block (breaking: types match API strong params)
 export * from './lib/index';
