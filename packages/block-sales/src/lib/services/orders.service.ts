@@ -17,7 +17,9 @@ export interface OrdersService {
   get(uniqueId: string): Promise<Order>;
 
   /**
-   * Create a new order with line items.
+   * Create a new order. Supports two formats:
+   * - Flat: customerUniqueId + subtotal + source fields (items added later via orderDetails)
+   * - With items: userUniqueId + items[] array with line items
    * @returns The newly created Order record.
    */
   create(data: CreateOrderRequest): Promise<Order>;
@@ -81,21 +83,40 @@ export function createOrdersService(transport: Transport, _config: { appId: stri
     },
 
     async create(data: CreateOrderRequest): Promise<Order> {
-      const response = await transport.post<unknown>('/orders', {
-        order: {
-          user_unique_id: data.userUniqueId,
-          items: data.items.map((item) => ({
-            product_unique_id: item.productUniqueId,
-            product_variation_unique_id: item.productVariationUniqueId,
-            quantity: item.quantity,
-            unit_price: item.unitPrice,
-          })),
-          shipping_address_unique_id: data.shippingAddressUniqueId,
-          billing_address_unique_id: data.billingAddressUniqueId,
-          notes: data.notes,
-          payload: data.payload,
-        },
-      });
+      const order: Record<string, unknown> = {};
+
+      if (data.customerUniqueId) order['customer_unique_id'] = data.customerUniqueId;
+      if (data.userUniqueId) order['user_unique_id'] = data.userUniqueId;
+      if (data.subtotal !== undefined) order['subtotal'] = data.subtotal;
+      if (data.source) order['source'] = data.source;
+      if (data.sourceAlias) order['source_alias'] = data.sourceAlias;
+      if (data.sourceId) order['source_id'] = data.sourceId;
+      if (data.sourceType) order['source_type'] = data.sourceType;
+      if (data.code) order['code'] = data.code;
+      if (data.discount !== undefined) order['discount'] = data.discount;
+      if (data.discountValue !== undefined) order['discount_value'] = data.discountValue;
+      if (data.tax !== undefined) order['tax'] = data.tax;
+      if (data.taxValue !== undefined) order['tax_value'] = data.taxValue;
+      if (data.fees !== undefined) order['fees'] = data.fees;
+      if (data.feesValue !== undefined) order['fees_value'] = data.feesValue;
+      if (data.promoCode) order['promo_code'] = data.promoCode;
+      if (data.internalNotes) order['internal_notes'] = data.internalNotes;
+      if (data.cartUniqueId) order['cart_unique_id'] = data.cartUniqueId;
+      if (data.referredBy) order['referred_by'] = data.referredBy;
+      if (data.items) {
+        order['items'] = data.items.map((item) => ({
+          product_unique_id: item.productUniqueId,
+          product_variation_unique_id: item.productVariationUniqueId,
+          quantity: item.quantity,
+          unit_price: item.unitPrice,
+        }));
+      }
+      if (data.shippingAddressUniqueId) order['shipping_address_unique_id'] = data.shippingAddressUniqueId;
+      if (data.billingAddressUniqueId) order['billing_address_unique_id'] = data.billingAddressUniqueId;
+      if (data.notes) order['notes'] = data.notes;
+      if (data.payload) order['payload'] = data.payload;
+
+      const response = await transport.post<unknown>('/orders', { order });
       return decodeOne(response, orderMapper);
     },
 
