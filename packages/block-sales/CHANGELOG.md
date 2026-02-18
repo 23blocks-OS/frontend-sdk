@@ -1,3 +1,25 @@
+# 6.0.0 (2026-02-18)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-sales:** mark breaking change for API strong params rewrite ([8285990](https://github.com/23blocks-OS/frontend-sdk/commit/8285990))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-sales:** mark breaking change for API strong params rewrite  ([8285990](https://github.com/23blocks-OS/frontend-sdk/commit/8285990))
+  All request types, service methods, and response mappers
+  rewritten to match Rails API strong params 1:1. Removed methods:
+  subscriptions.cancel/pause/resume/listByUser/update. Renamed methods:
+  mercadopago.createPaymentIntent→createPayment. Removed types:
+  SubscriptionInterval, SubscriptionStatus, MercadoPagoPaymentIntent,
+  StripeLineItem. Renamed/removed fields across all request types.
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 5.2.2 (2026-02-18)
 
 ### 🩹 Fixes

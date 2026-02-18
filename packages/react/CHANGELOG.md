@@ -1,3 +1,24 @@
+# 8.0.0 (2026-02-18)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/react:** rebuild with breaking sales block changes ([8873585](https://github.com/23blocks-OS/frontend-sdk/commit/8873585))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/react:** rebuild with breaking sales block changes  ([8873585](https://github.com/23blocks-OS/frontend-sdk/commit/8873585))
+  Sales block types and methods renamed/removed to match API.
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 6.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.7.5 (2026-02-18)
 
 ### 🩹 Fixes
