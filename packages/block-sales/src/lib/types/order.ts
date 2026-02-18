@@ -71,13 +71,6 @@ export interface CreateOrderRequest {
   cartUniqueId?: string;
   /** Referred by */
   referredBy?: string;
-  /** Line items (optional - order details can be added separately via orderDetails.create) */
-  items?: Array<{
-    productUniqueId: string;
-    productVariationUniqueId?: string;
-    quantity: number;
-    unitPrice: number;
-  }>;
   shippingAddressUniqueId?: string;
   billingAddressUniqueId?: string;
   notes?: string;

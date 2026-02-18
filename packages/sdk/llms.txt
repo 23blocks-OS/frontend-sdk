@@ -473,7 +473,7 @@ const [authHealth, crmHealth] = await Promise.all([
 - `moneyRules`, `productRules`, `eventRules` - Reward trigger rules
 
 ### sales (block-sales)
-- `orders`, `orderDetails`, `orderTaxes` - Order management (create supports flat format with customerUniqueId+subtotal+source, or items[] format)
+- `orders`, `orderDetails`, `orderTaxes` - Order management (create with customerUniqueId+subtotal+source, then add line items via orderDetails)
 - `payments` - Payment processing
 - `subscriptions`, `subscriptionModels` - Recurring billing
 - `entities`, `users`, `customers` - Sales entities with subscription management

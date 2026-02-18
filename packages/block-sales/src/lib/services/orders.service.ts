@@ -17,9 +17,7 @@ export interface OrdersService {
   get(uniqueId: string): Promise<Order>;
 
   /**
-   * Create a new order. Supports two formats:
-   * - Flat: customerUniqueId + subtotal + source fields (items added later via orderDetails)
-   * - With items: userUniqueId + items[] array with line items
+   * Create a new order. Line items are added separately via orderDetails.create().
    * @returns The newly created Order record.
    */
   create(data: CreateOrderRequest): Promise<Order>;
@@ -103,14 +101,6 @@ export function createOrdersService(transport: Transport, _config: { appId: stri
       if (data.internalNotes) order['internal_notes'] = data.internalNotes;
       if (data.cartUniqueId) order['cart_unique_id'] = data.cartUniqueId;
       if (data.referredBy) order['referred_by'] = data.referredBy;
-      if (data.items) {
-        order['items'] = data.items.map((item) => ({
-          product_unique_id: item.productUniqueId,
-          product_variation_unique_id: item.productVariationUniqueId,
-          quantity: item.quantity,
-          unit_price: item.unitPrice,
-        }));
-      }
       if (data.shippingAddressUniqueId) order['shipping_address_unique_id'] = data.shippingAddressUniqueId;
       if (data.billingAddressUniqueId) order['billing_address_unique_id'] = data.billingAddressUniqueId;
       if (data.notes) order['notes'] = data.notes;
