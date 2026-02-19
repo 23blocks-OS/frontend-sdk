@@ -1,3 +1,18 @@
+# 7.0.0 (2026-02-19)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/block-sales:** add paymentIntentId, customer, metadata to StripePaymentIntent ([c0bd1b2](https://github.com/23blocks-OS/frontend-sdk/commit/c0bd1b2))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-sales:** add paymentIntentId, customer, metadata to StripePaymentIntent  ([c0bd1b2](https://github.com/23blocks-OS/frontend-sdk/commit/c0bd1b2))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 6.0.0 (2026-02-18)
 
 ### 🩹 Fixes

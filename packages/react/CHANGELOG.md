@@ -1,3 +1,22 @@
+# 10.0.0 (2026-02-19)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/react:** rebuild with StripePaymentIntent breaking changes ([6a6fc7e](https://github.com/23blocks-OS/frontend-sdk/commit/6a6fc7e))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/react:** rebuild with StripePaymentIntent breaking changes  ([6a6fc7e](https://github.com/23blocks-OS/frontend-sdk/commit/6a6fc7e))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 7.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 9.0.0 (2026-02-18)
 
 ### 🩹 Fixes

@@ -1,3 +1,22 @@
+# 10.0.0 (2026-02-19)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/angular:** rebuild with StripePaymentIntent breaking changes ([66e98ed](https://github.com/23blocks-OS/frontend-sdk/commit/66e98ed))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/angular:** rebuild with StripePaymentIntent breaking changes  ([66e98ed](https://github.com/23blocks-OS/frontend-sdk/commit/66e98ed))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 7.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 9.0.0 (2026-02-18)
 
 ### 🩹 Fixes
