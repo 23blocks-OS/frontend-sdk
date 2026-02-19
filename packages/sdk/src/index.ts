@@ -1,2 +1,2 @@
-// Re-exports all blocks — v2 jarvis block (breaking: types match API strong params)
+// Re-exports all blocks — StripePaymentIntent now includes paymentIntentId, customer, metadata
 export * from './lib/sdk.js';
