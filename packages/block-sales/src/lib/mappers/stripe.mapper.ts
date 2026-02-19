@@ -43,10 +43,13 @@ export const stripePaymentIntentMapper: ResourceMapper<StripePaymentIntent> = {
   type: 'StripePaymentIntent',
   map: (resource) => ({
     id: resource.id,
+    paymentIntentId: resource.attributes['payment_intent_id'] as string,
     clientSecret: resource.attributes['client_secret'] as string,
     status: resource.attributes['status'] as string,
     amount: parseNumber(resource.attributes['amount']),
     currency: resource.attributes['currency'] as string,
+    customer: resource.attributes['customer'] as string | undefined,
+    metadata: resource.attributes['metadata'] as Record<string, unknown> | undefined,
   }),
 };
 

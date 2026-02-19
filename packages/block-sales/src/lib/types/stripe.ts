@@ -96,10 +96,13 @@ export interface CreateStripeCheckoutSessionRequest {
 
 export interface StripePaymentIntent {
   id: string;
+  paymentIntentId: string;
   clientSecret: string;
   status: string;
   amount: number;
   currency: string;
+  customer?: string;
+  metadata?: Record<string, unknown>;
 }
 
 /** Matches payment_params in stripe_controller.rb */
