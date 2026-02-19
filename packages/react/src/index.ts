@@ -1,2 +1,2 @@
-// v2 jarvis block rewrite (breaking: types match API strong params)
+// StripePaymentIntent now includes paymentIntentId, customer, metadata
 export * from './lib/index.js';
