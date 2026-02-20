@@ -2,41 +2,65 @@ import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 
 export interface MailTemplate extends IdentityCore {
   name: string;
-  subject: string;
-  htmlContent?: string;
-  textContent?: string;
-  provider?: string;
-  providerTemplateId?: string;
-  fromEmail?: string;
+  eventName?: string;
+  fromSubject?: string;
+  templateHtml?: string;
+  templateText?: string;
+  templateName?: string;
+  fromAddress?: string;
+  fromDomain?: string;
   fromName?: string;
-  replyTo?: string;
+  provider?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  preferredLanguage?: string;
+  key?: string;
+  secret?: string;
   status: EntityStatus;
   payload?: Record<string, unknown>;
 }
 
 export interface CreateMailTemplateRequest {
   name: string;
-  subject: string;
-  htmlContent?: string;
-  textContent?: string;
-  provider?: string;
-  providerTemplateId?: string;
-  fromEmail?: string;
+  eventName?: string;
+  fromSubject?: string;
+  templateHtml?: string;
+  templateText?: string;
+  templateName?: string;
+  fromAddress?: string;
+  fromDomain?: string;
   fromName?: string;
-  replyTo?: string;
+  provider?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  preferredLanguage?: string;
+  key?: string;
+  secret?: string;
   payload?: Record<string, unknown>;
 }
 
 export interface UpdateMailTemplateRequest {
   name?: string;
-  subject?: string;
-  htmlContent?: string;
-  textContent?: string;
-  provider?: string;
-  providerTemplateId?: string;
-  fromEmail?: string;
+  eventName?: string;
+  fromSubject?: string;
+  templateHtml?: string;
+  templateText?: string;
+  templateName?: string;
+  fromAddress?: string;
+  fromDomain?: string;
   fromName?: string;
-  replyTo?: string;
+  provider?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  preferredLanguage?: string;
+  key?: string;
+  secret?: string;
   status?: EntityStatus;
   payload?: Record<string, unknown>;
 }

@@ -1,6 +1,6 @@
 # @23blocks/block-forms
 
-Forms block for the 23blocks SDK - dynamic forms, schemas, and submissions.
+Forms block for the 23blocks SDK - dynamic forms, schemas, submissions, landings, surveys, appointments, subscriptions, referrals, and mail templates.
 
 [![npm version](https://img.shields.io/npm/v/@23blocks/block-forms.svg)](https://www.npmjs.com/package/@23blocks/block-forms)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -16,9 +16,18 @@ npm install @23blocks/block-forms @23blocks/transport-http
 This package provides form building and submission functionality including:
 
 - **Forms** - Form definitions and configurations
-- **Form Schemas** - Field definitions and validations
-- **Form Instances** - Individual form submissions
-- **Form Sets** - Groups of related forms
+- **Form Schemas** - Field definitions with datasource configuration
+- **Form Schema Versions** - Published schema versions
+- **Form Instances** - App form assignments with responses
+- **Form Sets** - Groups of related form schemas with auto-assignment
+- **Landings** - Landing page form submissions
+- **Surveys** - Survey form submissions with magic link support
+- **Appointments** - Appointment scheduling with location and assignment
+- **Subscriptions** - Newsletter and subscription management
+- **Referrals** - Referral tracking with source attribution
+- **Mail Templates** - Email template configuration
+- **Application Forms** - Public form submission and draft workflows
+- **CRM Sync** - Synchronize form data with CRM
 
 ## Quick Start
 
@@ -41,14 +50,13 @@ const forms = createFormsBlock(transport, {
 // List forms
 const { data: formList } = await forms.forms.list();
 
-// Submit a form
-const submission = await forms.formInstances.submit({
-  formId: 'form-id',
-  data: {
-    name: 'John Doe',
-    email: 'john@example.com',
-    message: 'Hello!',
-  },
+// Create a landing submission
+await forms.landings.create({
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'john@example.com',
+  phoneNumber: '+1234567890',
+  message: 'Hello!',
 });
 ```
 
@@ -59,7 +67,7 @@ const submission = await forms.formInstances.submit({
 ```typescript
 // List forms
 const { data: formList } = await forms.forms.list({
-  limit: 20,
+  perPage: 20,
   status: 'active',
 });
 
@@ -68,10 +76,12 @@ const form = await forms.forms.get('form-id');
 
 // Create form
 const newForm = await forms.forms.create({
+  code: 'contact-form',
   name: 'Contact Form',
   description: 'Contact us form',
-  status: 'active',
-  schemaId: 'schema-id',
+  formType: 'landing',
+  sendConfirmationMail: true,
+  requireOtpVerification: false,
 });
 
 // Update form
@@ -88,97 +98,51 @@ await forms.forms.delete('form-id');
 
 ```typescript
 // List schemas
-const { data: schemas } = await forms.formSchemas.list();
-
-// Get schema by ID
-const schema = await forms.formSchemas.get('schema-id');
+const { data: schemas } = await forms.formSchemas.list({
+  formUniqueId: 'form-id',
+});
 
 // Create schema
 const newSchema = await forms.formSchemas.create({
+  formUniqueId: 'form-id',
   name: 'Contact Schema',
-  fields: [
-    {
-      name: 'name',
-      type: 'text',
-      label: 'Your Name',
-      required: true,
-      validation: { minLength: 2, maxLength: 100 },
-    },
-    {
-      name: 'email',
-      type: 'email',
-      label: 'Email Address',
-      required: true,
-    },
-    {
-      name: 'message',
-      type: 'textarea',
-      label: 'Message',
-      required: true,
-      validation: { minLength: 10, maxLength: 1000 },
-    },
-    {
-      name: 'priority',
-      type: 'select',
-      label: 'Priority',
-      options: ['low', 'medium', 'high'],
-      defaultValue: 'medium',
-    },
-  ],
+  formFields: {
+    fields: [
+      { name: 'name', type: 'text', required: true },
+      { name: 'email', type: 'email', required: true },
+    ],
+  },
+  datasource: {},
 });
 
 // Update schema
 await forms.formSchemas.update('schema-id', {
-  fields: [
-    // updated fields
-  ],
+  formFields: { /* updated fields */ },
 });
-
-// Delete schema
-await forms.formSchemas.delete('schema-id');
 ```
 
-### formInstances - Form Submissions
+### formInstances - App Form Instances
 
 ```typescript
-// List submissions
-const { data: submissions } = await forms.formInstances.list({
-  formId: 'form-id',
-  status: 'submitted',
+// List instances
+const { data: instances } = await forms.formInstances.list({
+  userUniqueId: 'user-id',
+  status: 'active',
 });
 
-// Get submission by ID
-const submission = await forms.formInstances.get('instance-id');
-
-// Create a draft instance
-const draft = await forms.formInstances.create({
-  formId: 'form-id',
-  data: {
-    name: 'John',
-  },
-  status: 'draft',
+// Create an instance (assignment)
+const instance = await forms.formInstances.create('form-id', {
+  assignedToEmail: 'user@example.com',
+  assignedToName: 'John Doe',
+  assignedByName: 'Admin',
+  expiresAt: '2025-12-31',
 });
 
-// Update draft
+// Update instance
 await forms.formInstances.update('instance-id', {
-  data: {
-    name: 'John Doe',
-    email: 'john@example.com',
-  },
+  responses: [{ fieldId: 'name', value: 'John Doe' }],
+  status: 'completed',
 });
-
-// Submit form
-const submitted = await forms.formInstances.submit({
-  formId: 'form-id',
-  data: {
-    name: 'John Doe',
-    email: 'john@example.com',
-    message: 'Hello, I have a question...',
-  },
-});
-
-// Delete submission
-await forms.formInstances.delete('instance-id');
 ```
 
 ### formSets - Form Set Management
@@ -187,30 +151,60 @@ await forms.formInstances.delete('instance-id');
 // List form sets
 const { data: sets } = await forms.formSets.list();
 
-// Get form set by ID
-const formSet = await forms.formSets.get('set-id');
-
 // Create form set
 const newSet = await forms.formSets.create({
+  code: 'onboarding',
   name: 'Onboarding Forms',
   description: 'Forms required for new user onboarding',
-  formReferences: [
-    { formId: 'form-1', order: 1, required: true },
-    { formId: 'form-2', order: 2, required: false },
-    { formId: 'form-3', order: 3, required: true },
+  enforceSequential: true,
+  expirationDays: 30,
+  formSetItemsAttributes: [
+    { formSchemaUniqueId: 'schema-1', displayOrder: 1, required: true },
+    { formSchemaUniqueId: 'schema-2', displayOrder: 2, required: false },
   ],
 });
 
-// Update form set
-await forms.formSets.update('set-id', {
-  formReferences: [
-    { formId: 'form-1', order: 1, required: true },
-    { formId: 'form-2', order: 2, required: true },
-  ],
+// Match form set
+const match = await forms.formSets.match({
+  userUniqueId: 'user-id',
+  category: 'onboarding',
 });
 
-// Delete form set
-await forms.formSets.delete('set-id');
+// Auto-assign form set
+await forms.formSets.autoAssign({
+  userUniqueId: 'user-id',
+  formSetUniqueId: 'set-id',
+  assignedByName: 'System',
+});
+```
+
+### landings - Landing Form Submissions
+
+```typescript
+const landing = await forms.landings.create({
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'john@example.com',
+  phoneNumber: '+1234567890',
+  message: 'I am interested in your product',
+  source: 'website',
+});
+```
+
+### appointments - Appointment Scheduling
+
+```typescript
+const appointment = await forms.appointments.create({
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'john@example.com',
+  phoneNumber: '+1234567890',
+  startAt: '2025-06-15T10:00:00Z',
+  endAt: '2025-06-15T11:00:00Z',
+  locationName: 'Main Office',
+  locationAddress: '123 Main St',
+  assignedToName: 'Dr. Smith',
+});
 ```
 
 ## Types
@@ -219,47 +213,22 @@ await forms.formSets.delete('set-id');
 import type {
   Form,
   FormSchema,
+  FormSchemaVersion,
   FormInstance,
   FormSet,
-  FormReference,
+  FormSetItem,
+  Landing,
+  Survey,
+  Appointment,
+  Subscription,
+  Referral,
+  MailTemplate,
   CreateFormRequest,
   CreateFormSchemaRequest,
   CreateFormInstanceRequest,
-  SubmitFormInstanceRequest,
   CreateFormSetRequest,
 } from '@23blocks/block-forms';
 ```
-
-### Form
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `id` | `string` | Form ID |
-| `uniqueId` | `string` | Unique identifier |
-| `name` | `string` | Form name |
-| `description` | `string` | Form description |
-| `status` | `string` | active, inactive, archived |
-| `schemaId` | `string` | Associated schema ID |
-| `schema` | `FormSchema` | Schema details |
-
-### FormSchema
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `id` | `string` | Schema ID |
-| `name` | `string` | Schema name |
-| `fields` | `Field[]` | Field definitions |
-| `validations` | `object` | Form-level validations |
-
-### FormInstance
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `id` | `string` | Instance ID |
-| `formId` | `string` | Parent form ID |
-| `data` | `object` | Submitted data |
-| `status` | `string` | draft, submitted, approved, rejected |
-| `submittedAt` | `Date` | Submission timestamp |
 
 ## Error Handling
 
@@ -267,9 +236,9 @@ import type {
 import { isBlockErrorException, ErrorCodes } from '@23blocks/contracts';
 
 try {
-  await forms.formInstances.submit({
-    formId: 'form-id',
-    data: { name: '' }, // Invalid - name is required
+  await forms.landings.create({
+    firstName: 'John',
+    email: 'john@example.com',
   });
 } catch (error) {
   if (isBlockErrorException(error)) {

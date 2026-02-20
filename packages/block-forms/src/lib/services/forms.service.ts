@@ -9,40 +9,10 @@ import type {
 import { formMapper } from '../mappers/form.mapper.js';
 
 export interface FormsService {
-  /**
-   * List all forms
-   * @param params - Optional filtering by status, form type, search term, and pagination
-   * @returns Paginated result containing Form items and metadata
-   */
   list(params?: ListFormsParams): Promise<PageResult<Form>>;
-
-  /**
-   * Get a specific form
-   * @param uniqueId - The unique identifier of the form
-   * @returns The matching Form record
-   */
   get(uniqueId: string): Promise<Form>;
-
-  /**
-   * Create a new form
-   * @param data - Form details including code, name, description, and form type
-   * @returns The newly created Form record
-   */
   create(data: CreateFormRequest): Promise<Form>;
-
-  /**
-   * Update an existing form
-   * @param uniqueId - The unique identifier of the form to update
-   * @param data - Fields to update such as name, description, type, or status
-   * @returns The updated Form record
-   */
   update(uniqueId: string, data: UpdateFormRequest): Promise<Form>;
-
-  /**
-   * Delete a form
-   * @param uniqueId - The unique identifier of the form to delete
-   * @returns Resolves when the form has been deleted
-   */
   delete(uniqueId: string): Promise<void>;
 }
 
@@ -69,12 +39,32 @@ export function createFormsService(transport: Transport, _config: { apiKey: stri
     async create(data: CreateFormRequest): Promise<Form> {
       const response = await transport.post<unknown>('/forms', {
         form: {
-            code: data.code,
-            name: data.name,
-            description: data.description,
-            form_type: data.formType,
-            payload: data.payload,
-          },
+          code: data.code,
+          name: data.name,
+          description: data.description,
+          form_type: data.formType,
+          form_url: data.formUrl,
+          form_domain: data.formDomain,
+          form_fields: data.formFields,
+          only_once: data.onlyOnce,
+          background_url: data.backgroundUrl,
+          content_url: data.contentUrl,
+          success_url: data.successUrl,
+          error_url: data.errorUrl,
+          notify_slack: data.notifySlack,
+          success_notification_message: data.successNotificationMessage,
+          error_notification_message: data.errorNotificationMessage,
+          send_confirmation_mail: data.sendConfirmationMail,
+          mail_template: data.mailTemplate,
+          send_confirmation_sms: data.sendConfirmationSms,
+          sms_template: data.smsTemplate,
+          send_admin_notification: data.sendAdminNotification,
+          admin_notification_email: data.adminNotificationEmail,
+          admin_notification_template: data.adminNotificationTemplate,
+          form_schema_unique_id: data.formSchemaUniqueId,
+          require_otp_verification: data.requireOtpVerification,
+          payload: data.payload,
+        },
       });
       return decodeOne(response, formMapper);
     },
@@ -82,13 +72,32 @@ export function createFormsService(transport: Transport, _config: { apiKey: stri
     async update(uniqueId: string, data: UpdateFormRequest): Promise<Form> {
       const response = await transport.put<unknown>(`/forms/${uniqueId}`, {
         form: {
-            name: data.name,
-            description: data.description,
-            form_type: data.formType,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+          name: data.name,
+          description: data.description,
+          form_type: data.formType,
+          status: data.status,
+          form_url: data.formUrl,
+          form_domain: data.formDomain,
+          form_fields: data.formFields,
+          only_once: data.onlyOnce,
+          background_url: data.backgroundUrl,
+          content_url: data.contentUrl,
+          success_url: data.successUrl,
+          error_url: data.errorUrl,
+          notify_slack: data.notifySlack,
+          success_notification_message: data.successNotificationMessage,
+          error_notification_message: data.errorNotificationMessage,
+          send_confirmation_mail: data.sendConfirmationMail,
+          mail_template: data.mailTemplate,
+          send_confirmation_sms: data.sendConfirmationSms,
+          sms_template: data.smsTemplate,
+          send_admin_notification: data.sendAdminNotification,
+          admin_notification_email: data.adminNotificationEmail,
+          admin_notification_template: data.adminNotificationTemplate,
+          form_schema_unique_id: data.formSchemaUniqueId,
+          require_otp_verification: data.requireOtpVerification,
+          payload: data.payload,
+        },
       });
       return decodeOne(response, formMapper);
     },

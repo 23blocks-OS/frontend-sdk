@@ -9,81 +9,32 @@ import type {
 import { formSchemaVersionMapper } from '../mappers/form-schema-version.mapper.js';
 
 export interface FormSchemaVersionsService {
-  /**
-   * List all versions for a form schema
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param schemaUniqueId - The unique identifier of the form schema
-   * @param params - Optional filtering by status and pagination
-   * @returns Paginated result containing FormSchemaVersion items and metadata
-   */
   list(
     formUniqueId: string,
     schemaUniqueId: string,
     params?: ListFormSchemaVersionsParams
   ): Promise<PageResult<FormSchemaVersion>>;
-
-  /**
-   * Get a specific version
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param schemaUniqueId - The unique identifier of the form schema
-   * @param versionUniqueId - The unique identifier of the version
-   * @returns The matching FormSchemaVersion record
-   */
   get(
     formUniqueId: string,
     schemaUniqueId: string,
     versionUniqueId: string
   ): Promise<FormSchemaVersion>;
-
-  /**
-   * Create a new version for a schema
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param schemaUniqueId - The unique identifier of the form schema
-   * @param data - Version details including schema definition and UI schema
-   * @returns The newly created FormSchemaVersion record
-   */
   create(
     formUniqueId: string,
     schemaUniqueId: string,
     data: CreateFormSchemaVersionRequest
   ): Promise<FormSchemaVersion>;
-
-  /**
-   * Update a version
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param schemaUniqueId - The unique identifier of the form schema
-   * @param versionUniqueId - The unique identifier of the version to update
-   * @param data - Fields to update such as schema, UI schema, or status
-   * @returns The updated FormSchemaVersion record
-   */
   update(
     formUniqueId: string,
     schemaUniqueId: string,
     versionUniqueId: string,
     data: UpdateFormSchemaVersionRequest
   ): Promise<FormSchemaVersion>;
-
-  /**
-   * Publish a version (makes it the active version)
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param schemaUniqueId - The unique identifier of the form schema
-   * @param versionUniqueId - The unique identifier of the version to publish
-   * @returns The updated FormSchemaVersion record with published status
-   * @note Publishing a version makes it the active version for the schema
-   */
   publish(
     formUniqueId: string,
     schemaUniqueId: string,
     versionUniqueId: string
   ): Promise<FormSchemaVersion>;
-
-  /**
-   * Delete a version
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param schemaUniqueId - The unique identifier of the form schema
-   * @param versionUniqueId - The unique identifier of the version to delete
-   * @returns Resolves when the version has been deleted
-   */
   delete(
     formUniqueId: string,
     schemaUniqueId: string,
@@ -139,8 +90,8 @@ export function createFormSchemaVersionsService(
         `${basePath(formUniqueId, schemaUniqueId)}/`,
         {
           form_schema_version: {
-            schema: data.schema,
-            ui_schema: data.uiSchema,
+            form_fields: data.formFields,
+            datasource: data.datasource,
             payload: data.payload,
           },
         }
@@ -158,8 +109,8 @@ export function createFormSchemaVersionsService(
         `${basePath(formUniqueId, schemaUniqueId)}/${versionUniqueId}`,
         {
           form_schema_version: {
-            schema: data.schema,
-            ui_schema: data.uiSchema,
+            form_fields: data.formFields,
+            datasource: data.datasource,
             status: data.status,
             payload: data.payload,
           },

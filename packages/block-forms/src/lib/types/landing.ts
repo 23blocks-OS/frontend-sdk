@@ -5,10 +5,22 @@ export interface Landing extends IdentityCore {
   userUniqueId?: string;
   email?: string;
   firstName?: string;
+  middleName?: string;
   lastName?: string;
-  phone?: string;
-  company?: string;
-  data: Record<string, unknown>;
+  phoneNumber?: string;
+  message?: string;
+  notes?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
+  preferredLanguage?: string;
   status: EntityStatus;
   token?: string;
   submittedAt?: Date;
@@ -19,22 +31,44 @@ export interface CreateLandingRequest {
   formUniqueId?: string;
   email?: string;
   firstName?: string;
+  middleName?: string;
   lastName?: string;
-  phone?: string;
-  company?: string;
-  data?: Record<string, unknown>;
-  payload?: Record<string, unknown>;
+  phoneNumber?: string;
+  message?: string;
+  notes?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
+  preferredLanguage?: string;
 }
 
 export interface UpdateLandingRequest {
   email?: string;
   firstName?: string;
+  middleName?: string;
   lastName?: string;
-  phone?: string;
-  company?: string;
-  data?: Record<string, unknown>;
+  phoneNumber?: string;
+  message?: string;
+  notes?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
+  preferredLanguage?: string;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
 }
 
 export interface ListLandingsParams {

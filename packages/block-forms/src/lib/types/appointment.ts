@@ -5,14 +5,30 @@ export interface Appointment extends IdentityCore {
   userUniqueId?: string;
   email?: string;
   firstName?: string;
+  middleName?: string;
   lastName?: string;
-  phone?: string;
-  scheduledAt: Date;
+  phoneNumber?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  startAt: Date;
+  endAt?: Date;
   duration?: number;
-  timezone?: string;
-  location?: string;
+  locationUniqueId?: string;
+  locationName?: string;
+  locationAddress?: string;
+  assignedToUniqueId?: string;
+  assignedToName?: string;
+  assignedToEmail?: string;
+  assignedToPhone?: string;
   notes?: string;
-  data: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
   status: EntityStatus;
   confirmedAt?: Date;
   cancelledAt?: Date;
@@ -23,30 +39,60 @@ export interface CreateAppointmentRequest {
   formUniqueId?: string;
   email?: string;
   firstName?: string;
+  middleName?: string;
   lastName?: string;
-  phone?: string;
-  scheduledAt: string | Date;
+  phoneNumber?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  startAt: string | Date;
+  endAt?: string | Date;
   duration?: number;
-  timezone?: string;
-  location?: string;
+  locationUniqueId?: string;
+  locationName?: string;
+  locationAddress?: string;
+  assignedToUniqueId?: string;
+  assignedToName?: string;
+  assignedToEmail?: string;
+  assignedToPhone?: string;
   notes?: string;
-  data?: Record<string, unknown>;
-  payload?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
 }
 
 export interface UpdateAppointmentRequest {
   email?: string;
   firstName?: string;
+  middleName?: string;
   lastName?: string;
-  phone?: string;
-  scheduledAt?: string | Date;
+  phoneNumber?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  startAt?: string | Date;
+  endAt?: string | Date;
   duration?: number;
-  timezone?: string;
-  location?: string;
+  locationUniqueId?: string;
+  locationName?: string;
+  locationAddress?: string;
+  assignedToUniqueId?: string;
+  assignedToName?: string;
+  assignedToEmail?: string;
+  assignedToPhone?: string;
   notes?: string;
-  data?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
 }
 
 export interface ListAppointmentsParams {
@@ -61,10 +107,14 @@ export interface ListAppointmentsParams {
 
 export interface AppointmentReportRequest {
   formUniqueId?: string;
+  userUniqueId?: string;
+  source?: string;
+  datePart?: string;
   fromDate?: string | Date;
   toDate?: string | Date;
   status?: EntityStatus;
-  groupBy?: string;
+  page?: number;
+  records?: number;
 }
 
 export interface AppointmentReportSummary {

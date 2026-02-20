@@ -2,13 +2,27 @@ import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 
 export interface Referral extends IdentityCore {
   formUniqueId: string;
-  referrerUniqueId?: string;
-  referrerEmail?: string;
-  referrerName?: string;
-  refereeEmail: string;
-  refereeName?: string;
-  refereePhone?: string;
-  data: Record<string, unknown>;
+  userUniqueId?: string;
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  message?: string;
+  notes?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  referredByType?: string;
+  referredByName?: string;
+  referredByUniqueId?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
   status: EntityStatus;
   convertedAt?: Date;
   payload?: Record<string, unknown>;
@@ -16,30 +30,56 @@ export interface Referral extends IdentityCore {
 
 export interface CreateReferralRequest {
   formUniqueId?: string;
-  referrerUniqueId?: string;
-  referrerEmail?: string;
-  referrerName?: string;
-  refereeEmail: string;
-  refereeName?: string;
-  refereePhone?: string;
-  data?: Record<string, unknown>;
-  payload?: Record<string, unknown>;
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  message?: string;
+  notes?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  referredByType?: string;
+  referredByName?: string;
+  referredByUniqueId?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
 }
 
 export interface UpdateReferralRequest {
-  refereeEmail?: string;
-  refereeName?: string;
-  refereePhone?: string;
-  data?: Record<string, unknown>;
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  message?: string;
+  notes?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  referredByType?: string;
+  referredByName?: string;
+  referredByUniqueId?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
 }
 
 export interface ListReferralsParams {
   page?: number;
   perPage?: number;
   status?: EntityStatus;
-  referrerUniqueId?: string;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }

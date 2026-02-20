@@ -6,10 +6,11 @@ export interface CrmSyncResult {
 }
 
 export interface CrmSyncBatchRequest {
-  /** Type of records to sync */
-  recordType: 'landing' | 'subscription' | 'appointment';
-  /** Record unique IDs to sync */
-  uniqueIds: string[];
+  limit?: number;
+  syncLandings?: boolean;
+  syncSubscriptions?: boolean;
+  syncAppointments?: boolean;
+  appointmentsAsType?: string;
 }
 
 export interface CrmSyncBatchResult {

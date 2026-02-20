@@ -4,8 +4,8 @@ export interface FormSchemaVersion extends IdentityCore {
   formUniqueId: string;
   schemaUniqueId: string;
   version: number;
-  schema: Record<string, unknown>;
-  uiSchema?: Record<string, unknown>;
+  formFields?: Record<string, unknown>;
+  datasource?: Record<string, unknown>;
   status: EntityStatus;
   isPublished: boolean;
   publishedAt?: string;
@@ -13,14 +13,14 @@ export interface FormSchemaVersion extends IdentityCore {
 }
 
 export interface CreateFormSchemaVersionRequest {
-  schema: Record<string, unknown>;
-  uiSchema?: Record<string, unknown>;
+  formFields?: Record<string, unknown>;
+  datasource?: Record<string, unknown>;
   payload?: Record<string, unknown>;
 }
 
 export interface UpdateFormSchemaVersionRequest {
-  schema?: Record<string, unknown>;
-  uiSchema?: Record<string, unknown>;
+  formFields?: Record<string, unknown>;
+  datasource?: Record<string, unknown>;
   status?: EntityStatus;
   payload?: Record<string, unknown>;
 }

@@ -14,54 +14,12 @@ import { formInstanceMapper } from '../mappers/form-instance.mapper.js';
 import type { FormInstance } from '../types/form-instance.js';
 
 export interface FormSetsService {
-  /**
-   * List all form sets
-   * @param params - Optional filtering by status, search term, and pagination
-   * @returns Paginated result containing FormSet items and metadata
-   */
   list(params?: ListFormSetsParams): Promise<PageResult<FormSet>>;
-
-  /**
-   * Get a specific form set
-   * @param uniqueId - The unique identifier of the form set
-   * @returns The matching FormSet record
-   */
   get(uniqueId: string): Promise<FormSet>;
-
-  /**
-   * Create a new form set
-   * @param data - Form set details including code, name, and form references
-   * @returns The newly created FormSet record
-   */
   create(data: CreateFormSetRequest): Promise<FormSet>;
-
-  /**
-   * Update a form set
-   * @param uniqueId - The unique identifier of the form set to update
-   * @param data - Fields to update such as name, forms list, or status
-   * @returns The updated FormSet record
-   */
   update(uniqueId: string, data: UpdateFormSetRequest): Promise<FormSet>;
-
-  /**
-   * Delete a form set
-   * @param uniqueId - The unique identifier of the form set to delete
-   * @returns Resolves when the form set has been deleted
-   */
   delete(uniqueId: string): Promise<void>;
-
-  /**
-   * Match criteria against form sets to find the best match
-   * @param data - Match request including criteria and optional user identifier
-   * @returns Array of FormSetMatchResult with matched form sets, scores, and matched criteria
-   */
   match(data: FormSetMatchRequest): Promise<FormSetMatchResult[]>;
-
-  /**
-   * Auto-assign forms from a form set to a user
-   * @param data - Assignment request including user, criteria, and optional form set
-   * @returns Array of FormInstance records created by the auto-assignment
-   */
   autoAssign(data: FormSetAutoAssignRequest): Promise<FormInstance[]>;
 }
 
@@ -90,7 +48,21 @@ export function createFormSetsService(transport: Transport, _config: { apiKey: s
           code: data.code,
           name: data.name,
           description: data.description,
-          forms: data.forms,
+          category: data.category,
+          applies_to: data.appliesTo,
+          is_active: data.isActive,
+          is_default: data.isDefault,
+          send_all_at_once: data.sendAllAtOnce,
+          allow_partial_completion: data.allowPartialCompletion,
+          enforce_sequential: data.enforceSequential,
+          expiration_days: data.expirationDays,
+          auto_assign_rules: data.autoAssignRules,
+          metadata: data.metadata,
+          form_set_items_attributes: data.formSetItemsAttributes?.map((item) => ({
+            form_schema_unique_id: item.formSchemaUniqueId,
+            display_order: item.displayOrder,
+            required: item.required,
+          })),
           payload: data.payload,
         },
       });
@@ -102,8 +74,21 @@ export function createFormSetsService(transport: Transport, _config: { apiKey: s
         form_set: {
           name: data.name,
           description: data.description,
-          forms: data.forms,
-          enabled: data.enabled,
+          category: data.category,
+          applies_to: data.appliesTo,
+          is_active: data.isActive,
+          is_default: data.isDefault,
+          send_all_at_once: data.sendAllAtOnce,
+          allow_partial_completion: data.allowPartialCompletion,
+          enforce_sequential: data.enforceSequential,
+          expiration_days: data.expirationDays,
+          auto_assign_rules: data.autoAssignRules,
+          metadata: data.metadata,
+          form_set_items_attributes: data.formSetItemsAttributes?.map((item) => ({
+            form_schema_unique_id: item.formSchemaUniqueId,
+            display_order: item.displayOrder,
+            required: item.required,
+          })),
           status: data.status,
           payload: data.payload,
         },
@@ -117,11 +102,15 @@ export function createFormSetsService(transport: Transport, _config: { apiKey: s
 
     async match(data: FormSetMatchRequest): Promise<FormSetMatchResult[]> {
       const response = await transport.post<unknown>('/form_sets/match', {
-        criteria: data.criteria,
-        user_unique_id: data.userUniqueId,
+        context: {
+          user_unique_id: data.userUniqueId,
+          form_set_unique_id: data.formSetUniqueId,
+          category: data.category,
+          applies_to: data.appliesTo,
+          metadata: data.metadata,
+        },
       });
 
-      // Response is an array of match results
       const results = response as { data: Array<{ form_set: unknown; score: number; matched_criteria: string[] }> };
       return (results.data || []).map((item) => ({
         formSet: formSetMapper.map(item.form_set as any, new Map()),
@@ -132,9 +121,13 @@ export function createFormSetsService(transport: Transport, _config: { apiKey: s
 
     async autoAssign(data: FormSetAutoAssignRequest): Promise<FormInstance[]> {
       const response = await transport.post<unknown>('/form_sets/auto_assign', {
-        user_unique_id: data.userUniqueId,
-        criteria: data.criteria,
-        form_set_unique_id: data.formSetUniqueId,
+        assignment: {
+          user_unique_id: data.userUniqueId,
+          form_set_unique_id: data.formSetUniqueId,
+          assigned_by_name: data.assignedByName,
+          expires_at: data.expiresAt instanceof Date ? data.expiresAt.toISOString() : data.expiresAt,
+          metadata: data.metadata,
+        },
       });
 
       const result = decodePageResult(response, formInstanceMapper);

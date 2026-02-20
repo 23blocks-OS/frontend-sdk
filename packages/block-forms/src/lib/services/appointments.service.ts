@@ -11,75 +11,14 @@ import type {
 import { appointmentMapper } from '../mappers/appointment.mapper.js';
 
 export interface AppointmentsService {
-  /**
-   * List all appointments for a form
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param params - Optional filtering by status, date range, and pagination
-   * @returns Paginated result containing Appointment items and metadata
-   */
   list(formUniqueId: string, params?: ListAppointmentsParams): Promise<PageResult<Appointment>>;
-
-  /**
-   * Get a specific appointment
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param uniqueId - The unique identifier of the appointment
-   * @returns The matching Appointment record
-   */
   get(formUniqueId: string, uniqueId: string): Promise<Appointment>;
-
-  /**
-   * Create a new appointment
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param data - Appointment details including contact info, schedule, and location
-   * @returns The newly created Appointment record
-   */
   create(formUniqueId: string, data: CreateAppointmentRequest): Promise<Appointment>;
-
-  /**
-   * Update an existing appointment
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param uniqueId - The unique identifier of the appointment to update
-   * @param data - Fields to update such as schedule, contact info, or status
-   * @returns The updated Appointment record
-   */
   update(formUniqueId: string, uniqueId: string, data: UpdateAppointmentRequest): Promise<Appointment>;
-
-  /**
-   * Delete an appointment
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param uniqueId - The unique identifier of the appointment to delete
-   * @returns Resolves when the appointment has been deleted
-   */
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
-
-  /**
-   * Confirm an appointment
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param uniqueId - The unique identifier of the appointment to confirm
-   * @returns The updated Appointment record with confirmed status
-   */
   confirm(formUniqueId: string, uniqueId: string): Promise<Appointment>;
-
-  /**
-   * Cancel an appointment
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param uniqueId - The unique identifier of the appointment to cancel
-   * @returns The updated Appointment record with cancelled status
-   */
   cancel(formUniqueId: string, uniqueId: string): Promise<Appointment>;
-
-  /**
-   * Generate an appointment report list
-   * @param data - Report criteria including form, date range, status, and grouping
-   * @returns Array of Appointment records matching the report criteria
-   */
   reportList(data: AppointmentReportRequest): Promise<Appointment[]>;
-
-  /**
-   * Generate an appointment report summary
-   * @param data - Report criteria including form, date range, status, and grouping
-   * @returns Aggregated summary statistics for matching appointments
-   */
   reportSummary(data: AppointmentReportRequest): Promise<AppointmentReportSummary>;
 }
 
@@ -108,15 +47,30 @@ export function createAppointmentsService(transport: Transport, _config: { apiKe
         appointment: {
           email: data.email,
           first_name: data.firstName,
+          middle_name: data.middleName,
           last_name: data.lastName,
-          phone: data.phone,
-          scheduled_at: data.scheduledAt instanceof Date ? data.scheduledAt.toISOString() : data.scheduledAt,
+          phone_number: data.phoneNumber,
+          selected_option: data.selectedOption,
+          form_fields: data.formFields,
+          start_at: data.startAt instanceof Date ? data.startAt.toISOString() : data.startAt,
+          end_at: data.endAt instanceof Date ? data.endAt.toISOString() : data.endAt,
           duration: data.duration,
-          timezone: data.timezone,
-          location: data.location,
+          location_unique_id: data.locationUniqueId,
+          location_name: data.locationName,
+          location_address: data.locationAddress,
+          assigned_to_unique_id: data.assignedToUniqueId,
+          assigned_to_name: data.assignedToName,
+          assigned_to_email: data.assignedToEmail,
+          assigned_to_phone: data.assignedToPhone,
           notes: data.notes,
-          data: data.data,
-          payload: data.payload,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
+          visitor_unique_id: data.visitorUniqueId,
+          visitor_type: data.visitorType,
+          touch_id: data.touchId,
+          touch_reference_id: data.touchReferenceId,
         },
       });
       return decodeOne(response, appointmentMapper);
@@ -127,16 +81,31 @@ export function createAppointmentsService(transport: Transport, _config: { apiKe
         appointment: {
           email: data.email,
           first_name: data.firstName,
+          middle_name: data.middleName,
           last_name: data.lastName,
-          phone: data.phone,
-          scheduled_at: data.scheduledAt instanceof Date ? data.scheduledAt.toISOString() : data.scheduledAt,
+          phone_number: data.phoneNumber,
+          selected_option: data.selectedOption,
+          form_fields: data.formFields,
+          start_at: data.startAt instanceof Date ? data.startAt.toISOString() : data.startAt,
+          end_at: data.endAt instanceof Date ? data.endAt.toISOString() : data.endAt,
           duration: data.duration,
-          timezone: data.timezone,
-          location: data.location,
+          location_unique_id: data.locationUniqueId,
+          location_name: data.locationName,
+          location_address: data.locationAddress,
+          assigned_to_unique_id: data.assignedToUniqueId,
+          assigned_to_name: data.assignedToName,
+          assigned_to_email: data.assignedToEmail,
+          assigned_to_phone: data.assignedToPhone,
           notes: data.notes,
-          data: data.data,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
+          visitor_unique_id: data.visitorUniqueId,
+          visitor_type: data.visitorType,
+          touch_id: data.touchId,
+          touch_reference_id: data.touchReferenceId,
           status: data.status,
-          payload: data.payload,
         },
       });
       return decodeOne(response, appointmentMapper);
@@ -158,12 +127,16 @@ export function createAppointmentsService(transport: Transport, _config: { apiKe
 
     async reportList(data: AppointmentReportRequest): Promise<Appointment[]> {
       const response = await transport.post<unknown>('/reports/appointments/list', {
-        report: {
+        query_params: {
           form_unique_id: data.formUniqueId,
+          user_unique_id: data.userUniqueId,
+          source: data.source,
+          date_part: data.datePart,
           from_date: data.fromDate instanceof Date ? data.fromDate.toISOString() : data.fromDate,
           to_date: data.toDate instanceof Date ? data.toDate.toISOString() : data.toDate,
           status: data.status,
-          group_by: data.groupBy,
+          page: data.page,
+          records: data.records,
         },
       });
       const result = decodePageResult(response, appointmentMapper);
@@ -172,12 +145,16 @@ export function createAppointmentsService(transport: Transport, _config: { apiKe
 
     async reportSummary(data: AppointmentReportRequest): Promise<AppointmentReportSummary> {
       const response = await transport.post<unknown>('/reports/appointments/summary', {
-        report: {
+        query_params: {
           form_unique_id: data.formUniqueId,
+          user_unique_id: data.userUniqueId,
+          source: data.source,
+          date_part: data.datePart,
           from_date: data.fromDate instanceof Date ? data.fromDate.toISOString() : data.fromDate,
           to_date: data.toDate instanceof Date ? data.toDate.toISOString() : data.toDate,
           status: data.status,
-          group_by: data.groupBy,
+          page: data.page,
+          records: data.records,
         },
       });
       return response as AppointmentReportSummary;

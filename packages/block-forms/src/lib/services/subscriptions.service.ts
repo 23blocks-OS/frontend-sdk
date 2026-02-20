@@ -9,45 +9,10 @@ import type {
 import { subscriptionMapper } from '../mappers/subscription.mapper.js';
 
 export interface SubscriptionsService {
-  /**
-   * List all subscriptions for a form
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param params - Optional filtering by status and pagination
-   * @returns Paginated result containing Subscription items and metadata
-   */
   list(formUniqueId: string, params?: ListSubscriptionsParams): Promise<PageResult<Subscription>>;
-
-  /**
-   * Get a specific subscription
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param uniqueId - The unique identifier of the subscription
-   * @returns The matching Subscription record
-   */
   get(formUniqueId: string, uniqueId: string): Promise<Subscription>;
-
-  /**
-   * Submit a new subscription
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param data - Subscription details including email, name, phone, and form data
-   * @returns The newly created Subscription record
-   */
   submit(formUniqueId: string, data: CreateSubscriptionRequest): Promise<Subscription>;
-
-  /**
-   * Update an existing subscription
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param uniqueId - The unique identifier of the subscription to update
-   * @param data - Fields to update such as contact info, data, or status
-   * @returns The updated Subscription record
-   */
   update(formUniqueId: string, uniqueId: string, data: UpdateSubscriptionRequest): Promise<Subscription>;
-
-  /**
-   * Delete a subscription
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param uniqueId - The unique identifier of the subscription to delete
-   * @returns Resolves when the subscription has been deleted
-   */
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
 }
 
@@ -74,10 +39,20 @@ export function createSubscriptionsService(transport: Transport, _config: { apiK
         subscription: {
           email: data.email,
           first_name: data.firstName,
+          middle_name: data.middleName,
           last_name: data.lastName,
-          phone: data.phone,
-          data: data.data,
-          payload: data.payload,
+          phone_number: data.phoneNumber,
+          notes: data.notes,
+          selected_option: data.selectedOption,
+          form_fields: data.formFields,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
+          visitor_unique_id: data.visitorUniqueId,
+          visitor_type: data.visitorType,
+          touch_id: data.touchId,
+          touch_reference_id: data.touchReferenceId,
         },
       });
       return decodeOne(response, subscriptionMapper);
@@ -88,11 +63,21 @@ export function createSubscriptionsService(transport: Transport, _config: { apiK
         subscription: {
           email: data.email,
           first_name: data.firstName,
+          middle_name: data.middleName,
           last_name: data.lastName,
-          phone: data.phone,
-          data: data.data,
+          phone_number: data.phoneNumber,
+          notes: data.notes,
+          selected_option: data.selectedOption,
+          form_fields: data.formFields,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
+          visitor_unique_id: data.visitorUniqueId,
+          visitor_type: data.visitorType,
+          touch_id: data.touchId,
+          touch_reference_id: data.touchReferenceId,
           status: data.status,
-          payload: data.payload,
         },
       });
       return decodeOne(response, subscriptionMapper);

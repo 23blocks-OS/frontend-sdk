@@ -2,12 +2,10 @@ import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 
 export interface FormSchema extends IdentityCore {
   formUniqueId: string;
-  code: string;
   name: string;
   description?: string;
-  version: number;
-  schema: Record<string, unknown>; // JSON Schema definition
-  uiSchema?: Record<string, unknown>; // UI Schema for rendering
+  formFields?: Record<string, unknown>;
+  datasource?: Record<string, unknown>;
   status: EntityStatus;
   enabled: boolean;
   payload?: Record<string, unknown>;
@@ -15,20 +13,18 @@ export interface FormSchema extends IdentityCore {
 
 export interface CreateFormSchemaRequest {
   formUniqueId: string;
-  code: string;
   name: string;
   description?: string;
-  version?: number;
-  schema: Record<string, unknown>;
-  uiSchema?: Record<string, unknown>;
+  formFields?: Record<string, unknown>;
+  datasource?: Record<string, unknown>;
   payload?: Record<string, unknown>;
 }
 
 export interface UpdateFormSchemaRequest {
   name?: string;
   description?: string;
-  schema?: Record<string, unknown>;
-  uiSchema?: Record<string, unknown>;
+  formFields?: Record<string, unknown>;
+  datasource?: Record<string, unknown>;
   enabled?: boolean;
   status?: EntityStatus;
   payload?: Record<string, unknown>;
@@ -39,7 +35,6 @@ export interface ListFormSchemasParams {
   perPage?: number;
   formUniqueId?: string;
   status?: EntityStatus;
-  version?: number;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }

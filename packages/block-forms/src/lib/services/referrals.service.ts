@@ -9,45 +9,10 @@ import type {
 import { referralMapper } from '../mappers/referral.mapper.js';
 
 export interface ReferralsService {
-  /**
-   * List all referrals for a form
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param params - Optional filtering by status, referrer, and pagination
-   * @returns Paginated result containing Referral items and metadata
-   */
   list(formUniqueId: string, params?: ListReferralsParams): Promise<PageResult<Referral>>;
-
-  /**
-   * Get a specific referral
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param uniqueId - The unique identifier of the referral
-   * @returns The matching Referral record
-   */
   get(formUniqueId: string, uniqueId: string): Promise<Referral>;
-
-  /**
-   * Create a new referral
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param data - Referral details including referrer and referee contact information
-   * @returns The newly created Referral record
-   */
   create(formUniqueId: string, data: CreateReferralRequest): Promise<Referral>;
-
-  /**
-   * Update an existing referral
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param uniqueId - The unique identifier of the referral to update
-   * @param data - Fields to update such as referee info, data, or status
-   * @returns The updated Referral record
-   */
   update(formUniqueId: string, uniqueId: string, data: UpdateReferralRequest): Promise<Referral>;
-
-  /**
-   * Delete a referral
-   * @param formUniqueId - The unique identifier of the parent form
-   * @param uniqueId - The unique identifier of the referral to delete
-   * @returns Resolves when the referral has been deleted
-   */
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
 }
 
@@ -58,7 +23,6 @@ export function createReferralsService(transport: Transport, _config: { apiKey: 
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
       if (params?.status) queryParams['status'] = params.status;
-      if (params?.referrerUniqueId) queryParams['referrer_unique_id'] = params.referrerUniqueId;
       if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
 
       const response = await transport.get<unknown>(`/referrals/${formUniqueId}/instances`, { params: queryParams });
@@ -73,14 +37,26 @@ export function createReferralsService(transport: Transport, _config: { apiKey: 
     async create(formUniqueId: string, data: CreateReferralRequest): Promise<Referral> {
       const response = await transport.post<unknown>(`/referrals/${formUniqueId}/instances`, {
         referral: {
-          referrer_unique_id: data.referrerUniqueId,
-          referrer_email: data.referrerEmail,
-          referrer_name: data.referrerName,
-          referee_email: data.refereeEmail,
-          referee_name: data.refereeName,
-          referee_phone: data.refereePhone,
-          data: data.data,
-          payload: data.payload,
+          first_name: data.firstName,
+          middle_name: data.middleName,
+          last_name: data.lastName,
+          email: data.email,
+          phone_number: data.phoneNumber,
+          message: data.message,
+          notes: data.notes,
+          selected_option: data.selectedOption,
+          form_fields: data.formFields,
+          referred_by_type: data.referredByType,
+          referred_by_name: data.referredByName,
+          referred_by_unique_id: data.referredByUniqueId,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
+          visitor_unique_id: data.visitorUniqueId,
+          visitor_type: data.visitorType,
+          touch_id: data.touchId,
+          touch_reference_id: data.touchReferenceId,
         },
       });
       return decodeOne(response, referralMapper);
@@ -89,12 +65,27 @@ export function createReferralsService(transport: Transport, _config: { apiKey: 
     async update(formUniqueId: string, uniqueId: string, data: UpdateReferralRequest): Promise<Referral> {
       const response = await transport.put<unknown>(`/referrals/${formUniqueId}/instances/${uniqueId}`, {
         referral: {
-          referee_email: data.refereeEmail,
-          referee_name: data.refereeName,
-          referee_phone: data.refereePhone,
-          data: data.data,
+          first_name: data.firstName,
+          middle_name: data.middleName,
+          last_name: data.lastName,
+          email: data.email,
+          phone_number: data.phoneNumber,
+          message: data.message,
+          notes: data.notes,
+          selected_option: data.selectedOption,
+          form_fields: data.formFields,
+          referred_by_type: data.referredByType,
+          referred_by_name: data.referredByName,
+          referred_by_unique_id: data.referredByUniqueId,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
+          visitor_unique_id: data.visitorUniqueId,
+          visitor_type: data.visitorType,
+          touch_id: data.touchId,
+          touch_reference_id: data.touchReferenceId,
           status: data.status,
-          payload: data.payload,
         },
       });
       return decodeOne(response, referralMapper);

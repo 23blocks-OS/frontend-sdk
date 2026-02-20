@@ -1,36 +1,62 @@
 import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 
+export interface FormSetItem {
+  formSchemaUniqueId: string;
+  displayOrder?: number;
+  required?: boolean;
+}
+
 export interface FormSet extends IdentityCore {
   code: string;
   name: string;
   description?: string;
-  forms: FormReference[]; // List of form references
+  category?: string;
+  appliesTo?: string;
+  isActive?: boolean;
+  isDefault?: boolean;
+  sendAllAtOnce?: boolean;
+  allowPartialCompletion?: boolean;
+  enforceSequential?: boolean;
+  expirationDays?: number;
+  autoAssignRules?: Record<string, unknown>;
+  metadata?: Record<string, unknown>;
+  formSetItemsAttributes?: FormSetItem[];
   status: EntityStatus;
-  enabled: boolean;
   payload?: Record<string, unknown>;
-}
-
-export interface FormReference {
-  formUniqueId: string;
-  formCode?: string;
-  formName?: string;
-  displayOrder?: number;
-  required?: boolean;
 }
 
 export interface CreateFormSetRequest {
   code: string;
   name: string;
   description?: string;
-  forms?: FormReference[];
+  category?: string;
+  appliesTo?: string;
+  isActive?: boolean;
+  isDefault?: boolean;
+  sendAllAtOnce?: boolean;
+  allowPartialCompletion?: boolean;
+  enforceSequential?: boolean;
+  expirationDays?: number;
+  autoAssignRules?: Record<string, unknown>;
+  metadata?: Record<string, unknown>;
+  formSetItemsAttributes?: FormSetItem[];
   payload?: Record<string, unknown>;
 }
 
 export interface UpdateFormSetRequest {
   name?: string;
   description?: string;
-  forms?: FormReference[];
-  enabled?: boolean;
+  category?: string;
+  appliesTo?: string;
+  isActive?: boolean;
+  isDefault?: boolean;
+  sendAllAtOnce?: boolean;
+  allowPartialCompletion?: boolean;
+  enforceSequential?: boolean;
+  expirationDays?: number;
+  autoAssignRules?: Record<string, unknown>;
+  metadata?: Record<string, unknown>;
+  formSetItemsAttributes?: FormSetItem[];
   status?: EntityStatus;
   payload?: Record<string, unknown>;
 }
@@ -45,10 +71,11 @@ export interface ListFormSetsParams {
 }
 
 export interface FormSetMatchRequest {
-  /** Criteria to match against form sets */
-  criteria: Record<string, unknown>;
-  /** Optional user context */
   userUniqueId?: string;
+  formSetUniqueId?: string;
+  category?: string;
+  appliesTo?: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface FormSetMatchResult {
@@ -58,10 +85,9 @@ export interface FormSetMatchResult {
 }
 
 export interface FormSetAutoAssignRequest {
-  /** User to assign forms to */
   userUniqueId: string;
-  /** Criteria to match against form sets */
-  criteria?: Record<string, unknown>;
-  /** Form set unique ID (if known) */
   formSetUniqueId?: string;
+  assignedByName?: string;
+  expiresAt?: string | Date;
+  metadata?: Record<string, unknown>;
 }

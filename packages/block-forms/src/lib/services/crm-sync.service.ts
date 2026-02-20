@@ -8,50 +8,12 @@ import type {
 } from '../types/crm-sync.js';
 
 export interface CrmSyncService {
-  /**
-   * Sync a landing record to CRM
-   * @param uniqueId - The unique identifier of the landing record to sync
-   * @returns Sync outcome including success flag, timestamp, and optional CRM record ID
-   */
   syncLanding(uniqueId: string): Promise<CrmSyncResult>;
-
-  /**
-   * Sync a subscription record to CRM
-   * @param uniqueId - The unique identifier of the subscription record to sync
-   * @returns Sync outcome including success flag, timestamp, and optional CRM record ID
-   */
   syncSubscription(uniqueId: string): Promise<CrmSyncResult>;
-
-  /**
-   * Sync an appointment record to CRM
-   * @param uniqueId - The unique identifier of the appointment record to sync
-   * @returns Sync outcome including success flag, timestamp, and optional CRM record ID
-   */
-  syncAppointment(uniqueId: string): Promise<CrmSyncResult>;
-
-  /**
-   * Batch sync multiple records to CRM
-   * @param data - Batch request specifying record type and array of unique IDs
-   * @returns Batch result with total, synced, and failed counts plus per-record results
-   */
+  syncAppointment(uniqueId: string, asType?: string): Promise<CrmSyncResult>;
   batchSync(data: CrmSyncBatchRequest): Promise<CrmSyncBatchResult>;
-
-  /**
-   * Retry all previously failed sync operations
-   * @returns Batch result with total, synced, and failed counts plus per-record results
-   */
-  retryFailed(): Promise<CrmSyncBatchResult>;
-
-  /**
-   * Test CRM connection
-   * @returns Connection status including provider, connectivity, and any errors
-   */
+  retryFailed(limit?: number): Promise<CrmSyncBatchResult>;
   testConnection(): Promise<CrmConnectionStatus>;
-
-  /**
-   * Get CRM sync status overview
-   * @returns Status summary including pending/failed counts and next scheduled sync time
-   */
   status(): Promise<CrmSyncStatus>;
 }
 
@@ -67,21 +29,30 @@ export function createCrmSyncService(transport: Transport, _config: { apiKey: st
       return mapSyncResult(response);
     },
 
-    async syncAppointment(uniqueId: string): Promise<CrmSyncResult> {
-      const response = await transport.post<unknown>(`/crm/sync/appointment/${uniqueId}`, {});
+    async syncAppointment(uniqueId: string, asType?: string): Promise<CrmSyncResult> {
+      const body: Record<string, unknown> = {};
+      if (asType) body['as_type'] = asType;
+      const response = await transport.post<unknown>(`/crm/sync/appointment/${uniqueId}`, body);
       return mapSyncResult(response);
     },
 
     async batchSync(data: CrmSyncBatchRequest): Promise<CrmSyncBatchResult> {
       const response = await transport.post<unknown>('/crm/sync/batch', {
-        record_type: data.recordType,
-        unique_ids: data.uniqueIds,
+        batch: {
+          limit: data.limit,
+          sync_landings: data.syncLandings,
+          sync_subscriptions: data.syncSubscriptions,
+          sync_appointments: data.syncAppointments,
+          appointments_as_type: data.appointmentsAsType,
+        },
       });
       return mapBatchResult(response);
     },
 
-    async retryFailed(): Promise<CrmSyncBatchResult> {
-      const response = await transport.post<unknown>('/crm/sync/retry_failed', {});
+    async retryFailed(limit?: number): Promise<CrmSyncBatchResult> {
+      const body: Record<string, unknown> = {};
+      if (limit !== undefined) body['limit'] = limit;
+      const response = await transport.post<unknown>('/crm/sync/retry_failed', body);
       return mapBatchResult(response);
     },
 

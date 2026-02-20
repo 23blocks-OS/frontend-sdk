@@ -5,9 +5,20 @@ export interface Subscription extends IdentityCore {
   userUniqueId?: string;
   email: string;
   firstName?: string;
+  middleName?: string;
   lastName?: string;
-  phone?: string;
-  data: Record<string, unknown>;
+  phoneNumber?: string;
+  notes?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
   status: EntityStatus;
   subscribedAt?: Date;
   unsubscribedAt?: Date;
@@ -18,20 +29,40 @@ export interface CreateSubscriptionRequest {
   formUniqueId?: string;
   email: string;
   firstName?: string;
+  middleName?: string;
   lastName?: string;
-  phone?: string;
-  data?: Record<string, unknown>;
-  payload?: Record<string, unknown>;
+  phoneNumber?: string;
+  notes?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
 }
 
 export interface UpdateSubscriptionRequest {
   email?: string;
   firstName?: string;
+  middleName?: string;
   lastName?: string;
-  phone?: string;
-  data?: Record<string, unknown>;
+  phoneNumber?: string;
+  notes?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
 }
 
 export interface ListSubscriptionsParams {

@@ -5,8 +5,21 @@ export interface Survey extends IdentityCore {
   userUniqueId?: string;
   email?: string;
   firstName?: string;
+  middleName?: string;
   lastName?: string;
-  data: Record<string, unknown>;
+  phoneNumber?: string;
+  message?: string;
+  notes?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
   status: EntityStatus;
   token?: string;
   startedAt?: Date;
@@ -18,21 +31,44 @@ export type SurveyStatus = 'pending' | 'started' | 'completed' | 'expired' | 'ca
 
 export interface CreateSurveyRequest {
   formUniqueId?: string;
-  userUniqueId?: string;
   email?: string;
   firstName?: string;
+  middleName?: string;
   lastName?: string;
-  data?: Record<string, unknown>;
-  payload?: Record<string, unknown>;
+  phoneNumber?: string;
+  message?: string;
+  notes?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
 }
 
 export interface UpdateSurveyRequest {
   email?: string;
   firstName?: string;
+  middleName?: string;
   lastName?: string;
-  data?: Record<string, unknown>;
+  phoneNumber?: string;
+  message?: string;
+  notes?: string;
+  selectedOption?: string;
+  formFields?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  visitorUniqueId?: string;
+  visitorType?: string;
+  touchId?: string;
+  touchReferenceId?: string;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
 }
 
 export interface UpdateSurveyStatusRequest {
