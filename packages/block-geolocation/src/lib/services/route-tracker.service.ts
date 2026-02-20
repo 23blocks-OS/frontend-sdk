@@ -52,7 +52,7 @@ export interface RouteTrackerService {
   stopTracking(userUniqueId: string, routeUniqueId: string): Promise<RouteTrackerStatus>;
 }
 
-export function createRouteTrackerService(transport: Transport, _config: { appId: string }): RouteTrackerService {
+export function createRouteTrackerService(transport: Transport, _config: { apiKey: string }): RouteTrackerService {
   return {
     async recordLocation(userUniqueId: string, routeUniqueId: string, data: CreateRouteLocationRequest): Promise<RouteLocation> {
       const response = await transport.post<unknown>(

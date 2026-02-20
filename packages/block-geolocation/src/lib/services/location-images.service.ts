@@ -34,7 +34,7 @@ export interface LocationImagesService {
   delete(locationUniqueId: string, imageUniqueId: string): Promise<void>;
 }
 
-export function createLocationImagesService(transport: Transport, _config: { appId: string }): LocationImagesService {
+export function createLocationImagesService(transport: Transport, _config: { apiKey: string }): LocationImagesService {
   return {
     async presign(locationUniqueId: string, data: PresignLocationImageRequest): Promise<PresignLocationImageResponse> {
       const response = await transport.put<unknown>(`/locations/${locationUniqueId}/presign`, {

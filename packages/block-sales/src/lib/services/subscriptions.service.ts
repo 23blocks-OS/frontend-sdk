@@ -47,7 +47,7 @@ export interface SubscriptionsService {
   addItem(subscriptionUniqueId: string, data: CreateSubscriptionItemRequest): Promise<SubscriptionItem>;
 }
 
-export function createSubscriptionsService(transport: Transport, _config: { appId: string }): SubscriptionsService {
+export function createSubscriptionsService(transport: Transport, _config: { apiKey: string }): SubscriptionsService {
   return {
     async list(params?: ListSubscriptionsParams): Promise<PageResult<Subscription>> {
       const queryParams: Record<string, string> = {};

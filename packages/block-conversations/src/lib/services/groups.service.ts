@@ -84,7 +84,7 @@ export interface GroupsService {
   removeMember(uniqueId: string, memberId: string): Promise<Group>;
 }
 
-export function createGroupsService(transport: Transport, _config: { appId: string }): GroupsService {
+export function createGroupsService(transport: Transport, _config: { apiKey: string }): GroupsService {
   return {
     async list(params?: ListGroupsParams): Promise<PageResult<Group>> {
       const queryParams: Record<string, string> = {};

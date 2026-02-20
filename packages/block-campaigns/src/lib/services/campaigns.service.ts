@@ -64,7 +64,7 @@ export interface CampaignsService {
   getResults(uniqueId: string): Promise<CampaignResults>;
 }
 
-export function createCampaignsService(transport: Transport, _config: { appId: string }): CampaignsService {
+export function createCampaignsService(transport: Transport, _config: { apiKey: string }): CampaignsService {
   return {
     async list(params?: ListCampaignsParams): Promise<PageResult<Campaign>> {
       const queryParams: Record<string, string> = {};

@@ -61,12 +61,7 @@ import { createOidcService, type OidcService } from './services/oidc.service.js'
 /**
  * Configuration for the Authentication block
  */
-export interface AuthenticationBlockConfig extends BlockConfig {
-  /** API Key for authenticating with 23blocks services */
-  apiKey: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
-}
+export interface AuthenticationBlockConfig extends BlockConfig {}
 
 /**
  * Authentication block interface

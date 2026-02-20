@@ -21,7 +21,7 @@ export interface BadgesService {
   listByUser(userUniqueId: string, params?: ListUserBadgesParams): Promise<PageResult<UserBadge>>;
 }
 
-export function createBadgesService(transport: Transport, _config: { appId: string }): BadgesService {
+export function createBadgesService(transport: Transport, _config: { apiKey: string }): BadgesService {
   return {
     async list(params?: ListBadgesParams): Promise<PageResult<Badge>> {
       const queryParams: Record<string, string> = {};

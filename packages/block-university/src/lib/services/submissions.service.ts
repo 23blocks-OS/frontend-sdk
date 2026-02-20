@@ -46,7 +46,7 @@ export interface SubmissionsService {
   listByUser(userUniqueId: string, params?: ListSubmissionsParams): Promise<PageResult<Submission>>;
 }
 
-export function createSubmissionsService(transport: Transport, _config: { appId: string }): SubmissionsService {
+export function createSubmissionsService(transport: Transport, _config: { apiKey: string }): SubmissionsService {
   return {
     async list(params?: ListSubmissionsParams): Promise<PageResult<Submission>> {
       const queryParams: Record<string, string> = {};

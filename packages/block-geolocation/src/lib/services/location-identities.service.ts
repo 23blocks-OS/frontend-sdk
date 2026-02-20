@@ -88,7 +88,7 @@ export interface LocationIdentitiesService {
   getCurrentLocation(identityUniqueId: string, identityType: string): Promise<LocationIdentity | null>;
 }
 
-export function createLocationIdentitiesService(transport: Transport, _config: { appId: string }): LocationIdentitiesService {
+export function createLocationIdentitiesService(transport: Transport, _config: { apiKey: string }): LocationIdentitiesService {
   return {
     async list(params?: ListLocationIdentitiesParams): Promise<PageResult<LocationIdentity>> {
       const queryParams: Record<string, string> = {};

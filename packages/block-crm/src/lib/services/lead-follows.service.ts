@@ -52,7 +52,7 @@ export interface LeadFollowsService {
   delete(leadUniqueId: string, followUniqueId: string): Promise<void>;
 }
 
-export function createLeadFollowsService(transport: Transport, _config: { appId: string }): LeadFollowsService {
+export function createLeadFollowsService(transport: Transport, _config: { apiKey: string }): LeadFollowsService {
   return {
     async list(leadUniqueId: string, params?: ListLeadFollowsParams): Promise<PageResult<LeadFollow>> {
       const queryParams: Record<string, string> = {};

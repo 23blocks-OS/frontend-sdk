@@ -32,7 +32,7 @@ export interface ToolsService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createToolsService(transport: Transport, _config: { appId: string }): ToolsService {
+export function createToolsService(transport: Transport, _config: { apiKey: string }): ToolsService {
   return {
     async list(params?: ListToolsParams): Promise<PageResult<Tool>> {
       const queryParams: Record<string, string> = {};

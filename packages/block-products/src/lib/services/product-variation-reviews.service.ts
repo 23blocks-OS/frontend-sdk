@@ -90,7 +90,7 @@ export interface ProductVariationReviewsService {
   getAverageRating(variationUniqueId: string): Promise<{ averageRating: number; totalReviews: number }>;
 }
 
-export function createProductVariationReviewsService(transport: Transport, _config: { appId: string }): ProductVariationReviewsService {
+export function createProductVariationReviewsService(transport: Transport, _config: { apiKey: string }): ProductVariationReviewsService {
   return {
     async list(variationUniqueId: string, params?: ListVariationReviewsParams): Promise<PageResult<ProductVariationReview>> {
       const queryParams: Record<string, string> = {};

@@ -70,7 +70,7 @@ export interface AccountsService {
   listDeleted(params?: ListAccountsParams): Promise<PageResult<Account>>;
 }
 
-export function createAccountsService(transport: Transport, _config: { appId: string }): AccountsService {
+export function createAccountsService(transport: Transport, _config: { apiKey: string }): AccountsService {
   return {
     async list(params?: ListAccountsParams): Promise<PageResult<Account>> {
       const queryParams: Record<string, string> = {};

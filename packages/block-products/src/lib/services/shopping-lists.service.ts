@@ -72,7 +72,7 @@ export interface ShoppingListsService {
   updateItemQuantity(uniqueId: string, productUniqueId: string, quantity: number): Promise<ShoppingList>;
 }
 
-export function createShoppingListsService(transport: Transport, _config: { appId: string }): ShoppingListsService {
+export function createShoppingListsService(transport: Transport, _config: { apiKey: string }): ShoppingListsService {
   return {
     async list(params?: ListShoppingListsParams): Promise<PageResult<ShoppingList>> {
       const queryParams: Record<string, string> = {};

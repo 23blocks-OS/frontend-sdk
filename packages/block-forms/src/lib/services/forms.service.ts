@@ -46,7 +46,7 @@ export interface FormsService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createFormsService(transport: Transport, _config: { appId: string }): FormsService {
+export function createFormsService(transport: Transport, _config: { apiKey: string }): FormsService {
   return {
     async list(params?: ListFormsParams): Promise<PageResult<Form>> {
       const queryParams: Record<string, string> = {};

@@ -68,7 +68,7 @@ export interface TravelRoutesService {
   listDeleted(params?: ListTravelRoutesParams): Promise<PageResult<TravelRoute>>;
 }
 
-export function createTravelRoutesService(transport: Transport, _config: { appId: string }): TravelRoutesService {
+export function createTravelRoutesService(transport: Transport, _config: { apiKey: string }): TravelRoutesService {
   return {
     async list(params?: ListTravelRoutesParams): Promise<PageResult<TravelRoute>> {
       const queryParams: Record<string, string> = {};

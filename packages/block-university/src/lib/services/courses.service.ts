@@ -63,7 +63,7 @@ export interface CoursesService {
   listByCategory(categoryUniqueId: string, params?: ListCoursesParams): Promise<PageResult<Course>>;
 }
 
-export function createCoursesService(transport: Transport, _config: { appId: string }): CoursesService {
+export function createCoursesService(transport: Transport, _config: { apiKey: string }): CoursesService {
   return {
     async list(params?: ListCoursesParams): Promise<PageResult<Course>> {
       const queryParams: Record<string, string> = {};

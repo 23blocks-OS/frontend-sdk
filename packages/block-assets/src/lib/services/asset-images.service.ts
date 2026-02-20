@@ -43,7 +43,7 @@ export interface AssetImagesService {
   deleteEventImage(assetUniqueId: string, eventUniqueId: string, imageUniqueId: string): Promise<void>;
 }
 
-export function createAssetImagesService(transport: Transport, _config: { appId: string }): AssetImagesService {
+export function createAssetImagesService(transport: Transport, _config: { apiKey: string }): AssetImagesService {
   return {
     async presign(assetUniqueId: string): Promise<AssetPresignResponse> {
       const response = await transport.put<any>(`/assets/${assetUniqueId}/presign`, {});

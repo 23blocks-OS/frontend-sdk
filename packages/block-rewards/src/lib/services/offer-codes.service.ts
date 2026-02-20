@@ -15,7 +15,7 @@ export interface OfferCodesService {
   redeem(data: RedeemOfferCodeRequest): Promise<OfferCode>;
 }
 
-export function createOfferCodesService(transport: Transport, _config: { appId: string }): OfferCodesService {
+export function createOfferCodesService(transport: Transport, _config: { apiKey: string }): OfferCodesService {
   return {
     async get(code: string): Promise<OfferCode> {
       const response = await transport.get<unknown>(`/offer_codes/${code}`);

@@ -14,7 +14,7 @@ npm install @23blocks/block-conversations
 import { createConversationsBlock } from '@23blocks/block-conversations';
 
 const conversationsBlock = createConversationsBlock(transport, {
-  appId: 'your-app-id',
+  apiKey: 'your-api-key',
 });
 
 // Send a message

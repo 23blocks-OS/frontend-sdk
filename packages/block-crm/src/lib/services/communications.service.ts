@@ -10,7 +10,7 @@ export interface CommunicationsService {
   unsubscribe(data: UnsubscribeRequest): Promise<UnsubscribeResponse>;
 }
 
-export function createCommunicationsService(transport: Transport, _config: { appId: string }): CommunicationsService {
+export function createCommunicationsService(transport: Transport, _config: { apiKey: string }): CommunicationsService {
   return {
     async unsubscribe(data: UnsubscribeRequest): Promise<UnsubscribeResponse> {
       const response = await transport.post<any>('/communications/unsubscribe', {

@@ -122,7 +122,7 @@ export interface AssetsService {
   createOTP(uniqueId: string, data?: CreateOTPRequest): Promise<OTPResponse>;
 }
 
-export function createAssetsService(transport: Transport, _config: { appId: string }): AssetsService {
+export function createAssetsService(transport: Transport, _config: { apiKey: string }): AssetsService {
   return {
     async list(params?: ListAssetsParams): Promise<PageResult<Asset>> {
       const queryParams: Record<string, string> = {};

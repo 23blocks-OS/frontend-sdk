@@ -28,7 +28,7 @@ export interface ConversationsService {
   deleteContext(context: string): Promise<void>;
 }
 
-export function createConversationsService(transport: Transport, _config: { appId: string }): ConversationsService {
+export function createConversationsService(transport: Transport, _config: { apiKey: string }): ConversationsService {
   return {
     async get(params: GetConversationParams): Promise<Conversation> {
       const queryParams: Record<string, string> = {};

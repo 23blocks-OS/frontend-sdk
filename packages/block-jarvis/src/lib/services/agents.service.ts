@@ -62,7 +62,7 @@ export interface AgentsService {
   removeEntity(uniqueId: string, data: AddAgentEntityRequest): Promise<Agent>;
 }
 
-export function createAgentsService(transport: Transport, _config: { appId: string }): AgentsService {
+export function createAgentsService(transport: Transport, _config: { apiKey: string }): AgentsService {
   return {
     async list(params?: ListAgentsParams): Promise<PageResult<Agent>> {
       const queryParams: Record<string, string> = {};

@@ -29,7 +29,7 @@ export interface StepTransitionsService {
   delete(stepUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createStepTransitionsService(transport: Transport, _config: { appId: string }): StepTransitionsService {
+export function createStepTransitionsService(transport: Transport, _config: { apiKey: string }): StepTransitionsService {
   return {
     async list(stepUniqueId: string, params?: ListStepTransitionsParams): Promise<PageResult<StepTransition>> {
       const queryParams: Record<string, string> = {};

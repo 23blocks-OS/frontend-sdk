@@ -60,7 +60,7 @@ export interface ProductPromotionsService {
   deactivate(uniqueId: string): Promise<ProductPromotion>;
 }
 
-export function createProductPromotionsService(transport: Transport, _config: { appId: string }): ProductPromotionsService {
+export function createProductPromotionsService(transport: Transport, _config: { apiKey: string }): ProductPromotionsService {
   return {
     async list(params?: ListProductPromotionsParams): Promise<PageResult<ProductPromotion>> {
       const queryParams: Record<string, string> = {};

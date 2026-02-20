@@ -44,7 +44,7 @@ export interface IdentitiesService {
   update(uniqueId: string, data: UpdateIdentityRequest): Promise<SearchIdentity>;
 }
 
-export function createIdentitiesService(transport: Transport, _config: { appId: string }): IdentitiesService {
+export function createIdentitiesService(transport: Transport, _config: { apiKey: string }): IdentitiesService {
   return {
     async list(params?: ListIdentitiesParams): Promise<PageResult<SearchIdentity>> {
       const queryParams: Record<string, string> = {};

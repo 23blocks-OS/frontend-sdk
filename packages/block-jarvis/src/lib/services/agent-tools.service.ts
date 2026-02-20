@@ -32,7 +32,7 @@ export interface AgentToolsService {
   delete(agentUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createAgentToolsService(transport: Transport, _config: { appId: string }): AgentToolsService {
+export function createAgentToolsService(transport: Transport, _config: { apiKey: string }): AgentToolsService {
   return {
     async list(agentUniqueId: string, params?: ListAgentToolsParams): Promise<PageResult<AgentTool>> {
       const queryParams: Record<string, string> = {};

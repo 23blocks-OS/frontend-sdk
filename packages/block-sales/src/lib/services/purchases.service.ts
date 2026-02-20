@@ -16,7 +16,7 @@ export interface PurchasesService {
   create(data: CreatePurchaseRequest): Promise<Purchase>;
 }
 
-export function createPurchasesService(transport: Transport, _config: { appId: string }): PurchasesService {
+export function createPurchasesService(transport: Transport, _config: { apiKey: string }): PurchasesService {
   return {
     async create(data: CreatePurchaseRequest): Promise<Purchase> {
       const response = await transport.post<unknown>('/purchases', {

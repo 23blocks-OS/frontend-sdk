@@ -58,7 +58,7 @@ export interface DelegationsService {
   listReceivedDelegations(userUniqueId: string): Promise<FileDelegation[]>;
 }
 
-export function createDelegationsService(transport: Transport, _config: { appId: string }): DelegationsService {
+export function createDelegationsService(transport: Transport, _config: { apiKey: string }): DelegationsService {
   return {
     async list(userUniqueId: string, params?: ListFileDelegationsParams): Promise<PageResult<FileDelegation>> {
       const queryParams: Record<string, string> = {};

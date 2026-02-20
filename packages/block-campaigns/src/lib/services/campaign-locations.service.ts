@@ -41,7 +41,7 @@ export interface CampaignLocationsService {
 
 export function createCampaignLocationsService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): CampaignLocationsService {
   return {
     async list(params?: ListCampaignLocationsParams): Promise<PageResult<CampaignLocation>> {

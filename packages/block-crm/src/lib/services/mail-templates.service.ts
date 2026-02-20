@@ -74,7 +74,7 @@ export interface CrmMailTemplatesService {
   publishMandrill(uniqueId: string): Promise<CrmMailTemplate>;
 }
 
-export function createCrmMailTemplatesService(transport: Transport, _config: { appId: string }): CrmMailTemplatesService {
+export function createCrmMailTemplatesService(transport: Transport, _config: { apiKey: string }): CrmMailTemplatesService {
   return {
     async list(params?: ListCrmMailTemplatesParams): Promise<PageResult<CrmMailTemplate>> {
       const queryParams: Record<string, string> = {};

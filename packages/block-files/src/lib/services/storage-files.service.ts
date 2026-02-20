@@ -72,7 +72,7 @@ export interface StorageFilesService {
   listByOwner(ownerUniqueId: string, ownerType: string, params?: ListStorageFilesParams): Promise<PageResult<StorageFile>>;
 }
 
-export function createStorageFilesService(transport: Transport, _config: { appId: string }): StorageFilesService {
+export function createStorageFilesService(transport: Transport, _config: { apiKey: string }): StorageFilesService {
   return {
     async list(params?: ListStorageFilesParams): Promise<PageResult<StorageFile>> {
       const queryParams: Record<string, string> = {};

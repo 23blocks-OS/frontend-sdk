@@ -41,7 +41,7 @@ export interface SubscriptionModelsService {
   update(uniqueId: string, data: UpdateSubscriptionModelRequest): Promise<SubscriptionModel>;
 }
 
-export function createSubscriptionModelsService(transport: Transport, _config: { appId: string }): SubscriptionModelsService {
+export function createSubscriptionModelsService(transport: Transport, _config: { apiKey: string }): SubscriptionModelsService {
   return {
     async list(params?: ListSubscriptionModelsParams): Promise<PageResult<SubscriptionModel>> {
       const queryParams: Record<string, string> = {};

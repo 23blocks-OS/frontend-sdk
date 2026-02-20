@@ -98,7 +98,7 @@ export interface LocationsService {
   removeTag(uniqueId: string, tagUniqueId: string): Promise<void>;
 }
 
-export function createLocationsService(transport: Transport, _config: { appId: string }): LocationsService {
+export function createLocationsService(transport: Transport, _config: { apiKey: string }): LocationsService {
   return {
     async list(params?: ListLocationsParams): Promise<PageResult<Location>> {
       const queryParams: Record<string, string> = {};

@@ -64,7 +64,7 @@ export interface JarvisSearchService {
  */
 export function createJarvisSearchService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): JarvisSearchService {
   const jarvisSearchResultMapper = {
     ...searchResultMapper,

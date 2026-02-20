@@ -47,7 +47,7 @@ export interface TouchesService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createTouchesService(transport: Transport, _config: { appId: string }): TouchesService {
+export function createTouchesService(transport: Transport, _config: { apiKey: string }): TouchesService {
   return {
     async list(params?: ListTouchesParams): Promise<PageResult<Touch>> {
       const queryParams: Record<string, string> = {};

@@ -291,7 +291,7 @@ export interface UserFilesService {
   revokeDelegation(userUniqueId: string, delegationUniqueId: string): Promise<void>;
 }
 
-export function createUserFilesService(transport: Transport, _config: { appId: string }): UserFilesService {
+export function createUserFilesService(transport: Transport, _config: { apiKey: string }): UserFilesService {
   return {
     async list(userUniqueId: string, params?: ListUserFilesParams): Promise<PageResult<UserFile>> {
       const queryParams: Record<string, string> = {};

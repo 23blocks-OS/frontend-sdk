@@ -46,7 +46,7 @@ export interface MarvinChatService {
   sendMessage(contextUniqueId: string, data: SendMarvinMessageRequest): Promise<SendMarvinMessageResponse>;
 }
 
-export function createMarvinChatService(transport: Transport, _config: { appId: string }): MarvinChatService {
+export function createMarvinChatService(transport: Transport, _config: { apiKey: string }): MarvinChatService {
   return {
     async chat(data: MarvinChatRequest): Promise<MarvinChatResponse> {
       const response = await transport.post<any>('/marvin/conversations', {

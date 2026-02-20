@@ -56,10 +56,6 @@ import {
  * Configuration for the Products block.
  */
 export interface ProductsBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -125,7 +121,7 @@ export interface ProductsBlock {
  *
  * @example
  * ```typescript
- * const block = createProductsBlock(transport, { appId: 'xxx' });
+ * const block = createProductsBlock(transport, { apiKey: 'xxx' });
  * const products = await block.products.list({ page: 1 });
  * ```
  */

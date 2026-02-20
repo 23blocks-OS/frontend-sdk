@@ -46,7 +46,7 @@ export interface PostTemplatesService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createPostTemplatesService(transport: Transport, _config: { appId: string }): PostTemplatesService {
+export function createPostTemplatesService(transport: Transport, _config: { apiKey: string }): PostTemplatesService {
   return {
     async list(params?: ListPostTemplatesParams): Promise<PageResult<PostTemplate>> {
       const queryParams: Record<string, string> = {};

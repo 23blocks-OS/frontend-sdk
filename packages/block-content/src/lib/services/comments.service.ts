@@ -109,7 +109,7 @@ export interface CommentsService {
   unfollow(postUniqueId: string, uniqueId: string): Promise<Comment>;
 }
 
-export function createCommentsService(transport: Transport, _config: { appId: string }): CommentsService {
+export function createCommentsService(transport: Transport, _config: { apiKey: string }): CommentsService {
   return {
     async list(postUniqueId: string, params?: ListCommentsParams): Promise<PageResult<Comment>> {
       const queryParams: Record<string, string> = {};

@@ -23,7 +23,7 @@ export interface CouponsService {
   apply(data: ApplyCouponRequest): Promise<CouponApplication>;
 }
 
-export function createCouponsService(transport: Transport, _config: { appId: string }): CouponsService {
+export function createCouponsService(transport: Transport, _config: { apiKey: string }): CouponsService {
   return {
     async list(params?: ListCouponsParams): Promise<PageResult<Coupon>> {
       const queryParams: Record<string, string> = {};

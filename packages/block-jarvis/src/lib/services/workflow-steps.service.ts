@@ -42,7 +42,7 @@ export interface WorkflowStepsService {
   addAgent(stepUniqueId: string, data: AddStepAgentRequest): Promise<void>;
 }
 
-export function createWorkflowStepsService(transport: Transport, _config: { appId: string }): WorkflowStepsService {
+export function createWorkflowStepsService(transport: Transport, _config: { apiKey: string }): WorkflowStepsService {
   return {
     async get(workflowUniqueId: string, stepUniqueId: string): Promise<WorkflowStep> {
       const response = await transport.get<unknown>(`/workflows/${workflowUniqueId}/steps/${stepUniqueId}`);

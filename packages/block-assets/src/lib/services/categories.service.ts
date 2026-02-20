@@ -65,7 +65,7 @@ export interface CategoriesService {
   deleteImage(uniqueId: string, imageUniqueId: string): Promise<void>;
 }
 
-export function createCategoriesService(transport: Transport, _config: { appId: string }): CategoriesService {
+export function createCategoriesService(transport: Transport, _config: { apiKey: string }): CategoriesService {
   return {
     async list(params?: ListCategoriesParams): Promise<PageResult<Category>> {
       const queryParams: Record<string, string> = {};

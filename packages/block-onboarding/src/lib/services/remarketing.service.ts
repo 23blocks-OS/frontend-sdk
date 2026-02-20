@@ -12,7 +12,7 @@ export interface RemarketingService {
   listAbandonedJourneys(params?: ListAbandonedJourneysParams): Promise<PageResult<AbandonedJourney>>;
 }
 
-export function createRemarketingService(transport: Transport, _config: { appId: string }): RemarketingService {
+export function createRemarketingService(transport: Transport, _config: { apiKey: string }): RemarketingService {
   return {
     async listAbandonedJourneys(params?: ListAbandonedJourneysParams): Promise<PageResult<AbandonedJourney>> {
       const queryParams: Record<string, string> = {};

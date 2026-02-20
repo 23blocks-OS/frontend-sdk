@@ -41,7 +41,7 @@ export interface ExecutionCommentsService {
   unsave(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createExecutionCommentsService(transport: Transport, _config: { appId: string }): ExecutionCommentsService {
+export function createExecutionCommentsService(transport: Transport, _config: { apiKey: string }): ExecutionCommentsService {
   return {
     async list(promptUniqueId: string, executionUniqueId: string, params?: ListExecutionCommentsParams): Promise<PageResult<ExecutionComment>> {
       const queryParams: Record<string, string> = {};

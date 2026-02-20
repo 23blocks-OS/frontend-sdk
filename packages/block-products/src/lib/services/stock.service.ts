@@ -90,7 +90,7 @@ export interface StockService {
   evaluateRules(stockUniqueId: string): Promise<{ alerts: any[] }>;
 }
 
-export function createStockService(transport: Transport, _config: { appId: string }): StockService {
+export function createStockService(transport: Transport, _config: { apiKey: string }): StockService {
   return {
     async get(productUniqueId: string): Promise<ProductStock[]> {
       const response = await transport.get<unknown>(`/products/${productUniqueId}/stock`);

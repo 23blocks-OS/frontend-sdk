@@ -70,7 +70,7 @@ export interface ProductReviewsService {
   listByUser(userUniqueId: string, page?: number, perPage?: number): Promise<PageResult<ProductReview>>;
 }
 
-export function createProductReviewsService(transport: Transport, _config: { appId: string }): ProductReviewsService {
+export function createProductReviewsService(transport: Transport, _config: { apiKey: string }): ProductReviewsService {
   return {
     async list(productUniqueId: string, page?: number, perPage?: number): Promise<PageResult<ProductReview>> {
       const params: Record<string, string> = {};

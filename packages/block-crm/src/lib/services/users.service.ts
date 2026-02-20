@@ -53,7 +53,7 @@ export interface CrmUsersService {
   getMeetings(uniqueId: string): Promise<Meeting[]>;
 }
 
-export function createCrmUsersService(transport: Transport, _config: { appId: string }): CrmUsersService {
+export function createCrmUsersService(transport: Transport, _config: { apiKey: string }): CrmUsersService {
   return {
     async list(params?: ListCrmUsersParams): Promise<PageResult<CrmUser>> {
       const queryParams: Record<string, string> = {};

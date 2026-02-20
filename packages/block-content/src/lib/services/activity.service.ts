@@ -39,7 +39,7 @@ export interface ActivityService {
  */
 export function createActivityService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): ActivityService {
   return {
     async getActivities(

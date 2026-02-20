@@ -77,7 +77,7 @@ export interface FileAccessRequestsService {
  */
 export function createFileAccessRequestsService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): FileAccessRequestsService {
   return {
     async list(params?: ListFileAccessRequestsParams): Promise<PageResult<FileAccessRequest>> {

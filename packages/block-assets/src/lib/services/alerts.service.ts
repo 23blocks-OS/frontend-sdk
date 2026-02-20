@@ -22,7 +22,7 @@ export interface AlertsService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createAlertsService(transport: Transport, _config: { appId: string }): AlertsService {
+export function createAlertsService(transport: Transport, _config: { apiKey: string }): AlertsService {
   return {
     async get(uniqueId: string): Promise<AssetAlert> {
       const response = await transport.get<unknown>(`/alerts/${uniqueId}`);

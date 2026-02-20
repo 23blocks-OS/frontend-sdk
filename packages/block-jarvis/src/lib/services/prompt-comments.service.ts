@@ -41,7 +41,7 @@ export interface PromptCommentsService {
   unsave(promptUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createPromptCommentsService(transport: Transport, _config: { appId: string }): PromptCommentsService {
+export function createPromptCommentsService(transport: Transport, _config: { apiKey: string }): PromptCommentsService {
   return {
     async list(promptUniqueId: string, params?: ListPromptCommentsParams): Promise<PageResult<PromptComment>> {
       const queryParams: Record<string, string> = {};

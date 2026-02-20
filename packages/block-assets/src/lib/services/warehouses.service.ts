@@ -39,7 +39,7 @@ export interface WarehousesService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createWarehousesService(transport: Transport, _config: { appId: string }): WarehousesService {
+export function createWarehousesService(transport: Transport, _config: { apiKey: string }): WarehousesService {
   return {
     async list(params?: ListWarehousesParams): Promise<PageResult<Warehouse>> {
       const queryParams: Record<string, string> = {};

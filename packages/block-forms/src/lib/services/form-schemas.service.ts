@@ -51,7 +51,7 @@ export interface FormSchemasService {
   delete(formUniqueId: string, schemaUniqueId: string): Promise<void>;
 }
 
-export function createFormSchemasService(transport: Transport, _config: { appId: string }): FormSchemasService {
+export function createFormSchemasService(transport: Transport, _config: { apiKey: string }): FormSchemasService {
   const basePath = (formId: string) => `/forms/${formId}/schemas`;
 
   return {

@@ -21,7 +21,7 @@ export interface NotificationSettingsService {
   update(userUniqueId: string, data: UpdateNotificationSettingsRequest): Promise<NotificationSettings>;
 }
 
-export function createNotificationSettingsService(transport: Transport, _config: { appId: string }): NotificationSettingsService {
+export function createNotificationSettingsService(transport: Transport, _config: { apiKey: string }): NotificationSettingsService {
   return {
     async get(userUniqueId: string): Promise<NotificationSettings> {
       const response = await transport.get<{ data: any }>(`/users/${userUniqueId}/notifications/settings`);

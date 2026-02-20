@@ -226,7 +226,7 @@ export interface CollectionsService {
   get(uniqueId: string): Promise<Collection>;
 }
 
-export function createCategoriesService(transport: Transport, _config: { appId: string }): CategoriesService {
+export function createCategoriesService(transport: Transport, _config: { apiKey: string }): CategoriesService {
   return {
     async list(params?: ListCategoriesParams): Promise<PageResult<Category>> {
       const queryParams: Record<string, string> = {};
@@ -291,7 +291,7 @@ export function createCategoriesService(transport: Transport, _config: { appId: 
   };
 }
 
-export function createBrandsService(transport: Transport, _config: { appId: string }): BrandsService {
+export function createBrandsService(transport: Transport, _config: { apiKey: string }): BrandsService {
   return {
     async list(page?: number, perPage?: number): Promise<PageResult<Brand>> {
       const params: Record<string, string> = {};
@@ -339,7 +339,7 @@ export function createBrandsService(transport: Transport, _config: { appId: stri
   };
 }
 
-export function createVendorsService(transport: Transport, _config: { appId: string }): VendorsService {
+export function createVendorsService(transport: Transport, _config: { apiKey: string }): VendorsService {
   return {
     async list(params?: ListVendorsParams): Promise<PageResult<Vendor>> {
       const queryParams: Record<string, string> = {};
@@ -392,7 +392,7 @@ export function createVendorsService(transport: Transport, _config: { appId: str
   };
 }
 
-export function createWarehousesService(transport: Transport, _config: { appId: string }): WarehousesService {
+export function createWarehousesService(transport: Transport, _config: { apiKey: string }): WarehousesService {
   return {
     async list(params?: ListWarehousesParams): Promise<PageResult<Warehouse>> {
       const queryParams: Record<string, string> = {};
@@ -442,7 +442,7 @@ export function createWarehousesService(transport: Transport, _config: { appId: 
   };
 }
 
-export function createChannelsService(transport: Transport, _config: { appId: string }): ChannelsService {
+export function createChannelsService(transport: Transport, _config: { apiKey: string }): ChannelsService {
   return {
     async list(): Promise<Channel[]> {
       const response = await transport.get<unknown>('/channels');
@@ -456,7 +456,7 @@ export function createChannelsService(transport: Transport, _config: { appId: st
   };
 }
 
-export function createCollectionsService(transport: Transport, _config: { appId: string }): CollectionsService {
+export function createCollectionsService(transport: Transport, _config: { apiKey: string }): CollectionsService {
   return {
     async list(): Promise<Collection[]> {
       const response = await transport.get<unknown>('/collections');

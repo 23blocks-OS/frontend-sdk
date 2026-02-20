@@ -52,7 +52,7 @@ export interface LessonsService {
   listByCourse(courseUniqueId: string, params?: ListLessonsParams): Promise<PageResult<Lesson>>;
 }
 
-export function createLessonsService(transport: Transport, _config: { appId: string }): LessonsService {
+export function createLessonsService(transport: Transport, _config: { apiKey: string }): LessonsService {
   return {
     async list(params?: ListLessonsParams): Promise<PageResult<Lesson>> {
       const queryParams: Record<string, string> = {};

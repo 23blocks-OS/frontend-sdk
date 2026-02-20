@@ -29,7 +29,7 @@ export interface TransactionsService {
   listByReference(referenceType: string, referenceUniqueId: string, params?: ListTransactionsParams): Promise<PageResult<Transaction>>;
 }
 
-export function createTransactionsService(transport: Transport, _config: { appId: string }): TransactionsService {
+export function createTransactionsService(transport: Transport, _config: { apiKey: string }): TransactionsService {
   return {
     async list(params?: ListTransactionsParams): Promise<PageResult<Transaction>> {
       const queryParams: Record<string, string> = {};

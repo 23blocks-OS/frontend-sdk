@@ -29,7 +29,7 @@ export interface VisitorsService {
   create(data: CreateVisitorRequest): Promise<Visitor>;
 }
 
-export function createVisitorsService(transport: Transport, _config: { appId: string }): VisitorsService {
+export function createVisitorsService(transport: Transport, _config: { apiKey: string }): VisitorsService {
   return {
     async create(data: CreateVisitorRequest): Promise<Visitor> {
       const response = await transport.post<any>('/visitors', {

@@ -22,7 +22,7 @@ export interface CalendarSyncService {
   syncTenant(): Promise<CalendarSyncResult>;
 }
 
-export function createCalendarSyncService(transport: Transport, _config: { appId: string }): CalendarSyncService {
+export function createCalendarSyncService(transport: Transport, _config: { apiKey: string }): CalendarSyncService {
   return {
     async syncUser(userUniqueId: string): Promise<CalendarSyncResult> {
       const response = await transport.post<any>(`/users/${userUniqueId}/calendar/sync`, {});

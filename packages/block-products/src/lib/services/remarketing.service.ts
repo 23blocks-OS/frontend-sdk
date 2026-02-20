@@ -27,7 +27,7 @@ export interface RemarketingService {
   getAbandonedCarts(params?: AbandonedCartsParams): Promise<{ carts: AbandonedCart[]; total: number }>;
 }
 
-export function createRemarketingService(transport: Transport, _config: { appId: string }): RemarketingService {
+export function createRemarketingService(transport: Transport, _config: { apiKey: string }): RemarketingService {
   return {
     async getAbandonedCarts(params?: AbandonedCartsParams): Promise<{ carts: AbandonedCart[]; total: number }> {
       const response = await transport.post<any>('/tools/remarketing/carts/abandoned', {

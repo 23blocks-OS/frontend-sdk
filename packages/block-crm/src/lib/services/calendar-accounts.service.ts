@@ -69,7 +69,7 @@ export interface CalendarAccountsService {
   syncTenant(request?: SyncCalendarRequest): Promise<SyncCalendarResponse>;
 }
 
-export function createCalendarAccountsService(transport: Transport, _config: { appId: string }): CalendarAccountsService {
+export function createCalendarAccountsService(transport: Transport, _config: { apiKey: string }): CalendarAccountsService {
   return {
     async list(userUniqueId: string, params?: ListCalendarAccountsParams): Promise<PageResult<CalendarAccount>> {
       const queryParams: Record<string, string> = {};

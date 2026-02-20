@@ -44,10 +44,6 @@ import {
  * Configuration for the Geolocation block.
  */
 export interface GeolocationBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -101,7 +97,7 @@ export interface GeolocationBlock {
  *
  * @example
  * ```typescript
- * const block = createGeolocationBlock(transport, { appId: 'xxx' });
+ * const block = createGeolocationBlock(transport, { apiKey: 'xxx' });
  * const locations = await block.locations.list({ page: 1 });
  * ```
  */

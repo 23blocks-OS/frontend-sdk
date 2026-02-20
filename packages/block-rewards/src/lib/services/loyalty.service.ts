@@ -17,7 +17,7 @@ export interface LoyaltyService {
   getHistory(userUniqueId: string, params?: ListTransactionsParams): Promise<PageResult<LoyaltyTransaction>>;
 }
 
-export function createLoyaltyService(transport: Transport, _config: { appId: string }): LoyaltyService {
+export function createLoyaltyService(transport: Transport, _config: { apiKey: string }): LoyaltyService {
   return {
     async get(uniqueId: string): Promise<Loyalty> {
       const response = await transport.get<unknown>(`/loyalty/${uniqueId}`);

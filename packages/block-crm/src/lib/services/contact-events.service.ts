@@ -115,7 +115,7 @@ export interface ContactEventsService {
   adminNotes(uniqueId: string, request: EventNotesRequest): Promise<ContactEvent>;
 }
 
-export function createContactEventsService(transport: Transport, _config: { appId: string }): ContactEventsService {
+export function createContactEventsService(transport: Transport, _config: { apiKey: string }): ContactEventsService {
   return {
     async list(params?: ListContactEventsParams): Promise<PageResult<ContactEvent>> {
       const queryParams: Record<string, string> = {};

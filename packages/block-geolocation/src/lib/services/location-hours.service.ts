@@ -49,7 +49,7 @@ export interface LocationHoursService {
   delete(locationUniqueId: string, hourUniqueId: string): Promise<void>;
 }
 
-export function createLocationHoursService(transport: Transport, _config: { appId: string }): LocationHoursService {
+export function createLocationHoursService(transport: Transport, _config: { apiKey: string }): LocationHoursService {
   return {
     async list(locationUniqueId: string): Promise<LocationHour[]> {
       const response = await transport.get<unknown>(`/locations/${locationUniqueId}/hours/`);

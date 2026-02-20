@@ -33,7 +33,7 @@ export interface MeetingParticipantsService {
   delete(meetingUniqueId: string, participantUniqueId: string): Promise<void>;
 }
 
-export function createMeetingParticipantsService(transport: Transport, _config: { appId: string }): MeetingParticipantsService {
+export function createMeetingParticipantsService(transport: Transport, _config: { apiKey: string }): MeetingParticipantsService {
   return {
     async list(meetingUniqueId: string, params?: ListMeetingParticipantsParams): Promise<PageResult<MeetingParticipant>> {
       const queryParams: Record<string, string> = {};

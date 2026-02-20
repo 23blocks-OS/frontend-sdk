@@ -54,7 +54,7 @@ export interface MailTemplatesService {
   getStats(uniqueId: string): Promise<MailTemplateStats>;
 }
 
-export function createMailTemplatesService(transport: Transport, _config: { appId: string }): MailTemplatesService {
+export function createMailTemplatesService(transport: Transport, _config: { apiKey: string }): MailTemplatesService {
   return {
     async list(params?: ListMailTemplatesParams): Promise<PageResult<MailTemplate>> {
       const queryParams: Record<string, string> = {};

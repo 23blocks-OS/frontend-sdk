@@ -24,10 +24,6 @@ import {
  * Configuration for the Files block.
  */
 export interface FilesBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -61,7 +57,7 @@ export interface FilesBlock {
  *
  * @example
  * ```typescript
- * const block = createFilesBlock(transport, { appId: 'xxx' });
+ * const block = createFilesBlock(transport, { apiKey: 'xxx' });
  * const files = await block.storageFiles.list({ page: 1 });
  * ```
  */

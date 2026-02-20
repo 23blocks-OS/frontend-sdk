@@ -50,7 +50,7 @@ export interface AuthorizationCodesService {
   invalidate(uniqueId: string): Promise<AuthorizationCode>;
 }
 
-export function createAuthorizationCodesService(transport: Transport, _config: { appId: string }): AuthorizationCodesService {
+export function createAuthorizationCodesService(transport: Transport, _config: { apiKey: string }): AuthorizationCodesService {
   return {
     async list(params?: ListAuthorizationCodesParams): Promise<PageResult<AuthorizationCode>> {
       const queryParams: Record<string, string> = {};

@@ -74,7 +74,7 @@ export interface EntitiesService {
   searchByCopilot(data: CopilotSearchRequest): Promise<SearchEntity[]>;
 }
 
-export function createEntitiesService(transport: Transport, _config: { appId: string }): EntitiesService {
+export function createEntitiesService(transport: Transport, _config: { apiKey: string }): EntitiesService {
   return {
     async list(params?: ListEntitiesParams): Promise<PageResult<SearchEntity>> {
       const queryParams: Record<string, string> = {};

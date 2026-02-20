@@ -30,7 +30,7 @@ export interface LocationGroupsService {
   create(data: CreateLocationGroupRequest): Promise<LocationGroup>;
 }
 
-export function createLocationGroupsService(transport: Transport, _config: { appId: string }): LocationGroupsService {
+export function createLocationGroupsService(transport: Transport, _config: { apiKey: string }): LocationGroupsService {
   return {
     async list(params?: ListLocationGroupsParams): Promise<PageResult<LocationGroup>> {
       const queryParams: Record<string, string> = {};

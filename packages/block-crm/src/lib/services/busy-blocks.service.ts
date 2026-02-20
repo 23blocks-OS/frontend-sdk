@@ -33,7 +33,7 @@ export interface BusyBlocksService {
   delete(userUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createBusyBlocksService(transport: Transport, _config: { appId: string }): BusyBlocksService {
+export function createBusyBlocksService(transport: Transport, _config: { apiKey: string }): BusyBlocksService {
   return {
     async list(userUniqueId: string, params?: ListBusyBlocksParams): Promise<PageResult<BusyBlock>> {
       const queryParams: Record<string, string> = {};

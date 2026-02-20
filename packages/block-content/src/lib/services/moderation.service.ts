@@ -75,7 +75,7 @@ export interface ModerationService {
  */
 export function createModerationService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): ModerationService {
   return {
     async moderatePost(postUniqueId: string, request: ModerateContentRequest): Promise<ModerationResult> {

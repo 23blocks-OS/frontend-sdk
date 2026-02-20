@@ -53,7 +53,7 @@ export interface FileSchemasService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createFileSchemasService(transport: Transport, _config: { appId: string }): FileSchemasService {
+export function createFileSchemasService(transport: Transport, _config: { apiKey: string }): FileSchemasService {
   return {
     async list(params?: ListFileSchemasParams): Promise<PageResult<FileSchema>> {
       const queryParams: Record<string, string> = {};

@@ -70,7 +70,7 @@ export interface MeetingsService {
   listDeleted(params?: ListMeetingsParams): Promise<PageResult<Meeting>>;
 }
 
-export function createMeetingsService(transport: Transport, _config: { appId: string }): MeetingsService {
+export function createMeetingsService(transport: Transport, _config: { apiKey: string }): MeetingsService {
   return {
     async list(params?: ListMeetingsParams): Promise<PageResult<Meeting>> {
       const queryParams: Record<string, string> = {};

@@ -65,7 +65,7 @@ export interface FormSetsService {
   autoAssign(data: FormSetAutoAssignRequest): Promise<FormInstance[]>;
 }
 
-export function createFormSetsService(transport: Transport, _config: { appId: string }): FormSetsService {
+export function createFormSetsService(transport: Transport, _config: { apiKey: string }): FormSetsService {
   return {
     async list(params?: ListFormSetsParams): Promise<PageResult<FormSet>> {
       const queryParams: Record<string, string> = {};

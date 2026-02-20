@@ -67,7 +67,7 @@ export interface PremiseBookingsService {
   checkOut(uniqueId: string): Promise<PremiseBooking>;
 }
 
-export function createPremiseBookingsService(transport: Transport, _config: { appId: string }): PremiseBookingsService {
+export function createPremiseBookingsService(transport: Transport, _config: { apiKey: string }): PremiseBookingsService {
   return {
     async list(params?: ListPremiseBookingsParams): Promise<PageResult<PremiseBooking>> {
       const queryParams: Record<string, string> = {};

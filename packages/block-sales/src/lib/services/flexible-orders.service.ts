@@ -106,7 +106,7 @@ export interface FlexibleOrdersService {
   getPayments(uniqueId: string): Promise<PageResult<Payment>>;
 }
 
-export function createFlexibleOrdersService(transport: Transport, _config: { appId: string }): FlexibleOrdersService {
+export function createFlexibleOrdersService(transport: Transport, _config: { apiKey: string }): FlexibleOrdersService {
   return {
     async list(params?: ListFlexibleOrdersParams): Promise<PageResult<FlexibleOrder>> {
       const queryParams: Record<string, string> = {};

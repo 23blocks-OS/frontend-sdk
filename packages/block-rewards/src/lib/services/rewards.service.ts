@@ -19,7 +19,7 @@ export interface RewardsService {
   redeem(data: RedeemRewardRequest): Promise<RewardRedemption>;
 }
 
-export function createRewardsService(transport: Transport, _config: { appId: string }): RewardsService {
+export function createRewardsService(transport: Transport, _config: { apiKey: string }): RewardsService {
   return {
     async list(params?: ListRewardsParams): Promise<PageResult<Reward>> {
       const queryParams: Record<string, string> = {};

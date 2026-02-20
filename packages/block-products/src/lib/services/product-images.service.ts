@@ -94,7 +94,7 @@ export interface ProductImagesService {
   publish(productUniqueId: string, imageUniqueId: string): Promise<ProductImage>;
 }
 
-export function createProductImagesService(transport: Transport, _config: { appId: string }): ProductImagesService {
+export function createProductImagesService(transport: Transport, _config: { apiKey: string }): ProductImagesService {
   return {
     async presign(productUniqueId: string): Promise<PresignResponse> {
       const response = await transport.put<any>(`/products/${productUniqueId}/presign`, {});

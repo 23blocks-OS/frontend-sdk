@@ -53,7 +53,7 @@ export interface ProductFiltersService {
   reorder(filterIds: string[]): Promise<void>;
 }
 
-export function createProductFiltersService(transport: Transport, _config: { appId: string }): ProductFiltersService {
+export function createProductFiltersService(transport: Transport, _config: { apiKey: string }): ProductFiltersService {
   return {
     async list(params?: ListProductFiltersParams): Promise<PageResult<ProductFilter>> {
       const queryParams: Record<string, string> = {};

@@ -30,7 +30,7 @@ export interface RewardsCustomersService {
   updateExpiration(uniqueId: string, expirationDate: Date): Promise<RewardsCustomer>;
 }
 
-export function createRewardsCustomersService(transport: Transport, _config: { appId: string }): RewardsCustomersService {
+export function createRewardsCustomersService(transport: Transport, _config: { apiKey: string }): RewardsCustomersService {
   return {
     async list(params?: ListRewardsCustomersParams): Promise<PageResult<RewardsCustomer>> {
       const queryParams: Record<string, string> = {};

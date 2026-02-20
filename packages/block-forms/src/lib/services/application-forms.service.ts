@@ -61,7 +61,7 @@ export interface ApplicationFormsService {
   verifyOtp(urlId: string, data: VerifyOtpRequest): Promise<ApplicationForm>;
 }
 
-export function createApplicationFormsService(transport: Transport, _config: { appId: string }): ApplicationFormsService {
+export function createApplicationFormsService(transport: Transport, _config: { apiKey: string }): ApplicationFormsService {
   return {
     async get(urlId: string): Promise<ApplicationForm> {
       const response = await transport.get<unknown>(`/${urlId}/forms/public`);

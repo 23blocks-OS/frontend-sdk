@@ -40,7 +40,7 @@ export interface SalesCustomersService {
   updateSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateCustomerSubscriptionRequest): Promise<CustomerSubscription>;
 }
 
-export function createSalesCustomersService(transport: Transport, _config: { appId: string }): SalesCustomersService {
+export function createSalesCustomersService(transport: Transport, _config: { apiKey: string }): SalesCustomersService {
   return {
     async get(uniqueId: string): Promise<SalesCustomer> {
       const response = await transport.get<unknown>(`/customers/${uniqueId}`);

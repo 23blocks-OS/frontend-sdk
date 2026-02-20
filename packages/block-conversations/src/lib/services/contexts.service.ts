@@ -48,7 +48,7 @@ export interface ContextsService {
   listGroups(contextUniqueId: string): Promise<PageResult<Group>>;
 }
 
-export function createContextsService(transport: Transport, _config: { appId: string }): ContextsService {
+export function createContextsService(transport: Transport, _config: { apiKey: string }): ContextsService {
   return {
     async list(params?: ListContextsParams): Promise<PageResult<Context>> {
       const queryParams: Record<string, string> = {};

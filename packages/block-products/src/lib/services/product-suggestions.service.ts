@@ -43,7 +43,7 @@ export interface ProductSuggestionsService {
   addReplacements(productUniqueId: string, replacementProductUniqueIds: string[]): Promise<void>;
 }
 
-export function createProductSuggestionsService(transport: Transport, _config: { appId: string }): ProductSuggestionsService {
+export function createProductSuggestionsService(transport: Transport, _config: { apiKey: string }): ProductSuggestionsService {
   return {
     async list(productUniqueId: string): Promise<Product[]> {
       const response = await transport.get<unknown>(`/products/${productUniqueId}/suggestions`);

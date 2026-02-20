@@ -39,7 +39,7 @@ export interface CompaniesService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createCompaniesService(transport: Transport, _config: { appId: string }): CompaniesService {
+export function createCompaniesService(transport: Transport, _config: { apiKey: string }): CompaniesService {
   return {
     async list(params?: ListCompaniesParams): Promise<PageResult<Company>> {
       const queryParams: Record<string, string> = {};

@@ -76,7 +76,7 @@ export interface NotificationsService {
   listUnread(params?: ListNotificationsParams): Promise<PageResult<Notification>>;
 }
 
-export function createNotificationsService(transport: Transport, _config: { appId: string }): NotificationsService {
+export function createNotificationsService(transport: Transport, _config: { apiKey: string }): NotificationsService {
   return {
     async list(params?: ListNotificationsParams): Promise<PageResult<Notification>> {
       const queryParams: Record<string, string> = {};

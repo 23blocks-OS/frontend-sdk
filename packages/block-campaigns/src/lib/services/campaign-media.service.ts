@@ -52,7 +52,7 @@ export interface CampaignMediaService {
   getResults(uniqueId: string): Promise<CampaignMediaResults>;
 }
 
-export function createCampaignMediaService(transport: Transport, _config: { appId: string }): CampaignMediaService {
+export function createCampaignMediaService(transport: Transport, _config: { apiKey: string }): CampaignMediaService {
   return {
     async list(params?: ListCampaignMediaParams): Promise<PageResult<CampaignMedia>> {
       const queryParams: Record<string, string> = {};

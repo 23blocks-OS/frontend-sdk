@@ -64,7 +64,7 @@ export interface EnrollmentsService {
   getCertificate(uniqueId: string): Promise<{ certificateUrl: string }>;
 }
 
-export function createEnrollmentsService(transport: Transport, _config: { appId: string }): EnrollmentsService {
+export function createEnrollmentsService(transport: Transport, _config: { apiKey: string }): EnrollmentsService {
   return {
     async list(params?: ListEnrollmentsParams): Promise<PageResult<Enrollment>> {
       const queryParams: Record<string, string> = {};

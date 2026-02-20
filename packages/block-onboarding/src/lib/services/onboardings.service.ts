@@ -64,7 +64,7 @@ export interface OnboardingsService {
   stepUser(uniqueId: string, userUniqueId: string, stepData?: Record<string, unknown>): Promise<Onboarding>;
 }
 
-export function createOnboardingsService(transport: Transport, _config: { appId: string }): OnboardingsService {
+export function createOnboardingsService(transport: Transport, _config: { apiKey: string }): OnboardingsService {
   return {
     async list(params?: ListOnboardingsParams): Promise<PageResult<Onboarding>> {
       const queryParams: Record<string, string> = {};

@@ -41,7 +41,7 @@ export interface MediaService {
 
 export function createMediaService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): MediaService {
   return {
     async list(params?: ListMediaParams): Promise<PageResult<Media>> {

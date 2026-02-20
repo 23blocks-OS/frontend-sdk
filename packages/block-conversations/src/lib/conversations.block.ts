@@ -36,10 +36,6 @@ import {
  * Configuration for the Conversations block.
  */
 export interface ConversationsBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -85,7 +81,7 @@ export interface ConversationsBlock {
  *
  * @example
  * ```typescript
- * const block = createConversationsBlock(transport, { appId: 'xxx' });
+ * const block = createConversationsBlock(transport, { apiKey: 'xxx' });
  * const messages = await block.messages.list({ page: 1 });
  * ```
  */

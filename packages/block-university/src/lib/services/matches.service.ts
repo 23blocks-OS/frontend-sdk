@@ -108,7 +108,7 @@ export interface MatchesService {
   evaluateAvailabilities(request: EvaluateAvailabilitiesRequest): Promise<MatchEvaluation[]>;
 }
 
-export function createMatchesService(transport: Transport, _config: { appId: string }): MatchesService {
+export function createMatchesService(transport: Transport, _config: { apiKey: string }): MatchesService {
   return {
     // Match CRUD
     async create(data: CreateMatchRequest): Promise<Match> {

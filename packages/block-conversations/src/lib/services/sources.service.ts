@@ -12,7 +12,7 @@ export interface SourcesService {
   get(uniqueId: string): Promise<Source>;
 }
 
-export function createSourcesService(transport: Transport, _config: { appId: string }): SourcesService {
+export function createSourcesService(transport: Transport, _config: { apiKey: string }): SourcesService {
   return {
     async get(uniqueId: string): Promise<Source> {
       const response = await transport.get<unknown>(`/sources/${uniqueId}`);

@@ -24,7 +24,7 @@ export interface OrderTaxesService {
   delete(orderUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createOrderTaxesService(transport: Transport, _config: { appId: string }): OrderTaxesService {
+export function createOrderTaxesService(transport: Transport, _config: { apiKey: string }): OrderTaxesService {
   return {
     async list(orderUniqueId: string): Promise<OrderTax[]> {
       const response = await transport.get<unknown>(`/orders/${orderUniqueId}/taxes`);

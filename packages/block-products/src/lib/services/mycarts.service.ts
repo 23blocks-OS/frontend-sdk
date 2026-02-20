@@ -76,7 +76,7 @@ export interface MyCartsService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createMyCartsService(transport: Transport, _config: { appId: string }): MyCartsService {
+export function createMyCartsService(transport: Transport, _config: { apiKey: string }): MyCartsService {
   return {
     async get(uniqueId: string): Promise<Cart> {
       const response = await transport.get<unknown>(`/mycarts/${uniqueId}`);

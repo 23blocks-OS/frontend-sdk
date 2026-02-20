@@ -45,7 +45,7 @@ export interface ClustersService {
   sendMessage(userUniqueId: string, uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<unknown>;
 }
 
-export function createClustersService(transport: Transport, _config: { appId: string }): ClustersService {
+export function createClustersService(transport: Transport, _config: { apiKey: string }): ClustersService {
   return {
     async list(userUniqueId: string, params?: ListClustersParams): Promise<PageResult<Cluster>> {
       const queryParams: Record<string, string> = {};

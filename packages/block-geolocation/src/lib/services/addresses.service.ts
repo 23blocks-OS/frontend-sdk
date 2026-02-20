@@ -75,7 +75,7 @@ export interface AddressesService {
   setDefault(uniqueId: string): Promise<Address>;
 }
 
-export function createAddressesService(transport: Transport, _config: { appId: string }): AddressesService {
+export function createAddressesService(transport: Transport, _config: { apiKey: string }): AddressesService {
   return {
     async list(params?: ListAddressesParams): Promise<PageResult<Address>> {
       const queryParams: Record<string, string> = {};

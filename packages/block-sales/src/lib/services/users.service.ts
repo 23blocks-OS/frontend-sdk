@@ -52,7 +52,7 @@ export interface SalesUsersService {
   deleteSubscription(uniqueId: string, subscriptionUniqueId: string): Promise<void>;
 }
 
-export function createSalesUsersService(transport: Transport, _config: { appId: string }): SalesUsersService {
+export function createSalesUsersService(transport: Transport, _config: { apiKey: string }): SalesUsersService {
   return {
     async list(params?: ListSalesUsersParams): Promise<PageResult<SalesUser>> {
       const queryParams: Record<string, string> = {};

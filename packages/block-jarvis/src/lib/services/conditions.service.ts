@@ -30,7 +30,7 @@ export interface ConditionsService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createConditionsService(transport: Transport, _config: { appId: string }): ConditionsService {
+export function createConditionsService(transport: Transport, _config: { apiKey: string }): ConditionsService {
   return {
     async list(params?: ListConditionsParams): Promise<PageResult<Condition>> {
       const queryParams: Record<string, string> = {};

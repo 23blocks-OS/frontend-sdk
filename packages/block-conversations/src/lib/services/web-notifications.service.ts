@@ -66,7 +66,7 @@ export interface WebNotificationsService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createWebNotificationsService(transport: Transport, _config: { appId: string }): WebNotificationsService {
+export function createWebNotificationsService(transport: Transport, _config: { apiKey: string }): WebNotificationsService {
   return {
     async list(params?: ListWebNotificationsParams): Promise<PageResult<WebNotification>> {
       const queryParams: Record<string, string> = {};

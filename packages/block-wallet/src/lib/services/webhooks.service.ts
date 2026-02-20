@@ -21,7 +21,7 @@ export interface WebhooksService {
   ): Promise<TransactionWebhookResponse>;
 }
 
-export function createWebhooksService(transport: Transport, _config: { appId: string }): WebhooksService {
+export function createWebhooksService(transport: Transport, _config: { apiKey: string }): WebhooksService {
   return {
     async processTransaction(
       companyUrlId: string,

@@ -76,7 +76,7 @@ export interface MessagesService {
   listDeleted(params?: ListMessagesParams): Promise<PageResult<Message>>;
 }
 
-export function createMessagesService(transport: Transport, _config: { appId: string }): MessagesService {
+export function createMessagesService(transport: Transport, _config: { apiKey: string }): MessagesService {
   return {
     async list(params?: ListMessagesParams): Promise<PageResult<Message>> {
       const queryParams: Record<string, string> = {};

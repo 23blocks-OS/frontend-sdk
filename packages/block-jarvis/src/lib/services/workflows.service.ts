@@ -64,7 +64,7 @@ export interface WorkflowsService {
   removeStep(uniqueId: string, stepUniqueId: string): Promise<void>;
 }
 
-export function createWorkflowsService(transport: Transport, _config: { appId: string }): WorkflowsService {
+export function createWorkflowsService(transport: Transport, _config: { apiKey: string }): WorkflowsService {
   return {
     async list(params?: ListWorkflowsParams): Promise<PageResult<Workflow>> {
       const queryParams: Record<string, string> = {};

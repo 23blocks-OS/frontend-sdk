@@ -61,7 +61,7 @@ export interface DraftMessagesService {
   publish(uniqueId: string): Promise<DraftMessage>;
 }
 
-export function createDraftMessagesService(transport: Transport, _config: { appId: string }): DraftMessagesService {
+export function createDraftMessagesService(transport: Transport, _config: { apiKey: string }): DraftMessagesService {
   return {
     async list(params?: ListDraftMessagesParams): Promise<PageResult<DraftMessage>> {
       const queryParams: Record<string, string> = {};

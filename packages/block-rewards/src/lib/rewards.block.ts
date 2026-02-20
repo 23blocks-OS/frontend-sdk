@@ -30,10 +30,6 @@ import {
  * Configuration for the Rewards block.
  */
 export interface RewardsBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -73,7 +69,7 @@ export interface RewardsBlock {
  *
  * @example
  * ```typescript
- * const block = createRewardsBlock(transport, { appId: 'xxx' });
+ * const block = createRewardsBlock(transport, { apiKey: 'xxx' });
  * const rewards = await block.rewards.list({ page: 1 });
  * ```
  */

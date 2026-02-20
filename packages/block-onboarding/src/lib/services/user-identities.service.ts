@@ -45,7 +45,7 @@ export interface UserIdentitiesService {
   listByUser(userUniqueId: string): Promise<UserIdentity[]>;
 }
 
-export function createUserIdentitiesService(transport: Transport, _config: { appId: string }): UserIdentitiesService {
+export function createUserIdentitiesService(transport: Transport, _config: { apiKey: string }): UserIdentitiesService {
   return {
     async list(params?: ListUserIdentitiesParams): Promise<PageResult<UserIdentity>> {
       const queryParams: Record<string, string> = {};

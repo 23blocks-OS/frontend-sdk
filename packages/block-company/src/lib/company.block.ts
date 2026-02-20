@@ -20,10 +20,6 @@ import {
  * Configuration for the Company block.
  */
 export interface CompanyBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -53,7 +49,7 @@ export interface CompanyBlock {
  *
  * @example
  * ```typescript
- * const block = createCompanyBlock(transport, { appId: 'xxx' });
+ * const block = createCompanyBlock(transport, { apiKey: 'xxx' });
  * const companies = await block.companies.list({ page: 1 });
  * ```
  */

@@ -86,7 +86,7 @@ export interface ProductSetsService {
   removeCategory(uniqueId: string, categoryUniqueId: string): Promise<void>;
 }
 
-export function createProductSetsService(transport: Transport, _config: { appId: string }): ProductSetsService {
+export function createProductSetsService(transport: Transport, _config: { apiKey: string }): ProductSetsService {
   return {
     async list(params?: ListProductSetsParams): Promise<PageResult<ProductSet>> {
       const queryParams: Record<string, string> = {};

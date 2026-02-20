@@ -13,7 +13,7 @@ export interface WebSocketTokensService {
   create(data?: CreateWebSocketTokenRequest): Promise<CreateWebSocketTokenResponse>;
 }
 
-export function createWebSocketTokensService(transport: Transport, _config: { appId: string }): WebSocketTokensService {
+export function createWebSocketTokensService(transport: Transport, _config: { apiKey: string }): WebSocketTokensService {
   return {
     async create(data?: CreateWebSocketTokenRequest): Promise<CreateWebSocketTokenResponse> {
       const response = await transport.post<{ data: CreateWebSocketTokenResponse }>('/api/websocket_tokens', {

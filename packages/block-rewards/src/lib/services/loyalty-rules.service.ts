@@ -66,7 +66,7 @@ export interface EventRulesService {
 
 export function createBadgeCategoriesService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): BadgeCategoriesService {
   return {
     async list(page?: number, perPage?: number): Promise<PageResult<BadgeCategory>> {
@@ -115,7 +115,7 @@ export function createBadgeCategoriesService(
 
 export function createMoneyRulesService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): MoneyRulesService {
   return {
     async list(loyaltyUniqueId: string): Promise<MoneyRule[]> {
@@ -173,7 +173,7 @@ export function createMoneyRulesService(
 
 export function createProductRulesService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): ProductRulesService {
   return {
     async list(loyaltyUniqueId: string): Promise<ProductRule[]> {
@@ -231,7 +231,7 @@ export function createProductRulesService(
 
 export function createEventRulesService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): EventRulesService {
   return {
     async list(loyaltyUniqueId: string): Promise<EventRule[]> {

@@ -70,7 +70,7 @@ export interface ZoomHostsService {
   getAvailableUsers(): Promise<AvailableUser[]>;
 }
 
-export function createZoomHostsService(transport: Transport, _config: { appId: string }): ZoomHostsService {
+export function createZoomHostsService(transport: Transport, _config: { apiKey: string }): ZoomHostsService {
   return {
     async list(params?: ListZoomHostsParams): Promise<PageResult<ZoomHost>> {
       const queryParams: Record<string, string> = {};

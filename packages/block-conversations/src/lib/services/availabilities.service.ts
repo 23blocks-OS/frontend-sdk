@@ -27,7 +27,7 @@ export interface AvailabilitiesService {
   goOffline(): Promise<void>;
 }
 
-export function createAvailabilitiesService(transport: Transport, _config: { appId: string }): AvailabilitiesService {
+export function createAvailabilitiesService(transport: Transport, _config: { apiKey: string }): AvailabilitiesService {
   return {
     async get(userUniqueId: string): Promise<UserAvailability> {
       const response = await transport.get<{ data: any }>(`/users/${userUniqueId}/status`);

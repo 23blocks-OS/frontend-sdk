@@ -62,7 +62,7 @@ export interface ProductPricesService {
   getForVariation(variationUniqueId: string, params?: ListProductPricesParams): Promise<PageResult<ProductPrice>>;
 }
 
-export function createProductPricesService(transport: Transport, _config: { appId: string }): ProductPricesService {
+export function createProductPricesService(transport: Transport, _config: { apiKey: string }): ProductPricesService {
   return {
     async list(params?: ListProductPricesParams): Promise<PageResult<ProductPrice>> {
       const queryParams: Record<string, string> = {};

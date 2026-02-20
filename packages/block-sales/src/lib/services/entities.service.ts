@@ -35,7 +35,7 @@ export interface SalesEntitiesService {
   updateSubscription(uniqueId: string, subscriptionUniqueId: string, data: UpdateEntitySubscriptionRequest): Promise<EntitySubscription>;
 }
 
-export function createSalesEntitiesService(transport: Transport, _config: { appId: string }): SalesEntitiesService {
+export function createSalesEntitiesService(transport: Transport, _config: { apiKey: string }): SalesEntitiesService {
   return {
     async list(params?: ListSalesEntitiesParams): Promise<PageResult<SalesEntity>> {
       const queryParams: Record<string, string> = {};

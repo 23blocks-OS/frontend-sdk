@@ -73,7 +73,7 @@ export interface AssetEventsService {
   deleteImage(assetUniqueId: string, eventUniqueId: string, imageUniqueId: string): Promise<void>;
 }
 
-export function createAssetEventsService(transport: Transport, _config: { appId: string }): AssetEventsService {
+export function createAssetEventsService(transport: Transport, _config: { apiKey: string }): AssetEventsService {
   return {
     async list(assetUniqueId: string, params?: ListAssetEventsParams): Promise<PageResult<AssetEvent>> {
       const queryParams: Record<string, string> = {};

@@ -41,7 +41,7 @@ export interface LandingTemplatesService {
 
 export function createLandingTemplatesService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): LandingTemplatesService {
   return {
     async list(params?: ListLandingTemplatesParams): Promise<PageResult<LandingTemplate>> {

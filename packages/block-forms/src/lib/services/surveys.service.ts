@@ -88,7 +88,7 @@ export interface SurveysService {
   listByUser(userUniqueId: string, params?: ListSurveysParams): Promise<PageResult<Survey>>;
 }
 
-export function createSurveysService(transport: Transport, _config: { appId: string }): SurveysService {
+export function createSurveysService(transport: Transport, _config: { apiKey: string }): SurveysService {
   return {
     async list(formUniqueId: string, params?: ListSurveysParams): Promise<PageResult<Survey>> {
       const queryParams: Record<string, string> = {};

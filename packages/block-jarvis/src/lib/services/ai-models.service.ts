@@ -32,7 +32,7 @@ export interface AIModelsService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createAIModelsService(transport: Transport, _config: { appId: string }): AIModelsService {
+export function createAIModelsService(transport: Transport, _config: { apiKey: string }): AIModelsService {
   return {
     async list(params?: ListAIModelsParams): Promise<PageResult<AIModel>> {
       const queryParams: Record<string, string> = {};

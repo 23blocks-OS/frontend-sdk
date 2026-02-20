@@ -117,7 +117,7 @@ export interface CartService {
   cancelItem(userUniqueId: string, productUniqueId: string): Promise<Cart>;
 }
 
-export function createCartService(transport: Transport, _config: { appId: string }): CartService {
+export function createCartService(transport: Transport, _config: { apiKey: string }): CartService {
   return {
     async get(userUniqueId: string): Promise<Cart> {
       const response = await transport.get<unknown>(`/carts/${userUniqueId}`);

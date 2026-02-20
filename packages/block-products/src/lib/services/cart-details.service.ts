@@ -85,7 +85,7 @@ export interface CartDetailsService {
   return(cartUniqueId: string, detailUniqueId: string): Promise<CartDetail>;
 }
 
-export function createCartDetailsService(transport: Transport, _config: { appId: string }): CartDetailsService {
+export function createCartDetailsService(transport: Transport, _config: { apiKey: string }): CartDetailsService {
   return {
     async order(cartUniqueId: string, detailUniqueId: string): Promise<CartDetail> {
       const response = await transport.put<unknown>(

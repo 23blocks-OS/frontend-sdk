@@ -83,7 +83,7 @@ export interface AppointmentsService {
   reportSummary(data: AppointmentReportRequest): Promise<AppointmentReportSummary>;
 }
 
-export function createAppointmentsService(transport: Transport, _config: { appId: string }): AppointmentsService {
+export function createAppointmentsService(transport: Transport, _config: { apiKey: string }): AppointmentsService {
   return {
     async list(formUniqueId: string, params?: ListAppointmentsParams): Promise<PageResult<Appointment>> {
       const queryParams: Record<string, string> = {};

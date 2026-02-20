@@ -41,7 +41,7 @@ export interface CampaignMarketsService {
 
 export function createCampaignMarketsService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): CampaignMarketsService {
   return {
     async list(params?: ListCampaignMarketsParams): Promise<PageResult<CampaignMarket>> {

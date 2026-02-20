@@ -52,7 +52,7 @@ export interface DepartmentsService {
   getHierarchy(companyUniqueId: string): Promise<DepartmentHierarchy[]>;
 }
 
-export function createDepartmentsService(transport: Transport, _config: { appId: string }): DepartmentsService {
+export function createDepartmentsService(transport: Transport, _config: { apiKey: string }): DepartmentsService {
   return {
     async list(params?: ListDepartmentsParams): Promise<PageResult<Department>> {
       const queryParams: Record<string, string> = {};

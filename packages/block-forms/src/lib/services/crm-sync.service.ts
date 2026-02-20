@@ -55,7 +55,7 @@ export interface CrmSyncService {
   status(): Promise<CrmSyncStatus>;
 }
 
-export function createCrmSyncService(transport: Transport, _config: { appId: string }): CrmSyncService {
+export function createCrmSyncService(transport: Transport, _config: { apiKey: string }): CrmSyncService {
   return {
     async syncLanding(uniqueId: string): Promise<CrmSyncResult> {
       const response = await transport.post<unknown>(`/crm/sync/landing/${uniqueId}`, {});

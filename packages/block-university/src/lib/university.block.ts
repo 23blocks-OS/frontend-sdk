@@ -40,10 +40,6 @@ import {
  * Configuration for the University block.
  */
 export interface UniversityBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -93,7 +89,7 @@ export interface UniversityBlock {
  *
  * @example
  * ```typescript
- * const block = createUniversityBlock(transport, { appId: 'xxx' });
+ * const block = createUniversityBlock(transport, { apiKey: 'xxx' });
  * const courses = await block.courses.list({ page: 1 });
  * ```
  */

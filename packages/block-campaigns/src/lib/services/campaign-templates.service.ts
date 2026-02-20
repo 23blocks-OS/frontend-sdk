@@ -74,7 +74,7 @@ export interface CampaignTemplatesService {
 
 export function createCampaignTemplatesService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): CampaignTemplatesService {
   return {
     async list(params?: ListCampaignTemplatesParams): Promise<PageResult<CampaignTemplate>> {

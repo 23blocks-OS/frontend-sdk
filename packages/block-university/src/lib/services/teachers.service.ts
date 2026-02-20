@@ -91,7 +91,7 @@ export interface TeachersService {
   promoteStudent(uniqueId: string, userUniqueId: string): Promise<unknown>;
 }
 
-export function createTeachersService(transport: Transport, _config: { appId: string }): TeachersService {
+export function createTeachersService(transport: Transport, _config: { apiKey: string }): TeachersService {
   return {
     async list(params?: ListTeachersParams): Promise<PageResult<Teacher>> {
       const queryParams: Record<string, string> = {};

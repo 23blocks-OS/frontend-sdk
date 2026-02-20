@@ -115,7 +115,7 @@ export interface StudentsService {
   deleteAllAvailability(uniqueId: string): Promise<void>;
 }
 
-export function createStudentsService(transport: Transport, _config: { appId: string }): StudentsService {
+export function createStudentsService(transport: Transport, _config: { apiKey: string }): StudentsService {
   return {
     async list(params?: ListStudentsParams): Promise<PageResult<Student>> {
       const queryParams: Record<string, string> = {};

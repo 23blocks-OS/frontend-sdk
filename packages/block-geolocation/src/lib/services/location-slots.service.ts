@@ -49,7 +49,7 @@ export interface LocationSlotsService {
   delete(locationUniqueId: string, slotUniqueId: string): Promise<void>;
 }
 
-export function createLocationSlotsService(transport: Transport, _config: { appId: string }): LocationSlotsService {
+export function createLocationSlotsService(transport: Transport, _config: { apiKey: string }): LocationSlotsService {
   return {
     async list(locationUniqueId: string): Promise<LocationSlot[]> {
       const response = await transport.get<unknown>(`/locations/${locationUniqueId}/slots`);

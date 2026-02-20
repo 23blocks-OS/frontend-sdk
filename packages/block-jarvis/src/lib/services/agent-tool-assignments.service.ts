@@ -16,7 +16,7 @@ export interface AgentToolAssignmentsService {
   delete(agentUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createAgentToolAssignmentsService(transport: Transport, _config: { appId: string }): AgentToolAssignmentsService {
+export function createAgentToolAssignmentsService(transport: Transport, _config: { apiKey: string }): AgentToolAssignmentsService {
   return {
     async list(agentUniqueId: string, params?: ListAgentToolAssignmentsParams): Promise<PageResult<AgentToolAssignment>> {
       const queryParams: Record<string, string> = {};

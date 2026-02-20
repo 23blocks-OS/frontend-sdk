@@ -56,7 +56,7 @@ function buildOrderBody(data: CreateOrderRequest): Record<string, unknown> {
   return order;
 }
 
-export function createOrdersService(transport: Transport, _config: { appId: string }): OrdersService {
+export function createOrdersService(transport: Transport, _config: { apiKey: string }): OrdersService {
   return {
     async list(params?: ListOrdersParams): Promise<PageResult<Order>> {
       const queryParams: Record<string, string> = {};

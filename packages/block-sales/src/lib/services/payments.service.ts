@@ -40,7 +40,7 @@ export interface PaymentsService {
   listByOrder(orderUniqueId: string): Promise<Payment[]>;
 }
 
-export function createPaymentsService(transport: Transport, _config: { appId: string }): PaymentsService {
+export function createPaymentsService(transport: Transport, _config: { apiKey: string }): PaymentsService {
   return {
     async list(params?: ListPaymentsParams): Promise<PageResult<Payment>> {
       const queryParams: Record<string, string> = {};

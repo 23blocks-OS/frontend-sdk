@@ -45,7 +45,7 @@ export interface TeamsService {
   listByDepartment(departmentUniqueId: string): Promise<Team[]>;
 }
 
-export function createTeamsService(transport: Transport, _config: { appId: string }): TeamsService {
+export function createTeamsService(transport: Transport, _config: { apiKey: string }): TeamsService {
   return {
     async list(params?: ListTeamsParams): Promise<PageResult<Team>> {
       const queryParams: Record<string, string> = {};

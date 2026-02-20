@@ -38,7 +38,7 @@ export interface JarvisUsersService {
   sendMessage(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<unknown>;
 }
 
-export function createJarvisUsersService(transport: Transport, _config: { appId: string }): JarvisUsersService {
+export function createJarvisUsersService(transport: Transport, _config: { apiKey: string }): JarvisUsersService {
   return {
     async list(params?: ListJarvisUsersParams): Promise<PageResult<JarvisUser>> {
       const queryParams: Record<string, string> = {};

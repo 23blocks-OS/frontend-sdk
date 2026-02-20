@@ -56,7 +56,7 @@ export interface PremiseEventsService {
   delete(locationUniqueId: string, premiseUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createPremiseEventsService(transport: Transport, _config: { appId: string }): PremiseEventsService {
+export function createPremiseEventsService(transport: Transport, _config: { apiKey: string }): PremiseEventsService {
   return {
     async list(locationUniqueId: string, premiseUniqueId: string, params?: ListPremiseEventsParams): Promise<PageResult<PremiseEvent>> {
       const queryParams: Record<string, string> = {};

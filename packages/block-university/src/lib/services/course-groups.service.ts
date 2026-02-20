@@ -44,7 +44,7 @@ export interface CourseGroupsService {
   getTestResponses(uniqueId: string, testUniqueId: string): Promise<unknown[]>;
 }
 
-export function createCourseGroupsService(transport: Transport, _config: { appId: string }): CourseGroupsService {
+export function createCourseGroupsService(transport: Transport, _config: { apiKey: string }): CourseGroupsService {
   return {
     async get(uniqueId: string): Promise<CourseGroup> {
       const response = await transport.get<unknown>(`/course_groups/${uniqueId}/`);

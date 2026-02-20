@@ -30,10 +30,6 @@ import {
  * Configuration for the Campaigns block.
  */
 export interface CampaignsBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -73,7 +69,7 @@ export interface CampaignsBlock {
  *
  * @example
  * ```typescript
- * const block = createCampaignsBlock(transport, { appId: 'xxx' });
+ * const block = createCampaignsBlock(transport, { apiKey: 'xxx' });
  * const campaigns = await block.campaigns.list({ page: 1 });
  * ```
  */

@@ -39,7 +39,7 @@ export interface AssetAuditsService {
   delete(assetUniqueId: string, auditUniqueId: string): Promise<void>;
 }
 
-export function createAssetAuditsService(transport: Transport, _config: { appId: string }): AssetAuditsService {
+export function createAssetAuditsService(transport: Transport, _config: { apiKey: string }): AssetAuditsService {
   return {
     async list(assetUniqueId: string, params?: ListAssetAuditsParams): Promise<PageResult<AssetAudit>> {
       const queryParams: Record<string, string> = {};

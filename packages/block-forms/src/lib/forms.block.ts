@@ -32,10 +32,6 @@ import {
  * Configuration for the Forms block.
  */
 export interface FormsBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -89,7 +85,7 @@ export interface FormsBlock {
  *
  * @example
  * ```typescript
- * const block = createFormsBlock(transport, { appId: 'xxx' });
+ * const block = createFormsBlock(transport, { apiKey: 'xxx' });
  * const forms = await block.forms.list({ page: 1 });
  * ```
  */

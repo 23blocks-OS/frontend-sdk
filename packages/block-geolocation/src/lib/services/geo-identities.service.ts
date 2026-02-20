@@ -73,7 +73,7 @@ export interface GeoIdentitiesService {
   updateLocation(userUniqueId: string, data: UserLocationRequest): Promise<void>;
 }
 
-export function createGeoIdentitiesService(transport: Transport, _config: { appId: string }): GeoIdentitiesService {
+export function createGeoIdentitiesService(transport: Transport, _config: { apiKey: string }): GeoIdentitiesService {
   return {
     async list(params?: ListGeoIdentitiesParams): Promise<PageResult<GeoIdentity>> {
       const queryParams: Record<string, string> = {};

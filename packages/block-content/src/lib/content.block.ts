@@ -26,10 +26,6 @@ import {
  * Configuration for the Content block.
  */
 export interface ContentBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -65,7 +61,7 @@ export interface ContentBlock {
  *
  * @example
  * ```typescript
- * const block = createContentBlock(transport, { appId: 'xxx' });
+ * const block = createContentBlock(transport, { apiKey: 'xxx' });
  * const posts = await block.posts.list({ page: 1 });
  * ```
  */

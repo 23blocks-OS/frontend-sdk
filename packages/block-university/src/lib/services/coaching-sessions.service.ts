@@ -95,7 +95,7 @@ export interface CoachingSessionsService {
   adminNotes(uniqueId: string, notes: string): Promise<CoachingSession>;
 }
 
-export function createCoachingSessionsService(transport: Transport, _config: { appId: string }): CoachingSessionsService {
+export function createCoachingSessionsService(transport: Transport, _config: { apiKey: string }): CoachingSessionsService {
   return {
     async list(params?: ListCoachingSessionsParams): Promise<PageResult<CoachingSession>> {
       const queryParams: Record<string, string> = {};

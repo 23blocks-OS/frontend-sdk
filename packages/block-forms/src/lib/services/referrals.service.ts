@@ -51,7 +51,7 @@ export interface ReferralsService {
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createReferralsService(transport: Transport, _config: { appId: string }): ReferralsService {
+export function createReferralsService(transport: Transport, _config: { apiKey: string }): ReferralsService {
   return {
     async list(formUniqueId: string, params?: ListReferralsParams): Promise<PageResult<Referral>> {
       const queryParams: Record<string, string> = {};

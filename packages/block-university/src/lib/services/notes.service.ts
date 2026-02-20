@@ -81,7 +81,7 @@ export interface NotesService {
   getReplies(uniqueId: string): Promise<Note[]>;
 }
 
-export function createNotesService(transport: Transport, _config: { appId: string }): NotesService {
+export function createNotesService(transport: Transport, _config: { apiKey: string }): NotesService {
   return {
     async list(params?: ListNotesParams): Promise<PageResult<Note>> {
       const queryParams: Record<string, string> = {};

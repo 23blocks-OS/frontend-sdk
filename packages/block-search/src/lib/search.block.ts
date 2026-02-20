@@ -18,8 +18,6 @@ import {
  * Configuration for the Search block
  */
 export interface SearchBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
   /** Default entity types to search (optional) */
   defaultEntityTypes?: string[];
 }
@@ -78,7 +76,7 @@ export interface SearchBlock {
  *   }),
  * });
  *
- * const searchBlock = createSearchBlock(transport, { appId: 'your-app-id' });
+ * const searchBlock = createSearchBlock(transport, { apiKey: 'your-api-key' });
  *
  * // Execute a search
  * const { results, totalRecords } = await searchBlock.search.search({

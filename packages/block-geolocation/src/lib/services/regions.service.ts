@@ -68,7 +68,7 @@ export interface RegionsService {
   listDeleted(params?: ListRegionsParams): Promise<PageResult<Region>>;
 }
 
-export function createRegionsService(transport: Transport, _config: { appId: string }): RegionsService {
+export function createRegionsService(transport: Transport, _config: { apiKey: string }): RegionsService {
   return {
     async list(params?: ListRegionsParams): Promise<PageResult<Region>> {
       const queryParams: Record<string, string> = {};

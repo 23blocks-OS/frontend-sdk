@@ -94,7 +94,7 @@ export interface GeoCitiesService {
  */
 export function createGeoCountriesService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): GeoCountriesService {
   return {
     async list(params?: GeoLookupParams): Promise<PageResult<GeoCountry>> {
@@ -127,7 +127,7 @@ export function createGeoCountriesService(
  */
 export function createGeoStatesService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): GeoStatesService {
   return {
     async list(params?: GeoLookupParams): Promise<PageResult<GeoState>> {
@@ -172,7 +172,7 @@ export function createGeoStatesService(
  */
 export function createGeoCitiesService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): GeoCitiesService {
   return {
     async list(params?: GeoLookupParams): Promise<PageResult<GeoCity>> {

@@ -45,7 +45,7 @@ export interface TeamMembersService {
   listByTeam(teamUniqueId: string): Promise<TeamMember[]>;
 }
 
-export function createTeamMembersService(transport: Transport, _config: { appId: string }): TeamMembersService {
+export function createTeamMembersService(transport: Transport, _config: { apiKey: string }): TeamMembersService {
   return {
     async list(params?: ListTeamMembersParams): Promise<PageResult<TeamMember>> {
       const queryParams: Record<string, string> = {};

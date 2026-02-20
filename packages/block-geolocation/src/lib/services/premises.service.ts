@@ -68,7 +68,7 @@ export interface PremisesService {
   listDeleted(params?: ListPremisesParams): Promise<PageResult<Premise>>;
 }
 
-export function createPremisesService(transport: Transport, _config: { appId: string }): PremisesService {
+export function createPremisesService(transport: Transport, _config: { apiKey: string }): PremisesService {
   return {
     async list(params?: ListPremisesParams): Promise<PageResult<Premise>> {
       const queryParams: Record<string, string> = {};

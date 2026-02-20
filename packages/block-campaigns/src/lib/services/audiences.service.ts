@@ -46,7 +46,7 @@ export interface AudiencesService {
   getMembers(uniqueId: string): Promise<AudienceMember[]>;
 }
 
-export function createAudiencesService(transport: Transport, _config: { appId: string }): AudiencesService {
+export function createAudiencesService(transport: Transport, _config: { apiKey: string }): AudiencesService {
   return {
     async list(params?: ListAudiencesParams): Promise<PageResult<Audience>> {
       const queryParams: Record<string, string> = {};

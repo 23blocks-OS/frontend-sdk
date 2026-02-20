@@ -30,10 +30,6 @@ import {
  * Configuration for the Assets block.
  */
 export interface AssetsBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -73,7 +69,7 @@ export interface AssetsBlock {
  *
  * @example
  * ```typescript
- * const block = createAssetsBlock(transport, { appId: 'xxx' });
+ * const block = createAssetsBlock(transport, { apiKey: 'xxx' });
  * const assets = await block.assets.list({ page: 1 });
  * ```
  */

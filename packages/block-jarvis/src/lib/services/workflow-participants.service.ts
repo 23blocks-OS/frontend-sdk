@@ -26,7 +26,7 @@ export interface WorkflowParticipantsService {
   remove(workflowUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createWorkflowParticipantsService(transport: Transport, _config: { appId: string }): WorkflowParticipantsService {
+export function createWorkflowParticipantsService(transport: Transport, _config: { apiKey: string }): WorkflowParticipantsService {
   return {
     async list(workflowUniqueId: string, params?: ListWorkflowParticipantsParams): Promise<PageResult<WorkflowParticipant>> {
       const queryParams: Record<string, string> = {};

@@ -41,7 +41,7 @@ export interface CampaignResultsService {
 
 export function createCampaignResultsService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): CampaignResultsService {
   return {
     async list(params?: ListCampaignResultsParams): Promise<PageResult<CampaignResult>> {

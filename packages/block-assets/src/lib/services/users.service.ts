@@ -57,7 +57,7 @@ export interface AssetsUsersService {
   listOwnership(uniqueId: string): Promise<UserOwnership[]>;
 }
 
-export function createAssetsUsersService(transport: Transport, _config: { appId: string }): AssetsUsersService {
+export function createAssetsUsersService(transport: Transport, _config: { apiKey: string }): AssetsUsersService {
   return {
     async list(params?: ListAssetsUsersParams): Promise<PageResult<AssetsUser>> {
       const queryParams: Record<string, string> = {};

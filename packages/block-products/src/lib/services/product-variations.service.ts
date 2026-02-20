@@ -92,7 +92,7 @@ export interface ProductVariationsService {
   flagReview(productUniqueId: string, variationUniqueId: string, reviewUniqueId: string): Promise<any>;
 }
 
-export function createProductVariationsService(transport: Transport, _config: { appId: string }): ProductVariationsService {
+export function createProductVariationsService(transport: Transport, _config: { apiKey: string }): ProductVariationsService {
   return {
     async list(productUniqueId: string): Promise<ProductVariation[]> {
       const response = await transport.get<unknown>(`/products/${productUniqueId}/variations`);

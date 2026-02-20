@@ -31,7 +31,7 @@ export interface PostVersionsService {
   publish(postUniqueId: string, versionUniqueId: string): Promise<PostVersion>;
 }
 
-export function createPostVersionsService(transport: Transport, _config: { appId: string }): PostVersionsService {
+export function createPostVersionsService(transport: Transport, _config: { apiKey: string }): PostVersionsService {
   return {
     async list(postUniqueId: string, params?: ListPostVersionsParams): Promise<PageResult<PostVersion>> {
       const queryParams: Record<string, string> = {};

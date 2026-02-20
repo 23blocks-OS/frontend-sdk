@@ -70,7 +70,7 @@ export interface QuotesService {
   listDeleted(params?: ListQuotesParams): Promise<PageResult<Quote>>;
 }
 
-export function createQuotesService(transport: Transport, _config: { appId: string }): QuotesService {
+export function createQuotesService(transport: Transport, _config: { apiKey: string }): QuotesService {
   return {
     async list(params?: ListQuotesParams): Promise<PageResult<Quote>> {
       const queryParams: Record<string, string> = {};

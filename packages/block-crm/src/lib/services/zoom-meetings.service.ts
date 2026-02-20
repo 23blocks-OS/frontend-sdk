@@ -53,7 +53,7 @@ export interface ZoomMeetingsService {
   checkAvailability(userUniqueId: string): Promise<ZoomAvailability>;
 }
 
-export function createZoomMeetingsService(transport: Transport, _config: { appId: string }): ZoomMeetingsService {
+export function createZoomMeetingsService(transport: Transport, _config: { apiKey: string }): ZoomMeetingsService {
   return {
     async get(userUniqueId: string, meetingUniqueId: string): Promise<ZoomMeeting> {
       const response = await transport.get<unknown>(`/users/${userUniqueId}/meetings/${meetingUniqueId}/zoom`);

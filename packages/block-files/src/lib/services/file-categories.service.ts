@@ -53,7 +53,7 @@ export interface FileCategoriesService {
   listChildren(parentUniqueId: string): Promise<FileCategory[]>;
 }
 
-export function createFileCategoriesService(transport: Transport, _config: { appId: string }): FileCategoriesService {
+export function createFileCategoriesService(transport: Transport, _config: { apiKey: string }): FileCategoriesService {
   return {
     async list(params?: ListFileCategoriesParams): Promise<PageResult<FileCategory>> {
       const queryParams: Record<string, string> = {};

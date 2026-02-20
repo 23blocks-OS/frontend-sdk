@@ -39,7 +39,7 @@ export interface QuartersService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createQuartersService(transport: Transport, _config: { appId: string }): QuartersService {
+export function createQuartersService(transport: Transport, _config: { apiKey: string }): QuartersService {
   return {
     async list(params?: ListQuartersParams): Promise<PageResult<Quarter>> {
       const queryParams: Record<string, string> = {};

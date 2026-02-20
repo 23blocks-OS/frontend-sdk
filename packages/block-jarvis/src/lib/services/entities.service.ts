@@ -85,7 +85,7 @@ export interface EntitiesService {
   sendMessageStream(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<ReadableStream<string>>;
 }
 
-export function createEntitiesService(transport: Transport, _config: { appId: string }, sseUrl?: string): EntitiesService {
+export function createEntitiesService(transport: Transport, _config: { apiKey: string }, sseUrl?: string): EntitiesService {
   return {
     async list(params?: ListEntitiesParams): Promise<PageResult<Entity>> {
       const queryParams: Record<string, string> = {};

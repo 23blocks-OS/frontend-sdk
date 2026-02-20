@@ -112,7 +112,7 @@ export interface CalendarsService {
   deleteEvent(uniqueId: string): Promise<void>;
 }
 
-export function createCalendarsService(transport: Transport, _config: { appId: string }): CalendarsService {
+export function createCalendarsService(transport: Transport, _config: { apiKey: string }): CalendarsService {
   return {
     // Student Availability
     async getStudentAvailability(userUniqueId: string): Promise<Availability[]> {

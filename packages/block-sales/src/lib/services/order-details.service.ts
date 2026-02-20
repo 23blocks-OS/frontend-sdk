@@ -57,7 +57,7 @@ export interface OrderDetailsService {
   listByOrder(orderUniqueId: string): Promise<OrderDetail[]>;
 }
 
-export function createOrderDetailsService(transport: Transport, _config: { appId: string }): OrderDetailsService {
+export function createOrderDetailsService(transport: Transport, _config: { apiKey: string }): OrderDetailsService {
   return {
     async list(): Promise<OrderDetail[]> {
       const response = await transport.get<unknown>('/order_details');

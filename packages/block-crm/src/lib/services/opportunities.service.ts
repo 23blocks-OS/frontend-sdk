@@ -70,7 +70,7 @@ export interface OpportunitiesService {
   listDeleted(params?: ListOpportunitiesParams): Promise<PageResult<Opportunity>>;
 }
 
-export function createOpportunitiesService(transport: Transport, _config: { appId: string }): OpportunitiesService {
+export function createOpportunitiesService(transport: Transport, _config: { apiKey: string }): OpportunitiesService {
   return {
     async list(params?: ListOpportunitiesParams): Promise<PageResult<Opportunity>> {
       const queryParams: Record<string, string> = {};

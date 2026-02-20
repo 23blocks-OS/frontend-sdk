@@ -143,7 +143,7 @@ export interface PlacementsService {
   finishPlacement(userUniqueId: string, instanceUniqueId: string): Promise<PlacementInstance>;
 }
 
-export function createPlacementsService(transport: Transport, _config: { appId: string }): PlacementsService {
+export function createPlacementsService(transport: Transport, _config: { apiKey: string }): PlacementsService {
   return {
     // Placement Tests
     async get(uniqueId: string): Promise<PlacementTest> {

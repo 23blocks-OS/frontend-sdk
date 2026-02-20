@@ -91,7 +91,7 @@ export interface AssetsEntitiesService {
   denyAccessRequest(uniqueId: string, requestUniqueId: string): Promise<void>;
 }
 
-export function createAssetsEntitiesService(transport: Transport, _config: { appId: string }): AssetsEntitiesService {
+export function createAssetsEntitiesService(transport: Transport, _config: { apiKey: string }): AssetsEntitiesService {
   return {
     async list(params?: ListAssetsEntitiesParams): Promise<PageResult<AssetsEntity>> {
       const queryParams: Record<string, string> = {};

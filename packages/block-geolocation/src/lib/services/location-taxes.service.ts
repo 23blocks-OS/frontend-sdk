@@ -34,7 +34,7 @@ export interface LocationTaxesService {
   delete(locationUniqueId: string, taxUniqueId: string): Promise<void>;
 }
 
-export function createLocationTaxesService(transport: Transport, _config: { appId: string }): LocationTaxesService {
+export function createLocationTaxesService(transport: Transport, _config: { apiKey: string }): LocationTaxesService {
   return {
     async create(locationUniqueId: string, data: CreateLocationTaxRequest): Promise<LocationTax> {
       const response = await transport.post<unknown>(`/locations/${locationUniqueId}/taxes`, {

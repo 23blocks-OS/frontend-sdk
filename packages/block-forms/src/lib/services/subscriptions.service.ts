@@ -51,7 +51,7 @@ export interface SubscriptionsService {
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createSubscriptionsService(transport: Transport, _config: { appId: string }): SubscriptionsService {
+export function createSubscriptionsService(transport: Transport, _config: { apiKey: string }): SubscriptionsService {
   return {
     async list(formUniqueId: string, params?: ListSubscriptionsParams): Promise<PageResult<Subscription>> {
       const queryParams: Record<string, string> = {};

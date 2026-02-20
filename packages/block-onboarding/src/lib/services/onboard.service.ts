@@ -53,7 +53,7 @@ export interface OnboardService {
   resume(uniqueId: string): Promise<OnboardJourney>;
 }
 
-export function createOnboardService(transport: Transport, _config: { appId: string }): OnboardService {
+export function createOnboardService(transport: Transport, _config: { apiKey: string }): OnboardService {
   return {
     async start(uniqueId: string, data?: StartOnboardRequest): Promise<OnboardJourney> {
       const response = await transport.post<unknown>(`/onboard/${uniqueId}/start`, {

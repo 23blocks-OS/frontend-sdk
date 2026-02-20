@@ -95,7 +95,7 @@ export interface MeetingBillingsService {
   getParticipantReport(participantEmail: string): Promise<BillingParticipantReport>;
 }
 
-export function createMeetingBillingsService(transport: Transport, _config: { appId: string }): MeetingBillingsService {
+export function createMeetingBillingsService(transport: Transport, _config: { apiKey: string }): MeetingBillingsService {
   return {
     async list(meetingUniqueId: string, params?: ListMeetingBillingsParams): Promise<PageResult<MeetingBilling>> {
       const queryParams: Record<string, string> = {};

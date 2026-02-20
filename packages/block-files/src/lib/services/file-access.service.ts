@@ -72,7 +72,7 @@ export interface FileAccessService {
   checkAccess(fileUniqueId: string, granteeUniqueId: string): Promise<FileAccess | null>;
 }
 
-export function createFileAccessService(transport: Transport, _config: { appId: string }): FileAccessService {
+export function createFileAccessService(transport: Transport, _config: { apiKey: string }): FileAccessService {
   return {
     async list(params?: ListFileAccessParams): Promise<PageResult<FileAccess>> {
       const queryParams: Record<string, string> = {};

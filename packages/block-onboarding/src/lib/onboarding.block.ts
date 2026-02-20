@@ -20,10 +20,6 @@ import {
  * Configuration for the Onboarding block.
  */
 export interface OnboardingBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -53,7 +49,7 @@ export interface OnboardingBlock {
  *
  * @example
  * ```typescript
- * const block = createOnboardingBlock(transport, { appId: 'xxx' });
+ * const block = createOnboardingBlock(transport, { apiKey: 'xxx' });
  * const flows = await block.flows.list({ page: 1 });
  * ```
  */

@@ -51,7 +51,7 @@ export interface LandingsService {
   delete(formUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createLandingsService(transport: Transport, _config: { appId: string }): LandingsService {
+export function createLandingsService(transport: Transport, _config: { apiKey: string }): LandingsService {
   return {
     async list(formUniqueId: string, params?: ListLandingsParams): Promise<PageResult<Landing>> {
       const queryParams: Record<string, string> = {};

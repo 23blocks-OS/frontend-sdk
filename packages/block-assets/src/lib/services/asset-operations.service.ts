@@ -35,7 +35,7 @@ export interface AssetOperationsService {
   reportSummary(params: OperationReportParams): Promise<OperationReportSummary>;
 }
 
-export function createAssetOperationsService(transport: Transport, _config: { appId: string }): AssetOperationsService {
+export function createAssetOperationsService(transport: Transport, _config: { apiKey: string }): AssetOperationsService {
   return {
     async list(assetUniqueId: string, params?: ListAssetOperationsParams): Promise<PageResult<AssetOperation>> {
       const queryParams: Record<string, string> = {};

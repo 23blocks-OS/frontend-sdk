@@ -51,7 +51,7 @@ export interface EmployeeAssignmentsService {
   listByPosition(positionUniqueId: string): Promise<EmployeeAssignment[]>;
 }
 
-export function createEmployeeAssignmentsService(transport: Transport, _config: { appId: string }): EmployeeAssignmentsService {
+export function createEmployeeAssignmentsService(transport: Transport, _config: { apiKey: string }): EmployeeAssignmentsService {
   return {
     async list(params?: ListEmployeeAssignmentsParams): Promise<PageResult<EmployeeAssignment>> {
       const queryParams: Record<string, string> = {};

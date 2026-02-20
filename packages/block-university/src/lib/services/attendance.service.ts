@@ -77,7 +77,7 @@ export interface AttendanceService {
   verify(uniqueId: string): Promise<Attendance>;
 }
 
-export function createAttendanceService(transport: Transport, _config: { appId: string }): AttendanceService {
+export function createAttendanceService(transport: Transport, _config: { apiKey: string }): AttendanceService {
   return {
     async list(params?: ListAttendanceParams): Promise<PageResult<Attendance>> {
       const queryParams: Record<string, string> = {};

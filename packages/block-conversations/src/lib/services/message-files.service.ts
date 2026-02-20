@@ -43,7 +43,7 @@ export interface MessageFilesService {
   presign(conversationUniqueId: string, data: PresignMessageFileRequest): Promise<PresignMessageFileResponse>;
 }
 
-export function createMessageFilesService(transport: Transport, _config: { appId: string }): MessageFilesService {
+export function createMessageFilesService(transport: Transport, _config: { apiKey: string }): MessageFilesService {
   return {
     async get(conversationUniqueId: string, fileUniqueId: string): Promise<MessageFile> {
       const response = await transport.get<unknown>(`/conversations/${conversationUniqueId}/files/${fileUniqueId}`);

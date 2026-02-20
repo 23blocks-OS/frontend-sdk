@@ -45,7 +45,7 @@ export interface AssignmentsService {
   listByLesson(lessonUniqueId: string, params?: ListAssignmentsParams): Promise<PageResult<Assignment>>;
 }
 
-export function createAssignmentsService(transport: Transport, _config: { appId: string }): AssignmentsService {
+export function createAssignmentsService(transport: Transport, _config: { apiKey: string }): AssignmentsService {
   return {
     async list(params?: ListAssignmentsParams): Promise<PageResult<Assignment>> {
       const queryParams: Record<string, string> = {};

@@ -83,7 +83,7 @@ export interface FormInstancesService {
   resendMagicLink(formUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createFormInstancesService(transport: Transport, _config: { appId: string }): FormInstancesService {
+export function createFormInstancesService(transport: Transport, _config: { apiKey: string }): FormInstancesService {
   const basePath = (formId: string) => `/forms/${formId}/instances`;
 
   return {

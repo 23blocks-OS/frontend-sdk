@@ -126,7 +126,7 @@ export interface ContentUsersService {
   unfollowUser(uniqueId: string, targetUserUniqueId: string): Promise<void>;
 }
 
-export function createContentUsersService(transport: Transport, _config: { appId: string }): ContentUsersService {
+export function createContentUsersService(transport: Transport, _config: { apiKey: string }): ContentUsersService {
   return {
     async list(params?: ListContentUsersParams): Promise<PageResult<ContentUser>> {
       const queryParams: Record<string, string> = {};

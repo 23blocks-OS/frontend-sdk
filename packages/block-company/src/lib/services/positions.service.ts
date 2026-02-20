@@ -45,7 +45,7 @@ export interface PositionsService {
   listByDepartment(departmentUniqueId: string): Promise<Position[]>;
 }
 
-export function createPositionsService(transport: Transport, _config: { appId: string }): PositionsService {
+export function createPositionsService(transport: Transport, _config: { apiKey: string }): PositionsService {
   return {
     async list(params?: ListPositionsParams): Promise<PageResult<Position>> {
       const queryParams: Record<string, string> = {};

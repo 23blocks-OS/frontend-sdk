@@ -75,7 +75,7 @@ export interface UserJourneysService {
   reportSummary(params: UserJourneyReportParams): Promise<UserJourneyReportSummary>;
 }
 
-export function createUserJourneysService(transport: Transport, _config: { appId: string }): UserJourneysService {
+export function createUserJourneysService(transport: Transport, _config: { apiKey: string }): UserJourneysService {
   return {
     async list(params?: ListUserJourneysParams): Promise<PageResult<UserJourney>> {
       const queryParams: Record<string, string> = {};

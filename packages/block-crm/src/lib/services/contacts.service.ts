@@ -70,7 +70,7 @@ export interface ContactsService {
   listDeleted(params?: ListContactsParams): Promise<PageResult<Contact>>;
 }
 
-export function createContactsService(transport: Transport, _config: { appId: string }): ContactsService {
+export function createContactsService(transport: Transport, _config: { apiKey: string }): ContactsService {
   return {
     async list(params?: ListContactsParams): Promise<PageResult<Contact>> {
       const queryParams: Record<string, string> = {};

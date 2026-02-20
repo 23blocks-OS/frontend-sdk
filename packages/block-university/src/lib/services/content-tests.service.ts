@@ -92,7 +92,7 @@ export interface ContentTestsService {
   addOptionToQuestion(uniqueId: string, questionId: string, optionId: string): Promise<TestQuestion>;
 }
 
-export function createContentTestsService(transport: Transport, _config: { appId: string }): ContentTestsService {
+export function createContentTestsService(transport: Transport, _config: { apiKey: string }): ContentTestsService {
   return {
     async list(params?: ListContentTestsParams): Promise<PageResult<ContentTest>> {
       const queryParams: Record<string, string> = {};

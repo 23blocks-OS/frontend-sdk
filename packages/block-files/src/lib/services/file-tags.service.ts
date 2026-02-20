@@ -64,7 +64,7 @@ export interface FileTagsService {
   removeFromFile(userUniqueId: string, fileUniqueId: string, tagUniqueId: string): Promise<void>;
 }
 
-export function createFileTagsService(transport: Transport, _config: { appId: string }): FileTagsService {
+export function createFileTagsService(transport: Transport, _config: { apiKey: string }): FileTagsService {
   return {
     async list(params?: ListFileTagsParams): Promise<PageResult<FileTag>> {
       const queryParams: Record<string, string> = {};

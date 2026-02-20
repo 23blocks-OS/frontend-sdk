@@ -163,7 +163,7 @@ export interface PostsService {
   validate(uniqueId: string, templateUniqueId: string): Promise<PostValidationResult>;
 }
 
-export function createPostsService(transport: Transport, _config: { appId: string }): PostsService {
+export function createPostsService(transport: Transport, _config: { apiKey: string }): PostsService {
   const buildQueryParams = (params?: ListPostsParams): Record<string, string> => {
     const queryParams: Record<string, string> = {};
     if (params?.page) queryParams['page'] = String(params.page);

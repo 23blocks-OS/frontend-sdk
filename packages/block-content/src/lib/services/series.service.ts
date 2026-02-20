@@ -137,7 +137,7 @@ export interface SeriesService {
   reorderPosts(uniqueId: string, data: ReorderPostsRequest): Promise<Series>;
 }
 
-export function createSeriesService(transport: Transport, _config: { appId: string }): SeriesService {
+export function createSeriesService(transport: Transport, _config: { apiKey: string }): SeriesService {
   return {
     // CRUD Operations
     async list(params?: ListSeriesParams): Promise<PageResult<Series>> {

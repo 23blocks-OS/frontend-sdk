@@ -57,7 +57,7 @@ export interface FlowsService {
   stepBySource(uniqueId: string, sourceUniqueId: string, stepData?: Record<string, unknown>): Promise<Flow>;
 }
 
-export function createFlowsService(transport: Transport, _config: { appId: string }): FlowsService {
+export function createFlowsService(transport: Transport, _config: { apiKey: string }): FlowsService {
   return {
     async list(params?: ListFlowsParams): Promise<PageResult<Flow>> {
       const queryParams: Record<string, string> = {};

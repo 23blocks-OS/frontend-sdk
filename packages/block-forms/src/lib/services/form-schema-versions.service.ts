@@ -93,7 +93,7 @@ export interface FormSchemaVersionsService {
 
 export function createFormSchemaVersionsService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): FormSchemaVersionsService {
   const basePath = (formId: string, schemaId: string) =>
     `/forms/${formId}/schemas/${schemaId}/versions`;

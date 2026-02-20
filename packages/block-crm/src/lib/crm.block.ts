@@ -54,10 +54,6 @@ import {
  * Configuration for the CRM block.
  */
 export interface CrmBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -121,7 +117,7 @@ export interface CrmBlock {
  *
  * @example
  * ```typescript
- * const block = createCrmBlock(transport, { appId: 'xxx' });
+ * const block = createCrmBlock(transport, { apiKey: 'xxx' });
  * const leads = await block.leads.list({ page: 1 });
  * ```
  */

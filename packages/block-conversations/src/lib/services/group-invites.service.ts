@@ -56,7 +56,7 @@ export interface GroupInvitesService {
   join(code: string, data?: JoinGroupRequest): Promise<Group>;
 }
 
-export function createGroupInvitesService(transport: Transport, _config: { appId: string }): GroupInvitesService {
+export function createGroupInvitesService(transport: Transport, _config: { apiKey: string }): GroupInvitesService {
   return {
     async list(groupUniqueId: string, params?: ListGroupInvitesParams): Promise<PageResult<GroupInvite>> {
       const queryParams: Record<string, string> = {};

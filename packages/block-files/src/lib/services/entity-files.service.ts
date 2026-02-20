@@ -65,7 +65,7 @@ export interface EntityFilesService {
   listByEntity(entityUniqueId: string, entityType: string, params?: ListEntityFilesParams): Promise<PageResult<EntityFile>>;
 }
 
-export function createEntityFilesService(transport: Transport, _config: { appId: string }): EntityFilesService {
+export function createEntityFilesService(transport: Transport, _config: { apiKey: string }): EntityFilesService {
   return {
     async list(params?: ListEntityFilesParams): Promise<PageResult<EntityFile>> {
       const queryParams: Record<string, string> = {};

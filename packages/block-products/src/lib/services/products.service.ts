@@ -186,7 +186,7 @@ export interface ProductsService {
   addReview(productUniqueId: string, rating: number, title?: string, content?: string): Promise<ProductReview>;
 }
 
-export function createProductsService(transport: Transport, _config: { appId: string }): ProductsService {
+export function createProductsService(transport: Transport, _config: { apiKey: string }): ProductsService {
   return {
     async list(params?: ListProductsParams): Promise<PageResult<Product>> {
       const queryParams: Record<string, string> = {};

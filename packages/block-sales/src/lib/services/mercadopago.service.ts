@@ -30,7 +30,7 @@ export interface MercadoPagoService {
   createPSEPayment(data: CreateMercadoPagoPaymentRequest): Promise<MercadoPagoPayment>;
 }
 
-export function createMercadoPagoService(transport: Transport, _config: { appId: string }): MercadoPagoService {
+export function createMercadoPagoService(transport: Transport, _config: { apiKey: string }): MercadoPagoService {
   return {
     async listPaymentMethods(): Promise<MercadoPagoPaymentMethod[]> {
       const response = await transport.get<unknown>('/mercadopago');

@@ -16,7 +16,7 @@ export interface ExpirationRulesService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createExpirationRulesService(transport: Transport, _config: { appId: string }): ExpirationRulesService {
+export function createExpirationRulesService(transport: Transport, _config: { apiKey: string }): ExpirationRulesService {
   return {
     async list(params?: ListExpirationRulesParams): Promise<PageResult<ExpirationRule>> {
       const queryParams: Record<string, string> = {};

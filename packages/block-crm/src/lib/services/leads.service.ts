@@ -70,7 +70,7 @@ export interface LeadsService {
   listDeleted(params?: ListLeadsParams): Promise<PageResult<Lead>>;
 }
 
-export function createLeadsService(transport: Transport, _config: { appId: string }): LeadsService {
+export function createLeadsService(transport: Transport, _config: { apiKey: string }): LeadsService {
   return {
     async list(params?: ListLeadsParams): Promise<PageResult<Lead>> {
       const queryParams: Record<string, string> = {};

@@ -39,7 +39,7 @@ export interface VendorsService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createVendorsService(transport: Transport, _config: { appId: string }): VendorsService {
+export function createVendorsService(transport: Transport, _config: { apiKey: string }): VendorsService {
   return {
     async list(params?: ListVendorsParams): Promise<PageResult<Vendor>> {
       const queryParams: Record<string, string> = {};

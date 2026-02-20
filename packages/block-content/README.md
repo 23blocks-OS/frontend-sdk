@@ -39,7 +39,7 @@ const transport = createHttpTransport({
 });
 
 const content = createContentBlock(transport, {
-  appId: 'your-app-id',
+  apiKey: 'your-api-key',
 });
 
 // List published posts

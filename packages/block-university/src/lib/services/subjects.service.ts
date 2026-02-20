@@ -75,7 +75,7 @@ export interface SubjectsService {
   deleteResource(uniqueId: string, resourceUniqueId: string): Promise<void>;
 }
 
-export function createSubjectsService(transport: Transport, _config: { appId: string }): SubjectsService {
+export function createSubjectsService(transport: Transport, _config: { apiKey: string }): SubjectsService {
   return {
     async list(params?: ListSubjectsParams): Promise<PageResult<Subject>> {
       const queryParams: Record<string, string> = {};

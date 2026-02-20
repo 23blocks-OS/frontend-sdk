@@ -47,8 +47,6 @@ import {
 } from './services/index.js';
 
 export interface JarvisBlockConfig extends BlockConfig {
-  appId: string;
-  tenantId?: string;
   /**
    * Base URL for SSE streaming endpoints.
    * When provided, streaming requests are routed through this domain

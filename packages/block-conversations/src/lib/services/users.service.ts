@@ -76,7 +76,7 @@ export interface UsersService {
   listContextGroups(uniqueId: string, contextUniqueId: string): Promise<PageResult<Group>>;
 }
 
-export function createUsersService(transport: Transport, _config: { appId: string }): UsersService {
+export function createUsersService(transport: Transport, _config: { apiKey: string }): UsersService {
   return {
     async list(params?: ListUsersParams): Promise<PageResult<ConversationsUser>> {
       const queryParams: Record<string, string> = {};

@@ -59,7 +59,7 @@ export interface StripeService {
   createWebhook(data: CreateStripeWebhookRequest): Promise<StripeWebhook>;
 }
 
-export function createStripeService(transport: Transport, _config: { appId: string }): StripeService {
+export function createStripeService(transport: Transport, _config: { apiKey: string }): StripeService {
   return {
     async createCustomer(data: CreateStripeCustomerRequest): Promise<CreateStripeCustomerResponse> {
       const response = await transport.post<unknown>('/stripe/customers', {

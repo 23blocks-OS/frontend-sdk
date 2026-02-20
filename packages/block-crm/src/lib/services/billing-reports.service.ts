@@ -28,7 +28,7 @@ export interface BillingReportsService {
   getParticipantReport(participantEmail: string): Promise<ParticipantBillingReport>;
 }
 
-export function createBillingReportsService(transport: Transport, _config: { appId: string }): BillingReportsService {
+export function createBillingReportsService(transport: Transport, _config: { apiKey: string }): BillingReportsService {
   return {
     async getRevenueReport(params?: BillingReportParams): Promise<RevenueReport> {
       const queryParams: Record<string, string> = {};

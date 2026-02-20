@@ -61,7 +61,7 @@ export interface MailTemplatesService {
   publishMandrill(uniqueId: string): Promise<MailTemplate>;
 }
 
-export function createMailTemplatesService(transport: Transport, _config: { appId: string }): MailTemplatesService {
+export function createMailTemplatesService(transport: Transport, _config: { apiKey: string }): MailTemplatesService {
   return {
     async list(params?: ListMailTemplatesParams): Promise<PageResult<MailTemplate>> {
       const queryParams: Record<string, string> = {};

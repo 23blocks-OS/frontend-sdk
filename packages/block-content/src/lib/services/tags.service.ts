@@ -46,7 +46,7 @@ export interface TagsService {
   delete(uniqueId: string): Promise<void>;
 }
 
-export function createTagsService(transport: Transport, _config: { appId: string }): TagsService {
+export function createTagsService(transport: Transport, _config: { apiKey: string }): TagsService {
   return {
     async list(params?: ListTagsParams): Promise<PageResult<Tag>> {
       const queryParams: Record<string, string> = {};

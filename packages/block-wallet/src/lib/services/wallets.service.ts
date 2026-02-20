@@ -103,7 +103,7 @@ export interface WalletsService {
   listTransactions(userUniqueId: string, walletCode: string): Promise<PageResult<Transaction>>;
 }
 
-export function createWalletsService(transport: Transport, _config: { appId: string }): WalletsService {
+export function createWalletsService(transport: Transport, _config: { apiKey: string }): WalletsService {
   return {
     async list(params?: ListWalletsParams): Promise<PageResult<Wallet>> {
       const queryParams: Record<string, string> = {};

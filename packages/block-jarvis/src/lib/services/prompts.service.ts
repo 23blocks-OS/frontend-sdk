@@ -60,7 +60,7 @@ export interface PromptsService {
   render(uniqueId: string, data: RenderPromptRequest): Promise<RenderPromptResponse>;
 }
 
-export function createPromptsService(transport: Transport, _config: { appId: string }): PromptsService {
+export function createPromptsService(transport: Transport, _config: { apiKey: string }): PromptsService {
   return {
     async list(params?: ListPromptsParams): Promise<PageResult<Prompt>> {
       const queryParams: Record<string, string> = {};

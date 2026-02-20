@@ -38,7 +38,7 @@ export interface ProductVendorsService {
  */
 export function createProductVendorsService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): ProductVendorsService {
   return {
     async listByProduct(

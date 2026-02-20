@@ -33,7 +33,7 @@ export interface IcsTokensService {
   delete(userUniqueId: string, uniqueId: string): Promise<void>;
 }
 
-export function createIcsTokensService(transport: Transport, _config: { appId: string }): IcsTokensService {
+export function createIcsTokensService(transport: Transport, _config: { apiKey: string }): IcsTokensService {
   return {
     async list(userUniqueId: string, params?: ListIcsTokensParams): Promise<PageResult<IcsToken>> {
       const queryParams: Record<string, string> = {};

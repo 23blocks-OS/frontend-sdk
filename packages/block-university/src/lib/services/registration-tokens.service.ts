@@ -77,7 +77,7 @@ export interface RegistrationTokensService {
  */
 export function createRegistrationTokensService(
   transport: Transport,
-  _config: { appId: string }
+  _config: { apiKey: string }
 ): RegistrationTokensService {
   return {
     async list(params?: ListRegistrationTokensParams): Promise<PageResult<RegistrationToken>> {

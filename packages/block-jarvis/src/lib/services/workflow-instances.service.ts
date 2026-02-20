@@ -36,7 +36,7 @@ export interface WorkflowInstancesService {
   resume(workflowUniqueId: string, instanceUniqueId: string): Promise<WorkflowInstance>;
 }
 
-export function createWorkflowInstancesService(transport: Transport, _config: { appId: string }): WorkflowInstancesService {
+export function createWorkflowInstancesService(transport: Transport, _config: { apiKey: string }): WorkflowInstancesService {
   return {
     async start(workflowUniqueId: string, data?: StartWorkflowRequest): Promise<WorkflowInstance> {
       const body: Record<string, unknown> = {};

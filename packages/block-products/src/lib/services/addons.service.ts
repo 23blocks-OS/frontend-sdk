@@ -28,7 +28,7 @@ export interface AddonsService {
   remove(productUniqueId: string, addonUniqueId: string): Promise<void>;
 }
 
-export function createAddonsService(transport: Transport, _config: { appId: string }): AddonsService {
+export function createAddonsService(transport: Transport, _config: { apiKey: string }): AddonsService {
   return {
     async list(productUniqueId: string): Promise<Product[]> {
       const response = await transport.get<unknown>(`/products/${productUniqueId}/addons`);

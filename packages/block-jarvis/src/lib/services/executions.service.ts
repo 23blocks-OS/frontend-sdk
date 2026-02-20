@@ -35,7 +35,7 @@ export interface ExecutionsService {
   cancel(uniqueId: string): Promise<Execution>;
 }
 
-export function createExecutionsService(transport: Transport, _config: { appId: string }): ExecutionsService {
+export function createExecutionsService(transport: Transport, _config: { apiKey: string }): ExecutionsService {
   return {
     async list(params?: ListExecutionsParams): Promise<PageResult<Execution>> {
       const queryParams: Record<string, string> = {};

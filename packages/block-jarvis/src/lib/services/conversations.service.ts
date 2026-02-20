@@ -18,7 +18,7 @@ export interface ConversationsService {
   clear(uniqueId: string): Promise<Conversation>;
 }
 
-export function createConversationsService(transport: Transport, _config: { appId: string }): ConversationsService {
+export function createConversationsService(transport: Transport, _config: { apiKey: string }): ConversationsService {
   return {
     async list(params?: ListConversationsParams): Promise<PageResult<Conversation>> {
       const queryParams: Record<string, string> = {};

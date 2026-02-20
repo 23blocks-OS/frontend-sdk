@@ -101,7 +101,7 @@ export interface VendorPaymentsService {
   providerReportSummary(params: ProviderReportParams): Promise<ProviderReportSummary>;
 }
 
-export function createVendorPaymentsService(transport: Transport, _config: { appId: string }): VendorPaymentsService {
+export function createVendorPaymentsService(transport: Transport, _config: { apiKey: string }): VendorPaymentsService {
   return {
     async get(paymentUniqueId: string): Promise<VendorPayment> {
       const response = await transport.get<unknown>(`/payables/${paymentUniqueId}`);

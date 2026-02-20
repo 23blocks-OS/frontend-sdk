@@ -14,10 +14,6 @@ import {
  * Configuration for the Wallet block.
  */
 export interface WalletBlockConfig extends BlockConfig {
-  /** Application ID */
-  appId: string;
-  /** Tenant ID (optional, for multi-tenant setups) */
-  tenantId?: string;
 }
 
 /**
@@ -41,7 +37,7 @@ export interface WalletBlock {
  *
  * @example
  * ```typescript
- * const block = createWalletBlock(transport, { appId: 'xxx' });
+ * const block = createWalletBlock(transport, { apiKey: 'xxx' });
  * const wallets = await block.wallets.list({ page: 1 });
  * ```
  */

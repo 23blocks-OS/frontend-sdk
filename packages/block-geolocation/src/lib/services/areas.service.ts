@@ -68,7 +68,7 @@ export interface AreasService {
   listDeleted(params?: ListAreasParams): Promise<PageResult<Area>>;
 }
 
-export function createAreasService(transport: Transport, _config: { appId: string }): AreasService {
+export function createAreasService(transport: Transport, _config: { apiKey: string }): AreasService {
   return {
     async list(params?: ListAreasParams): Promise<PageResult<Area>> {
       const queryParams: Record<string, string> = {};

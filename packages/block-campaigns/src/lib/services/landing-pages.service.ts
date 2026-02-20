@@ -57,7 +57,7 @@ export interface LandingPagesService {
   getBySlug(slug: string): Promise<LandingPage>;
 }
 
-export function createLandingPagesService(transport: Transport, _config: { appId: string }): LandingPagesService {
+export function createLandingPagesService(transport: Transport, _config: { apiKey: string }): LandingPagesService {
   return {
     async list(params?: ListLandingPagesParams): Promise<PageResult<LandingPage>> {
       const queryParams: Record<string, string> = {};
