@@ -280,7 +280,7 @@ import { createAuthService } from './services/auth.service';
 import { createUsersService } from './services/users.service';
 
 export interface GatewayBlockConfig {
-  appId: string;
+  apiKey: string;
   tenantId?: string;
 }
 
@@ -569,7 +569,7 @@ const transport = createHttpTransport({
   headers: () => ({ Authorization: `Bearer ${token}` }),
 });
 
-const crm = createCrmBlock(transport, { appId: 'my-app' });
+const crm = createCrmBlock(transport, { apiKey: 'my-api-key' });
 
 // Use CRM independently
 const contacts = await crm.contacts.list({ page: 1 });
@@ -584,9 +584,9 @@ import { createSdk } from '@23blocks/sdk';
 const sdk = createSdk({
   transport: { baseUrl: 'https://api.example.com' },
   blocks: {
-    gateway: { appId: 'my-app' },
-    crm: { appId: 'my-app' },
-    content: { appId: 'my-app' },
+    gateway: { apiKey: 'my-api-key' },
+    crm: { apiKey: 'my-api-key' },
+    content: { apiKey: 'my-api-key' },
   },
 });
 
@@ -662,7 +662,7 @@ const sdk = createSdk({
     baseUrl: 'https://api.23blocks.com',
     headers: () => ({
       'Authorization': `Bearer ${token}`,
-      'appid': appId,
+      'api-key': apiKey,
     }),
   },
 });

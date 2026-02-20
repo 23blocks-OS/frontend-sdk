@@ -72,7 +72,7 @@ export interface SearchBlock {
  *   baseUrl: 'https://api.example.com',
  *   headers: () => ({
  *     'Authorization': `Bearer ${getToken()}`,
- *     'x-api-key': 'your-app-id',
+ *     'x-api-key': 'your-api-key',
  *   }),
  * });
  *
