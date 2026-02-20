@@ -14,13 +14,13 @@ describe('Mapper Utils', () => {
       expect(parseString('test value')).toBe('test value');
     });
 
-    it('should return null for null or undefined', () => {
-      expect(parseString(null)).toBeNull();
-      expect(parseString(undefined)).toBeNull();
+    it('should return empty string for null or undefined', () => {
+      expect(parseString(null)).toBe('');
+      expect(parseString(undefined)).toBe('');
     });
 
-    it('should return null for empty string', () => {
-      expect(parseString('')).toBeNull();
+    it('should return empty string for empty string', () => {
+      expect(parseString('')).toBe('');
     });
 
     it('should convert numbers to strings', () => {
@@ -53,19 +53,30 @@ describe('Mapper Utils', () => {
       expect(result?.getTime()).toBe(timestamp);
     });
 
-    it('should return null for null or undefined', () => {
-      expect(parseDate(null)).toBeNull();
-      expect(parseDate(undefined)).toBeNull();
+    it('should return current date for null or undefined', () => {
+      const before = Date.now();
+      const resultNull = parseDate(null);
+      const resultUndef = parseDate(undefined);
+      const after = Date.now();
+      expect(resultNull).toBeInstanceOf(Date);
+      expect(resultNull.getTime()).toBeGreaterThanOrEqual(before);
+      expect(resultNull.getTime()).toBeLessThanOrEqual(after);
+      expect(resultUndef).toBeInstanceOf(Date);
     });
 
-    it('should return null for invalid date strings', () => {
-      expect(parseDate('not a date')).toBeNull();
-      expect(parseDate('invalid')).toBeNull();
+    it('should return current date for invalid date strings', () => {
+      const before = Date.now();
+      const result = parseDate('not a date');
+      const after = Date.now();
+      expect(result).toBeInstanceOf(Date);
+      expect(result.getTime()).toBeGreaterThanOrEqual(before);
+      expect(result.getTime()).toBeLessThanOrEqual(after);
+      expect(parseDate('invalid')).toBeInstanceOf(Date);
     });
 
-    it('should return null for objects', () => {
-      expect(parseDate({})).toBeNull();
-      expect(parseDate([])).toBeNull();
+    it('should return current date for objects', () => {
+      expect(parseDate({})).toBeInstanceOf(Date);
+      expect(parseDate([])).toBeInstanceOf(Date);
     });
   });
 
@@ -129,18 +140,18 @@ describe('Mapper Utils', () => {
       expect(parseNumber('-10')).toBe(-10);
     });
 
-    it('should return null for null or undefined', () => {
-      expect(parseNumber(null)).toBeNull();
-      expect(parseNumber(undefined)).toBeNull();
+    it('should return 0 for null or undefined', () => {
+      expect(parseNumber(null)).toBe(0);
+      expect(parseNumber(undefined)).toBe(0);
     });
 
-    it('should return null for non-numeric strings', () => {
-      expect(parseNumber('not a number')).toBeNull();
-      expect(parseNumber('abc')).toBeNull();
+    it('should return 0 for non-numeric strings', () => {
+      expect(parseNumber('not a number')).toBe(0);
+      expect(parseNumber('abc')).toBe(0);
     });
 
     it('should handle edge cases', () => {
-      // Number('') === 0, so empty string returns 0 (not null)
+      // Number('') === 0, so empty string returns 0
       expect(parseNumber('')).toBe(0);
     });
   });
