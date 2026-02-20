@@ -75,12 +75,12 @@ jobs:
           SEED_LEVEL: ${{ inputs.seed_level }}
         run: |
           echo "Starting Docker containers with SEED_LEVEL=$SEED_LEVEL..."
-          docker-compose -f docker/docker-compose.yml up -d
+          docker compose -f docker/docker-compose.yml up -d
 
           echo "Waiting for API to be ready..."
           timeout 180 bash -c 'until curl -s http://localhost:3000/health > /dev/null 2>&1; do sleep 2; done' || {
             echo "API failed to start. Docker logs:"
-            docker-compose -f docker/docker-compose.yml logs
+            docker compose -f docker/docker-compose.yml logs
             exit 1
           }
 
@@ -124,11 +124,11 @@ jobs:
         if: failure()
         run: |
           echo "## Docker Logs (Failure Debug)" >> $GITHUB_STEP_SUMMARY
-          docker-compose -f docker/docker-compose.yml logs >> $GITHUB_STEP_SUMMARY
+          docker compose -f docker/docker-compose.yml logs >> $GITHUB_STEP_SUMMARY
 
       - name: Cleanup
         if: always()
-        run: docker-compose -f docker/docker-compose.yml down -v
+        run: docker compose -f docker/docker-compose.yml down -v
 
   release:
     name: "Release to npm"

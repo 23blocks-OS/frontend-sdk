@@ -93,12 +93,12 @@ jobs:
       - name: Start API environment
         run: |
           echo "Starting Docker containers..."
-          docker-compose -f docker/docker-compose.yml up -d
+          docker compose -f docker/docker-compose.yml up -d
 
           echo "Waiting for API to be ready..."
           timeout 120 bash -c 'until curl -s http://localhost:3000/health > /dev/null 2>&1; do sleep 2; done' || {
             echo "API failed to start. Docker logs:"
-            docker-compose -f docker/docker-compose.yml logs
+            docker compose -f docker/docker-compose.yml logs
             exit 1
           }
 
@@ -118,11 +118,11 @@ jobs:
 
       - name: Docker logs (on failure)
         if: failure()
-        run: docker-compose -f docker/docker-compose.yml logs
+        run: docker compose -f docker/docker-compose.yml logs
 
       - name: Cleanup
         if: always()
-        run: docker-compose -f docker/docker-compose.yml down -v
+        run: docker compose -f docker/docker-compose.yml down -v
 
   # ─────────────────────────────────────────────────────────────────────────────
   # Analyze Changes & Decide Test Level
@@ -216,7 +216,7 @@ jobs:
         env:
           SEED_LEVEL: full
         run: |
-          docker-compose -f docker/docker-compose.yml up -d
+          docker compose -f docker/docker-compose.yml up -d
           timeout 120 bash -c 'until curl -s http://localhost:3000/health > /dev/null 2>&1; do sleep 2; done'
 
       - name: Install dependencies
@@ -242,7 +242,7 @@ jobs:
 
       - name: Cleanup
         if: always()
-        run: docker-compose -f docker/docker-compose.yml down -v
+        run: docker compose -f docker/docker-compose.yml down -v
 
   # ─────────────────────────────────────────────────────────────────────────────
   # Release (If tests pass)
