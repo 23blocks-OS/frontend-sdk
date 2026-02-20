@@ -1,2 +1,2 @@
-// StripePaymentIntent now includes paymentIntentId, customer, metadata
+// Block configs now use apiKey (not appId)
 export * from './lib/index';
