@@ -1,3 +1,14 @@
+## 12.0.3 (2026-02-20)
+
+### 🩹 Fixes
+
+- **@23blocks/react:** fix OAuth hook method names and remove unused Transport import ([fb30499](https://github.com/23blocks-OS/frontend-sdk/commit/fb30499))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 12.0.2 (2026-02-20)
 
 ### 🩹 Fixes
