@@ -1,3 +1,14 @@
+## 12.0.2 (2026-02-20)
+
+### 🩹 Fixes
+
+- resolve typecheck errors across sdk, react, and testing packages ([36c3190](https://github.com/23blocks-OS/frontend-sdk/commit/36c3190))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 12.0.1 (2026-02-20)
 
 ### 🧱 Updated Dependencies
