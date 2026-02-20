@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, type ReactNode } from 'react';
-import type { Transport, BlockConfig } from '@23blocks/contracts';
+import type { Transport } from '@23blocks/contracts';
 import { createAuthenticationBlock, type AuthenticationBlock, type AuthenticationBlockConfig } from '@23blocks/block-authentication';
 import { createSearchBlock, type SearchBlock, type SearchBlockConfig } from '@23blocks/block-search';
 import { createProductsBlock, type ProductsBlock, type ProductsBlockConfig } from '@23blocks/block-products';

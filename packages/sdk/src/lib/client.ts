@@ -27,7 +27,7 @@ import { createJarvisBlock, type JarvisBlock } from '@23blocks/block-jarvis';
 import { createOnboardingBlock, type OnboardingBlock } from '@23blocks/block-onboarding';
 import { createUniversityBlock, type UniversityBlock } from '@23blocks/block-university';
 
-import { createTokenManager, type StorageType, type TokenManager, type TokenManagerConfig } from './token-manager.js';
+import { createTokenManager, type StorageType, type TokenManager } from './token-manager.js';
 
 /**
  * Authentication mode
@@ -464,8 +464,8 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
   }
 
   // Helper to create a proxy that throws when accessing unconfigured service
-  function createUnconfiguredServiceProxy<T>(serviceName: string, urlKey: string): T {
-    return new Proxy({} as T, {
+  function createUnconfiguredServiceProxy<T extends object>(serviceName: string, urlKey: string): T {
+    return new Proxy({}, {
       get(_target, prop) {
         throw new Error(
           `[23blocks] Cannot access '${serviceName}.${String(prop)}': ` +
@@ -473,7 +473,7 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
           `Add 'urls.${urlKey}' to your client configuration.`
         );
       },
-    });
+    }) as T;
   }
 
   // Create block config
@@ -603,6 +603,11 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
         sendInvitation: authenticationBlock.auth.sendInvitation.bind(authenticationBlock.auth),
         confirmEmail: authenticationBlock.auth.confirmEmail.bind(authenticationBlock.auth),
         resendConfirmation: authenticationBlock.auth.resendConfirmation.bind(authenticationBlock.auth),
+        validateEmail: authenticationBlock.auth.validateEmail.bind(authenticationBlock.auth),
+        validateDocument: authenticationBlock.auth.validateDocument.bind(authenticationBlock.auth),
+        resendInvitation: authenticationBlock.auth.resendInvitation.bind(authenticationBlock.auth),
+        requestAccountRecovery: authenticationBlock.auth.requestAccountRecovery.bind(authenticationBlock.auth),
+        completeAccountRecovery: authenticationBlock.auth.completeAccountRecovery.bind(authenticationBlock.auth),
       }
     : createUnconfiguredServiceProxy<ManagedAuthService>('auth', 'authentication');
 

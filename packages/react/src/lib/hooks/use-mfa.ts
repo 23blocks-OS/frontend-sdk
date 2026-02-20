@@ -22,11 +22,11 @@ export interface UseMfaState {
 }
 
 export interface UseMfaActions {
-  setup: () => Promise<MfaSetupResponseFull>;
-  enable: (request: MfaEnableRequest) => Promise<MfaOperationResponse>;
-  disable: (request: MfaDisableRequest) => Promise<MfaOperationResponse>;
-  verify: (request: MfaVerifyRequestFull) => Promise<MfaVerificationResponse>;
-  getStatus: () => Promise<MfaStatusResponse>;
+  setup: (userUniqueId: string, regenerate?: boolean) => Promise<MfaSetupResponseFull>;
+  enable: (userUniqueId: string, request: MfaEnableRequest) => Promise<MfaOperationResponse>;
+  disable: (userUniqueId: string, request: MfaDisableRequest) => Promise<MfaOperationResponse>;
+  verify: (userUniqueId: string, request: MfaVerifyRequestFull) => Promise<MfaVerificationResponse>;
+  getStatus: (userUniqueId: string) => Promise<MfaStatusResponse>;
   clearError: () => void;
 }
 
@@ -41,26 +41,26 @@ export type UseMfaReturn = UseMfaState & UseMfaActions;
  *
  * @example
  * ```tsx
- * function MfaSettings() {
+ * function MfaSettings({ userUniqueId }: { userUniqueId: string }) {
  *   const { setup, enable, disable, getStatus, status, isLoading, error } = useMfa();
  *
  *   useEffect(() => {
- *     getStatus();
- *   }, [getStatus]);
+ *     getStatus(userUniqueId);
+ *   }, [getStatus, userUniqueId]);
  *
  *   const handleSetup = async () => {
- *     const data = await setup();
+ *     const data = await setup(userUniqueId);
  *     // Show QR code from data.qrCodeUri
  *   };
  *
  *   const handleEnable = async (code: string) => {
- *     await enable({ totpCode: code });
+ *     await enable(userUniqueId, { totpCode: code });
  *   };
  *
  *   return (
  *     <div>
  *       {status?.enabled ? (
- *         <button onClick={() => disable({ password: 'xxx' })}>Disable MFA</button>
+ *         <button onClick={() => disable(userUniqueId, { password: 'xxx' })}>Disable MFA</button>
  *       ) : (
  *         <button onClick={handleSetup}>Setup MFA</button>
  *       )}
@@ -77,11 +77,11 @@ export function useMfa(): UseMfaReturn {
   const [status, setStatus] = useState<MfaStatusResponse | null>(null);
   const [setupData, setSetupData] = useState<MfaSetupResponseFull | null>(null);
 
-  const setup = useCallback(async (): Promise<MfaSetupResponseFull> => {
+  const setup = useCallback(async (userUniqueId: string, regenerate?: boolean): Promise<MfaSetupResponseFull> => {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await block.mfa.setup();
+      const result = await block.mfa.setup(userUniqueId, regenerate);
       setSetupData(result);
       return result;
     } catch (err) {
@@ -93,14 +93,14 @@ export function useMfa(): UseMfaReturn {
     }
   }, [block.mfa]);
 
-  const enable = useCallback(async (request: MfaEnableRequest): Promise<MfaOperationResponse> => {
+  const enable = useCallback(async (userUniqueId: string, request: MfaEnableRequest): Promise<MfaOperationResponse> => {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await block.mfa.enable(request);
+      const result = await block.mfa.enable(userUniqueId, request);
       setSetupData(null);
       // Refresh status after enabling
-      const newStatus = await block.mfa.status();
+      const newStatus = await block.mfa.status(userUniqueId);
       setStatus(newStatus);
       return result;
     } catch (err) {
@@ -112,13 +112,13 @@ export function useMfa(): UseMfaReturn {
     }
   }, [block.mfa]);
 
-  const disable = useCallback(async (request: MfaDisableRequest): Promise<MfaOperationResponse> => {
+  const disable = useCallback(async (userUniqueId: string, request: MfaDisableRequest): Promise<MfaOperationResponse> => {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await block.mfa.disable(request);
+      const result = await block.mfa.disable(userUniqueId, request);
       // Refresh status after disabling
-      const newStatus = await block.mfa.status();
+      const newStatus = await block.mfa.status(userUniqueId);
       setStatus(newStatus);
       return result;
     } catch (err) {
@@ -130,11 +130,11 @@ export function useMfa(): UseMfaReturn {
     }
   }, [block.mfa]);
 
-  const verify = useCallback(async (request: MfaVerifyRequestFull): Promise<MfaVerificationResponse> => {
+  const verify = useCallback(async (userUniqueId: string, request: MfaVerifyRequestFull): Promise<MfaVerificationResponse> => {
     setIsLoading(true);
     setError(null);
     try {
-      return await block.mfa.verify(request);
+      return await block.mfa.verify(userUniqueId, request);
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);
@@ -144,11 +144,11 @@ export function useMfa(): UseMfaReturn {
     }
   }, [block.mfa]);
 
-  const getStatus = useCallback(async (): Promise<MfaStatusResponse> => {
+  const getStatus = useCallback(async (userUniqueId: string): Promise<MfaStatusResponse> => {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await block.mfa.status();
+      const result = await block.mfa.status(userUniqueId);
       setStatus(result);
       return result;
     } catch (err) {

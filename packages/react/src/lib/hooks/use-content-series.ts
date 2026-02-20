@@ -102,7 +102,7 @@ export function useContentSeries(): UseContentSeriesReturn {
     try {
       const response = await block.series.list(params);
       setSeries(response.data);
-      setTotalRecords(response.meta.totalRecords);
+      setTotalRecords(response.meta.totalCount);
       return response;
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
@@ -119,7 +119,7 @@ export function useContentSeries(): UseContentSeriesReturn {
     try {
       const response = await block.series.query(params);
       setSeries(response.data);
-      setTotalRecords(response.meta.totalRecords);
+      setTotalRecords(response.meta.totalCount);
       return response;
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));

@@ -66,8 +66,8 @@ export function useFavorites(): UseFavoritesReturn {
     setError(null);
     try {
       const result = await block.favorites.list();
-      setFavorites(result);
-      return result;
+      setFavorites(result.data);
+      return result.data;
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);

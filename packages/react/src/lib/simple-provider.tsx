@@ -456,8 +456,8 @@ const Blocks23Context = createContext<ClientContext | null>(null);
 /**
  * Helper to create a proxy that throws when accessing unconfigured service
  */
-function createUnconfiguredServiceProxy<T>(serviceName: string, urlKey: string): T {
-  return new Proxy({} as T, {
+function createUnconfiguredServiceProxy<T extends object>(serviceName: string, urlKey: string): T {
+  return new Proxy({}, {
     get(_target, prop) {
       throw new Error(
         `[23blocks] Cannot access '${serviceName}.${String(prop)}': ` +
@@ -465,7 +465,7 @@ function createUnconfiguredServiceProxy<T>(serviceName: string, urlKey: string):
         `Add 'urls.${urlKey}' to your Provider configuration.`
       );
     },
-  });
+  }) as T;
 }
 
 /**
