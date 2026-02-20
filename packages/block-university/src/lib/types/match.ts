@@ -1,4 +1,4 @@
-import type { EntityStatus, IdentityCore } from '@23blocks/contracts';
+import type { IdentityCore } from '@23blocks/contracts';
 
 /**
  * Match - coaching relationship between teacher and student

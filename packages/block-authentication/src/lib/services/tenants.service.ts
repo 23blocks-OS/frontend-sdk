@@ -16,30 +16,33 @@ import { companyMapper } from '../mappers/index.js';
 // Tenant user mapper
 const tenantUserMapper = {
   type: 'tenant_user',
-  map: (data: Record<string, unknown>): TenantUserFull => ({
-    id: String(data['id'] ?? ''),
-    uniqueId: String(data['unique_id'] ?? ''),
-    userUniqueId: String(data['user_unique_id'] ?? ''),
-    userId: String(data['user_id'] ?? ''),
-    userName: String(data['user_name'] ?? ''),
-    userEmail: String(data['user_email'] ?? ''),
-    gatewayUrl: data['gateway_url'] as string | undefined,
-    tenantId: String(data['tenant_id'] ?? ''),
-    tenantUniqueId: String(data['tenant_unique_id'] ?? ''),
-    tenantAccessKey: String(data['tenant_access_key'] ?? ''),
-    tenantUrlId: String(data['tenant_url_id'] ?? ''),
-    roleUniqueId: data['role_unique_id'] as string | undefined,
-    roleName: data['role_name'] as string | undefined,
-    roleId: data['role_id'] as string | undefined,
-    parentOnboardingCompleted: data['parent_onboarding_completed'] as boolean | undefined,
-    parentPurchaseCompleted: data['parent_purchase_completed'] as boolean | undefined,
-    onboardingCompleted: data['onboarding_completed'] as boolean | undefined,
-    purchaseCompleted: data['purchase_completed'] as boolean | undefined,
-    payload: data['payload'] as Record<string, unknown> | undefined,
-    status: data['status'] as string | undefined,
-    createdAt: data['created_at'] as string | undefined,
-    updatedAt: data['updated_at'] as string | undefined,
-  }),
+  map: (resource: { id: string; attributes: Record<string, unknown> }, _included?: unknown): TenantUserFull => {
+    const data = resource.attributes;
+    return {
+      id: resource.id,
+      uniqueId: String(data['unique_id'] ?? ''),
+      userUniqueId: String(data['user_unique_id'] ?? ''),
+      userId: String(data['user_id'] ?? ''),
+      userName: String(data['user_name'] ?? ''),
+      userEmail: String(data['user_email'] ?? ''),
+      gatewayUrl: data['gateway_url'] as string | undefined,
+      tenantId: String(data['tenant_id'] ?? ''),
+      tenantUniqueId: String(data['tenant_unique_id'] ?? ''),
+      tenantAccessKey: String(data['tenant_access_key'] ?? ''),
+      tenantUrlId: String(data['tenant_url_id'] ?? ''),
+      roleUniqueId: data['role_unique_id'] as string | undefined,
+      roleName: data['role_name'] as string | undefined,
+      roleId: data['role_id'] as string | undefined,
+      parentOnboardingCompleted: data['parent_onboarding_completed'] as boolean | undefined,
+      parentPurchaseCompleted: data['parent_purchase_completed'] as boolean | undefined,
+      onboardingCompleted: data['onboarding_completed'] as boolean | undefined,
+      purchaseCompleted: data['purchase_completed'] as boolean | undefined,
+      payload: data['payload'] as Record<string, unknown> | undefined,
+      status: data['status'] as string | undefined,
+      createdAt: data['created_at'] as string | undefined,
+      updatedAt: data['updated_at'] as string | undefined,
+    };
+  },
 };
 
 /**
@@ -93,13 +96,13 @@ export interface TenantsService {
 /**
  * Create the Tenants service
  */
-export function createTenantsService(transport: Transport): TenantsService {
+export function createTenantsService(transport: Transport, _config?: unknown): TenantsService {
   return {
     async listChildren(params?: ListParams): Promise<PageResult<Company>> {
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
-      if (params?.search) queryParams['search'] = params.search;
+      if (params?.filter?.['search']) queryParams['search'] = String(params.filter['search']);
 
       const response = await transport.get<unknown>('/auth/tenant/children', { params: queryParams });
       return decodePageResult(response, companyMapper);

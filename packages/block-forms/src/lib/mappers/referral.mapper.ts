@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus } from './utils.js';
 export const referralMapper: ResourceMapper<Referral> = {
   type: 'referral',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     formUniqueId: parseString(resource.attributes['form_unique_id']) ?? '',
     referrerUniqueId: parseString(resource.attributes['referrer_unique_id']),

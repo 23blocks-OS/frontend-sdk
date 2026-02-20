@@ -124,7 +124,7 @@ export function createFormSetsService(transport: Transport, _config: { appId: st
       // Response is an array of match results
       const results = response as { data: Array<{ form_set: unknown; score: number; matched_criteria: string[] }> };
       return (results.data || []).map((item) => ({
-        formSet: formSetMapper.map(item.form_set as { id: string; attributes: Record<string, unknown> }),
+        formSet: formSetMapper.map(item.form_set as any, new Map()),
         score: item.score,
         matchedCriteria: item.matched_criteria || [],
       }));

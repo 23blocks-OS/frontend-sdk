@@ -17,7 +17,22 @@ export interface ProductPrice extends IdentityCore {
   payload?: Record<string, unknown>;
 }
 
+export interface ListProductPricesParams {
+  page?: number;
+  perPage?: number;
+  status?: string;
+  productUniqueId?: string;
+  variationUniqueId?: string;
+  channelUniqueId?: string;
+  priceListUniqueId?: string;
+  currency?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
 export interface CreateProductPriceRequest {
+  productUniqueId?: string;
+  variationUniqueId?: string;
   channelUniqueId?: string;
   priceListUniqueId?: string;
   price: number;

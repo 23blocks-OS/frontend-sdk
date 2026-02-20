@@ -1,5 +1,3 @@
-import type { Company } from './company.js';
-
 /**
  * Tenant User
  */

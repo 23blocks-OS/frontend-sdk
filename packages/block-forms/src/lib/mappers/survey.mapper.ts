@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus } from './utils.js';
 export const surveyMapper: ResourceMapper<Survey> = {
   type: 'survey_instance',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     formUniqueId: parseString(resource.attributes['form_unique_id']) ?? '',
     userUniqueId: parseString(resource.attributes['user_unique_id']),

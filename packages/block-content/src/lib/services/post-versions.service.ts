@@ -1,5 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne } from '@23blocks/jsonapi-codec';
+import { decodeOne, type JsonApiResource } from '@23blocks/jsonapi-codec';
 import type { PostVersion, ListPostVersionsParams } from '../types/post-version.js';
 import { postVersionMapper } from '../mappers/post-version.mapper.js';
 
@@ -53,7 +53,7 @@ export function createPostVersionsService(transport: Transport, _config: { appId
           return typed.type === 'PostVersion' || typed.type === 'post_version';
         });
         return {
-          data: versions.map((v) => postVersionMapper.map(v as { id: string; attributes: Record<string, unknown> })),
+          data: versions.map((v) => postVersionMapper.map(v as any, new Map())),
           meta: { totalCount: versions.length, currentPage: 1, perPage: versions.length, totalPages: 1 },
         };
       }
@@ -74,7 +74,7 @@ export function createPostVersionsService(transport: Transport, _config: { appId
           (item.attributes['unique_id'] === versionUniqueId || item.id === versionUniqueId)
         );
         if (version) {
-          return postVersionMapper.map(version);
+          return postVersionMapper.map(version as JsonApiResource, new Map());
         }
       }
 

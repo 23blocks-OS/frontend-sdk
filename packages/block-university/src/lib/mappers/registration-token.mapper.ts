@@ -5,6 +5,7 @@ import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from '
 export const registrationTokenMapper: ResourceMapper<RegistrationToken> = {
   type: 'registration_token',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     createdAt: parseDate(resource.attributes?.['created_at']) ?? new Date(),
     updatedAt: parseDate(resource.attributes?.['updated_at']) ?? new Date(),

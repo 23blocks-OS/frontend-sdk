@@ -12,8 +12,8 @@ export interface RewardsCustomer extends IdentityCore {
   loyaltyTierName?: string;
   status: EntityStatus;
   payload?: Record<string, unknown>;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CustomerRewardExpiration {

@@ -1,4 +1,4 @@
-import type { Transport, PageResult } from '@23blocks/contracts';
+import type { Transport } from '@23blocks/contracts';
 import { decodeMany } from '@23blocks/jsonapi-codec';
 import type { Product } from '../types/product.js';
 import { productMapper } from '../mappers/product.mapper.js';

@@ -10,7 +10,6 @@ import type { Group } from '../types/group.js';
 import type { Conversation } from '../types/conversation.js';
 import { conversationsUserMapper } from '../mappers/user.mapper.js';
 import { groupMapper } from '../mappers/group.mapper.js';
-import { messageMapper } from '../mappers/message.mapper.js';
 
 export interface UsersService {
   /**
@@ -148,7 +147,7 @@ export function createUsersService(transport: Transport, _config: { appId: strin
         })),
         meta: {
           totalCount: rawResponse.meta?.total_count || data.length,
-          page: rawResponse.meta?.page || 1,
+          currentPage: rawResponse.meta?.page || 1,
           perPage: rawResponse.meta?.per_page || data.length,
           totalPages: rawResponse.meta?.total_pages || 1,
         },
@@ -175,7 +174,7 @@ export function createUsersService(transport: Transport, _config: { appId: strin
         })),
         meta: {
           totalCount: rawResponse.meta?.total_count || data.length,
-          page: rawResponse.meta?.page || 1,
+          currentPage: rawResponse.meta?.page || 1,
           perPage: rawResponse.meta?.per_page || data.length,
           totalPages: rawResponse.meta?.total_pages || 1,
         },

@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseOptionalNumber } from './util
 export const subjectMapper: ResourceMapper<Subject> = {
   type: 'subject',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     courseUniqueId: parseString(resource.attributes['course_unique_id']),
     name: parseString(resource.attributes['name']) ?? '',

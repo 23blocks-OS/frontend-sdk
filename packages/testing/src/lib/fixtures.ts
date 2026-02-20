@@ -144,7 +144,7 @@ export function createUser(overrides: UserFixture = {}): UserFixture {
     email: overrides.email ?? `user-${id}@example.com`,
     name: overrides.name ?? `Test User ${id}`,
     username: overrides.username ?? `testuser${id}`,
-    avatarUrl: overrides.avatarUrl ?? null,
+    avatarUrl: overrides.avatarUrl ?? undefined,
     status: overrides.status ?? 'active',
     emailConfirmedAt: overrides.emailConfirmedAt ?? timestamp(),
     createdAt: overrides.createdAt ?? timestamp(),
@@ -294,7 +294,7 @@ export function createProduct(overrides: ProductFixture = {}): ProductFixture {
     price: overrides.price ?? 9999, // cents
     currency: overrides.currency ?? 'USD',
     status: overrides.status ?? 'active',
-    imageUrl: overrides.imageUrl ?? null,
+    imageUrl: overrides.imageUrl ?? undefined,
     createdAt: overrides.createdAt ?? timestamp(),
     updatedAt: overrides.updatedAt ?? timestamp(),
     ...overrides,

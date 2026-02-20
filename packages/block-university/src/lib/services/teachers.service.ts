@@ -4,8 +4,8 @@ import type {
   Teacher,
   ListTeachersParams,
   TeacherAvailability,
-  CreateAvailabilityRequest,
-  UpdateAvailabilityRequest,
+  CreateTeacherAvailabilityRequest,
+  UpdateTeacherAvailabilityRequest,
 } from '../types/teacher.js';
 import type { Course } from '../types/course.js';
 import type { CourseGroup } from '../types/course-group.js';
@@ -54,13 +54,13 @@ export interface TeachersService {
    * Add an availability slot for a teacher.
    * @returns The newly created TeacherAvailability record.
    */
-  addAvailability(uniqueId: string, data: CreateAvailabilityRequest): Promise<TeacherAvailability>;
+  addAvailability(uniqueId: string, data: CreateTeacherAvailabilityRequest): Promise<TeacherAvailability>;
 
   /**
    * Update a specific availability slot for a teacher.
    * @returns The updated TeacherAvailability record.
    */
-  updateAvailability(uniqueId: string, availabilityUniqueId: string, data: UpdateAvailabilityRequest): Promise<TeacherAvailability>;
+  updateAvailability(uniqueId: string, availabilityUniqueId: string, data: UpdateTeacherAvailabilityRequest): Promise<TeacherAvailability>;
 
   /**
    * Delete a specific availability slot for a teacher.
@@ -135,7 +135,7 @@ export function createTeachersService(transport: Transport, _config: { appId: st
       return Array.isArray(response) ? response as TeacherAvailability[] : [];
     },
 
-    async addAvailability(uniqueId: string, data: CreateAvailabilityRequest): Promise<TeacherAvailability> {
+    async addAvailability(uniqueId: string, data: CreateTeacherAvailabilityRequest): Promise<TeacherAvailability> {
       const response = await transport.post<unknown>(`/teachers/${uniqueId}/availability`, {
         availability: {
           day_of_week: data.dayOfWeek,
@@ -147,7 +147,7 @@ export function createTeachersService(transport: Transport, _config: { appId: st
       return response as TeacherAvailability;
     },
 
-    async updateAvailability(uniqueId: string, availabilityUniqueId: string, data: UpdateAvailabilityRequest): Promise<TeacherAvailability> {
+    async updateAvailability(uniqueId: string, availabilityUniqueId: string, data: UpdateTeacherAvailabilityRequest): Promise<TeacherAvailability> {
       const response = await transport.put<unknown>(`/teachers/${uniqueId}/availability/${availabilityUniqueId}`, {
         availability: {
           day_of_week: data.dayOfWeek,

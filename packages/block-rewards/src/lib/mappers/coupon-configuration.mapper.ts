@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseNumber, parseOptionalNumber, 
 export const couponConfigurationMapper: ResourceMapper<CouponConfiguration> = {
   type: 'coupon_configuration',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     name: parseString(resource.attributes['name']) ?? '',
     description: parseString(resource.attributes['description']),

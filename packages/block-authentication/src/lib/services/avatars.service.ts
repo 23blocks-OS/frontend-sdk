@@ -14,25 +14,28 @@ import type { ListParams } from '@23blocks/contracts';
 // Avatar mapper
 const avatarMapper = {
   type: 'user_avatar',
-  map: (data: Record<string, unknown>): UserAvatarFull => ({
-    id: String(data['id'] ?? ''),
-    uniqueId: String(data['unique_id'] ?? ''),
-    userId: String(data['user_id'] ?? ''),
-    userUniqueId: String(data['user_unique_id'] ?? ''),
-    bucket: data['bucket'] as string | undefined,
-    originalName: data['original_name'] as string | undefined,
-    name: data['name'] as string | undefined,
-    url: data['url'] as string | undefined,
-    thumbnail: data['thumbnail'] as string | undefined,
-    fileType: data['file_type'] as string | undefined,
-    fileSize: data['file_size'] as number | undefined,
-    description: data['description'] as string | undefined,
-    originalFile: data['original_file'] as string | undefined,
-    isPublic: data['is_public'] as boolean | undefined,
-    status: data['status'] as string | undefined,
-    createdAt: data['created_at'] as string | undefined,
-    updatedAt: data['updated_at'] as string | undefined,
-  }),
+  map: (resource: { id: string; attributes: Record<string, unknown> }, _included?: unknown): UserAvatarFull => {
+    const data = resource.attributes;
+    return {
+      id: resource.id,
+      uniqueId: String(data['unique_id'] ?? ''),
+      userId: String(data['user_id'] ?? ''),
+      userUniqueId: String(data['user_unique_id'] ?? ''),
+      bucket: data['bucket'] as string | undefined,
+      originalName: data['original_name'] as string | undefined,
+      name: data['name'] as string | undefined,
+      url: data['url'] as string | undefined,
+      thumbnail: data['thumbnail'] as string | undefined,
+      fileType: data['file_type'] as string | undefined,
+      fileSize: data['file_size'] as number | undefined,
+      description: data['description'] as string | undefined,
+      originalFile: data['original_file'] as string | undefined,
+      isPublic: data['is_public'] as boolean | undefined,
+      status: data['status'] as string | undefined,
+      createdAt: data['created_at'] as string | undefined,
+      updatedAt: data['updated_at'] as string | undefined,
+    };
+  },
 };
 
 /**
@@ -97,13 +100,13 @@ export interface AvatarsService {
 /**
  * Create the Avatars service
  */
-export function createAvatarsService(transport: Transport): AvatarsService {
+export function createAvatarsService(transport: Transport, _config?: unknown): AvatarsService {
   return {
     async list(userUniqueId: string, params?: ListParams): Promise<PageResult<UserAvatarFull>> {
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
-      if (params?.search) queryParams['search'] = params.search;
+      if (params?.filter?.['search']) queryParams['search'] = String(params.filter['search']);
 
       const response = await transport.get<unknown>(`/users/${userUniqueId}/avatars`, { params: queryParams });
       return decodePageResult(response, avatarMapper);

@@ -179,7 +179,7 @@ export function createUserJourneysService(transport: Transport, _config: { appId
         },
         meta: {
           totalCount: response.meta.total_count,
-          currentPage: response.meta.current_page,
+          page: response.meta.current_page,
           perPage: response.meta.per_page,
           totalPages: response.meta.total_pages,
         },

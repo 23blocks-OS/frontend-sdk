@@ -13,8 +13,8 @@ export interface ContentTest extends IdentityCore {
   shuffleQuestions?: boolean;
   status: EntityStatus;
   payload?: Record<string, unknown>;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface TestQuestion extends IdentityCore {

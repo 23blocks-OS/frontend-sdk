@@ -16,6 +16,7 @@ function parseVerificationStatus(value: unknown): VerificationStatus | undefined
 export const applicationFormMapper: ResourceMapper<ApplicationForm> = {
   type: 'public_form',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     formUniqueId: parseString(resource.attributes['form_unique_id']) ?? '',
     title: parseString(resource.attributes['title']),
@@ -53,6 +54,7 @@ export function mapSendOtpResponse(response: Record<string, unknown>): SendOtpRe
 export const applicationFormResponseMapper: ResourceMapper<ApplicationFormResponse> = {
   type: 'form_response',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     formUniqueId: parseString(resource.attributes['form_unique_id']) ?? '',
     data: (resource.attributes['data'] as Record<string, unknown>) ?? {},

@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseBoolean } from './utils.js';
 export const activityMapper: ResourceMapper<Activity> = {
   type: 'activity',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     createdAt: parseDate(resource.attributes?.['created_at']) ?? new Date(),
     updatedAt: parseDate(resource.attributes?.['updated_at']) ?? new Date(),

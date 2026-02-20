@@ -3,7 +3,6 @@ import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   MeetingParticipant,
   CreateMeetingParticipantRequest,
-  UpdateMeetingParticipantRequest,
   ListMeetingParticipantsParams,
 } from '../types/meeting-participant.js';
 import { meetingParticipantMapper } from '../mappers/meeting-participant.mapper.js';

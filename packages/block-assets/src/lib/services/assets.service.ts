@@ -265,7 +265,7 @@ export function createAssetsService(transport: Transport, _config: { appId: stri
 
     async removeParts(uniqueId: string, data: RemovePartsRequest): Promise<Asset> {
       const response = await transport.delete<unknown>(`/assets/${uniqueId}/parts`, {
-        data: { part_unique_ids: data.partUniqueIds },
+        params: { part_unique_ids: data.partUniqueIds.join(',') },
       });
       return decodeOne(response, assetMapper);
     },

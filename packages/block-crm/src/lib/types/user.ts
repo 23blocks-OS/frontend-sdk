@@ -1,6 +1,4 @@
 import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
-import type { Contact } from './contact.js';
-import type { Meeting } from './meeting.js';
 
 export interface CrmUser extends IdentityCore {
   email: string;

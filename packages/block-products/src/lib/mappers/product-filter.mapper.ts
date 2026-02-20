@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean,
 export const productFilterMapper: ResourceMapper<ProductFilter> = {
   type: 'product_filter',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     name: parseString(resource.attributes['name']) ?? '',
     filterKey: parseString(resource.attributes['filter_key']) ?? '',
@@ -16,7 +17,7 @@ export const productFilterMapper: ResourceMapper<ProductFilter> = {
     isActive: parseBoolean(resource.attributes['is_active']),
     status: parseStatus(resource.attributes['status']),
     payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
-    createdAt: parseDate(resource.attributes['created_at']),
-    updatedAt: parseDate(resource.attributes['updated_at']),
+    createdAt: parseDate(resource.attributes['created_at']) ?? new Date(),
+    updatedAt: parseDate(resource.attributes['updated_at']) ?? new Date(),
   }),
 };

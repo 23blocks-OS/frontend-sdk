@@ -1,4 +1,4 @@
-import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
+import type { IdentityCore } from '@23blocks/contracts';
 
 export interface OnboardJourney extends IdentityCore {
   userUniqueId: string;

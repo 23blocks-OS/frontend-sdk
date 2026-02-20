@@ -9,8 +9,8 @@ export interface Student extends IdentityCore {
   avatarUrl?: string;
   status: EntityStatus;
   payload?: Record<string, unknown>;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ListStudentsParams {

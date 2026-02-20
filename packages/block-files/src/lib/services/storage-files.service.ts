@@ -157,7 +157,7 @@ export function createStorageFilesService(transport: Transport, _config: { appId
 
     async download(uniqueId: string): Promise<Blob> {
       const response = await transport.get<Blob>(`/storage_files/${uniqueId}/download`, {
-        responseType: 'blob',
+        headers: { Accept: 'application/octet-stream' },
       });
       return response;
     },

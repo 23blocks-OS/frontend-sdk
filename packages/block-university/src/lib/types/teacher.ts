@@ -11,8 +11,8 @@ export interface Teacher extends IdentityCore {
   specialization?: string;
   status: EntityStatus;
   payload?: Record<string, unknown>;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ListTeachersParams {
@@ -33,14 +33,14 @@ export interface TeacherAvailability {
   timezone?: string;
 }
 
-export interface CreateAvailabilityRequest {
+export interface CreateTeacherAvailabilityRequest {
   dayOfWeek: number;
   startTime: string;
   endTime: string;
   timezone?: string;
 }
 
-export interface UpdateAvailabilityRequest {
+export interface UpdateTeacherAvailabilityRequest {
   dayOfWeek?: number;
   startTime?: string;
   endTime?: string;

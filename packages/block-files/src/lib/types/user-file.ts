@@ -81,13 +81,13 @@ export interface MultipartCompleteRequest {
   }>;
 }
 
-export interface FileAccessRequest {
+export interface UserFileAccessInput {
   granteeUniqueId: string;
   accessType: 'read' | 'write' | 'admin';
   expiresAt?: string;
 }
 
-export interface FileAccess {
+export interface UserFileAccessGrant {
   uniqueId: string;
   fileUniqueId: string;
   granteeUniqueId: string;
@@ -96,7 +96,7 @@ export interface FileAccess {
   expiresAt?: Date;
 }
 
-export interface FileDelegation {
+export interface UserFileDelegationGrant {
   uniqueId: string;
   granterUniqueId: string;
   granteeUniqueId: string;

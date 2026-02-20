@@ -12,7 +12,6 @@ import type {
   TenantContextRevokeRequest,
   TenantContextAuditEntry,
   SignInResponse,
-  User,
 } from '../types/index.js';
 import { userMapper } from '../mappers/index.js';
 
@@ -98,7 +97,7 @@ export interface OAuthService {
 /**
  * Create the OAuth service
  */
-export function createOAuthService(transport: Transport): OAuthService {
+export function createOAuthService(transport: Transport, _config?: unknown): OAuthService {
   return {
     async facebookLogin(request: OAuthSocialLoginRequest): Promise<SignInResponse> {
       const response = await transport.post<{

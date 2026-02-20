@@ -55,7 +55,7 @@ export interface MfaService {
 /**
  * Create the MFA service
  */
-export function createMfaService(transport: Transport): MfaService {
+export function createMfaService(transport: Transport, _config?: unknown): MfaService {
   return {
     async setup(userUniqueId: string, regenerate?: boolean): Promise<MfaSetupResponseFull> {
       const response = await transport.post<{

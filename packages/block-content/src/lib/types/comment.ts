@@ -69,6 +69,7 @@ export interface UpdateCommentRequest {
 export interface ListCommentsParams {
   page?: number;
   perPage?: number;
+  postUniqueId?: string;
   userUniqueId?: string;
   parentId?: string;
   status?: EntityStatus;

@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean 
 export const offerCodeMapper: ResourceMapper<OfferCode> = {
   type: 'offer_code',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     code: parseString(resource.attributes['code']) ?? '',
     name: parseString(resource.attributes['name']),

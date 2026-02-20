@@ -105,7 +105,7 @@ export function createCouponsService(transport: Transport, _config: { appId: str
       const result = response as any;
       return {
         valid: result.data?.attributes?.valid || false,
-        coupon: result.data?.attributes?.coupon ? couponMapper.map(result.data.attributes.coupon) : undefined,
+        coupon: result.data?.attributes?.coupon ? couponMapper.map(result.data.attributes.coupon as any, new Map()) : undefined,
         discountAmount: result.data?.attributes?.discount_amount,
         reason: result.data?.attributes?.reason,
       };

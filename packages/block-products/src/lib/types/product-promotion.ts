@@ -16,7 +16,19 @@ export interface ProductPromotion extends IdentityCore {
   payload?: Record<string, unknown>;
 }
 
+export interface ListProductPromotionsParams {
+  page?: number;
+  perPage?: number;
+  status?: string;
+  productUniqueId?: string;
+  promotionType?: string;
+  active?: boolean;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
 export interface CreateProductPromotionRequest {
+  productUniqueId?: string;
   name: string;
   description?: string;
   promotionType: string;

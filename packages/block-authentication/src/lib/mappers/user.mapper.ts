@@ -14,8 +14,8 @@ export const permissionMapper: ResourceMapper<Permission> = {
 
     return {
       id: resource.id,
-      uniqueId: parseString(attrs.unique_id),
-      name: parseString(attrs.name),
+      uniqueId: parseString(attrs.unique_id) ?? '',
+      name: parseString(attrs.name) ?? '',
       level: Number(attrs.level) || 0,
       parentId: parseString(attrs.parent_id),
       description: parseString(attrs.description),
@@ -39,8 +39,8 @@ export const roleMapper: ResourceMapper<Role> = {
 
     return {
       id: resource.id,
-      uniqueId: parseString(attrs.unique_id),
-      name: parseString(attrs.name),
+      uniqueId: parseString(attrs.unique_id) ?? '',
+      name: parseString(attrs.name) ?? '',
       code: parseString(attrs.code),
       description: parseString(attrs.description),
       status: (attrs.status as Role['status']) ?? 'active',

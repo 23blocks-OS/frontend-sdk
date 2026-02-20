@@ -1,4 +1,4 @@
-import type { Transport, PageResult } from '@23blocks/contracts';
+import type { Transport } from '@23blocks/contracts';
 import { decodeOne, decodeMany } from '@23blocks/jsonapi-codec';
 import type {
   Match,
@@ -10,7 +10,6 @@ import type {
   FindCoacheesRequest,
   EvaluateMatchesRequest,
   EvaluateAvailabilitiesRequest,
-  ListMatchesParams,
 } from '../types/match.js';
 import { matchMapper, matchEvaluationMapper, availableCoachMapper, availableCoacheeMapper } from '../mappers/match.mapper.js';
 

@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean 
 export const locationImageMapper: ResourceMapper<LocationImage> = {
   type: 'location_image',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     locationUniqueId: parseString(resource.attributes['location_unique_id']) ?? '',
     url: parseString(resource.attributes['url']) ?? '',

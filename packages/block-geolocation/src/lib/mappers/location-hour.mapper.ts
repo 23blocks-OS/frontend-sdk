@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseNumber, parseBoolean } from '
 export const locationHourMapper: ResourceMapper<LocationHour> = {
   type: 'location_hour',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     locationUniqueId: parseString(resource.attributes['location_unique_id']) ?? '',
     dayOfWeek: parseNumber(resource.attributes['day_of_week']),

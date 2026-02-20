@@ -11,8 +11,8 @@ export interface MessageFile extends IdentityCore {
   thumbnailUrl?: string;
   status?: string;
   payload?: Record<string, unknown>;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CreateMessageFileRequest {

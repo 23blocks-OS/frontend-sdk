@@ -140,7 +140,7 @@ export function createRegistrationTokensService(
 
         return {
           valid: response.valid,
-          token: response.data ? registrationTokenMapper.map(response.data as Parameters<typeof registrationTokenMapper.map>[0]) : undefined,
+          token: response.data ? registrationTokenMapper.map(response.data as Parameters<typeof registrationTokenMapper.map>[0], new Map()) : undefined,
           error: response.error,
         };
       } catch {
@@ -190,7 +190,7 @@ export function createRegistrationTokensService(
         },
       });
       return (response.data ?? []).map((item) =>
-        registrationTokenMapper.map(item as Parameters<typeof registrationTokenMapper.map>[0])
+        registrationTokenMapper.map(item as Parameters<typeof registrationTokenMapper.map>[0], new Map())
       );
     },
   };

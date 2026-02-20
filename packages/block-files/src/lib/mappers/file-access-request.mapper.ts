@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseBoolean } from './utils.js';
 export const fileAccessRequestMapper: ResourceMapper<FileAccessRequest> = {
   type: 'file_access_request',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     createdAt: parseDate(resource.attributes?.['created_at']) ?? new Date(),
     updatedAt: parseDate(resource.attributes?.['updated_at']) ?? new Date(),

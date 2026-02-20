@@ -114,7 +114,7 @@ export function createDepartmentsService(transport: Transport, _config: { appId:
 
     async getHierarchy(companyUniqueId: string): Promise<DepartmentHierarchy[]> {
       const response = await transport.get<unknown>(`/companies/${companyUniqueId}/departments/hierarchy`);
-      return decodeMany(response, departmentMapper) as Promise<DepartmentHierarchy[]>;
+      return decodeMany(response, departmentMapper) as unknown as DepartmentHierarchy[];
     },
   };
 }

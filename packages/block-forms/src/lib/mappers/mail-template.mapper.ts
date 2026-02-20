@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus } from './utils.js';
 export const mailTemplateMapper: ResourceMapper<MailTemplate> = {
   type: 'mail_template',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     name: parseString(resource.attributes['name']) ?? '',
     subject: parseString(resource.attributes['subject']) ?? '',

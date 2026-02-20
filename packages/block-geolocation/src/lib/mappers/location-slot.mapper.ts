@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean 
 export const locationSlotMapper: ResourceMapper<LocationSlot> = {
   type: 'location_slot',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     locationUniqueId: parseString(resource.attributes['location_unique_id']) ?? '',
     name: parseString(resource.attributes['name']),

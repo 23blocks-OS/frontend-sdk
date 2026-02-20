@@ -1,6 +1,4 @@
-import type { IdentityCore, PageResult } from '@23blocks/contracts';
-import type { Group } from './group.js';
-import type { Conversation } from './conversation.js';
+import type { IdentityCore } from '@23blocks/contracts';
 
 export interface ConversationsUser extends IdentityCore {
   email?: string;
@@ -10,8 +8,8 @@ export interface ConversationsUser extends IdentityCore {
   status?: string;
   lastSeenAt?: Date;
   payload?: Record<string, unknown>;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface RegisterUserRequest {

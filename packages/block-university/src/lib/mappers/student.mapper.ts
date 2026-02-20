@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus } from './utils.js';
 export const studentMapper: ResourceMapper<Student> = {
   type: 'user',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     userUniqueId: parseString(resource.attributes['user_unique_id']),
     email: parseString(resource.attributes['email']),

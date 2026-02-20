@@ -10,8 +10,8 @@ export interface CourseGroup extends IdentityCore {
   endDate?: Date;
   status: EntityStatus;
   payload?: Record<string, unknown>;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CreateCourseGroupRequest {

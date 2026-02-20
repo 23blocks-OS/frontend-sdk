@@ -25,6 +25,16 @@ export interface CreateProductFilterRequest {
   payload?: Record<string, unknown>;
 }
 
+export interface ListProductFiltersParams {
+  page?: number;
+  perPage?: number;
+  status?: string;
+  filterType?: string;
+  isActive?: boolean;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
 export interface UpdateProductFilterRequest {
   name?: string;
   filterKey?: string;

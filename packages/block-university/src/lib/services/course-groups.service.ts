@@ -1,9 +1,8 @@
-import type { Transport, PageResult } from '@23blocks/contracts';
+import type { Transport } from '@23blocks/contracts';
 import { decodeOne } from '@23blocks/jsonapi-codec';
 import type {
   CourseGroup,
   CreateCourseGroupRequest,
-  ListCourseGroupsParams,
 } from '../types/course-group.js';
 import { courseGroupMapper } from '../mappers/course-group.mapper.js';
 

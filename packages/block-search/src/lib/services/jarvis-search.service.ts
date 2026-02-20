@@ -70,7 +70,7 @@ export function createJarvisSearchService(
     ...searchResultMapper,
     type: 'jarvis_search_result',
     map: (resource: unknown) => {
-      const base = searchResultMapper.map(resource as Parameters<typeof searchResultMapper.map>[0]);
+      const base = searchResultMapper.map(resource as Parameters<typeof searchResultMapper.map>[0], new Map());
       const attrs = (resource as { attributes?: Record<string, unknown> })?.attributes ?? {};
       return {
         ...base,

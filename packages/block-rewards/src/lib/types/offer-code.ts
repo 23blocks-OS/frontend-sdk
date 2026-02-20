@@ -12,8 +12,8 @@ export interface OfferCode extends IdentityCore {
   expiresAt?: Date;
   status: EntityStatus;
   payload?: Record<string, unknown>;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CreateOfferCodeRequest {

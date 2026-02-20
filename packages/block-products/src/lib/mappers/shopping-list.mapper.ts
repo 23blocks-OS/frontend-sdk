@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean 
 export const shoppingListMapper: ResourceMapper<ShoppingList> = {
   type: 'shopping_list',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     userUniqueId: parseString(resource.attributes['user_unique_id']) ?? '',
     name: parseString(resource.attributes['name']) ?? '',
@@ -13,7 +14,7 @@ export const shoppingListMapper: ResourceMapper<ShoppingList> = {
     itemCount: parseOptionalNumber(resource.attributes['item_count']),
     status: parseStatus(resource.attributes['status']),
     payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
-    createdAt: parseDate(resource.attributes['created_at']),
-    updatedAt: parseDate(resource.attributes['updated_at']),
+    createdAt: parseDate(resource.attributes['created_at']) ?? new Date(),
+    updatedAt: parseDate(resource.attributes['updated_at']) ?? new Date(),
   }),
 };

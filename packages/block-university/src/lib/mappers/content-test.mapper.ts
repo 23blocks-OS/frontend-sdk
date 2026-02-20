@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean 
 export const contentTestMapper: ResourceMapper<ContentTest> = {
   type: 'content_test',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     name: parseString(resource.attributes['name']) ?? '',
     description: parseString(resource.attributes['description']),
@@ -26,7 +27,10 @@ export const contentTestMapper: ResourceMapper<ContentTest> = {
 export const testQuestionMapper: ResourceMapper<TestQuestion> = {
   type: 'test_question',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
+    createdAt: parseDate(resource.attributes['created_at']) ?? new Date(),
+    updatedAt: parseDate(resource.attributes['updated_at']) ?? new Date(),
     testUniqueId: parseString(resource.attributes['test_unique_id']) ?? '',
     questionText: parseString(resource.attributes['question_text']) ?? '',
     questionType: (parseString(resource.attributes['question_type']) as TestQuestion['questionType']) ?? 'multiple_choice',
@@ -39,7 +43,10 @@ export const testQuestionMapper: ResourceMapper<TestQuestion> = {
 export const testOptionMapper: ResourceMapper<TestOption> = {
   type: 'test_option',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
+    createdAt: parseDate(resource.attributes['created_at']) ?? new Date(),
+    updatedAt: parseDate(resource.attributes['updated_at']) ?? new Date(),
     questionUniqueId: parseString(resource.attributes['question_unique_id']) ?? '',
     optionText: parseString(resource.attributes['option_text']) ?? '',
     isCorrect: parseBoolean(resource.attributes['is_correct']),

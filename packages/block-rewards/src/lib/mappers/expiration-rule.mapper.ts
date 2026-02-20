@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean 
 export const expirationRuleMapper: ResourceMapper<ExpirationRule> = {
   type: 'expiration_rule',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     name: parseString(resource.attributes['name']) ?? '',
     description: parseString(resource.attributes['description']),

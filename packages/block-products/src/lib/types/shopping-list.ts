@@ -17,6 +17,15 @@ export interface ShoppingListItem {
   addedAt?: Date;
 }
 
+export interface ListShoppingListsParams {
+  page?: number;
+  perPage?: number;
+  status?: string;
+  userUniqueId?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
 export interface CreateShoppingListRequest {
   name: string;
   description?: string;

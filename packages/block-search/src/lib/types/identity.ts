@@ -9,8 +9,6 @@ export interface SearchIdentity extends IdentityCore {
   avatarUrl?: string;
   status: EntityStatus;
   payload?: Record<string, unknown>;
-  createdAt?: Date;
-  updatedAt?: Date;
 }
 
 export interface RegisterIdentityRequest {

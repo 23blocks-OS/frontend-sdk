@@ -1,20 +1,20 @@
 /**
  * Parse a string value, returning undefined for empty/undefined
  */
-export function parseString(value: unknown): string | undefined {
+export function parseString(value: unknown): string {
   if (value === null || value === undefined) {
-    return undefined;
+    return '';
   }
   const str = String(value);
-  return str.length > 0 ? str : undefined;
+  return str.length > 0 ? str : '';
 }
 
 /**
  * Parse a date value
  */
-export function parseDate(value: unknown): Date | undefined {
+export function parseDate(value: unknown): Date {
   if (value === null || value === undefined) {
-    return undefined;
+    return new Date();
   }
 
   if (value instanceof Date) {
@@ -23,10 +23,10 @@ export function parseDate(value: unknown): Date | undefined {
 
   if (typeof value === 'string' || typeof value === 'number') {
     const date = new Date(value);
-    return isNaN(date.getTime()) ? undefined : date;
+    return isNaN(date.getTime()) ? new Date() : date;
   }
 
-  return undefined;
+  return new Date();
 }
 
 /**

@@ -1,6 +1,6 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
 import type { SearchEntity } from '../types/entity.js';
-import { parseString, parseDate, parseBoolean } from './utils.js';
+import { parseString, parseDate } from './utils.js';
 
 function parseStatus(value: unknown): 'active' | 'inactive' | 'pending' | 'archived' | 'deleted' {
   const status = parseString(value);
@@ -13,6 +13,7 @@ function parseStatus(value: unknown): 'active' | 'inactive' | 'pending' | 'archi
 export const searchEntityMapper: ResourceMapper<SearchEntity> = {
   type: 'entity',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     entityType: parseString(resource.attributes['entity_type']) ?? '',
     alias: parseString(resource.attributes['alias']) ?? undefined,
@@ -22,7 +23,7 @@ export const searchEntityMapper: ResourceMapper<SearchEntity> = {
     source: parseString(resource.attributes['source']) ?? undefined,
     status: parseStatus(resource.attributes['status']),
     payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
-    createdAt: parseDate(resource.attributes['created_at']) ?? undefined,
-    updatedAt: parseDate(resource.attributes['updated_at']) ?? undefined,
+    createdAt: parseDate(resource.attributes['created_at']) ?? new Date(),
+    updatedAt: parseDate(resource.attributes['updated_at']) ?? new Date(),
   }),
 };

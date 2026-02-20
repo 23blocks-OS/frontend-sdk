@@ -1,23 +1,23 @@
-import type { JsonApiResourceMapper } from '@23blocks/jsonapi-codec';
+import type { ResourceMapper } from '@23blocks/jsonapi-codec';
 import type { UserFile } from '../types/user-file.js';
 
-export const userFileMapper: JsonApiResourceMapper<UserFile> = {
+export const userFileMapper: ResourceMapper<UserFile> = {
   type: 'file',
-  map: (data: Record<string, unknown>): UserFile => ({
-    id: String(data['id'] ?? ''),
-    uniqueId: String(data['unique_id'] ?? ''),
-    userUniqueId: String(data['user_unique_id'] ?? ''),
-    fileName: String(data['file_name'] ?? ''),
-    fileType: String(data['file_type'] ?? ''),
-    fileSize: Number(data['file_size'] ?? 0),
-    mimeType: data['mime_type'] as string | undefined,
-    url: data['url'] as string | undefined,
-    thumbnailUrl: data['thumbnail_url'] as string | undefined,
-    schemaUniqueId: data['schema_unique_id'] as string | undefined,
-    status: (data['status'] as UserFile['status']) ?? 'active',
-    isPublic: Boolean(data['is_public'] ?? false),
-    payload: data['payload'] as Record<string, unknown> | undefined,
-    createdAt: data['created_at'] ? new Date(data['created_at'] as string) : new Date(),
-    updatedAt: data['updated_at'] ? new Date(data['updated_at'] as string) : new Date(),
+  map: (resource, _included) => ({
+    id: resource.id,
+    uniqueId: String(resource.attributes['unique_id'] ?? ''),
+    userUniqueId: String(resource.attributes['user_unique_id'] ?? ''),
+    fileName: String(resource.attributes['file_name'] ?? ''),
+    fileType: String(resource.attributes['file_type'] ?? ''),
+    fileSize: Number(resource.attributes['file_size'] ?? 0),
+    mimeType: resource.attributes['mime_type'] as string | undefined,
+    url: resource.attributes['url'] as string | undefined,
+    thumbnailUrl: resource.attributes['thumbnail_url'] as string | undefined,
+    schemaUniqueId: resource.attributes['schema_unique_id'] as string | undefined,
+    status: (resource.attributes['status'] as UserFile['status']) ?? 'active',
+    isPublic: Boolean(resource.attributes['is_public'] ?? false),
+    payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
+    createdAt: resource.attributes['created_at'] ? new Date(resource.attributes['created_at'] as string) : new Date(),
+    updatedAt: resource.attributes['updated_at'] ? new Date(resource.attributes['updated_at'] as string) : new Date(),
   }),
 };

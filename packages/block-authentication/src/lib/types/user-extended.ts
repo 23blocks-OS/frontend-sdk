@@ -1,6 +1,3 @@
-import type { User } from './user.js';
-import type { PageResult } from '@23blocks/contracts';
-
 /**
  * User Profile
  */

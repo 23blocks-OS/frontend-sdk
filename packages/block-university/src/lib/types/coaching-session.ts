@@ -15,8 +15,8 @@ export interface CoachingSession extends IdentityCore {
   studentNotes?: string;
   adminNotes?: string;
   payload?: Record<string, unknown>;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CreateCoachingSessionRequest {

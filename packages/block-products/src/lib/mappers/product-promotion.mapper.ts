@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseNumber, parseOptionalNumber, 
 export const productPromotionMapper: ResourceMapper<ProductPromotion> = {
   type: 'product_promotion',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     productUniqueId: parseString(resource.attributes['product_unique_id']) ?? '',
     name: parseString(resource.attributes['name']) ?? '',
@@ -19,7 +20,7 @@ export const productPromotionMapper: ResourceMapper<ProductPromotion> = {
     isStackable: parseBoolean(resource.attributes['is_stackable']),
     status: parseStatus(resource.attributes['status']),
     payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
-    createdAt: parseDate(resource.attributes['created_at']),
-    updatedAt: parseDate(resource.attributes['updated_at']),
+    createdAt: parseDate(resource.attributes['created_at']) ?? new Date(),
+    updatedAt: parseDate(resource.attributes['updated_at']) ?? new Date(),
   }),
 };

@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseOptionalNumber, parseBoolean 
 export const coachingSessionMapper: ResourceMapper<CoachingSession> = {
   type: 'coaching_session',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     teacherUniqueId: parseString(resource.attributes['teacher_unique_id']) ?? '',
     studentUniqueId: parseString(resource.attributes['student_unique_id']) ?? '',

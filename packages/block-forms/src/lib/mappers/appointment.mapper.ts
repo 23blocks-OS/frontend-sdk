@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseOptionalNumber } from './util
 export const appointmentMapper: ResourceMapper<Appointment> = {
   type: 'appointment',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     formUniqueId: parseString(resource.attributes['form_unique_id']) ?? '',
     userUniqueId: parseString(resource.attributes['user_unique_id']),

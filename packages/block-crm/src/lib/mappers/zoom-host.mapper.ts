@@ -1,6 +1,6 @@
 import type { JsonApiResource, JsonApiMapper } from '@23blocks/jsonapi-codec';
 import type { ZoomHost } from '../types/zoom-host.js';
-import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber, parseNumber } from './utils.js';
+import { parseString, parseDate, parseBoolean, parseStatus, parseOptionalNumber } from './utils.js';
 
 export const zoomHostMapper: JsonApiMapper<ZoomHost> = {
   type: 'zoom_host',

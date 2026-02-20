@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseNumber, parseBoolean } from '
 export const locationTaxMapper: ResourceMapper<LocationTax> = {
   type: 'location_tax',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     locationUniqueId: parseString(resource.attributes['location_unique_id']) ?? '',
     name: parseString(resource.attributes['name']) ?? '',

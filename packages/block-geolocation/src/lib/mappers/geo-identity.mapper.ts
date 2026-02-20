@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus } from './utils.js';
 export const geoIdentityMapper: ResourceMapper<GeoIdentity> = {
   type: 'user',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     name: parseString(resource.attributes['name']),
     email: parseString(resource.attributes['email']),

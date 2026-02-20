@@ -2,7 +2,6 @@ import type { Transport, PageResult, ListParams } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   User,
-  UserProfile,
   UserProfileFull,
   ProfileRequest,
   UpdateEmailRequest,
@@ -19,82 +18,102 @@ import type { AuthenticationBlockConfig } from '../authentication.block.js';
 // Profile mapper
 const profileMapper = {
   type: 'user_profile',
-  map: (data: Record<string, unknown>): UserProfileFull => ({
-    id: String(data['id'] ?? ''),
-    uniqueId: String(data['unique_id'] ?? ''),
-    userId: String(data['user_id'] ?? ''),
-    userUniqueId: String(data['user_unique_id'] ?? ''),
-    firstName: data['first_name'] as string | undefined,
-    middleName: data['middle_name'] as string | undefined,
-    lastName: data['last_name'] as string | undefined,
-    gender: data['gender'] as string | undefined,
-    ethnicity: data['ethnicity'] as string | undefined,
-    zipcode: data['zipcode'] as string | undefined,
-    maritalStatus: data['marital_status'] as string | undefined,
-    birthdate: data['birthdate'] as string | undefined,
-    hhi: data['hhi'] as string | undefined,
-    children: data['children'] as string | undefined,
-    source: data['source'] as string | undefined,
-    email: data['email'] as string | undefined,
-    phoneNumber: data['phone_number'] as string | undefined,
-    preferredDevice: data['preferred_device'] as string | undefined,
-    preferredLanguage: data['preferred_language'] as string | undefined,
-    webSite: data['web_site'] as string | undefined,
-    twitter: data['twitter'] as string | undefined,
-    fb: data['fb'] as string | undefined,
-    instagram: data['instagram'] as string | undefined,
-    linkedin: data['linkedin'] as string | undefined,
-    youtube: data['youtube'] as string | undefined,
-    blog: data['blog'] as string | undefined,
-    networkA: data['network_a'] as string | undefined,
-    networkB: data['network_b'] as string | undefined,
-    timeZone: data['time_zone'] as string | undefined,
-    payload: data['payload'] as Record<string, unknown> | undefined,
-    status: data['status'] as string | undefined,
-    createdAt: data['created_at'] as string | undefined,
-    updatedAt: data['updated_at'] as string | undefined,
-  }),
+  map: (resource: { id: string; attributes: Record<string, unknown> }, _included?: unknown): UserProfileFull => {
+    const data = resource.attributes;
+    return {
+      id: resource.id,
+      uniqueId: String(data['unique_id'] ?? ''),
+      userId: String(data['user_id'] ?? ''),
+      userUniqueId: String(data['user_unique_id'] ?? ''),
+      firstName: data['first_name'] as string | undefined,
+      middleName: data['middle_name'] as string | undefined,
+      lastName: data['last_name'] as string | undefined,
+      gender: data['gender'] as string | undefined,
+      ethnicity: data['ethnicity'] as string | undefined,
+      zipcode: data['zipcode'] as string | undefined,
+      maritalStatus: data['marital_status'] as string | undefined,
+      birthdate: data['birthdate'] as string | undefined,
+      hhi: data['hhi'] as string | undefined,
+      children: data['children'] as string | undefined,
+      source: data['source'] as string | undefined,
+      email: data['email'] as string | undefined,
+      phoneNumber: data['phone_number'] as string | undefined,
+      preferredDevice: data['preferred_device'] as string | undefined,
+      preferredLanguage: data['preferred_language'] as string | undefined,
+      webSite: data['web_site'] as string | undefined,
+      twitter: data['twitter'] as string | undefined,
+      fb: data['fb'] as string | undefined,
+      instagram: data['instagram'] as string | undefined,
+      linkedin: data['linkedin'] as string | undefined,
+      youtube: data['youtube'] as string | undefined,
+      blog: data['blog'] as string | undefined,
+      networkA: data['network_a'] as string | undefined,
+      networkB: data['network_b'] as string | undefined,
+      timeZone: data['time_zone'] as string | undefined,
+      payload: data['payload'] as Record<string, unknown> | undefined,
+      status: data['status'] as string | undefined,
+      createdAt: data['created_at'] as string | undefined,
+      updatedAt: data['updated_at'] as string | undefined,
+    };
+  },
 };
 
 // Device mapper
 const deviceMapper = {
   type: 'user_device',
-  map: (data: Record<string, unknown>): UserDeviceFull => ({
-    id: String(data['id'] ?? ''),
-    uniqueId: String(data['unique_id'] ?? ''),
-    userId: String(data['user_id'] ?? ''),
-    userUniqueId: String(data['user_unique_id'] ?? ''),
-    deviceType: data['device_type'] as string | undefined,
-    pushId: data['push_id'] as string | undefined,
-    osType: data['os_type'] as string | undefined,
-    defaultDevice: data['default_device'] as boolean | undefined,
-    locationEnabled: data['location_enabled'] as boolean | undefined,
-    notificationsEnabled: data['notifications_enabled'] as boolean | undefined,
-    status: data['status'] as string | undefined,
-    enabled: data['enabled'] as boolean | undefined,
-    createdAt: data['created_at'] as string | undefined,
-    updatedAt: data['updated_at'] as string | undefined,
-  }),
+  map: (resource: { id: string; attributes: Record<string, unknown> }, _included?: unknown): UserDeviceFull => {
+    const data = resource.attributes;
+    return {
+      id: resource.id,
+      uniqueId: String(data['unique_id'] ?? ''),
+      userId: String(data['user_id'] ?? ''),
+      userUniqueId: String(data['user_unique_id'] ?? ''),
+      deviceType: data['device_type'] as string | undefined,
+      pushId: data['push_id'] as string | undefined,
+      osType: data['os_type'] as string | undefined,
+      defaultDevice: data['default_device'] as boolean | undefined,
+      locationEnabled: data['location_enabled'] as boolean | undefined,
+      notificationsEnabled: data['notifications_enabled'] as boolean | undefined,
+      status: data['status'] as string | undefined,
+      enabled: data['enabled'] as boolean | undefined,
+      createdAt: data['created_at'] as string | undefined,
+      updatedAt: data['updated_at'] as string | undefined,
+    };
+  },
 };
 
 // Subscription mapper
 const subscriptionMapper = {
   type: 'user_subscription',
-  map: (data: Record<string, unknown>): UserSubscription => ({
-    id: String(data['id'] ?? ''),
-    uniqueId: String(data['unique_id'] ?? ''),
-    userId: data['user_id'] as string | undefined,
-    userUniqueId: data['user_unique_id'] as string | undefined,
-    subscriptionModelId: data['subscription_model_id'] as string | undefined,
-    code: data['code'] as string | undefined,
-    programCode: data['program_code'] as string | undefined,
-    status: data['status'] as string | undefined,
-    recurringPaymentFees: data['recurring_payment_fees'] as number | undefined,
-    recurringPaymentAmount: data['recurring_payment_amount'] as number | undefined,
-    payload: data['payload'] as Record<string, unknown> | undefined,
-    createdAt: data['created_at'] as string | undefined,
-    updatedAt: data['updated_at'] as string | undefined,
-  }),
+  map: (resource: { id: string; attributes: Record<string, unknown> }, _included?: unknown): UserSubscription => {
+    const data = resource.attributes;
+    return {
+      id: resource.id,
+      uniqueId: String(data['unique_id'] ?? ''),
+      userUniqueId: String(data['user_unique_id'] ?? ''),
+      code: String(data['code'] ?? ''),
+      programCode: (data['program_code'] as string) ?? null,
+      recurringPaymentFees: (data['recurring_payment_fees'] as number) ?? null,
+      recurringPaymentAmount: (data['recurring_payment_amount'] as number) ?? null,
+      subscriptionNumber: (data['subscription_number'] as string) ?? null,
+      subscribedAt: data['subscribed_at'] ? new Date(data['subscribed_at'] as string) : null,
+      closedAt: data['closed_at'] ? new Date(data['closed_at'] as string) : null,
+      lastPaymentAt: data['last_payment_at'] ? new Date(data['last_payment_at'] as string) : null,
+      nextPaymentAt: data['next_payment_at'] ? new Date(data['next_payment_at'] as string) : null,
+      lastPayment: (data['last_payment'] as number) ?? null,
+      paymentsMade: Number(data['payments_made'] ?? 0),
+      status: (data['status'] as UserSubscription['status']) ?? 'active',
+      bankruptcy: Boolean(data['bankruptcy']),
+      initialPayment: (data['initial_payment'] as number) ?? null,
+      subscriptionType: (data['subscription_type'] as string) ?? null,
+      payments: (data['payments'] as number) ?? null,
+      payload: (data['payload'] as Record<string, unknown>) ?? null,
+      maxItems: (data['max_items'] as number) ?? null,
+      consumption: Number(data['consumption'] ?? 0),
+      createdAt: data['created_at'] ? new Date(data['created_at'] as string) : new Date(),
+      updatedAt: data['updated_at'] ? new Date(data['updated_at'] as string) : new Date(),
+    };
+  },
 };
 
 /**
@@ -577,7 +596,7 @@ export function createUsersService(
 
     async getCompanies(userUniqueId: string): Promise<Company[]> {
       const response = await transport.get<{ data: unknown[] }>(`/users/${userUniqueId}/companies`);
-      return (response.data || []).map((item) => companyMapper.map(item as Record<string, unknown>));
+      return (response.data || []).map((item) => companyMapper.map(item as any, new Map()));
     },
 
     async addSubscription(userUniqueId: string, request: AddUserSubscriptionRequest): Promise<UserSubscription> {

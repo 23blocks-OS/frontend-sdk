@@ -5,6 +5,7 @@ import { parseString, parseDate, parseBoolean, parseStatus, parseNumber } from '
 export const badgeCategoryMapper: ResourceMapper<BadgeCategory> = {
   type: 'badge_category',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     createdAt: parseDate(resource.attributes?.['created_at']) ?? new Date(),
     updatedAt: parseDate(resource.attributes?.['updated_at']) ?? new Date(),
@@ -20,6 +21,7 @@ export const badgeCategoryMapper: ResourceMapper<BadgeCategory> = {
 export const moneyRuleMapper: ResourceMapper<MoneyRule> = {
   type: 'money_rule',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     createdAt: parseDate(resource.attributes?.['created_at']) ?? new Date(),
     updatedAt: parseDate(resource.attributes?.['updated_at']) ?? new Date(),
@@ -42,6 +44,7 @@ export const moneyRuleMapper: ResourceMapper<MoneyRule> = {
 export const productRuleMapper: ResourceMapper<ProductRule> = {
   type: 'product_rule',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     createdAt: parseDate(resource.attributes?.['created_at']) ?? new Date(),
     updatedAt: parseDate(resource.attributes?.['updated_at']) ?? new Date(),
@@ -64,6 +67,7 @@ export const productRuleMapper: ResourceMapper<ProductRule> = {
 export const eventRuleMapper: ResourceMapper<EventRule> = {
   type: 'event_rule',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     createdAt: parseDate(resource.attributes?.['created_at']) ?? new Date(),
     updatedAt: parseDate(resource.attributes?.['updated_at']) ?? new Date(),

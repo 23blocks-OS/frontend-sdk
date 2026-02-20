@@ -7,8 +7,8 @@ export interface Context extends IdentityCore {
   status?: string;
   metadata?: Record<string, unknown>;
   payload?: Record<string, unknown>;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CreateContextRequest {

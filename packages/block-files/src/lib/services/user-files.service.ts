@@ -10,9 +10,9 @@ import type {
   MultipartPresignRequest,
   MultipartPresignResponse,
   MultipartCompleteRequest,
-  FileAccess,
-  FileAccessRequest,
-  FileDelegation,
+  UserFileAccessGrant,
+  UserFileAccessInput,
+  UserFileDelegationGrant,
   CreateDelegationRequest,
 } from '../types/user-file.js';
 import { userFileMapper } from '../mappers/user-file.mapper.js';
@@ -166,7 +166,7 @@ export interface UserFilesService {
    * @param fileUniqueId - The unique identifier of the file
    * @returns Array of FileAccess records for the given file
    */
-  getAccess(userUniqueId: string, fileUniqueId: string): Promise<FileAccess[]>;
+  getAccess(userUniqueId: string, fileUniqueId: string): Promise<UserFileAccessGrant[]>;
 
   /**
    * Grant access to a file for a specific grantee
@@ -175,7 +175,7 @@ export interface UserFilesService {
    * @param data - Access details including grantee, access type, and optional expiry
    * @returns The newly created FileAccess record
    */
-  grantAccess(userUniqueId: string, fileUniqueId: string, data: FileAccessRequest): Promise<FileAccess>;
+  grantAccess(userUniqueId: string, fileUniqueId: string, data: UserFileAccessInput): Promise<UserFileAccessGrant>;
 
   /**
    * Revoke a specific access grant on a file
@@ -230,7 +230,7 @@ export interface UserFilesService {
    * @param fileUniqueId - The unique identifier of the file
    * @returns Array of FileAccess records representing pending requests
    */
-  listAccessRequests(userUniqueId: string, fileUniqueId: string): Promise<FileAccess[]>;
+  listAccessRequests(userUniqueId: string, fileUniqueId: string): Promise<UserFileAccessGrant[]>;
 
   /**
    * Approve an access request for a file
@@ -239,7 +239,7 @@ export interface UserFilesService {
    * @param requestUniqueId - The unique identifier of the request to approve
    * @returns The resulting FileAccess record after approval
    */
-  approveAccessRequest(userUniqueId: string, fileUniqueId: string, requestUniqueId: string): Promise<FileAccess>;
+  approveAccessRequest(userUniqueId: string, fileUniqueId: string, requestUniqueId: string): Promise<UserFileAccessGrant>;
 
   /**
    * Deny an access request for a file
@@ -257,14 +257,14 @@ export interface UserFilesService {
    * @param userUniqueId - The unique identifier of the granting user
    * @returns Array of FileDelegation records granted by this user
    */
-  listGrantedDelegations(userUniqueId: string): Promise<FileDelegation[]>;
+  listGrantedDelegations(userUniqueId: string): Promise<UserFileDelegationGrant[]>;
 
   /**
    * List delegations received by a user from others
    * @param userUniqueId - The unique identifier of the receiving user
    * @returns Array of FileDelegation records received by this user
    */
-  listReceivedDelegations(userUniqueId: string): Promise<FileDelegation[]>;
+  listReceivedDelegations(userUniqueId: string): Promise<UserFileDelegationGrant[]>;
 
   /**
    * Get a specific delegation
@@ -272,7 +272,7 @@ export interface UserFilesService {
    * @param delegationUniqueId - The unique identifier of the delegation
    * @returns The matching FileDelegation record
    */
-  getDelegation(userUniqueId: string, delegationUniqueId: string): Promise<FileDelegation>;
+  getDelegation(userUniqueId: string, delegationUniqueId: string): Promise<UserFileDelegationGrant>;
 
   /**
    * Create a new delegation to another user
@@ -280,7 +280,7 @@ export interface UserFilesService {
    * @param data - Delegation details including grantee, access level, and optional expiry
    * @returns The newly created FileDelegation record
    */
-  createDelegation(userUniqueId: string, data: CreateDelegationRequest): Promise<FileDelegation>;
+  createDelegation(userUniqueId: string, data: CreateDelegationRequest): Promise<UserFileDelegationGrant>;
 
   /**
    * Revoke a delegation
@@ -431,9 +431,7 @@ export function createUserFilesService(transport: Transport, _config: { appId: s
     },
 
     async removeTag(userUniqueId: string, fileUniqueId: string, tagUniqueId: string): Promise<void> {
-      await transport.delete(`/users/${userUniqueId}/files/${fileUniqueId}/tags`, {
-        data: { tag: { unique_id: tagUniqueId } },
-      });
+      await transport.delete(`/users/${userUniqueId}/files/${fileUniqueId}/tags/${tagUniqueId}`);
     },
 
     async bulkUpdateTags(userUniqueId: string, tagUniqueIds: string[]): Promise<void> {
@@ -446,7 +444,7 @@ export function createUserFilesService(transport: Transport, _config: { appId: s
       await transport.post(`/users/${userUniqueId}/files/${fileUniqueId}/requests/access`, {});
     },
 
-    async getAccess(userUniqueId: string, fileUniqueId: string): Promise<FileAccess[]> {
+    async getAccess(userUniqueId: string, fileUniqueId: string): Promise<UserFileAccessGrant[]> {
       const response = await transport.get<{ data: Array<Record<string, unknown>> }>(`/users/${userUniqueId}/files/${fileUniqueId}/access`);
       return (response.data || []).map((item) => ({
         uniqueId: String(item['unique_id'] ?? ''),
@@ -458,7 +456,7 @@ export function createUserFilesService(transport: Transport, _config: { appId: s
       }));
     },
 
-    async grantAccess(userUniqueId: string, fileUniqueId: string, data: FileAccessRequest): Promise<FileAccess> {
+    async grantAccess(userUniqueId: string, fileUniqueId: string, data: UserFileAccessInput): Promise<UserFileAccessGrant> {
       const response = await transport.post<Record<string, unknown>>(`/users/${userUniqueId}/files/${fileUniqueId}/access/grant`, {
         access: {
           grantee_unique_id: data.granteeUniqueId,
@@ -508,7 +506,7 @@ export function createUserFilesService(transport: Transport, _config: { appId: s
       });
     },
 
-    async listAccessRequests(userUniqueId: string, fileUniqueId: string): Promise<FileAccess[]> {
+    async listAccessRequests(userUniqueId: string, fileUniqueId: string): Promise<UserFileAccessGrant[]> {
       const response = await transport.get<{ data: Array<Record<string, unknown>> }>(`/users/${userUniqueId}/files/${fileUniqueId}/access/requests`);
       return (response.data || []).map((item) => ({
         uniqueId: String(item['unique_id'] ?? ''),
@@ -520,7 +518,7 @@ export function createUserFilesService(transport: Transport, _config: { appId: s
       }));
     },
 
-    async approveAccessRequest(userUniqueId: string, fileUniqueId: string, requestUniqueId: string): Promise<FileAccess> {
+    async approveAccessRequest(userUniqueId: string, fileUniqueId: string, requestUniqueId: string): Promise<UserFileAccessGrant> {
       const response = await transport.put<Record<string, unknown>>(`/users/${userUniqueId}/files/${fileUniqueId}/access/requests/${requestUniqueId}/approve`, {});
       return {
         uniqueId: String(response['unique_id'] ?? ''),
@@ -536,7 +534,7 @@ export function createUserFilesService(transport: Transport, _config: { appId: s
       await transport.delete(`/users/${userUniqueId}/files/${fileUniqueId}/access/requests/${requestUniqueId}/deny`);
     },
 
-    async listGrantedDelegations(userUniqueId: string): Promise<FileDelegation[]> {
+    async listGrantedDelegations(userUniqueId: string): Promise<UserFileDelegationGrant[]> {
       const response = await transport.get<{ data: Array<Record<string, unknown>> }>(`/users/${userUniqueId}/delegations/granted`);
       return (response.data || []).map((item) => ({
         uniqueId: String(item['unique_id'] ?? ''),
@@ -548,7 +546,7 @@ export function createUserFilesService(transport: Transport, _config: { appId: s
       }));
     },
 
-    async listReceivedDelegations(userUniqueId: string): Promise<FileDelegation[]> {
+    async listReceivedDelegations(userUniqueId: string): Promise<UserFileDelegationGrant[]> {
       const response = await transport.get<{ data: Array<Record<string, unknown>> }>(`/users/${userUniqueId}/delegations/received`);
       return (response.data || []).map((item) => ({
         uniqueId: String(item['unique_id'] ?? ''),
@@ -560,7 +558,7 @@ export function createUserFilesService(transport: Transport, _config: { appId: s
       }));
     },
 
-    async getDelegation(userUniqueId: string, delegationUniqueId: string): Promise<FileDelegation> {
+    async getDelegation(userUniqueId: string, delegationUniqueId: string): Promise<UserFileDelegationGrant> {
       const response = await transport.get<Record<string, unknown>>(`/users/${userUniqueId}/delegations/${delegationUniqueId}`);
       return {
         uniqueId: String(response['unique_id'] ?? ''),
@@ -572,7 +570,7 @@ export function createUserFilesService(transport: Transport, _config: { appId: s
       };
     },
 
-    async createDelegation(userUniqueId: string, data: CreateDelegationRequest): Promise<FileDelegation> {
+    async createDelegation(userUniqueId: string, data: CreateDelegationRequest): Promise<UserFileDelegationGrant> {
       const response = await transport.post<Record<string, unknown>>(`/users/${userUniqueId}/delegations`, {
         delegation: {
           grantee_unique_id: data.granteeUniqueId,

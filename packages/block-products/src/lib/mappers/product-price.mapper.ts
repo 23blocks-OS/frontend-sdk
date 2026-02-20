@@ -5,6 +5,7 @@ import { parseString, parseDate, parseStatus, parseNumber, parseOptionalNumber }
 export const productPriceMapper: ResourceMapper<ProductPrice> = {
   type: 'product_price',
   map: (resource) => ({
+    id: resource.id,
     uniqueId: resource.id,
     productUniqueId: parseString(resource.attributes['product_unique_id']),
     variationUniqueId: parseString(resource.attributes['variation_unique_id']),
@@ -20,7 +21,7 @@ export const productPriceMapper: ResourceMapper<ProductPrice> = {
     endDate: parseDate(resource.attributes['end_date']),
     status: parseStatus(resource.attributes['status']),
     payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
-    createdAt: parseDate(resource.attributes['created_at']),
-    updatedAt: parseDate(resource.attributes['updated_at']),
+    createdAt: parseDate(resource.attributes['created_at']) ?? new Date(),
+    updatedAt: parseDate(resource.attributes['updated_at']) ?? new Date(),
   }),
 };

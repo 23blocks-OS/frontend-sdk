@@ -104,7 +104,7 @@ export function createAssetsUsersService(transport: Transport, _config: { appId:
       const response = await transport.get<any>(`/users/${uniqueId}/entities`);
       // Could be JSON:API or plain array
       if (response.data && Array.isArray(response.data)) {
-        return response.data.map((e: any) => assetsEntityMapper.map({ id: e.id, type: 'entity', attributes: e }));
+        return response.data.map((e: any) => assetsEntityMapper.map({ id: e.id, type: 'entity', attributes: e }, new Map()));
       }
       return (response.entities || response || []).map((e: any) => ({
         id: e.id,
@@ -123,7 +123,7 @@ export function createAssetsUsersService(transport: Transport, _config: { appId:
     async listAssets(uniqueId: string): Promise<Asset[]> {
       const response = await transport.get<any>(`/users/${uniqueId}/assets`);
       if (response.data && Array.isArray(response.data)) {
-        return response.data.map((a: any) => assetMapper.map({ id: a.id, type: 'asset', attributes: a }));
+        return response.data.map((a: any) => assetMapper.map({ id: a.id, type: 'asset', attributes: a }, new Map()));
       }
       return (response.assets || response || []).map((a: any) => ({
         id: a.id,
