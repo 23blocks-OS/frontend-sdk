@@ -1,6 +1,5 @@
 import { createContext, useContext, useMemo, useCallback, useEffect, useState, useRef, type ReactNode } from 'react';
 import { createHttpTransport } from '@23blocks/transport-http';
-import type { Transport } from '@23blocks/contracts';
 import { createAuthenticationBlock, type AuthenticationBlock, type SignInRequest, type SignInResponse, type SignUpRequest, type SignUpResponse, type User, type UpdateProfileRequest } from '@23blocks/block-authentication';
 import { createSearchBlock, type SearchBlock } from '@23blocks/block-search';
 import { createProductsBlock, type ProductsBlock } from '@23blocks/block-products';

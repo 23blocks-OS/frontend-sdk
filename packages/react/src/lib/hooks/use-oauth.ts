@@ -8,6 +8,7 @@ import type {
   TokenRevokeAllRequest,
   TokenRevokeResponse,
   TenantContextCreateRequest,
+  TenantContextRevokeRequest,
   TenantContextResponse,
   TenantContextAuditEntry,
 } from '@23blocks/block-authentication';
@@ -24,15 +25,15 @@ export interface UseOAuthState {
 }
 
 export interface UseOAuthActions {
-  loginWithFacebook: (request: OAuthSocialLoginRequest) => Promise<SignInResponse>;
-  loginWithGoogle: (request: OAuthSocialLoginRequest) => Promise<SignInResponse>;
-  loginWithTenant: (request: TenantLoginRequest) => Promise<SignInResponse>;
-  introspectToken: (token: string) => Promise<TokenIntrospectionResponse>;
+  facebookLogin: (request: OAuthSocialLoginRequest) => Promise<SignInResponse>;
+  googleLogin: (request: OAuthSocialLoginRequest) => Promise<SignInResponse>;
+  tenantLogin: (request: TenantLoginRequest) => Promise<SignInResponse>;
+  introspectToken: (token?: string) => Promise<TokenIntrospectionResponse>;
   revokeToken: (request: TokenRevokeRequest) => Promise<TokenRevokeResponse>;
-  revokeAllTokens: (request?: TokenRevokeAllRequest) => Promise<TokenRevokeResponse>;
+  revokeAllTokens: (request: TokenRevokeAllRequest) => Promise<TokenRevokeResponse>;
   createTenantContext: (request: TenantContextCreateRequest) => Promise<TenantContextResponse>;
-  revokeTenantContext: () => Promise<void>;
-  auditTenantContext: () => Promise<TenantContextAuditEntry[]>;
+  revokeTenantContext: (request: TenantContextRevokeRequest) => Promise<{ message: string }>;
+  getTenantContextAudit: () => Promise<TenantContextAuditEntry[]>;
   clearError: () => void;
 }
 
@@ -48,11 +49,11 @@ export type UseOAuthReturn = UseOAuthState & UseOAuthActions;
  * @example
  * ```tsx
  * function SocialLogin() {
- *   const { loginWithGoogle, loginWithFacebook, isLoading, error } = useOAuth();
+ *   const { googleLogin, facebookLogin, isLoading, error } = useOAuth();
  *
  *   const handleGoogleLogin = async (googleToken: string) => {
  *     try {
- *       const response = await loginWithGoogle({ token: googleToken });
+ *       const response = await googleLogin({ token: googleToken });
  *       // User is now logged in
  *     } catch (err) {
  *       // Handle error
@@ -76,11 +77,11 @@ export function useOAuth(): UseOAuthReturn {
   const [error, setError] = useState<Error | null>(null);
   const [tenantContext, setTenantContext] = useState<TenantContextResponse | null>(null);
 
-  const loginWithFacebook = useCallback(async (request: OAuthSocialLoginRequest): Promise<SignInResponse> => {
+  const facebookLogin = useCallback(async (request: OAuthSocialLoginRequest): Promise<SignInResponse> => {
     setIsLoading(true);
     setError(null);
     try {
-      return await block.oauth.loginWithFacebook(request);
+      return await block.oauth.facebookLogin(request);
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);
@@ -90,11 +91,11 @@ export function useOAuth(): UseOAuthReturn {
     }
   }, [block.oauth]);
 
-  const loginWithGoogle = useCallback(async (request: OAuthSocialLoginRequest): Promise<SignInResponse> => {
+  const googleLogin = useCallback(async (request: OAuthSocialLoginRequest): Promise<SignInResponse> => {
     setIsLoading(true);
     setError(null);
     try {
-      return await block.oauth.loginWithGoogle(request);
+      return await block.oauth.googleLogin(request);
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);
@@ -104,11 +105,11 @@ export function useOAuth(): UseOAuthReturn {
     }
   }, [block.oauth]);
 
-  const loginWithTenant = useCallback(async (request: TenantLoginRequest): Promise<SignInResponse> => {
+  const tenantLogin = useCallback(async (request: TenantLoginRequest): Promise<SignInResponse> => {
     setIsLoading(true);
     setError(null);
     try {
-      return await block.oauth.loginWithTenant(request);
+      return await block.oauth.tenantLogin(request);
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);
@@ -118,7 +119,7 @@ export function useOAuth(): UseOAuthReturn {
     }
   }, [block.oauth]);
 
-  const introspectToken = useCallback(async (token: string): Promise<TokenIntrospectionResponse> => {
+  const introspectToken = useCallback(async (token?: string): Promise<TokenIntrospectionResponse> => {
     setIsLoading(true);
     setError(null);
     try {
@@ -146,7 +147,7 @@ export function useOAuth(): UseOAuthReturn {
     }
   }, [block.oauth]);
 
-  const revokeAllTokens = useCallback(async (request?: TokenRevokeAllRequest): Promise<TokenRevokeResponse> => {
+  const revokeAllTokens = useCallback(async (request: TokenRevokeAllRequest): Promise<TokenRevokeResponse> => {
     setIsLoading(true);
     setError(null);
     try {
@@ -176,12 +177,13 @@ export function useOAuth(): UseOAuthReturn {
     }
   }, [block.oauth]);
 
-  const revokeTenantContext = useCallback(async (): Promise<void> => {
+  const revokeTenantContext = useCallback(async (request: TenantContextRevokeRequest): Promise<{ message: string }> => {
     setIsLoading(true);
     setError(null);
     try {
-      await block.oauth.revokeTenantContext();
+      const result = await block.oauth.revokeTenantContext(request);
       setTenantContext(null);
+      return result;
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);
@@ -191,11 +193,11 @@ export function useOAuth(): UseOAuthReturn {
     }
   }, [block.oauth]);
 
-  const auditTenantContext = useCallback(async (): Promise<TenantContextAuditEntry[]> => {
+  const getTenantContextAudit = useCallback(async (): Promise<TenantContextAuditEntry[]> => {
     setIsLoading(true);
     setError(null);
     try {
-      return await block.oauth.auditTenantContext();
+      return await block.oauth.getTenantContextAudit();
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);
@@ -213,15 +215,15 @@ export function useOAuth(): UseOAuthReturn {
     isLoading,
     error,
     tenantContext,
-    loginWithFacebook,
-    loginWithGoogle,
-    loginWithTenant,
+    facebookLogin,
+    googleLogin,
+    tenantLogin,
     introspectToken,
     revokeToken,
     revokeAllTokens,
     createTenantContext,
     revokeTenantContext,
-    auditTenantContext,
+    getTenantContextAudit,
     clearError,
   };
 }
