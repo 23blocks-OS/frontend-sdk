@@ -1,3 +1,30 @@
+# 5.0.0 (2026-02-20)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-forms:** align all types, services and mappers with API strong params ([31ead5f](https://github.com/23blocks-OS/frontend-sdk/commit/31ead5f))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-forms:** align all types, services and mappers with API strong params  ([31ead5f](https://github.com/23blocks-OS/frontend-sdk/commit/31ead5f))
+  Complete rewrite of forms block to match actual Rails API.
+  Root keys fixed: landing_instance→landing, survey_instance→survey,
+  mail_template→template, form_submission→responses, report→query_params.
+  Field renames: phone→phoneNumber, scheduledAt→startAt, schema→formFields,
+  uiSchema→datasource, subject→fromSubject, htmlContent→templateHtml,
+  textContent→templateText, providerTemplateId→templateName, fromEmail→fromAddress.
+  Removed invented fields: FormReference, SubmitFormInstanceRequest,
+  referrerEmail, refereeName, refereePhone, data (on instances), enabled (on Form).
+  Added 80+ missing fields across all services including source tracking,
+  visitor attribution, assigned-to fields, form configuration options,
+  and CRM sync batch parameters.
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 4.0.0 (2026-02-20)
 
 ### 🩹 Fixes

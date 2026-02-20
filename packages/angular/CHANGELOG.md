@@ -1,3 +1,22 @@
+# 12.0.0 (2026-02-20)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/angular:** rebuild with block-forms aligned to API strong params ([9df6777](https://github.com/23blocks-OS/frontend-sdk/commit/9df6777))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/angular:** rebuild with block-forms aligned to API strong params  ([9df6777](https://github.com/23blocks-OS/frontend-sdk/commit/9df6777))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-forms to 5.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 11.0.0 (2026-02-20)
 
 ### 🚀 Features
