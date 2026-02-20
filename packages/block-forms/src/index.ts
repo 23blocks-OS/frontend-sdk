@@ -35,14 +35,13 @@ export type {
   FormInstance,
   CreateFormInstanceRequest,
   UpdateFormInstanceRequest,
-  SubmitFormInstanceRequest,
   ListFormInstancesParams,
 } from './lib/types/form-instance.js';
 
 // Form Set types
 export type {
   FormSet,
-  FormReference,
+  FormSetItem,
   CreateFormSetRequest,
   UpdateFormSetRequest,
   ListFormSetsParams,
