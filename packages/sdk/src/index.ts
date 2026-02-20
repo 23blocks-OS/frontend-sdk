@@ -1,2 +1,2 @@
-// Re-exports all blocks — block configs now use apiKey (not appId)
+// Re-exports all blocks — block-forms aligned with API strong params
 export * from './lib/sdk.js';
