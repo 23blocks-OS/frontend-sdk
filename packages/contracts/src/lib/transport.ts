@@ -30,6 +30,17 @@ export interface RequestOptions {
   timeout?: number;
   /** Signal for aborting the request */
   signal?: AbortSignal;
+  /**
+   * Response type hint for the transport layer.
+   * - 'json' (default): Parse response as JSON
+   * - 'stream': Return the raw Response object for SSE/streaming
+   */
+  responseType?: 'json' | 'stream';
+  /**
+   * Override the transport's base URL for this request only.
+   * Used for routing specific requests to different domains (e.g., SSE streaming).
+   */
+  baseUrl?: string;
 }
 
 /**

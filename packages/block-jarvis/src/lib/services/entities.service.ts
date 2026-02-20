@@ -82,10 +82,10 @@ export interface EntitiesService {
   addPrompt(uniqueId: string, promptUniqueId: string): Promise<void>;
   createContext(uniqueId: string, data?: CreateContextRequest): Promise<unknown>;
   sendMessage(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<unknown>;
-  sendMessageStream(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<unknown>;
+  sendMessageStream(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<ReadableStream<string>>;
 }
 
-export function createEntitiesService(transport: Transport, _config: { appId: string }): EntitiesService {
+export function createEntitiesService(transport: Transport, _config: { appId: string }, sseUrl?: string): EntitiesService {
   return {
     async list(params?: ListEntitiesParams): Promise<PageResult<Entity>> {
       const queryParams: Record<string, string> = {};
@@ -140,10 +140,21 @@ export function createEntitiesService(transport: Transport, _config: { appId: st
       });
     },
 
-    async sendMessageStream(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<unknown> {
-      return transport.post(`/entities/${uniqueId}/contexts/${contextUniqueId}/send_message_stream`, {
-        message: buildMessageBody(data),
-      });
+    async sendMessageStream(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<ReadableStream<string>> {
+      const response = await transport.post<Response>(
+        `/entities/${uniqueId}/contexts/${contextUniqueId}/send_message_stream`,
+        { message: buildMessageBody(data) },
+        {
+          responseType: 'stream',
+          headers: { Accept: 'text/event-stream' },
+          ...(sseUrl ? { baseUrl: sseUrl } : {}),
+        },
+      );
+
+      if (response.body) {
+        return response.body.pipeThrough(new TextDecoderStream());
+      }
+      throw new Error('Streaming not supported');
     },
   };
 }

@@ -85,7 +85,7 @@ export interface AgentRuntimeService {
   getExecution(agentUniqueId: string, executionUniqueId: string): Promise<AgentRunExecution>;
 }
 
-export function createAgentRuntimeService(transport: Transport, _config: { appId: string }): AgentRuntimeService {
+export function createAgentRuntimeService(transport: Transport, _config: { appId: string }, sseUrl?: string): AgentRuntimeService {
   return {
     async getContext(agentUniqueId: string, contextUniqueId: string): Promise<AgentContext> {
       const response = await transport.get<any>(`/agents/${agentUniqueId}/context/${contextUniqueId}`);
@@ -147,7 +147,11 @@ export function createAgentRuntimeService(transport: Transport, _config: { appId
       const response = await transport.post<Response>(
         `/agents/${agentUniqueId}/threads/${threadId}/messages/stream`,
         requestBody,
-        { responseType: 'stream' } as any,
+        {
+          responseType: 'stream',
+          headers: { Accept: 'text/event-stream' },
+          ...(sseUrl ? { baseUrl: sseUrl } : {}),
+        },
       );
 
       if (response.body) {

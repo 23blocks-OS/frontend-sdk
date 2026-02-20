@@ -3,7 +3,6 @@ import {
   type TransportConfig,
   type RequestOptions,
   type RetryConfig,
-  type Interceptors,
   type Logger,
   BlockErrorException,
   ErrorCodes,
@@ -140,7 +139,8 @@ export function createHttpTransport(config: TransportConfig): Transport {
     options?: RequestOptions
   ): Promise<T> {
     const requestId = generateRequestId();
-    const url = `${baseUrl}${path}${buildQueryString(options?.params)}`;
+    const effectiveBaseUrl = options?.baseUrl ?? baseUrl;
+    const url = `${effectiveBaseUrl}${path}${buildQueryString(options?.params)}`;
     const headers = await resolveHeaders(configHeaders, options?.headers);
 
     // Add request ID to headers for backend tracing
@@ -162,8 +162,7 @@ export function createHttpTransport(config: TransportConfig): Transport {
       try {
         await interceptors.onRequest({ method, path, body, headers, requestId });
       } catch (error) {
-        const duration = Date.now() - startTime;
-        logger.error(`✗ Request interceptor error [${requestId}]`, { error });
+        logger.error(`✗ Request interceptor error (${Date.now() - startTime}ms) [${requestId}]`, { error });
         throw error;
       }
     }
@@ -194,7 +193,7 @@ export function createHttpTransport(config: TransportConfig): Transport {
           let errorBody: Record<string, unknown> = {};
           if (isJson) {
             try {
-              errorBody = await response.json();
+              errorBody = await response.json() as Record<string, unknown>;
             } catch {
               // Ignore JSON parse errors
             }
@@ -253,6 +252,11 @@ export function createHttpTransport(config: TransportConfig): Transport {
 
         // Success
         logger.info(`← ${response.status} OK (${duration}ms) [${requestId}]`);
+
+        // For streaming responses, return the raw Response object
+        if (options?.responseType === 'stream') {
+          return response as unknown as T;
+        }
 
         const contentType = response.headers.get('content-type') || '';
         const isJson = contentType.includes('application/json') || contentType.includes('application/vnd.api+json');
