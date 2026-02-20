@@ -1,3 +1,14 @@
+## 5.0.1 (2026-02-20)
+
+### 🩹 Fixes
+
+- **@23blocks/block-forms:** remove stale re-exports of FormReference and SubmitFormInstanceRequest ([e26f5dc](https://github.com/23blocks-OS/frontend-sdk/commit/e26f5dc))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 5.0.0 (2026-02-20)
 
 ### 🩹 Fixes

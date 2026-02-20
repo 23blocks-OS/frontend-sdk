@@ -1,3 +1,9 @@
+## 12.0.1 (2026-02-20)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-forms to 5.0.1
+
 # 12.0.0 (2026-02-20)
 
 ### 🩹 Fixes
