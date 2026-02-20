@@ -1,3 +1,25 @@
+## 3.3.1 (2026-02-20)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/block-jarvis:** add SSE streaming support with dedicated domain routing ([748482b](https://github.com/23blocks-OS/frontend-sdk/commit/748482b))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-jarvis:** add SSE streaming support with dedicated domain routing  ([748482b](https://github.com/23blocks-OS/frontend-sdk/commit/748482b))
+  entities.sendMessageStream() now returns
+  Promise<ReadableStream<string>> instead of Promise<unknown>
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/contracts to 2.3.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 3.3.0 (2026-02-17)
 
 ### 🧱 Updated Dependencies

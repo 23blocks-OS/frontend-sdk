@@ -1,3 +1,43 @@
+# 11.0.0 (2026-02-20)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/react:** rebuild with appId replaced by apiKey across all blocks ([5d3bda6](https://github.com/23blocks-OS/frontend-sdk/commit/5d3bda6))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/react:** rebuild with appId replaced by apiKey across all blocks  ([5d3bda6](https://github.com/23blocks-OS/frontend-sdk/commit/5d3bda6))
+  Block configs no longer accept appId. Use apiKey instead.
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.0.0
+- Updated @23blocks/block-conversations to 4.0.0
+- Updated @23blocks/block-geolocation to 4.0.0
+- Updated @23blocks/block-onboarding to 4.0.0
+- Updated @23blocks/block-university to 4.0.0
+- Updated @23blocks/block-campaigns to 4.0.0
+- Updated @23blocks/block-products to 4.0.0
+- Updated @23blocks/transport-http to 3.3.1
+- Updated @23blocks/block-company to 4.0.0
+- Updated @23blocks/block-content to 4.0.0
+- Updated @23blocks/block-rewards to 4.0.0
+- Updated @23blocks/block-assets to 4.0.0
+- Updated @23blocks/block-jarvis to 5.0.0
+- Updated @23blocks/block-search to 5.0.0
+- Updated @23blocks/block-wallet to 4.0.0
+- Updated @23blocks/block-files to 4.0.0
+- Updated @23blocks/block-forms to 4.0.0
+- Updated @23blocks/block-sales to 8.0.0
+- Updated @23blocks/block-crm to 4.0.0
+- Updated @23blocks/contracts to 2.3.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 10.0.0 (2026-02-19)
 
 ### 🚀 Features

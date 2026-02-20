@@ -1,3 +1,26 @@
+# 8.0.0 (2026-02-20)
+
+### 🩹 Fixes
+
+- ⚠️  replace appId with apiKey across all block configs to align with BlockConfig contract ([f81626d](https://github.com/23blocks-OS/frontend-sdk/commit/f81626d))
+- resolve typecheck errors across all block packages ([6089324](https://github.com/23blocks-OS/frontend-sdk/commit/6089324))
+
+### ⚠️  Breaking Changes
+
+- replace appId with apiKey across all block configs to align with BlockConfig contract  ([f81626d](https://github.com/23blocks-OS/frontend-sdk/commit/f81626d))
+  Block config no longer accepts appId. Use apiKey instead.
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/jsonapi-codec to 3.3.1
+- Updated @23blocks/contracts to 2.3.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 7.0.0 (2026-02-19)
 
 ### 🚀 Features

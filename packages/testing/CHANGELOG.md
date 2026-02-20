@@ -1,3 +1,18 @@
+## 2.2.1 (2026-02-20)
+
+### 🩹 Fixes
+
+- resolve typecheck errors across all block packages ([6089324](https://github.com/23blocks-OS/frontend-sdk/commit/6089324))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/contracts to 2.3.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 2.2.0 (2026-02-17)
 
 ### 🧱 Updated Dependencies
