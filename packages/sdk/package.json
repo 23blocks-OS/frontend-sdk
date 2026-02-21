@@ -51,6 +51,8 @@
   },
   "files": [
     "dist",
+    "CHANGELOG.md",
+    "README.md",
     "llms.txt",
     "!**/*.tsbuildinfo"
   ],

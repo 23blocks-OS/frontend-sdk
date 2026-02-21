@@ -49,6 +49,8 @@
   },
   "files": [
     "dist",
+    "CHANGELOG.md",
+    "README.md",
     "!dist/package.json",
     "!**/*.tsbuildinfo"
   ],

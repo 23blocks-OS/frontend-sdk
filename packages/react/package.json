@@ -44,6 +44,8 @@
   },
   "files": [
     "dist",
+    "CHANGELOG.md",
+    "README.md",
     "!**/*.tsbuildinfo"
   ],
   "nx": {

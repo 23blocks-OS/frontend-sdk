@@ -47,6 +47,10 @@
     },
     "changelog": {
       "automaticFromRef": true,
+      "workspaceChangelog": {
+        "file": "CHANGELOG.md",
+        "createRelease": false
+      },
       "projectChangelogs": {
         "createRelease": "github",
         "file": "{projectRoot}/CHANGELOG.md"
