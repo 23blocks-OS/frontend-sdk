@@ -4,6 +4,7 @@ import { createUsersService, type UsersService } from './services/users.service.
 import { createRolesService, type RolesService } from './services/roles.service.js';
 import { createPermissionsService, type PermissionsService } from './services/permissions.service.js';
 import { createApiKeysService, type ApiKeysService } from './services/api-keys.service.js';
+import { createServiceTokensService, type ServiceTokensService } from './services/service-tokens.service.js';
 import {
   createAppsService,
   createBlocksService,
@@ -91,6 +92,11 @@ export interface AuthenticationBlock {
    * API key management
    */
   apiKeys: ApiKeysService;
+
+  /**
+   * Service token management for machine-to-machine authentication
+   */
+  serviceTokens: ServiceTokensService;
 
   /**
    * Multi-factor authentication
@@ -257,6 +263,7 @@ export function createAuthenticationBlock(
     roles: createRolesService(transport, config),
     permissions: createPermissionsService(transport, config),
     apiKeys: createApiKeysService(transport, config),
+    serviceTokens: createServiceTokensService(transport, config),
     mfa: createMfaService(transport, config),
     oauth: createOAuthService(transport, config),
     avatars: createAvatarsService(transport, config),
@@ -295,7 +302,7 @@ export const authenticationBlockMetadata = {
   resourceTypes: [
     'User', 'Role', 'Permission', 'UserAvatar', 'UserProfile',
     'Company', 'CompanyDetail', 'CompanyBlock', 'CompanyKey', 'Tenant',
-    'ApiKey', 'App', 'Block', 'Service',
+    'ApiKey', 'ServiceToken', 'App', 'Block', 'Service',
     'SubscriptionModel', 'UserSubscription', 'CompanySubscription',
     'Country', 'State', 'County', 'City', 'Currency',
     'Guest', 'MagicLink', 'RefreshToken', 'UserDevice', 'TenantUser', 'MailTemplate',

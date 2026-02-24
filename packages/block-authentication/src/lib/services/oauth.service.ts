@@ -109,11 +109,15 @@ export function createOAuthService(transport: Transport, _config?: unknown): OAu
             expires_in?: number;
           };
         };
-      }>('/auth/facebook', {
-        token: request.token,
-        subscription: request.subscription,
-        role_id: request.roleId,
-      });
+      }>(
+        '/auth/facebook',
+        {
+          token: request.token,
+          subscription: request.subscription,
+          role_id: request.roleId,
+        },
+        request.oauthMode ? { headers: { 'X-OAuth-Mode': 'true' } } : undefined,
+      );
 
       const user = decodeOne(response, userMapper);
       return {
@@ -135,11 +139,15 @@ export function createOAuthService(transport: Transport, _config?: unknown): OAu
             expires_in?: number;
           };
         };
-      }>('/auth/google', {
-        token: request.token,
-        subscription: request.subscription,
-        role_id: request.roleId,
-      });
+      }>(
+        '/auth/google',
+        {
+          token: request.token,
+          subscription: request.subscription,
+          role_id: request.roleId,
+        },
+        request.oauthMode ? { headers: { 'X-OAuth-Mode': 'true' } } : undefined,
+      );
 
       const user = decodeOne(response, userMapper);
       return {

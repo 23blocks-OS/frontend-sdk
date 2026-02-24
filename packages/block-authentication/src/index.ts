@@ -53,6 +53,12 @@ export {
   type UpdateApiKeyRequest,
   type RevokeApiKeyRequest,
 
+  // Service Token types
+  type ServiceToken,
+  type ServiceTokenWithJwt,
+  type ServiceTokenCategory,
+  type CreateServiceTokenRequest,
+
   // MFA types
   type MfaSetupResponseFull,
   type MfaEnableRequest,
@@ -159,6 +165,7 @@ export {
   type CreateRoleRequest,
   type UpdateRoleRequest,
   type ApiKeyUsageStats,
+  type ServiceTokensService,
   type MfaService,
   type OAuthService,
   type AvatarsService,
@@ -210,4 +217,6 @@ export {
   tenantMapper,
   apiKeyMapper,
   apiKeyWithSecretMapper,
+  serviceTokenMapper,
+  serviceTokenWithJwtMapper,
 } from './lib/mappers/index.js';

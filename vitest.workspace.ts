@@ -37,4 +37,14 @@ export default defineWorkspace([
       hookTimeout: 120000,
     },
   },
+  {
+    extends: './vitest.config.ts',
+    test: {
+      name: 'contracts',
+      root: '.',
+      include: ['tests/contracts/**/*.spec.ts'],
+      environment: 'node',
+      testTimeout: 10000,
+    },
+  },
 ]);

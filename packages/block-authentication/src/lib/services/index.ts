@@ -55,6 +55,9 @@ export {
   type MailTemplatesService,
 } from './guests.service.js';
 
+// Service Tokens
+export { createServiceTokensService, type ServiceTokensService } from './service-tokens.service.js';
+
 // MFA
 export { createMfaService, type MfaService } from './mfa.service.js';
 

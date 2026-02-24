@@ -307,11 +307,64 @@ localStorage.setItem('access_token', accessToken);
 localStorage.setItem('refresh_token', newRefreshToken);
 ```
 
+### Social Login with OAuth Mode
+
+Pass `oauthMode: true` to receive an OAuth 2.0 token pair (access + refresh tokens) from Google or Facebook login:
+
+```typescript
+const { user, accessToken, refreshToken } = await auth.oauth.googleLogin({
+  token: googleIdToken,
+  oauthMode: true,
+});
+
+localStorage.setItem('access_token', accessToken);
+localStorage.setItem('refresh_token', refreshToken!);
+```
+
 ### Get Current User
 
 ```typescript
 const user = await auth.users.me();
 console.log(user.email, user.firstName, user.lastName);
+```
+
+## Service Tokens (Machine-to-Machine Auth)
+
+Create JWT tokens for AI agents and backend services:
+
+```typescript
+const auth = createAuthenticationBlock(transport, { apiKey: 'your-api-key' });
+
+// Create a short-lived token for an AI agent (1-24h)
+const agentToken = await auth.serviceTokens.create({
+  name: 'support-chatbot',
+  tokenCategory: 'agent',
+  scopes: ['conversations:read', 'conversations:write'],
+  expiresInDays: 1,
+});
+// agentToken.jwt - store immediately, only returned once
+
+// Create a long-lived token for a backend service (30-365 days)
+const svcToken = await auth.serviceTokens.create({
+  name: 'billing-sync',
+  tokenCategory: 'service',
+  scopes: ['wallet:read', 'crm:write'],
+  expiresInDays: 90,
+});
+
+// List all tokens with pagination
+const tokens = await auth.serviceTokens.list({ page: 1, perPage: 50 });
+
+// Get a specific token (JWT is NOT included in get/list responses)
+const token = await auth.serviceTokens.get('token-unique-id');
+console.log(token.active, token.useCount, token.lastUsedAt);
+
+// Regenerate a compromised token (old JWT is invalidated)
+const newToken = await auth.serviceTokens.regenerate('token-unique-id');
+// newToken.jwt - new JWT, store immediately
+
+// Revoke a token
+await auth.serviceTokens.revoke('token-unique-id');
 ```
 
 ## Search Examples
@@ -491,6 +544,9 @@ import type {
   SignInResponse,
   Company,
   ApiKey,
+  ServiceToken,
+  ServiceTokenWithJwt,
+  CreateServiceTokenRequest,
 } from '@23blocks/block-authentication';
 
 import type {

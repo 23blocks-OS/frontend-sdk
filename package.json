@@ -42,6 +42,7 @@
     "test:unit:watch": "vitest --project unit",
     "test:integration": "vitest run --project integration",
     "test:workflows": "vitest run --project workflows",
+    "test:contracts": "vitest run --project contracts",
     "test:all": "vitest run",
     "test:consumers": "echo 'Consumer tests not yet configured'",
     "test:wait-for-api": "npx ts-node tests/integration/setup/wait-for-api.ts",

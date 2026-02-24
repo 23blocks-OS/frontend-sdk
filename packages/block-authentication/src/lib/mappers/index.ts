@@ -26,5 +26,8 @@ export {
   mailTemplateMapper,
 } from './guest.mapper.js';
 
+// Service Token mappers
+export { serviceTokenMapper, serviceTokenWithJwtMapper } from './service-token.mapper.js';
+
 // Utilities
 export { parseString, parseDate, parseBoolean, parseNumber, parseStringArray } from './utils.js';

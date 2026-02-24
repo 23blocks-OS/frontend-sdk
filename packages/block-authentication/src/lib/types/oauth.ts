@@ -5,6 +5,8 @@ export interface OAuthSocialLoginRequest {
   token: string;
   subscription?: string;
   roleId?: string;
+  /** When true, sends X-OAuth-Mode header to return an OAuth 2.0 token pair (access + refresh tokens). */
+  oauthMode?: boolean;
 }
 
 /**

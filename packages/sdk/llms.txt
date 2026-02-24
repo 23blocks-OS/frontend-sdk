@@ -251,10 +251,11 @@ const purchase = await client.sales.purchases.create({
 4. **`uniqueId` vs `id`.** Always use `uniqueId` (UUID) for API calls, not `id` (database ID).
 5. **Relationships are optional.** `user.role`, `user.avatar`, `user.profile` are only populated when explicitly included via the `include` parameter or when using `getCurrentUser()` / `users.get()`.
 6. **`create()` on ApiKeysService returns `ApiKeyWithSecret`.** The secret is only available once at creation time.
-7. **Service URLs are per-microservice.** Each block connects to its own backend URL.
-8. **Accessing unconfigured services throws.** If you didn't provide `urls.crm`, accessing `client.crm` throws an error.
-9. **Stripe `createPaymentIntent` has no `amount` param.** The server derives amount from the order's balance. Pass `orderUniqueId` instead.
-10. **`purchases.create()` is a single-call shortcut.** Use it for free plan activations or server-confirmed purchases instead of the multi-step register + subscribe + checkout flow.
+7. **`create()` and `regenerate()` on ServiceTokensService return `ServiceTokenWithJwt`.** The JWT is only available at creation/regeneration time.
+8. **Service URLs are per-microservice.** Each block connects to its own backend URL.
+9. **Accessing unconfigured services throws.** If you didn't provide `urls.crm`, accessing `client.crm` throws an error.
+10. **Stripe `createPaymentIntent` has no `amount` param.** The server derives amount from the order's balance. Pass `orderUniqueId` instead.
+11. **`purchases.create()` is a single-call shortcut.** Use it for free plan activations or server-confirmed purchases instead of the multi-step register + subscribe + checkout flow.
 
 ## Error Handling
 
@@ -322,8 +323,9 @@ const [authHealth, crmHealth] = await Promise.all([
 - `roles` - CRUD roles, manage permissions per role
 - `permissions` - CRUD standalone permissions
 - `apiKeys` - CRUD API keys with scopes, rate limits, usage stats
+- `serviceTokens` - Machine-to-machine JWT tokens: create, list, get, revoke, regenerate (agent tokens for AI, service tokens for block-to-block)
 - `mfa` - Setup, enable, disable, verify TOTP codes, check status
-- `oauth` - Facebook/Google login, tenant login, token introspection, revocation, tenant context switching
+- `oauth` - Facebook/Google login (with optional `oauthMode` for OAuth 2.0 token pairs), tenant login, token introspection, revocation, tenant context switching
 - `avatars` - CRUD avatars with presigned upload and multipart upload support
 - `tenants` - List child tenants, validate codes, search, create tenant users
 - `apps` - CRUD apps with webhook management

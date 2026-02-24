@@ -1,0 +1,673 @@
+{
+  "block": "block-forms",
+  "description": "API contract for all 13 forms block services, derived from Rails strong params",
+  "services": {
+    "forms": {
+      "endpoints": [
+        {
+          "operation": "list",
+          "method": "GET",
+          "path": "/forms"
+        },
+        {
+          "operation": "get",
+          "method": "GET",
+          "path": "/forms/:uniqueId"
+        },
+        {
+          "operation": "create",
+          "method": "POST",
+          "path": "/forms",
+          "rootKey": "form",
+          "fields": [
+            "code", "name", "description", "form_type", "form_url", "form_domain",
+            "form_fields", "only_once", "background_url", "content_url", "success_url",
+            "error_url", "notify_slack", "success_notification_message",
+            "error_notification_message", "send_confirmation_mail", "mail_template",
+            "send_confirmation_sms", "sms_template", "send_admin_notification",
+            "admin_notification_email", "admin_notification_template",
+            "form_schema_unique_id", "require_otp_verification", "payload"
+          ]
+        },
+        {
+          "operation": "update",
+          "method": "PUT",
+          "path": "/forms/:uniqueId",
+          "rootKey": "form",
+          "fields": [
+            "name", "description", "form_type", "status", "form_url", "form_domain",
+            "form_fields", "only_once", "background_url", "content_url", "success_url",
+            "error_url", "notify_slack", "success_notification_message",
+            "error_notification_message", "send_confirmation_mail", "mail_template",
+            "send_confirmation_sms", "sms_template", "send_admin_notification",
+            "admin_notification_email", "admin_notification_template",
+            "form_schema_unique_id", "require_otp_verification", "payload"
+          ]
+        },
+        {
+          "operation": "delete",
+          "method": "DELETE",
+          "path": "/forms/:uniqueId"
+        }
+      ]
+    },
+    "landings": {
+      "endpoints": [
+        {
+          "operation": "list",
+          "method": "GET",
+          "path": "/landings/:formUniqueId/instances"
+        },
+        {
+          "operation": "get",
+          "method": "GET",
+          "path": "/landings/:formUniqueId/instances/:uniqueId"
+        },
+        {
+          "operation": "submit",
+          "method": "POST",
+          "path": "/landings/:formUniqueId/instances",
+          "rootKey": "landing",
+          "fields": [
+            "email", "first_name", "middle_name", "last_name", "phone_number",
+            "message", "notes", "selected_option", "form_fields",
+            "source", "source_alias", "source_id", "source_type",
+            "visitor_unique_id", "visitor_type", "touch_id", "touch_reference_id",
+            "preferred_language"
+          ]
+        },
+        {
+          "operation": "update",
+          "method": "PUT",
+          "path": "/landings/:formUniqueId/instances/:uniqueId",
+          "rootKey": "landing",
+          "fields": [
+            "email", "first_name", "middle_name", "last_name", "phone_number",
+            "message", "notes", "selected_option", "form_fields",
+            "source", "source_alias", "source_id", "source_type",
+            "visitor_unique_id", "visitor_type", "touch_id", "touch_reference_id",
+            "preferred_language", "status"
+          ]
+        },
+        {
+          "operation": "delete",
+          "method": "DELETE",
+          "path": "/landings/:formUniqueId/instances/:uniqueId"
+        }
+      ]
+    },
+    "subscriptions": {
+      "endpoints": [
+        {
+          "operation": "list",
+          "method": "GET",
+          "path": "/subscriptions/:formUniqueId/instances"
+        },
+        {
+          "operation": "get",
+          "method": "GET",
+          "path": "/subscriptions/:formUniqueId/instances/:uniqueId"
+        },
+        {
+          "operation": "submit",
+          "method": "POST",
+          "path": "/subscriptions/:formUniqueId/instances",
+          "rootKey": "subscription",
+          "fields": [
+            "email", "first_name", "middle_name", "last_name", "phone_number",
+            "notes", "selected_option", "form_fields",
+            "source", "source_alias", "source_id", "source_type",
+            "visitor_unique_id", "visitor_type", "touch_id", "touch_reference_id"
+          ]
+        },
+        {
+          "operation": "update",
+          "method": "PUT",
+          "path": "/subscriptions/:formUniqueId/instances/:uniqueId",
+          "rootKey": "subscription",
+          "fields": [
+            "email", "first_name", "middle_name", "last_name", "phone_number",
+            "notes", "selected_option", "form_fields",
+            "source", "source_alias", "source_id", "source_type",
+            "visitor_unique_id", "visitor_type", "touch_id", "touch_reference_id",
+            "status"
+          ]
+        },
+        {
+          "operation": "delete",
+          "method": "DELETE",
+          "path": "/subscriptions/:formUniqueId/instances/:uniqueId"
+        }
+      ]
+    },
+    "appointments": {
+      "endpoints": [
+        {
+          "operation": "list",
+          "method": "GET",
+          "path": "/appointments/:formUniqueId/instances"
+        },
+        {
+          "operation": "get",
+          "method": "GET",
+          "path": "/appointments/:formUniqueId/instances/:uniqueId"
+        },
+        {
+          "operation": "create",
+          "method": "POST",
+          "path": "/appointments/:formUniqueId/instances",
+          "rootKey": "appointment",
+          "fields": [
+            "email", "first_name", "middle_name", "last_name", "phone_number",
+            "selected_option", "form_fields",
+            "start_at", "end_at", "duration",
+            "location_unique_id", "location_name", "location_address",
+            "assigned_to_unique_id", "assigned_to_name", "assigned_to_email", "assigned_to_phone",
+            "notes",
+            "source", "source_alias", "source_id", "source_type",
+            "visitor_unique_id", "visitor_type", "touch_id", "touch_reference_id"
+          ]
+        },
+        {
+          "operation": "update",
+          "method": "PUT",
+          "path": "/appointments/:formUniqueId/instances/:uniqueId",
+          "rootKey": "appointment",
+          "fields": [
+            "email", "first_name", "middle_name", "last_name", "phone_number",
+            "selected_option", "form_fields",
+            "start_at", "end_at", "duration",
+            "location_unique_id", "location_name", "location_address",
+            "assigned_to_unique_id", "assigned_to_name", "assigned_to_email", "assigned_to_phone",
+            "notes",
+            "source", "source_alias", "source_id", "source_type",
+            "visitor_unique_id", "visitor_type", "touch_id", "touch_reference_id",
+            "status"
+          ]
+        },
+        {
+          "operation": "delete",
+          "method": "DELETE",
+          "path": "/appointments/:formUniqueId/instances/:uniqueId"
+        },
+        {
+          "operation": "confirm",
+          "method": "POST",
+          "path": "/appointments/:formUniqueId/instances/:uniqueId/confirm",
+          "action": true
+        },
+        {
+          "operation": "cancel",
+          "method": "POST",
+          "path": "/appointments/:formUniqueId/instances/:uniqueId/cancel",
+          "action": true
+        },
+        {
+          "operation": "reportList",
+          "method": "POST",
+          "path": "/reports/appointments/list",
+          "rootKey": "query_params",
+          "fields": [
+            "form_unique_id", "user_unique_id", "source", "date_part",
+            "from_date", "to_date", "status", "page", "records"
+          ]
+        },
+        {
+          "operation": "reportSummary",
+          "method": "POST",
+          "path": "/reports/appointments/summary",
+          "rootKey": "query_params",
+          "fields": [
+            "form_unique_id", "user_unique_id", "source", "date_part",
+            "from_date", "to_date", "status", "page", "records"
+          ]
+        }
+      ]
+    },
+    "surveys": {
+      "endpoints": [
+        {
+          "operation": "list",
+          "method": "GET",
+          "path": "/surveys/:formUniqueId/instances"
+        },
+        {
+          "operation": "listByStatus",
+          "method": "GET",
+          "path": "/surveys/:formUniqueId/instances/status/:status"
+        },
+        {
+          "operation": "get",
+          "method": "GET",
+          "path": "/surveys/:formUniqueId/instances/:uniqueId"
+        },
+        {
+          "operation": "create",
+          "method": "POST",
+          "path": "/surveys/:formUniqueId/instances",
+          "rootKey": "survey",
+          "fields": [
+            "email", "first_name", "middle_name", "last_name", "phone_number",
+            "message", "notes", "selected_option", "form_fields",
+            "source", "source_alias", "source_id", "source_type",
+            "visitor_unique_id", "visitor_type", "touch_id", "touch_reference_id"
+          ]
+        },
+        {
+          "operation": "update",
+          "method": "PUT",
+          "path": "/surveys/:formUniqueId/instances/:uniqueId",
+          "rootKey": "survey",
+          "fields": [
+            "email", "first_name", "middle_name", "last_name", "phone_number",
+            "message", "notes", "selected_option", "form_fields",
+            "source", "source_alias", "source_id", "source_type",
+            "visitor_unique_id", "visitor_type", "touch_id", "touch_reference_id",
+            "status"
+          ]
+        },
+        {
+          "operation": "delete",
+          "method": "DELETE",
+          "path": "/surveys/:formUniqueId/instances/:uniqueId"
+        },
+        {
+          "operation": "updateStatus",
+          "method": "PUT",
+          "path": "/surveys/:formUniqueId/instances/:uniqueId/status",
+          "rootKey": "survey",
+          "fields": ["status"]
+        },
+        {
+          "operation": "resendMagicLink",
+          "method": "POST",
+          "path": "/surveys/:formUniqueId/instances/:uniqueId/resend_magic_link",
+          "action": true
+        },
+        {
+          "operation": "listByUser",
+          "method": "POST",
+          "path": "/surveys/users/",
+          "rootKey": null,
+          "fields": ["user_unique_id"]
+        }
+      ]
+    },
+    "referrals": {
+      "endpoints": [
+        {
+          "operation": "list",
+          "method": "GET",
+          "path": "/referrals/:formUniqueId/instances"
+        },
+        {
+          "operation": "get",
+          "method": "GET",
+          "path": "/referrals/:formUniqueId/instances/:uniqueId"
+        },
+        {
+          "operation": "create",
+          "method": "POST",
+          "path": "/referrals/:formUniqueId/instances",
+          "rootKey": "referral",
+          "fields": [
+            "first_name", "middle_name", "last_name", "email", "phone_number",
+            "message", "notes", "selected_option", "form_fields",
+            "referred_by_type", "referred_by_name", "referred_by_unique_id",
+            "source", "source_alias", "source_id", "source_type",
+            "visitor_unique_id", "visitor_type", "touch_id", "touch_reference_id"
+          ]
+        },
+        {
+          "operation": "update",
+          "method": "PUT",
+          "path": "/referrals/:formUniqueId/instances/:uniqueId",
+          "rootKey": "referral",
+          "fields": [
+            "first_name", "middle_name", "last_name", "email", "phone_number",
+            "message", "notes", "selected_option", "form_fields",
+            "referred_by_type", "referred_by_name", "referred_by_unique_id",
+            "source", "source_alias", "source_id", "source_type",
+            "visitor_unique_id", "visitor_type", "touch_id", "touch_reference_id",
+            "status"
+          ]
+        },
+        {
+          "operation": "delete",
+          "method": "DELETE",
+          "path": "/referrals/:formUniqueId/instances/:uniqueId"
+        }
+      ]
+    },
+    "formInstances": {
+      "endpoints": [
+        {
+          "operation": "list",
+          "method": "GET",
+          "path": "/forms/:formUniqueId/instances/"
+        },
+        {
+          "operation": "get",
+          "method": "GET",
+          "path": "/forms/:formUniqueId/instances/:uniqueId"
+        },
+        {
+          "operation": "create",
+          "method": "POST",
+          "path": "/forms/:formUniqueId/instances/",
+          "rootKey": "app_form_instance",
+          "fields": [
+            "assigned_to_unique_id", "assigned_to_email", "assigned_to_name",
+            "assigned_by_name", "expires_at", "responses", "metadata"
+          ]
+        },
+        {
+          "operation": "update",
+          "method": "PUT",
+          "path": "/forms/:formUniqueId/instances/:uniqueId",
+          "rootKey": "app_form_instance",
+          "fields": [
+            "assigned_to_unique_id", "assigned_to_email", "assigned_to_name",
+            "assigned_by_name", "expires_at", "responses", "metadata", "status"
+          ]
+        },
+        {
+          "operation": "delete",
+          "method": "DELETE",
+          "path": "/forms/:formUniqueId/instances/:uniqueId"
+        },
+        {
+          "operation": "start",
+          "method": "POST",
+          "path": "/forms/:formUniqueId/instances/:uniqueId/start",
+          "action": true
+        },
+        {
+          "operation": "submit",
+          "method": "POST",
+          "path": "/forms/:formUniqueId/instances/:uniqueId/submit",
+          "action": true
+        },
+        {
+          "operation": "cancel",
+          "method": "POST",
+          "path": "/forms/:formUniqueId/instances/:uniqueId/cancel",
+          "action": true
+        },
+        {
+          "operation": "resendMagicLink",
+          "method": "POST",
+          "path": "/forms/:formUniqueId/instances/:uniqueId/resend_magic_link",
+          "action": true
+        }
+      ]
+    },
+    "formSchemas": {
+      "endpoints": [
+        {
+          "operation": "list",
+          "method": "GET",
+          "path": "/forms/:formUniqueId/schemas/"
+        },
+        {
+          "operation": "get",
+          "method": "GET",
+          "path": "/forms/:formUniqueId/schemas/:schemaUniqueId"
+        },
+        {
+          "operation": "create",
+          "method": "POST",
+          "path": "/forms/:formUniqueId/schemas/",
+          "rootKey": "form_schema",
+          "fields": ["name", "description", "form_fields", "datasource", "payload"]
+        },
+        {
+          "operation": "update",
+          "method": "PUT",
+          "path": "/forms/:formUniqueId/schemas/:schemaUniqueId",
+          "rootKey": "form_schema",
+          "fields": ["name", "description", "form_fields", "datasource", "enabled", "status", "payload"]
+        },
+        {
+          "operation": "delete",
+          "method": "DELETE",
+          "path": "/forms/:formUniqueId/schemas/:schemaUniqueId"
+        }
+      ]
+    },
+    "formSchemaVersions": {
+      "endpoints": [
+        {
+          "operation": "list",
+          "method": "GET",
+          "path": "/forms/:formUniqueId/schemas/:schemaUniqueId/versions/"
+        },
+        {
+          "operation": "get",
+          "method": "GET",
+          "path": "/forms/:formUniqueId/schemas/:schemaUniqueId/versions/:versionUniqueId"
+        },
+        {
+          "operation": "create",
+          "method": "POST",
+          "path": "/forms/:formUniqueId/schemas/:schemaUniqueId/versions/",
+          "rootKey": "form_schema_version",
+          "fields": ["form_fields", "datasource", "payload"]
+        },
+        {
+          "operation": "update",
+          "method": "PUT",
+          "path": "/forms/:formUniqueId/schemas/:schemaUniqueId/versions/:versionUniqueId",
+          "rootKey": "form_schema_version",
+          "fields": ["form_fields", "datasource", "status", "payload"]
+        },
+        {
+          "operation": "publish",
+          "method": "POST",
+          "path": "/forms/:formUniqueId/schemas/:schemaUniqueId/versions/:versionUniqueId/publish",
+          "action": true
+        },
+        {
+          "operation": "delete",
+          "method": "DELETE",
+          "path": "/forms/:formUniqueId/schemas/:schemaUniqueId/versions/:versionUniqueId"
+        }
+      ]
+    },
+    "formSets": {
+      "endpoints": [
+        {
+          "operation": "list",
+          "method": "GET",
+          "path": "/form_sets"
+        },
+        {
+          "operation": "get",
+          "method": "GET",
+          "path": "/form_sets/:uniqueId"
+        },
+        {
+          "operation": "create",
+          "method": "POST",
+          "path": "/form_sets",
+          "rootKey": "form_set",
+          "fields": [
+            "code", "name", "description", "category", "applies_to",
+            "is_active", "is_default", "send_all_at_once",
+            "allow_partial_completion", "enforce_sequential", "expiration_days",
+            "auto_assign_rules", "metadata", "form_set_items_attributes", "payload"
+          ]
+        },
+        {
+          "operation": "update",
+          "method": "PUT",
+          "path": "/form_sets/:uniqueId",
+          "rootKey": "form_set",
+          "fields": [
+            "name", "description", "category", "applies_to",
+            "is_active", "is_default", "send_all_at_once",
+            "allow_partial_completion", "enforce_sequential", "expiration_days",
+            "auto_assign_rules", "metadata", "form_set_items_attributes", "status", "payload"
+          ]
+        },
+        {
+          "operation": "delete",
+          "method": "DELETE",
+          "path": "/form_sets/:uniqueId"
+        },
+        {
+          "operation": "match",
+          "method": "POST",
+          "path": "/form_sets/match",
+          "rootKey": "context",
+          "fields": [
+            "user_unique_id", "form_set_unique_id", "category", "applies_to", "metadata"
+          ]
+        },
+        {
+          "operation": "autoAssign",
+          "method": "POST",
+          "path": "/form_sets/auto_assign",
+          "rootKey": "assignment",
+          "fields": [
+            "user_unique_id", "form_set_unique_id", "assigned_by_name", "expires_at", "metadata"
+          ]
+        }
+      ]
+    },
+    "mailTemplates": {
+      "endpoints": [
+        {
+          "operation": "list",
+          "method": "GET",
+          "path": "/mailtemplates/"
+        },
+        {
+          "operation": "get",
+          "method": "GET",
+          "path": "/mailtemplates/:uniqueId"
+        },
+        {
+          "operation": "create",
+          "method": "POST",
+          "path": "/mailtemplates",
+          "rootKey": "template",
+          "fields": [
+            "name", "event_name", "from_subject", "template_html", "template_text",
+            "template_name", "from_address", "from_domain", "from_name",
+            "provider", "source", "source_alias", "source_id", "source_type",
+            "preferred_language", "key", "secret", "payload"
+          ]
+        },
+        {
+          "operation": "update",
+          "method": "PUT",
+          "path": "/mailtemplates/:uniqueId",
+          "rootKey": "template",
+          "fields": [
+            "name", "event_name", "from_subject", "template_html", "template_text",
+            "template_name", "from_address", "from_domain", "from_name",
+            "provider", "source", "source_alias", "source_id", "source_type",
+            "preferred_language", "key", "secret", "status", "payload"
+          ]
+        },
+        {
+          "operation": "delete",
+          "method": "DELETE",
+          "path": "/mailtemplates/:uniqueId"
+        },
+        {
+          "operation": "getStats",
+          "method": "GET",
+          "path": "/mailtemplates/:uniqueId/stats"
+        }
+      ]
+    },
+    "applicationForms": {
+      "endpoints": [
+        {
+          "operation": "get",
+          "method": "GET",
+          "path": "/:urlId/forms/public"
+        },
+        {
+          "operation": "submit",
+          "method": "POST",
+          "path": "/:urlId/forms/public",
+          "rootKey": null,
+          "fields": ["responses"]
+        },
+        {
+          "operation": "draft",
+          "method": "PUT",
+          "path": "/:urlId/forms/public",
+          "rootKey": null,
+          "fields": ["responses"]
+        },
+        {
+          "operation": "sendOtp",
+          "method": "POST",
+          "path": "/:urlId/forms/public/send-otp",
+          "action": true
+        },
+        {
+          "operation": "verifyOtp",
+          "method": "POST",
+          "path": "/:urlId/forms/public/verify-otp",
+          "rootKey": null,
+          "fields": ["code"]
+        }
+      ]
+    },
+    "crmSync": {
+      "endpoints": [
+        {
+          "operation": "syncLanding",
+          "method": "POST",
+          "path": "/crm/sync/landing/:uniqueId",
+          "action": true
+        },
+        {
+          "operation": "syncSubscription",
+          "method": "POST",
+          "path": "/crm/sync/subscription/:uniqueId",
+          "action": true
+        },
+        {
+          "operation": "syncAppointment",
+          "method": "POST",
+          "path": "/crm/sync/appointment/:uniqueId",
+          "rootKey": null,
+          "fields": ["as_type"]
+        },
+        {
+          "operation": "batchSync",
+          "method": "POST",
+          "path": "/crm/sync/batch",
+          "rootKey": "batch",
+          "fields": [
+            "limit", "sync_landings", "sync_subscriptions",
+            "sync_appointments", "appointments_as_type"
+          ]
+        },
+        {
+          "operation": "retryFailed",
+          "method": "POST",
+          "path": "/crm/sync/retry_failed",
+          "rootKey": null,
+          "fields": ["limit"]
+        },
+        {
+          "operation": "testConnection",
+          "method": "GET",
+          "path": "/crm/test_connection"
+        },
+        {
+          "operation": "status",
+          "method": "GET",
+          "path": "/crm/status"
+        }
+      ]
+    }
+  }
+}

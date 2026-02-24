@@ -291,6 +291,8 @@ export class AuthenticationService {
   get permissions() { return this.ensureConfigured().permissions; }
   /** API key creation and management */
   get apiKeys() { return this.ensureConfigured().apiKeys; }
+  /** Service token management for machine-to-machine authentication */
+  get serviceTokens() { return this.ensureConfigured().serviceTokens; }
   /** Multi-factor authentication setup and verification */
   get mfa() { return this.ensureConfigured().mfa; }
   /** OAuth provider management (Facebook, Google, tenant login) */

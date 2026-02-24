@@ -52,6 +52,14 @@ export {
   type RevokeApiKeyRequest,
 } from './api-key.js';
 
+// Service Token types
+export {
+  type ServiceToken,
+  type ServiceTokenWithJwt,
+  type ServiceTokenCategory,
+  type CreateServiceTokenRequest,
+} from './service-token.js';
+
 // App types
 export {
   type App,

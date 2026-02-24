@@ -16,6 +16,8 @@ export default defineConfig({
       '@23blocks/block-crm': resolve(__dirname, 'packages/block-crm/src'),
       '@23blocks/block-products': resolve(__dirname, 'packages/block-products/src'),
       '@23blocks/block-files': resolve(__dirname, 'packages/block-files/src'),
+      '@23blocks/block-forms': resolve(__dirname, 'packages/block-forms/src'),
+      '@23blocks/testing': resolve(__dirname, 'packages/testing/src'),
       '@23blocks/angular': resolve(__dirname, 'packages/angular/src'),
       '@23blocks/react': resolve(__dirname, 'packages/react/src'),
     },
