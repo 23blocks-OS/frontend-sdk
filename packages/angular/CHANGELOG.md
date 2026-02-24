@@ -1,3 +1,18 @@
+## 12.0.2 (2026-02-24)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** add service tokens, oauthMode, and CI simplification ([3cea02d](https://github.com/23blocks-OS/frontend-sdk/commit/3cea02d))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.1.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 12.0.1 (2026-02-20)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,9 @@
+## 12.0.4 (2026-02-24)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.1.0
+
 ## 12.0.3 (2026-02-20)
 
 ### 🩹 Fixes
