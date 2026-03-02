@@ -24,8 +24,8 @@ export interface FileAccessService {
   get(uniqueId: string): Promise<FileAccess>;
 
   /**
-   * Grant file access to a grantee
-   * @param data - Access grant details including file, grantee, access level, and optional expiry
+   * Grant file access to a user
+   * @param data - Access grant details including user, access type, and optional expiry
    * @returns The newly created FileAccess record
    */
   grant(data: CreateFileAccessRequest): Promise<FileAccess>;
@@ -33,7 +33,7 @@ export interface FileAccessService {
   /**
    * Update an existing file access grant
    * @param uniqueId - The unique identifier of the access grant to update
-   * @param data - Fields to update such as access level, expiration, or status
+   * @param data - Fields to update such as access type, expiration, or start date
    * @returns The updated FileAccess record
    */
   update(uniqueId: string, data: UpdateFileAccessRequest): Promise<FileAccess>;
@@ -96,13 +96,12 @@ export function createFileAccessService(transport: Transport, _config: { apiKey:
 
     async grant(data: CreateFileAccessRequest): Promise<FileAccess> {
       const response = await transport.post<unknown>('/file_accesses', {
-        file_access: {
-          file_unique_id: data.fileUniqueId,
-          grantee_unique_id: data.granteeUniqueId,
-          grantee_type: data.granteeType,
-          access_level: data.accessLevel,
+        access: {
+          user_unique_id: data.userUniqueId,
+          access_type: data.accessType,
           expires_at: data.expiresAt,
-          payload: data.payload,
+          starts_at: data.startsAt,
+          user_unique_ids: data.userUniqueIds,
         },
       });
       return decodeOne(response, fileAccessMapper);
@@ -110,12 +109,11 @@ export function createFileAccessService(transport: Transport, _config: { apiKey:
 
     async update(uniqueId: string, data: UpdateFileAccessRequest): Promise<FileAccess> {
       const response = await transport.put<unknown>(`/file_accesses/${uniqueId}`, {
-        file_access: {
-          access_level: data.accessLevel,
+        access: {
+          access_type: data.accessType,
           expires_at: data.expiresAt,
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
+          starts_at: data.startsAt,
+          user_unique_id: data.userUniqueId,
         },
       });
       return decodeOne(response, fileAccessMapper);

@@ -1,33 +1,33 @@
 import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 
 export interface FileTag extends IdentityCore {
-  code: string;
-  name: string;
-  description?: string;
-  color?: string;
-  icon?: string;
+  tag: string;
+  uniqueId: string;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
   status: EntityStatus;
   enabled: boolean;
-  payload?: Record<string, unknown>;
 }
 
 export interface CreateFileTagRequest {
-  code: string;
-  name: string;
-  description?: string;
-  color?: string;
-  icon?: string;
-  payload?: Record<string, unknown>;
+  tag: string;
+  uniqueId?: string;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
 }
 
 export interface UpdateFileTagRequest {
-  name?: string;
-  description?: string;
-  color?: string;
-  icon?: string;
-  enabled?: boolean;
+  tag?: string;
+  uniqueId?: string;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
 }
 
 export interface ListFileTagsParams {

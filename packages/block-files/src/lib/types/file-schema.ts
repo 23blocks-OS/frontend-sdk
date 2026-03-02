@@ -4,36 +4,22 @@ export interface FileSchema extends IdentityCore {
   code: string;
   name: string;
   description?: string;
-  allowedMimeTypes?: string[];
-  maxFileSize?: number;
-  required?: boolean;
-  multiple?: boolean;
+  schemaModel?: string;
   status: EntityStatus;
   enabled: boolean;
-  payload?: Record<string, unknown>;
 }
 
 export interface CreateFileSchemaRequest {
   code: string;
   name: string;
   description?: string;
-  allowedMimeTypes?: string[];
-  maxFileSize?: number;
-  required?: boolean;
-  multiple?: boolean;
-  payload?: Record<string, unknown>;
+  schemaModel?: string;
 }
 
 export interface UpdateFileSchemaRequest {
   name?: string;
   description?: string;
-  allowedMimeTypes?: string[];
-  maxFileSize?: number;
-  required?: boolean;
-  multiple?: boolean;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  schemaModel?: string;
 }
 
 export interface ListFileSchemasParams {

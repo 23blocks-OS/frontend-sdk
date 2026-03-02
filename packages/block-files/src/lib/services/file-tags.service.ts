@@ -25,7 +25,7 @@ export interface FileTagsService {
 
   /**
    * Create a new file tag
-   * @param data - Tag details including code, name, and optional color/icon
+   * @param data - Tag details including the tag string and optional URLs
    * @returns The newly created FileTag record
    */
   create(data: CreateFileTagRequest): Promise<FileTag>;
@@ -33,7 +33,7 @@ export interface FileTagsService {
   /**
    * Update an existing file tag
    * @param uniqueId - The unique identifier of the tag to update
-   * @param data - Fields to update such as name, color, or icon
+   * @param data - Fields to update such as tag string or URLs
    * @returns The updated FileTag record
    */
   update(uniqueId: string, data: UpdateFileTagRequest): Promise<FileTag>;
@@ -49,10 +49,10 @@ export interface FileTagsService {
    * Add a tag to a user's file
    * @param userUniqueId - The unique identifier of the file owner
    * @param fileUniqueId - The unique identifier of the file
-   * @param tagUniqueId - The unique identifier of the tag to add
+   * @param tagValue - The tag string to add
    * @returns Resolves when the tag has been added to the file
    */
-  addToFile(userUniqueId: string, fileUniqueId: string, tagUniqueId: string): Promise<void>;
+  addToFile(userUniqueId: string, fileUniqueId: string, tagValue: string): Promise<void>;
 
   /**
    * Remove a tag from a user's file
@@ -86,12 +86,12 @@ export function createFileTagsService(transport: Transport, _config: { apiKey: s
     async create(data: CreateFileTagRequest): Promise<FileTag> {
       const response = await transport.post<unknown>('/tags', {
         tag: {
-          code: data.code,
-          name: data.name,
-          description: data.description,
-          color: data.color,
-          icon: data.icon,
-          payload: data.payload,
+          tag: data.tag,
+          unique_id: data.uniqueId,
+          thumbnail_url: data.thumbnailUrl,
+          image_url: data.imageUrl,
+          content_url: data.contentUrl,
+          media_url: data.mediaUrl,
         },
       });
       return decodeOne(response, fileTagMapper);
@@ -100,13 +100,13 @@ export function createFileTagsService(transport: Transport, _config: { apiKey: s
     async update(uniqueId: string, data: UpdateFileTagRequest): Promise<FileTag> {
       const response = await transport.put<unknown>(`/tags/${uniqueId}`, {
         tag: {
-          name: data.name,
-          description: data.description,
-          color: data.color,
-          icon: data.icon,
-          enabled: data.enabled,
+          tag: data.tag,
+          unique_id: data.uniqueId,
+          thumbnail_url: data.thumbnailUrl,
+          image_url: data.imageUrl,
+          content_url: data.contentUrl,
+          media_url: data.mediaUrl,
           status: data.status,
-          payload: data.payload,
         },
       });
       return decodeOne(response, fileTagMapper);
@@ -116,9 +116,9 @@ export function createFileTagsService(transport: Transport, _config: { apiKey: s
       await transport.delete(`/tags/${uniqueId}`);
     },
 
-    async addToFile(userUniqueId: string, fileUniqueId: string, tagUniqueId: string): Promise<void> {
+    async addToFile(userUniqueId: string, fileUniqueId: string, tagValue: string): Promise<void> {
       await transport.post(`/users/${userUniqueId}/files/${fileUniqueId}/tags`, {
-        tag_unique_id: tagUniqueId,
+        tag: { tag: tagValue },
       });
     },
 

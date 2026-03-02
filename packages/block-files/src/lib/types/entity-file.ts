@@ -4,31 +4,35 @@ export interface EntityFile extends IdentityCore {
   entityUniqueId: string;
   entityType: string;
   fileUniqueId: string;
-  fileName: string;
+  name?: string;
+  url?: string;
+  thumbnailUrl?: string;
+  mediaUrl?: string;
+  contentUrl?: string;
+  imageUrl?: string;
   fileType?: string;
   fileSize?: number;
-  mimeType?: string;
-  contentUrl?: string;
-  thumbnailUrl?: string;
+  description?: string;
   displayOrder?: number;
   status: EntityStatus;
   enabled: boolean;
-  payload?: Record<string, unknown>;
 }
 
 export interface AttachFileRequest {
-  entityUniqueId: string;
-  entityType: string;
   fileUniqueId: string;
-  displayOrder?: number;
-  payload?: Record<string, unknown>;
+  associationType?: string;
 }
 
 export interface UpdateEntityFileRequest {
-  displayOrder?: number;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  name?: string;
+  url?: string;
+  thumbnailUrl?: string;
+  mediaUrl?: string;
+  contentUrl?: string;
+  imageUrl?: string;
+  fileType?: string;
+  fileSize?: number;
+  description?: string;
 }
 
 export interface ListEntityFilesParams {

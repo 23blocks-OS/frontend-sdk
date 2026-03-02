@@ -4,36 +4,36 @@ export interface FileCategory extends IdentityCore {
   code: string;
   name: string;
   description?: string;
-  parentUniqueId?: string;
-  color?: string;
-  icon?: string;
-  sortOrder?: number;
+  parentId?: string;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  contentUrl?: string;
+  displayOrder?: number;
   status: EntityStatus;
   enabled: boolean;
-  payload?: Record<string, unknown>;
 }
 
 export interface CreateFileCategoryRequest {
   code: string;
   name: string;
   description?: string;
-  parentUniqueId?: string;
-  color?: string;
-  icon?: string;
-  sortOrder?: number;
-  payload?: Record<string, unknown>;
+  parentId?: string;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  contentUrl?: string;
+  displayOrder?: number;
 }
 
 export interface UpdateFileCategoryRequest {
   name?: string;
   description?: string;
-  parentUniqueId?: string;
-  color?: string;
-  icon?: string;
-  sortOrder?: number;
+  parentId?: string;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  contentUrl?: string;
+  displayOrder?: number;
   enabled?: boolean;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
 }
 
 export interface ListFileCategoriesParams {

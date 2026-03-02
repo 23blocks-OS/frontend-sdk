@@ -28,7 +28,7 @@ export interface FileAccessRequestsService {
 
   /**
    * Create a new access request
-   * @param data - Request details including file, access level, and optional message
+   * @param data - Request details including user, access type, and optional date range
    * @returns The newly created FileAccessRequest record
    */
   create(data: CreateFileAccessRequestInput): Promise<FileAccessRequest>;
@@ -36,7 +36,7 @@ export interface FileAccessRequestsService {
   /**
    * Review (approve/reject) an access request
    * @param uniqueId - The unique identifier of the access request to review
-   * @param decision - The review decision including approval/rejection and optional note
+   * @param decision - The review decision with optional expiration
    * @returns The updated FileAccessRequest record reflecting the review outcome
    */
   review(uniqueId: string, decision: ReviewFileAccessRequestInput): Promise<FileAccessRequest>;
@@ -102,11 +102,11 @@ export function createFileAccessRequestsService(
 
     async create(data: CreateFileAccessRequestInput): Promise<FileAccessRequest> {
       const response = await transport.post<unknown>('/file_access_requests', {
-        file_access_request: {
-          file_unique_id: data.fileUniqueId,
-          requested_access_level: data.requestedAccessLevel,
-          message: data.message,
-          payload: data.payload,
+        access: {
+          user_unique_id: data.userUniqueId,
+          access_type: data.accessType,
+          starts_at: data.startsAt,
+          expires_at: data.expiresAt,
         },
       });
       return decodeOne(response, fileAccessRequestMapper);
@@ -114,10 +114,8 @@ export function createFileAccessRequestsService(
 
     async review(uniqueId: string, decision: ReviewFileAccessRequestInput): Promise<FileAccessRequest> {
       const response = await transport.put<unknown>(`/file_access_requests/${uniqueId}/review`, {
-        file_access_request: {
-          decision: decision.decision,
-          review_note: decision.reviewNote,
-          grant_expires_at: decision.grantExpiresAt,
+        access: {
+          expires_at: decision.expiresAt,
         },
       });
       return decodeOne(response, fileAccessRequestMapper);

@@ -2,33 +2,30 @@ import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 
 export interface FileAccess extends IdentityCore {
   fileUniqueId: string;
-  granteeUniqueId: string;
-  granteeType: string;
-  accessLevel: 'read' | 'write' | 'admin';
+  userUniqueId: string;
+  accessType: 'read' | 'write' | 'admin';
   grantedByUniqueId: string;
   expiresAt?: Date;
+  startsAt?: Date;
   accessedAt?: Date;
   accessCount: number;
   status: EntityStatus;
   enabled: boolean;
-  payload?: Record<string, unknown>;
 }
 
 export interface CreateFileAccessRequest {
-  fileUniqueId: string;
-  granteeUniqueId: string;
-  granteeType: string;
-  accessLevel?: 'read' | 'write' | 'admin';
+  userUniqueId: string;
+  accessType?: 'read' | 'write' | 'admin';
   expiresAt?: string;
-  payload?: Record<string, unknown>;
+  startsAt?: string;
+  userUniqueIds?: string[];
 }
 
 export interface UpdateFileAccessRequest {
-  accessLevel?: 'read' | 'write' | 'admin';
+  accessType?: 'read' | 'write' | 'admin';
   expiresAt?: string;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  startsAt?: string;
+  userUniqueId?: string;
 }
 
 export interface ListFileAccessParams {

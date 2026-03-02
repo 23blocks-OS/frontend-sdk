@@ -15,35 +15,31 @@ export interface FileAccessRequest extends IdentityCore {
   requesterName?: string;
   requesterEmail?: string;
   requesterType: string;
-  requestedAccessLevel: 'view' | 'download' | 'edit' | 'admin';
-  message?: string;
+  accessType: 'view' | 'download' | 'edit' | 'admin';
   requestStatus: AccessRequestStatus;
   reviewedByUniqueId?: string;
   reviewedAt?: Date;
-  reviewNote?: string;
   expiresAt?: Date;
+  startsAt?: Date;
   status: EntityStatus;
   enabled: boolean;
-  payload?: Record<string, unknown>;
 }
 
 /**
  * Create file access request
  */
 export interface CreateFileAccessRequestInput {
-  fileUniqueId: string;
-  requestedAccessLevel: 'view' | 'download' | 'edit' | 'admin';
-  message?: string;
-  payload?: Record<string, unknown>;
+  userUniqueId: string;
+  accessType: 'view' | 'download' | 'edit' | 'admin';
+  startsAt?: string;
+  expiresAt?: string;
 }
 
 /**
  * Review file access request (approve/reject)
  */
 export interface ReviewFileAccessRequestInput {
-  decision: 'approve' | 'reject';
-  reviewNote?: string;
-  grantExpiresAt?: string;
+  expiresAt?: string;
 }
 
 /**

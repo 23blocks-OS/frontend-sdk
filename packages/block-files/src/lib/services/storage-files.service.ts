@@ -34,7 +34,7 @@ export interface StorageFilesService {
 
   /**
    * Create a storage file record from metadata (without binary upload)
-   * @param data - File metadata including owner, name, type, size, and content URL
+   * @param data - File metadata including name, type, size, and content URL
    * @returns The newly created StorageFile record
    * @note Use this when the file binary is already hosted externally
    */
@@ -43,7 +43,7 @@ export interface StorageFilesService {
   /**
    * Update an existing storage file record
    * @param uniqueId - The unique identifier of the storage file to update
-   * @param data - Fields to update such as file name, URLs, or status
+   * @param data - Fields to update such as file name, URLs, or description
    * @returns The updated StorageFile record
    */
   update(uniqueId: string, data: UpdateStorageFileRequest): Promise<StorageFile>;
@@ -104,7 +104,6 @@ export function createStorageFilesService(transport: Transport, _config: { apiKe
       if (data.fileType) formData.append('file_type', data.fileType);
       if (data.generateThumbnail !== undefined) formData.append('generate_thumbnail', String(data.generateThumbnail));
       if (data.generatePreview !== undefined) formData.append('generate_preview', String(data.generatePreview));
-      if (data.payload) formData.append('payload', JSON.stringify(data.payload));
       if (data.tags) formData.append('tags', JSON.stringify(data.tags));
 
       const response = await transport.post<unknown>('/storage_files/upload', formData, {
@@ -118,18 +117,37 @@ export function createStorageFilesService(transport: Transport, _config: { apiKe
     async create(data: CreateStorageFileRequest): Promise<StorageFile> {
       const response = await transport.post<unknown>('/storage_files', {
         file: {
-            owner_unique_id: data.ownerUniqueId,
-            owner_type: data.ownerType,
-            file_name: data.fileName,
-            file_type: data.fileType,
-            file_size: data.fileSize,
-            mime_type: data.mimeType,
-            content_url: data.contentUrl,
-            storage_path: data.storagePath,
-            storage_provider: data.storageProvider,
-            payload: data.payload,
-            tags: data.tags,
-          },
+          name: data.name,
+          file_type: data.fileType,
+          file_size: data.fileSize,
+          url: data.url,
+          thumbnail_url: data.thumbnailUrl,
+          media_url: data.mediaUrl,
+          image_url: data.imageUrl,
+          content_url: data.contentUrl,
+          description: data.description,
+          original_name: data.originalName,
+          original_file: data.originalFile,
+          virtual_folder: data.virtualFolder,
+          category_name: data.categoryName,
+          category_unique_id: data.categoryUniqueId,
+          is_public: data.isPublic,
+          access_level: data.accessLevel,
+          ai_enabled: data.aiEnabled,
+          is_temp: data.isTemp,
+          raw_content: data.rawContent,
+          content: data.content,
+          file_structure: data.fileStructure,
+          metadata: data.metadata,
+          structured_content: data.structuredContent,
+          schema_model: data.schemaModel,
+          vectorDB: data.vectorDB,
+          is_expirable: data.isExpirable,
+          issued_at: data.issuedAt,
+          expires_at: data.expiresAt,
+          issued_by: data.issuedBy,
+          tags: data.tags,
+        },
       });
       return decodeOne(response, storageFileMapper);
     },
@@ -137,16 +155,37 @@ export function createStorageFilesService(transport: Transport, _config: { apiKe
     async update(uniqueId: string, data: UpdateStorageFileRequest): Promise<StorageFile> {
       const response = await transport.put<unknown>(`/storage_files/${uniqueId}`, {
         file: {
-            file_name: data.fileName,
-            file_type: data.fileType,
-            content_url: data.contentUrl,
-            thumbnail_url: data.thumbnailUrl,
-            preview_url: data.previewUrl,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-            tags: data.tags,
-          },
+          name: data.name,
+          file_type: data.fileType,
+          file_size: data.fileSize,
+          url: data.url,
+          thumbnail_url: data.thumbnailUrl,
+          media_url: data.mediaUrl,
+          image_url: data.imageUrl,
+          content_url: data.contentUrl,
+          description: data.description,
+          original_name: data.originalName,
+          original_file: data.originalFile,
+          virtual_folder: data.virtualFolder,
+          category_name: data.categoryName,
+          category_unique_id: data.categoryUniqueId,
+          is_public: data.isPublic,
+          access_level: data.accessLevel,
+          ai_enabled: data.aiEnabled,
+          is_temp: data.isTemp,
+          raw_content: data.rawContent,
+          content: data.content,
+          file_structure: data.fileStructure,
+          metadata: data.metadata,
+          structured_content: data.structuredContent,
+          schema_model: data.schemaModel,
+          vectorDB: data.vectorDB,
+          is_expirable: data.isExpirable,
+          issued_at: data.issuedAt,
+          expires_at: data.expiresAt,
+          issued_by: data.issuedBy,
+          tags: data.tags,
+        },
       });
       return decodeOne(response, storageFileMapper);
     },

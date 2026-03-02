@@ -28,7 +28,7 @@ export interface DelegationsService {
   /**
    * Create a new file delegation
    * @param userUniqueId - The unique identifier of the delegating user
-   * @param data - Delegation details including delegatee, file/folder, and permissions
+   * @param data - Delegation details including grantee, access type, and optional dates
    * @returns The newly created FileDelegation record
    */
   create(userUniqueId: string, data: CreateFileDelegationRequest): Promise<FileDelegation>;
@@ -37,7 +37,7 @@ export interface DelegationsService {
    * Update an existing file delegation
    * @param userUniqueId - The unique identifier of the delegating user
    * @param uniqueId - The unique identifier of the delegation to update
-   * @param data - Fields to update such as permissions, expiration, or status
+   * @param data - Fields to update such as access type or dates
    * @returns The updated FileDelegation record
    */
   update(userUniqueId: string, uniqueId: string, data: UpdateFileDelegationRequest): Promise<FileDelegation>;
@@ -80,13 +80,11 @@ export function createDelegationsService(transport: Transport, _config: { apiKey
 
     async create(userUniqueId: string, data: CreateFileDelegationRequest): Promise<FileDelegation> {
       const response = await transport.post<unknown>(`/users/${userUniqueId}/delegations`, {
-        delegation: {
-          delegatee_unique_id: data.delegateeUniqueId,
-          file_unique_id: data.fileUniqueId,
-          folder_unique_id: data.folderUniqueId,
-          permissions: data.permissions,
+        access: {
+          grantee_user_unique_id: data.granteeUserUniqueId,
+          access_type: data.accessType,
           expires_at: data.expiresAt,
-          payload: data.payload,
+          starts_at: data.startsAt,
         },
       });
       return decodeOne(response, fileDelegationMapper);
@@ -94,12 +92,11 @@ export function createDelegationsService(transport: Transport, _config: { apiKey
 
     async update(userUniqueId: string, uniqueId: string, data: UpdateFileDelegationRequest): Promise<FileDelegation> {
       const response = await transport.put<unknown>(`/users/${userUniqueId}/delegations/${uniqueId}`, {
-        delegation: {
-          permissions: data.permissions,
+        access: {
+          access_type: data.accessType,
+          grantee_user_unique_id: data.granteeUserUniqueId,
           expires_at: data.expiresAt,
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
+          starts_at: data.startsAt,
         },
       });
       return decodeOne(response, fileDelegationMapper);

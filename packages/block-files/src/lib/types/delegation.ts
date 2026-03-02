@@ -2,31 +2,26 @@ import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 
 export interface FileDelegation extends IdentityCore {
   delegatorUniqueId: string;
-  delegateeUniqueId: string;
-  fileUniqueId?: string;
-  folderUniqueId?: string;
-  permissions: string[];
+  granteeUserUniqueId: string;
+  accessType: string;
   expiresAt?: Date;
+  startsAt?: Date;
   status: EntityStatus;
   enabled: boolean;
-  payload?: Record<string, unknown>;
 }
 
 export interface CreateFileDelegationRequest {
-  delegateeUniqueId: string;
-  fileUniqueId?: string;
-  folderUniqueId?: string;
-  permissions: string[];
+  granteeUserUniqueId: string;
+  accessType: string;
   expiresAt?: string;
-  payload?: Record<string, unknown>;
+  startsAt?: string;
 }
 
 export interface UpdateFileDelegationRequest {
-  permissions?: string[];
+  accessType?: string;
+  granteeUserUniqueId?: string;
   expiresAt?: string;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  startsAt?: string;
 }
 
 export interface ListFileDelegationsParams {

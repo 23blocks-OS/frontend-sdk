@@ -79,11 +79,11 @@ export function createFileCategoriesService(transport: Transport, _config: { api
           code: data.code,
           name: data.name,
           description: data.description,
-          parent_unique_id: data.parentUniqueId,
-          color: data.color,
-          icon: data.icon,
-          sort_order: data.sortOrder,
-          payload: data.payload,
+          parent_id: data.parentId,
+          thumbnail_url: data.thumbnailUrl,
+          image_url: data.imageUrl,
+          content_url: data.contentUrl,
+          display_order: data.displayOrder,
         },
       });
       return decodeOne(response, fileCategoryMapper);
@@ -94,13 +94,13 @@ export function createFileCategoriesService(transport: Transport, _config: { api
         category: {
           name: data.name,
           description: data.description,
-          parent_unique_id: data.parentUniqueId,
-          color: data.color,
-          icon: data.icon,
-          sort_order: data.sortOrder,
+          parent_id: data.parentId,
+          thumbnail_url: data.thumbnailUrl,
+          image_url: data.imageUrl,
+          content_url: data.contentUrl,
+          display_order: data.displayOrder,
           enabled: data.enabled,
           status: data.status,
-          payload: data.payload,
         },
       });
       return decodeOne(response, fileCategoryMapper);

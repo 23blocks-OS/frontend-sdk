@@ -14,6 +14,7 @@ import type {
   UserFileAccessInput,
   UserFileDelegationGrant,
   CreateDelegationRequest,
+  UserFileAccessRequestInput,
 } from '../types/user-file.js';
 import { userFileMapper } from '../mappers/user-file.mapper.js';
 
@@ -48,7 +49,7 @@ export interface UserFilesService {
    * Update a user file record
    * @param userUniqueId - The unique identifier of the user
    * @param fileUniqueId - The unique identifier of the file to update
-   * @param data - Fields to update such as file name, type, or thumbnail
+   * @param data - Fields to update
    * @returns The updated UserFile record
    */
   update(userUniqueId: string, fileUniqueId: string, data: UpdateUserFileRequest): Promise<UserFile>;
@@ -66,7 +67,7 @@ export interface UserFilesService {
   /**
    * Get a presigned URL for single-part file upload
    * @param userUniqueId - The unique identifier of the user
-   * @param data - Upload metadata including file name, type, and MIME type
+   * @param data - Upload metadata including file name and serialization
    * @returns Presigned upload URL, file key, optional form fields, and expiration
    */
   presignUpload(userUniqueId: string, data: PresignUploadRequest): Promise<PresignUploadResponse>;
@@ -74,16 +75,15 @@ export interface UserFilesService {
   /**
    * Get presigned URLs for multipart file upload
    * @param userUniqueId - The unique identifier of the user
-   * @param data - Upload metadata including file name, size, and part size
+   * @param data - Upload metadata including file name, part count, and serialization
    * @returns Upload ID, file key, and array of part-level presigned URLs
-   * @note Use this for large files that need to be uploaded in chunks
    */
   multipartPresign(userUniqueId: string, data: MultipartPresignRequest): Promise<MultipartPresignResponse>;
 
   /**
    * Complete a multipart upload after all parts have been uploaded
    * @param userUniqueId - The unique identifier of the user
-   * @param data - Completion data including upload ID, file key, and part ETags
+   * @param data - Completion data including file name, upload ID, and part ETags
    * @returns The finalized UserFile record
    */
   multipartComplete(userUniqueId: string, data: MultipartCompleteRequest): Promise<UserFile>;
@@ -128,10 +128,10 @@ export interface UserFilesService {
    * Add a tag to a user file
    * @param userUniqueId - The unique identifier of the user
    * @param fileUniqueId - The unique identifier of the file
-   * @param tagUniqueId - The unique identifier of the tag to add
+   * @param tagValue - The tag string to add
    * @returns The updated UserFile record with the tag applied
    */
-  addTag(userUniqueId: string, fileUniqueId: string, tagUniqueId: string): Promise<UserFile>;
+  addTag(userUniqueId: string, fileUniqueId: string, tagValue: string): Promise<UserFile>;
 
   /**
    * Remove a tag from a user file
@@ -143,12 +143,12 @@ export interface UserFilesService {
   removeTag(userUniqueId: string, fileUniqueId: string, tagUniqueId: string): Promise<void>;
 
   /**
-   * Bulk update tags for a user
+   * Bulk update tags for a user file
    * @param userUniqueId - The unique identifier of the user
-   * @param tagUniqueIds - Array of tag unique identifiers to set
+   * @param tags - Array of tag strings to set
    * @returns Resolves when tags have been updated
    */
-  bulkUpdateTags(userUniqueId: string, tagUniqueIds: string[]): Promise<void>;
+  bulkUpdateTags(userUniqueId: string, tags: string[]): Promise<void>;
 
   // ---- Access control ----
 
@@ -156,9 +156,10 @@ export interface UserFilesService {
    * Request access to a file
    * @param userUniqueId - The unique identifier of the requesting user
    * @param fileUniqueId - The unique identifier of the file
+   * @param data - Access request details
    * @returns Resolves when the access request has been submitted
    */
-  requestAccess(userUniqueId: string, fileUniqueId: string): Promise<void>;
+  requestAccess(userUniqueId: string, fileUniqueId: string, data: UserFileAccessRequestInput): Promise<void>;
 
   /**
    * Get all access grants for a file
@@ -169,10 +170,10 @@ export interface UserFilesService {
   getAccess(userUniqueId: string, fileUniqueId: string): Promise<UserFileAccessGrant[]>;
 
   /**
-   * Grant access to a file for a specific grantee
+   * Grant access to a file for a specific user
    * @param userUniqueId - The unique identifier of the file owner
    * @param fileUniqueId - The unique identifier of the file
-   * @param data - Access details including grantee, access type, and optional expiry
+   * @param data - Access details including user, access type, and optional expiry
    * @returns The newly created FileAccess record
    */
   grantAccess(userUniqueId: string, fileUniqueId: string, data: UserFileAccessInput): Promise<UserFileAccessGrant>;
@@ -277,7 +278,7 @@ export interface UserFilesService {
   /**
    * Create a new delegation to another user
    * @param userUniqueId - The unique identifier of the granting user
-   * @param data - Delegation details including grantee, access level, and optional expiry
+   * @param data - Delegation details including grantee, access type, and optional expiry
    * @returns The newly created FileDelegation record
    */
   createDelegation(userUniqueId: string, data: CreateDelegationRequest): Promise<UserFileDelegationGrant>;
@@ -313,14 +314,35 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     async add(userUniqueId: string, data: AddUserFileRequest): Promise<UserFile> {
       const response = await transport.post<unknown>(`/users/${userUniqueId}/files`, {
         file: {
-          file_name: data.fileName,
+          name: data.name,
           file_type: data.fileType,
           file_size: data.fileSize,
-          mime_type: data.mimeType,
           url: data.url,
           thumbnail_url: data.thumbnailUrl,
-          schema_unique_id: data.schemaUniqueId,
-          payload: data.payload,
+          media_url: data.mediaUrl,
+          content_url: data.contentUrl,
+          image_url: data.imageUrl,
+          description: data.description,
+          original_name: data.originalName,
+          original_file: data.originalFile,
+          virtual_folder: data.virtualFolder,
+          category_name: data.categoryName,
+          category_unique_id: data.categoryUniqueId,
+          tags: data.tags,
+          is_public: data.isPublic,
+          access_level: data.accessLevel,
+          ai_enabled: data.aiEnabled,
+          is_temp: data.isTemp,
+          raw_content: data.rawContent,
+          content: data.content,
+          file_structure: data.fileStructure,
+          metadata: data.metadata,
+          structured_content: data.structuredContent,
+          schema_model: data.schemaModel,
+          is_expirable: data.isExpirable,
+          issued_at: data.issuedAt,
+          expires_at: data.expiresAt,
+          issued_by: data.issuedBy,
         },
       });
       return decodeOne(response, userFileMapper);
@@ -329,11 +351,35 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     async update(userUniqueId: string, fileUniqueId: string, data: UpdateUserFileRequest): Promise<UserFile> {
       const response = await transport.put<unknown>(`/users/${userUniqueId}/files/${fileUniqueId}`, {
         file: {
-          file_name: data.fileName,
+          name: data.name,
           file_type: data.fileType,
+          file_size: data.fileSize,
+          url: data.url,
           thumbnail_url: data.thumbnailUrl,
-          schema_unique_id: data.schemaUniqueId,
-          payload: data.payload,
+          media_url: data.mediaUrl,
+          content_url: data.contentUrl,
+          image_url: data.imageUrl,
+          description: data.description,
+          original_name: data.originalName,
+          original_file: data.originalFile,
+          virtual_folder: data.virtualFolder,
+          category_name: data.categoryName,
+          category_unique_id: data.categoryUniqueId,
+          tags: data.tags,
+          is_public: data.isPublic,
+          access_level: data.accessLevel,
+          ai_enabled: data.aiEnabled,
+          is_temp: data.isTemp,
+          raw_content: data.rawContent,
+          content: data.content,
+          file_structure: data.fileStructure,
+          metadata: data.metadata,
+          structured_content: data.structuredContent,
+          schema_model: data.schemaModel,
+          is_expirable: data.isExpirable,
+          issued_at: data.issuedAt,
+          expires_at: data.expiresAt,
+          issued_by: data.issuedBy,
         },
       });
       return decodeOne(response, userFileMapper);
@@ -350,12 +396,8 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
         fields?: Record<string, string>;
         expires_at: string;
       }>(`/users/${userUniqueId}/presign_upload`, {
-        file: {
-          file_name: data.fileName,
-          file_type: data.fileType,
-          mime_type: data.mimeType,
-          schema_unique_id: data.schemaUniqueId,
-        },
+        file_name: data.fileName,
+        serialization: data.serialization,
       });
       return {
         presignedUrl: response.presigned_url,
@@ -371,13 +413,9 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
         file_key: string;
         parts: Array<{ part_number: number; presigned_url: string }>;
       }>(`/users/${userUniqueId}/multipart_presign_upload`, {
-        file: {
-          file_name: data.fileName,
-          file_type: data.fileType,
-          file_size: data.fileSize,
-          mime_type: data.mimeType,
-          part_size: data.partSize,
-        },
+        filename: data.fileName,
+        part_count: data.partCount,
+        serialization: data.serialization,
       });
       return {
         uploadId: response.upload_id,
@@ -391,14 +429,13 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
 
     async multipartComplete(userUniqueId: string, data: MultipartCompleteRequest): Promise<UserFile> {
       const response = await transport.post<unknown>(`/users/${userUniqueId}/multipart_complete_upload`, {
-        upload: {
-          upload_id: data.uploadId,
-          file_key: data.fileKey,
-          parts: data.parts.map((p) => ({
-            part_number: p.partNumber,
-            etag: p.etag,
-          })),
-        },
+        filename: data.fileName,
+        upload_id: data.uploadId,
+        parts: data.parts.map((p) => ({
+          ETag: p.etag,
+          PartNumber: p.partNumber,
+        })),
+        serialization: data.serialization,
       });
       return decodeOne(response, userFileMapper);
     },
@@ -423,9 +460,9 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
       return decodeOne(response, userFileMapper);
     },
 
-    async addTag(userUniqueId: string, fileUniqueId: string, tagUniqueId: string): Promise<UserFile> {
+    async addTag(userUniqueId: string, fileUniqueId: string, tagValue: string): Promise<UserFile> {
       const response = await transport.post<unknown>(`/users/${userUniqueId}/files/${fileUniqueId}/tags`, {
-        tag: { unique_id: tagUniqueId },
+        tag: { tag: tagValue },
       });
       return decodeOne(response, userFileMapper);
     },
@@ -434,14 +471,21 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
       await transport.delete(`/users/${userUniqueId}/files/${fileUniqueId}/tags/${tagUniqueId}`);
     },
 
-    async bulkUpdateTags(userUniqueId: string, tagUniqueIds: string[]): Promise<void> {
+    async bulkUpdateTags(userUniqueId: string, tags: string[]): Promise<void> {
       await transport.post(`/users/${userUniqueId}/tags`, {
-        tags: { unique_ids: tagUniqueIds },
+        file: { tags },
       });
     },
 
-    async requestAccess(userUniqueId: string, fileUniqueId: string): Promise<void> {
-      await transport.post(`/users/${userUniqueId}/files/${fileUniqueId}/requests/access`, {});
+    async requestAccess(userUniqueId: string, fileUniqueId: string, data: UserFileAccessRequestInput): Promise<void> {
+      await transport.post(`/users/${userUniqueId}/files/${fileUniqueId}/requests/access`, {
+        access: {
+          user_unique_id: data.userUniqueId,
+          access_type: data.accessType,
+          starts_at: data.startsAt,
+          expires_at: data.expiresAt,
+        },
+      });
     },
 
     async getAccess(userUniqueId: string, fileUniqueId: string): Promise<UserFileAccessGrant[]> {
@@ -459,9 +503,11 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     async grantAccess(userUniqueId: string, fileUniqueId: string, data: UserFileAccessInput): Promise<UserFileAccessGrant> {
       const response = await transport.post<Record<string, unknown>>(`/users/${userUniqueId}/files/${fileUniqueId}/access/grant`, {
         access: {
-          grantee_unique_id: data.granteeUniqueId,
+          user_unique_id: data.userUniqueId,
           access_type: data.accessType,
           expires_at: data.expiresAt,
+          starts_at: data.startsAt,
+          user_unique_ids: data.userUniqueIds,
         },
       });
       return {
@@ -540,7 +586,7 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
         uniqueId: String(item['unique_id'] ?? ''),
         granterUniqueId: String(item['granter_unique_id'] ?? ''),
         granteeUniqueId: String(item['grantee_unique_id'] ?? ''),
-        accessLevel: String(item['access_level'] ?? ''),
+        accessType: String(item['access_type'] ?? ''),
         createdAt: new Date(item['created_at'] as string),
         expiresAt: item['expires_at'] ? new Date(item['expires_at'] as string) : undefined,
       }));
@@ -552,7 +598,7 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
         uniqueId: String(item['unique_id'] ?? ''),
         granterUniqueId: String(item['granter_unique_id'] ?? ''),
         granteeUniqueId: String(item['grantee_unique_id'] ?? ''),
-        accessLevel: String(item['access_level'] ?? ''),
+        accessType: String(item['access_type'] ?? ''),
         createdAt: new Date(item['created_at'] as string),
         expiresAt: item['expires_at'] ? new Date(item['expires_at'] as string) : undefined,
       }));
@@ -564,7 +610,7 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
         uniqueId: String(response['unique_id'] ?? ''),
         granterUniqueId: String(response['granter_unique_id'] ?? ''),
         granteeUniqueId: String(response['grantee_unique_id'] ?? ''),
-        accessLevel: String(response['access_level'] ?? ''),
+        accessType: String(response['access_type'] ?? ''),
         createdAt: new Date(response['created_at'] as string),
         expiresAt: response['expires_at'] ? new Date(response['expires_at'] as string) : undefined,
       };
@@ -572,17 +618,18 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
 
     async createDelegation(userUniqueId: string, data: CreateDelegationRequest): Promise<UserFileDelegationGrant> {
       const response = await transport.post<Record<string, unknown>>(`/users/${userUniqueId}/delegations`, {
-        delegation: {
-          grantee_unique_id: data.granteeUniqueId,
-          access_level: data.accessLevel,
+        access: {
+          grantee_user_unique_id: data.granteeUserUniqueId,
+          access_type: data.accessType,
           expires_at: data.expiresAt,
+          starts_at: data.startsAt,
         },
       });
       return {
         uniqueId: String(response['unique_id'] ?? ''),
         granterUniqueId: String(response['granter_unique_id'] ?? ''),
         granteeUniqueId: String(response['grantee_unique_id'] ?? ''),
-        accessLevel: String(response['access_level'] ?? ''),
+        accessType: String(response['access_type'] ?? ''),
         createdAt: new Date(response['created_at'] as string),
         expiresAt: response['expires_at'] ? new Date(response['expires_at'] as string) : undefined,
       };

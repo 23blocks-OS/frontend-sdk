@@ -32,7 +32,7 @@ export interface FileSchemasService {
 
   /**
    * Create a new file schema
-   * @param data - Schema details including code, name, MIME types, and file size constraints
+   * @param data - Schema details including code, name, and optional schema model
    * @returns The newly created FileSchema record
    */
   create(data: CreateFileSchemaRequest): Promise<FileSchema>;
@@ -40,7 +40,7 @@ export interface FileSchemasService {
   /**
    * Update an existing file schema
    * @param uniqueId - The unique identifier of the schema to update
-   * @param data - Fields to update such as name, allowed MIME types, or constraints
+   * @param data - Fields to update such as name, description, or schema model
    * @returns The updated FileSchema record
    */
   update(uniqueId: string, data: UpdateFileSchemaRequest): Promise<FileSchema>;
@@ -79,33 +79,23 @@ export function createFileSchemasService(transport: Transport, _config: { apiKey
 
     async create(data: CreateFileSchemaRequest): Promise<FileSchema> {
       const response = await transport.post<unknown>('/file_schemas', {
-        file_schema: {
-            code: data.code,
-            name: data.name,
-            description: data.description,
-            allowed_mime_types: data.allowedMimeTypes,
-            max_file_size: data.maxFileSize,
-            required: data.required,
-            multiple: data.multiple,
-            payload: data.payload,
-          },
+        schema: {
+          code: data.code,
+          name: data.name,
+          description: data.description,
+          schema_model: data.schemaModel,
+        },
       });
       return decodeOne(response, fileSchemaMapper);
     },
 
     async update(uniqueId: string, data: UpdateFileSchemaRequest): Promise<FileSchema> {
       const response = await transport.put<unknown>(`/file_schemas/${uniqueId}`, {
-        file_schema: {
-            name: data.name,
-            description: data.description,
-            allowed_mime_types: data.allowedMimeTypes,
-            max_file_size: data.maxFileSize,
-            required: data.required,
-            multiple: data.multiple,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+        schema: {
+          name: data.name,
+          description: data.description,
+          schema_model: data.schemaModel,
+        },
       });
       return decodeOne(response, fileSchemaMapper);
     },

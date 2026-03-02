@@ -25,8 +25,8 @@ export interface EntityFilesService {
   get(uniqueId: string): Promise<EntityFile>;
 
   /**
-   * Attach a file to an entity
-   * @param data - Association details including entity and file identifiers
+   * Attach a file to an entity (associate_file action uses top-level params)
+   * @param data - Association details including file unique id and optional association type
    * @returns The newly created EntityFile association
    */
   attach(data: AttachFileRequest): Promise<EntityFile>;
@@ -41,7 +41,7 @@ export interface EntityFilesService {
   /**
    * Update an entity-file association
    * @param uniqueId - The unique identifier of the entity-file record
-   * @param data - Fields to update such as display order or status
+   * @param data - Fields to update such as name, url, or description
    * @returns The updated EntityFile record
    */
   update(uniqueId: string, data: UpdateEntityFileRequest): Promise<EntityFile>;
@@ -88,13 +88,8 @@ export function createEntityFilesService(transport: Transport, _config: { apiKey
 
     async attach(data: AttachFileRequest): Promise<EntityFile> {
       const response = await transport.post<unknown>('/entity_files', {
-        file: {
-            entity_unique_id: data.entityUniqueId,
-            entity_type: data.entityType,
-            file_unique_id: data.fileUniqueId,
-            display_order: data.displayOrder,
-            payload: data.payload,
-          },
+        file_unique_id: data.fileUniqueId,
+        association_type: data.associationType,
       });
       return decodeOne(response, entityFileMapper);
     },
@@ -106,11 +101,16 @@ export function createEntityFilesService(transport: Transport, _config: { apiKey
     async update(uniqueId: string, data: UpdateEntityFileRequest): Promise<EntityFile> {
       const response = await transport.put<unknown>(`/entity_files/${uniqueId}`, {
         file: {
-            display_order: data.displayOrder,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
-          },
+          name: data.name,
+          url: data.url,
+          thumbnail_url: data.thumbnailUrl,
+          media_url: data.mediaUrl,
+          content_url: data.contentUrl,
+          image_url: data.imageUrl,
+          file_type: data.fileType,
+          file_size: data.fileSize,
+          description: data.description,
+        },
       });
       return decodeOne(response, entityFileMapper);
     },
@@ -118,10 +118,10 @@ export function createEntityFilesService(transport: Transport, _config: { apiKey
     async reorder(entityUniqueId: string, entityType: string, data: ReorderFilesRequest): Promise<EntityFile[]> {
       const response = await transport.put<unknown>('/entity_files/reorder', {
         file: {
-            entity_unique_id: entityUniqueId,
-            entity_type: entityType,
-            file_orders: data.fileOrders,
-          },
+          entity_unique_id: entityUniqueId,
+          entity_type: entityType,
+          file_orders: data.fileOrders,
+        },
       });
       return decodeMany(response, entityFileMapper);
     },

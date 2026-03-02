@@ -2,16 +2,36 @@ import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 
 export interface UserFile extends IdentityCore {
   userUniqueId: string;
-  fileName: string;
+  name: string;
   fileType: string;
   fileSize: number;
-  mimeType?: string;
   url?: string;
   thumbnailUrl?: string;
-  schemaUniqueId?: string;
-  status: EntityStatus;
+  mediaUrl?: string;
+  contentUrl?: string;
+  imageUrl?: string;
+  description?: string;
+  originalName?: string;
+  originalFile?: string;
+  virtualFolder?: string;
+  categoryName?: string;
+  categoryUniqueId?: string;
+  tags?: string;
   isPublic: boolean;
-  payload?: Record<string, unknown>;
+  accessLevel?: string;
+  aiEnabled?: boolean;
+  isTemp?: boolean;
+  rawContent?: string;
+  content?: string;
+  fileStructure?: string;
+  metadata?: Record<string, unknown>;
+  structuredContent?: Record<string, unknown>;
+  schemaModel?: string;
+  isExpirable?: boolean;
+  issuedAt?: string;
+  expiresAt?: string;
+  issuedBy?: string;
+  status: EntityStatus;
 }
 
 export interface ListUserFilesParams {
@@ -23,29 +43,72 @@ export interface ListUserFilesParams {
 }
 
 export interface AddUserFileRequest {
-  fileName: string;
+  name: string;
   fileType: string;
   fileSize: number;
-  mimeType?: string;
   url: string;
   thumbnailUrl?: string;
-  schemaUniqueId?: string;
-  payload?: Record<string, unknown>;
+  mediaUrl?: string;
+  contentUrl?: string;
+  imageUrl?: string;
+  description?: string;
+  originalName?: string;
+  originalFile?: string;
+  virtualFolder?: string;
+  categoryName?: string;
+  categoryUniqueId?: string;
+  tags?: string;
+  isPublic?: boolean;
+  accessLevel?: string;
+  aiEnabled?: boolean;
+  isTemp?: boolean;
+  rawContent?: string;
+  content?: string;
+  fileStructure?: string;
+  metadata?: Record<string, unknown>;
+  structuredContent?: Record<string, unknown>;
+  schemaModel?: string;
+  isExpirable?: boolean;
+  issuedAt?: string;
+  expiresAt?: string;
+  issuedBy?: string;
 }
 
 export interface UpdateUserFileRequest {
-  fileName?: string;
+  name?: string;
   fileType?: string;
+  fileSize?: number;
+  url?: string;
   thumbnailUrl?: string;
-  schemaUniqueId?: string;
-  payload?: Record<string, unknown>;
+  mediaUrl?: string;
+  contentUrl?: string;
+  imageUrl?: string;
+  description?: string;
+  originalName?: string;
+  originalFile?: string;
+  virtualFolder?: string;
+  categoryName?: string;
+  categoryUniqueId?: string;
+  tags?: string;
+  isPublic?: boolean;
+  accessLevel?: string;
+  aiEnabled?: boolean;
+  isTemp?: boolean;
+  rawContent?: string;
+  content?: string;
+  fileStructure?: string;
+  metadata?: Record<string, unknown>;
+  structuredContent?: Record<string, unknown>;
+  schemaModel?: string;
+  isExpirable?: boolean;
+  issuedAt?: string;
+  expiresAt?: string;
+  issuedBy?: string;
 }
 
 export interface PresignUploadRequest {
   fileName: string;
-  fileType: string;
-  mimeType?: string;
-  schemaUniqueId?: string;
+  serialization?: string;
 }
 
 export interface PresignUploadResponse {
@@ -57,10 +120,8 @@ export interface PresignUploadResponse {
 
 export interface MultipartPresignRequest {
   fileName: string;
-  fileType: string;
-  fileSize: number;
-  mimeType?: string;
-  partSize?: number;
+  partCount: number;
+  serialization?: string;
 }
 
 export interface MultipartPresignResponse {
@@ -73,18 +134,21 @@ export interface MultipartPresignResponse {
 }
 
 export interface MultipartCompleteRequest {
+  fileName: string;
   uploadId: string;
-  fileKey: string;
   parts: Array<{
     partNumber: number;
     etag: string;
   }>;
+  serialization?: string;
 }
 
 export interface UserFileAccessInput {
-  granteeUniqueId: string;
+  userUniqueId: string;
   accessType: 'read' | 'write' | 'admin';
   expiresAt?: string;
+  startsAt?: string;
+  userUniqueIds?: string[];
 }
 
 export interface UserFileAccessGrant {
@@ -100,13 +164,21 @@ export interface UserFileDelegationGrant {
   uniqueId: string;
   granterUniqueId: string;
   granteeUniqueId: string;
-  accessLevel: string;
+  accessType: string;
   createdAt: Date;
   expiresAt?: Date;
 }
 
 export interface CreateDelegationRequest {
-  granteeUniqueId: string;
-  accessLevel: 'read' | 'write' | 'admin';
+  granteeUserUniqueId: string;
+  accessType: 'read' | 'write' | 'admin';
+  expiresAt?: string;
+  startsAt?: string;
+}
+
+export interface UserFileAccessRequestInput {
+  userUniqueId: string;
+  accessType: 'read' | 'write' | 'admin';
+  startsAt?: string;
   expiresAt?: string;
 }
