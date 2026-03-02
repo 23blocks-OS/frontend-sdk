@@ -47,28 +47,25 @@ export interface AvailableUser {
 
 // Request types
 export interface CreateZoomHostRequest {
-  userUniqueId?: string;
   zoomUserId?: string;
   email?: string;
-  firstName?: string;
-  lastName?: string;
   displayName?: string;
-  hostKey?: string;
   licenseType?: string;
-  maxMeetings?: number;
-  payload?: Record<string, unknown>;
+  maxConcurrent?: number;
+  bufferMinutes?: number;
+  active?: boolean;
+  settings?: Record<string, unknown>;
 }
 
 export interface UpdateZoomHostRequest {
-  firstName?: string;
-  lastName?: string;
+  zoomUserId?: string;
+  email?: string;
   displayName?: string;
-  hostKey?: string;
   licenseType?: string;
-  maxMeetings?: number;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  maxConcurrent?: number;
+  bufferMinutes?: number;
+  active?: boolean;
+  settings?: Record<string, unknown>;
 }
 
 export interface ListZoomHostsParams {

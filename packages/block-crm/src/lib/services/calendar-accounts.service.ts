@@ -94,13 +94,16 @@ export function createCalendarAccountsService(transport: Transport, _config: { a
       const response = await transport.post<unknown>(`/users/${userUniqueId}/calendar_accounts`, {
         calendar_account: {
           provider: data.provider,
-          email: data.email,
-          name: data.name,
+          user_email: data.userEmail,
+          code: data.code,
+          redirect_uri: data.redirectUri,
           access_token: data.accessToken,
           refresh_token: data.refreshToken,
-          token_expires_at: data.tokenExpiresAt?.toISOString(),
-          sync_enabled: data.syncEnabled,
-          payload: data.payload,
+          expires_at: data.expiresAt?.toISOString(),
+          token_type: data.tokenType,
+          scopes: data.scopes,
+          external_user_id: data.externalUserId,
+          provider_data: data.providerData,
         },
       });
       return decodeOne(response, calendarAccountMapper);
@@ -108,17 +111,7 @@ export function createCalendarAccountsService(transport: Transport, _config: { a
 
     async update(userUniqueId: string, uniqueId: string, data: UpdateCalendarAccountRequest): Promise<CalendarAccount> {
       const response = await transport.put<unknown>(`/users/${userUniqueId}/calendar_accounts/${uniqueId}`, {
-        calendar_account: {
-          email: data.email,
-          name: data.name,
-          access_token: data.accessToken,
-          refresh_token: data.refreshToken,
-          token_expires_at: data.tokenExpiresAt?.toISOString(),
-          sync_enabled: data.syncEnabled,
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
-        },
+        sync_enabled: data.syncEnabled,
       });
       return decodeOne(response, calendarAccountMapper);
     },

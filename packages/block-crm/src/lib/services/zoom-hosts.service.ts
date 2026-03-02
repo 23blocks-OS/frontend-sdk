@@ -94,16 +94,14 @@ export function createZoomHostsService(transport: Transport, _config: { apiKey: 
     async create(data: CreateZoomHostRequest): Promise<ZoomHost> {
       const response = await transport.post<unknown>('/zoom_hosts', {
         zoom_host: {
-          user_unique_id: data.userUniqueId,
           zoom_user_id: data.zoomUserId,
           email: data.email,
-          first_name: data.firstName,
-          last_name: data.lastName,
           display_name: data.displayName,
-          host_key: data.hostKey,
           license_type: data.licenseType,
-          max_meetings: data.maxMeetings,
-          payload: data.payload,
+          max_concurrent: data.maxConcurrent,
+          buffer_minutes: data.bufferMinutes,
+          active: data.active,
+          settings: data.settings,
         },
       });
       return decodeOne(response, zoomHostMapper);
@@ -112,15 +110,14 @@ export function createZoomHostsService(transport: Transport, _config: { apiKey: 
     async update(uniqueId: string, data: UpdateZoomHostRequest): Promise<ZoomHost> {
       const response = await transport.put<unknown>(`/zoom_hosts/${uniqueId}`, {
         zoom_host: {
-          first_name: data.firstName,
-          last_name: data.lastName,
+          zoom_user_id: data.zoomUserId,
+          email: data.email,
           display_name: data.displayName,
-          host_key: data.hostKey,
           license_type: data.licenseType,
-          max_meetings: data.maxMeetings,
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
+          max_concurrent: data.maxConcurrent,
+          buffer_minutes: data.bufferMinutes,
+          active: data.active,
+          settings: data.settings,
         },
       });
       return decodeOne(response, zoomHostMapper);

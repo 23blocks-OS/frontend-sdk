@@ -14,12 +14,7 @@ export function createCommunicationsService(transport: Transport, _config: { api
   return {
     async unsubscribe(data: UnsubscribeRequest): Promise<UnsubscribeResponse> {
       const response = await transport.post<any>('/communications/unsubscribe', {
-        unsubscribe: {
-          email: data.email,
-          reason: data.reason,
-          campaign_id: data.campaignId,
-          payload: data.payload,
-        },
+        email: data.email,
       });
       return {
         success: response.success ?? true,

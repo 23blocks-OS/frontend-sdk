@@ -73,14 +73,9 @@ export function createTouchesService(transport: Transport, _config: { apiKey: st
     async create(data: CreateTouchRequest): Promise<Touch> {
       const response = await transport.post<unknown>('/touches', {
         touch: {
-          contact_unique_id: data.contactUniqueId,
-          user_unique_id: data.userUniqueId,
-          touch_type: data.touchType,
-          channel: data.channel,
-          subject: data.subject,
+          contact_id: data.contactId,
           notes: data.notes,
-          touched_at: data.touchedAt?.toISOString(),
-          payload: data.payload,
+          source_id: data.sourceId,
         },
       });
       return decodeOne(response, touchMapper);
@@ -89,14 +84,9 @@ export function createTouchesService(transport: Transport, _config: { apiKey: st
     async update(uniqueId: string, data: UpdateTouchRequest): Promise<Touch> {
       const response = await transport.put<unknown>(`/touches/${uniqueId}`, {
         touch: {
-          touch_type: data.touchType,
-          channel: data.channel,
-          subject: data.subject,
+          contact_id: data.contactId,
           notes: data.notes,
-          touched_at: data.touchedAt?.toISOString(),
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
+          source_id: data.sourceId,
         },
       });
       return decodeOne(response, touchMapper);

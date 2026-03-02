@@ -16,9 +16,7 @@ export interface IcsToken extends IdentityCore {
 // Request types
 export interface CreateIcsTokenRequest {
   name?: string;
-  description?: string;
   expiresAt?: Date;
-  payload?: Record<string, unknown>;
 }
 
 export interface ListIcsTokensParams {

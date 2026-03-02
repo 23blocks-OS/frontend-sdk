@@ -26,29 +26,28 @@ export interface ZoomAvailability {
 }
 
 // Request types
-export interface ProvisionZoomMeetingRequest {
-  topic?: string;
-  agenda?: string;
-  duration?: number;
-  timezone?: string;
-  password?: string;
+export interface ZoomMeetingSettings {
+  hostVideo?: boolean;
+  participantVideo?: boolean;
   waitingRoom?: boolean;
   joinBeforeHost?: boolean;
-  muteOnEntry?: boolean;
+  muteUponEntry?: boolean;
   autoRecording?: 'none' | 'local' | 'cloud';
-  payload?: Record<string, unknown>;
+  audio?: string;
+}
+
+export interface ProvisionZoomMeetingRequest {
+  topic?: string;
+  startTime?: Date;
+  duration?: number;
+  timezone?: string;
+  settings?: ZoomMeetingSettings;
 }
 
 export interface UpdateZoomMeetingRequest {
   topic?: string;
-  agenda?: string;
   startTime?: Date;
   duration?: number;
   timezone?: string;
-  password?: string;
-  waitingRoom?: boolean;
-  joinBeforeHost?: boolean;
-  muteOnEntry?: boolean;
-  autoRecording?: 'none' | 'local' | 'cloud';
-  payload?: Record<string, unknown>;
+  settings?: ZoomMeetingSettings;
 }

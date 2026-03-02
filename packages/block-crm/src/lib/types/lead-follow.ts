@@ -14,21 +14,33 @@ export interface LeadFollow extends IdentityCore {
 
 // Request types
 export interface CreateLeadFollowRequest {
-  userUniqueId?: string;
-  followType?: string;
-  scheduledAt?: Date;
+  code?: string;
   notes?: string;
-  payload?: Record<string, unknown>;
+  nextActionAt?: Date;
+  reminder?: boolean;
+  total?: number;
+  ownerUniqueId?: string;
+  ownerName?: string;
+  ownerEmail?: string;
+  duration?: number;
+  durationUnit?: string;
+  durationDescription?: string;
+  status?: string;
 }
 
 export interface UpdateLeadFollowRequest {
-  followType?: string;
-  scheduledAt?: Date;
-  completedAt?: Date;
+  code?: string;
   notes?: string;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  nextActionAt?: Date;
+  reminder?: boolean;
+  total?: number;
+  ownerUniqueId?: string;
+  ownerName?: string;
+  ownerEmail?: string;
+  duration?: number;
+  durationUnit?: string;
+  durationDescription?: string;
+  status?: string;
 }
 
 export interface ListLeadFollowsParams {

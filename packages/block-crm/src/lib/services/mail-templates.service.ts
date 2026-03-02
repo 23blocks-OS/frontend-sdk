@@ -94,15 +94,21 @@ export function createCrmMailTemplatesService(transport: Transport, _config: { a
 
     async create(data: CreateCrmMailTemplateRequest): Promise<CrmMailTemplate> {
       const response = await transport.post<unknown>('/mailtemplates', {
-        mail_template: {
-          code: data.code,
+        template: {
           name: data.name,
-          subject: data.subject,
-          from_email: data.fromEmail,
+          event_name: data.eventName,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
+          template_name: data.templateName,
+          from_subject: data.fromSubject,
+          from_address: data.fromAddress,
           from_name: data.fromName,
-          html_content: data.htmlContent,
-          text_content: data.textContent,
-          payload: data.payload,
+          from_domain: data.fromDomain,
+          template_html: data.templateHtml,
+          template_text: data.templateText,
+          preferred_language: data.preferredLanguage,
         },
       });
       return decodeOne(response, crmMailTemplateMapper);
@@ -110,16 +116,23 @@ export function createCrmMailTemplatesService(transport: Transport, _config: { a
 
     async update(uniqueId: string, data: UpdateCrmMailTemplateRequest): Promise<CrmMailTemplate> {
       const response = await transport.put<unknown>(`/mailtemplates/${uniqueId}`, {
-        mail_template: {
+        template: {
           name: data.name,
-          subject: data.subject,
-          from_email: data.fromEmail,
+          event_name: data.eventName,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
+          template_name: data.templateName,
+          from_subject: data.fromSubject,
+          from_address: data.fromAddress,
           from_name: data.fromName,
-          html_content: data.htmlContent,
-          text_content: data.textContent,
+          from_domain: data.fromDomain,
+          template_html: data.templateHtml,
+          template_text: data.templateText,
+          preferred_language: data.preferredLanguage,
           enabled: data.enabled,
           status: data.status,
-          payload: data.payload,
         },
       });
       return decodeOne(response, crmMailTemplateMapper);
@@ -143,14 +156,11 @@ export function createCrmMailTemplatesService(transport: Transport, _config: { a
     async createMandrillTemplate(uniqueId: string, data: CreateMandrillTemplateRequest): Promise<CrmMailTemplate> {
       const response = await transport.post<unknown>(`/mailtemplates/${uniqueId}/mandrill`, {
         mandrill: {
-          name: data.name,
           from_email: data.fromEmail,
           from_name: data.fromName,
-          subject: data.subject,
-          code: data.code,
-          text: data.text,
-          publish: data.publish,
-          labels: data.labels,
+          from_subject: data.fromSubject,
+          template_html: data.templateHtml,
+          template_text: data.templateText,
         },
       });
       return decodeOne(response, crmMailTemplateMapper);
@@ -161,11 +171,9 @@ export function createCrmMailTemplatesService(transport: Transport, _config: { a
         mandrill: {
           from_email: data.fromEmail,
           from_name: data.fromName,
-          subject: data.subject,
-          code: data.code,
-          text: data.text,
-          publish: data.publish,
-          labels: data.labels,
+          from_subject: data.fromSubject,
+          template_html: data.templateHtml,
+          template_text: data.templateText,
         },
       });
       return decodeOne(response, crmMailTemplateMapper);

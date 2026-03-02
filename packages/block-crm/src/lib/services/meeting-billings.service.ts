@@ -119,15 +119,21 @@ export function createMeetingBillingsService(transport: Transport, _config: { ap
     async create(meetingUniqueId: string, data: CreateMeetingBillingRequest): Promise<MeetingBilling> {
       const response = await transport.post<unknown>(`/meetings/${meetingUniqueId}/billing`, {
         billing: {
-          participant_unique_id: data.participantUniqueId,
+          contact_unique_id: data.contactUniqueId,
           participant_email: data.participantEmail,
           payer_name: data.payerName,
-          amount: data.amount,
-          currency: data.currency,
-          billing_status: data.billingStatus,
-          due_at: data.dueAt?.toISOString(),
-          notes: data.notes,
-          payload: data.payload,
+          payer_type: data.payerType,
+          fee_amount: data.feeAmount,
+          fee_currency: data.feeCurrency,
+          status: data.status,
+          billing_code: data.billingCode,
+          billing_description: data.billingDescription,
+          billing_notes: data.billingNotes,
+          invoice_due_date: data.invoiceDueDate?.toISOString(),
+          payment_method: data.paymentMethod,
+          source: data.source,
+          source_id: data.sourceId,
+          metadata: data.metadata,
         },
       });
       return decodeOne(response, meetingBillingMapper);
@@ -136,18 +142,22 @@ export function createMeetingBillingsService(transport: Transport, _config: { ap
     async update(uniqueId: string, data: UpdateMeetingBillingRequest): Promise<MeetingBilling> {
       const response = await transport.put<unknown>(`/billings/${uniqueId}`, {
         billing: {
-          participant_unique_id: data.participantUniqueId,
+          contact_unique_id: data.contactUniqueId,
           participant_email: data.participantEmail,
           payer_name: data.payerName,
-          amount: data.amount,
-          currency: data.currency,
-          billing_status: data.billingStatus,
-          paid_at: data.paidAt?.toISOString(),
-          due_at: data.dueAt?.toISOString(),
-          notes: data.notes,
-          enabled: data.enabled,
+          payer_type: data.payerType,
+          fee_amount: data.feeAmount,
+          fee_currency: data.feeCurrency,
           status: data.status,
-          payload: data.payload,
+          billing_code: data.billingCode,
+          billing_description: data.billingDescription,
+          billing_notes: data.billingNotes,
+          invoice_due_date: data.invoiceDueDate?.toISOString(),
+          paid_at: data.paidAt?.toISOString(),
+          payment_method: data.paymentMethod,
+          source: data.source,
+          source_id: data.sourceId,
+          metadata: data.metadata,
         },
       });
       return decodeOne(response, meetingBillingMapper);

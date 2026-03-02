@@ -49,12 +49,8 @@ export function createIcsTokensService(transport: Transport, _config: { apiKey: 
 
     async create(userUniqueId: string, data: CreateIcsTokenRequest): Promise<IcsToken> {
       const response = await transport.post<unknown>(`/users/${userUniqueId}/ics_tokens`, {
-        ics_token: {
-          name: data.name,
-          description: data.description,
-          expires_at: data.expiresAt?.toISOString(),
-          payload: data.payload,
-        },
+        name: data.name,
+        expires_at: data.expiresAt?.toISOString(),
       });
       return decodeOne(response, icsTokenMapper);
     },

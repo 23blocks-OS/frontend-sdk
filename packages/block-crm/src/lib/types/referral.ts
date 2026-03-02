@@ -12,19 +12,57 @@ export interface Referral extends IdentityCore {
 
 // Request types
 export interface CreateReferralRequest {
-  referrerUniqueId?: string;
-  referredUniqueId?: string;
-  referralCode?: string;
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
+  leadEmail?: string;
+  phoneNumber?: string;
   source?: string;
-  payload?: Record<string, unknown>;
+  sourceType?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  webSite?: string;
+  twitter?: string;
+  fb?: string;
+  instagram?: string;
+  linkedin?: string;
+  youtube?: string;
+  blog?: string;
+  networkA?: string;
+  networkB?: string;
+  notes?: string;
+  tags?: string;
+  referredByType?: string;
+  referredByName?: string;
+  referredByUniqueId?: string;
+  contactStatus?: string;
 }
 
 export interface UpdateReferralRequest {
-  referralCode?: string;
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
+  leadEmail?: string;
+  phoneNumber?: string;
   source?: string;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  sourceType?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  webSite?: string;
+  twitter?: string;
+  fb?: string;
+  instagram?: string;
+  linkedin?: string;
+  youtube?: string;
+  blog?: string;
+  networkA?: string;
+  networkB?: string;
+  notes?: string;
+  tags?: string;
+  referredByType?: string;
+  referredByName?: string;
+  referredByUniqueId?: string;
+  contactStatus?: string;
 }
 
 export interface ListReferralsParams {

@@ -15,26 +15,39 @@ export interface CrmMailTemplate extends IdentityCore {
 }
 
 export interface CreateCrmMailTemplateRequest {
-  code: string;
   name: string;
-  subject?: string;
-  fromEmail?: string;
+  eventName?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  templateName?: string;
+  fromSubject?: string;
+  fromAddress?: string;
   fromName?: string;
-  htmlContent?: string;
-  textContent?: string;
-  payload?: Record<string, unknown>;
+  fromDomain?: string;
+  templateHtml?: string;
+  templateText?: string;
+  preferredLanguage?: string;
 }
 
 export interface UpdateCrmMailTemplateRequest {
   name?: string;
-  subject?: string;
-  fromEmail?: string;
+  eventName?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  templateName?: string;
+  fromSubject?: string;
+  fromAddress?: string;
   fromName?: string;
-  htmlContent?: string;
-  textContent?: string;
+  fromDomain?: string;
+  templateHtml?: string;
+  templateText?: string;
+  preferredLanguage?: string;
   enabled?: boolean;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
 }
 
 export interface ListCrmMailTemplatesParams {
@@ -45,24 +58,19 @@ export interface ListCrmMailTemplatesParams {
 }
 
 export interface CreateMandrillTemplateRequest {
-  name: string;
   fromEmail?: string;
   fromName?: string;
-  subject?: string;
-  code?: string;
-  text?: string;
-  publish?: boolean;
-  labels?: string[];
+  fromSubject?: string;
+  templateHtml?: string;
+  templateText?: string;
 }
 
 export interface UpdateMandrillTemplateRequest {
   fromEmail?: string;
   fromName?: string;
-  subject?: string;
-  code?: string;
-  text?: string;
-  publish?: boolean;
-  labels?: string[];
+  fromSubject?: string;
+  templateHtml?: string;
+  templateText?: string;
 }
 
 export interface MandrillTemplateStats {

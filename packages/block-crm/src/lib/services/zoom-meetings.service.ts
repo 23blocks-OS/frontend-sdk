@@ -62,37 +62,38 @@ export function createZoomMeetingsService(transport: Transport, _config: { apiKe
 
     async provision(userUniqueId: string, meetingUniqueId: string, request?: ProvisionZoomMeetingRequest): Promise<ZoomMeeting> {
       const response = await transport.post<unknown>(`/users/${userUniqueId}/meetings/${meetingUniqueId}/zoom`, {
-        zoom_meeting: {
-          topic: request?.topic,
-          agenda: request?.agenda,
-          duration: request?.duration,
-          timezone: request?.timezone,
-          password: request?.password,
-          waiting_room: request?.waitingRoom,
-          join_before_host: request?.joinBeforeHost,
-          mute_on_entry: request?.muteOnEntry,
-          auto_recording: request?.autoRecording,
-          payload: request?.payload,
-        },
+        topic: request?.topic,
+        start_time: request?.startTime?.toISOString(),
+        duration: request?.duration,
+        timezone: request?.timezone,
+        settings: request?.settings ? {
+          host_video: request.settings.hostVideo,
+          participant_video: request.settings.participantVideo,
+          waiting_room: request.settings.waitingRoom,
+          join_before_host: request.settings.joinBeforeHost,
+          mute_upon_entry: request.settings.muteUponEntry,
+          auto_recording: request.settings.autoRecording,
+          audio: request.settings.audio,
+        } : undefined,
       });
       return decodeOne(response, zoomMeetingMapper);
     },
 
     async update(userUniqueId: string, meetingUniqueId: string, request: UpdateZoomMeetingRequest): Promise<ZoomMeeting> {
       const response = await transport.put<unknown>(`/users/${userUniqueId}/meetings/${meetingUniqueId}/zoom`, {
-        zoom_meeting: {
-          topic: request.topic,
-          agenda: request.agenda,
-          start_time: request.startTime?.toISOString(),
-          duration: request.duration,
-          timezone: request.timezone,
-          password: request.password,
-          waiting_room: request.waitingRoom,
-          join_before_host: request.joinBeforeHost,
-          mute_on_entry: request.muteOnEntry,
-          auto_recording: request.autoRecording,
-          payload: request.payload,
-        },
+        topic: request.topic,
+        start_time: request.startTime?.toISOString(),
+        duration: request.duration,
+        timezone: request.timezone,
+        settings: request.settings ? {
+          host_video: request.settings.hostVideo,
+          participant_video: request.settings.participantVideo,
+          waiting_room: request.settings.waitingRoom,
+          join_before_host: request.settings.joinBeforeHost,
+          mute_upon_entry: request.settings.muteUponEntry,
+          auto_recording: request.settings.autoRecording,
+          audio: request.settings.audio,
+        } : undefined,
       });
       return decodeOne(response, zoomMeetingMapper);
     },

@@ -53,13 +53,17 @@ export function createBusyBlocksService(transport: Transport, _config: { apiKey:
       const response = await transport.post<unknown>(`/users/${userUniqueId}/busy_blocks`, {
         busy_block: {
           title: data.title,
-          description: data.description,
-          start_time: data.startTime.toISOString(),
-          end_time: data.endTime.toISOString(),
+          starts_at: data.startsAt.toISOString(),
+          ends_at: data.endsAt.toISOString(),
           all_day: data.allDay,
-          recurring: data.recurring,
-          recurrence_rule: data.recurrenceRule,
-          payload: data.payload,
+          timezone: data.timezone,
+          transparency: data.transparency,
+          status: data.status,
+          location: data.location,
+          source: data.source,
+          source_id: data.sourceId,
+          external_event_id: data.externalEventId,
+          metadata: data.metadata,
         },
       });
       return decodeOne(response, busyBlockMapper);

@@ -18,24 +18,22 @@ export interface CreateCategoryRequest {
   name: string;
   code?: string;
   description?: string;
-  parentUniqueId?: string;
-  order?: number;
-  color?: string;
-  icon?: string;
-  payload?: Record<string, unknown>;
+  parentId?: string;
+  displayOrder?: number;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  contentUrl?: string;
 }
 
 export interface UpdateCategoryRequest {
   name?: string;
   code?: string;
   description?: string;
-  parentUniqueId?: string;
-  order?: number;
-  color?: string;
-  icon?: string;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  parentId?: string;
+  displayOrder?: number;
+  thumbnailUrl?: string;
+  imageUrl?: string;
+  contentUrl?: string;
 }
 
 export interface ListCategoriesParams {

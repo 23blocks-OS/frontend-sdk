@@ -17,13 +17,17 @@ export interface BusyBlock extends IdentityCore {
 // Request types
 export interface CreateBusyBlockRequest {
   title?: string;
-  description?: string;
-  startTime: Date;
-  endTime: Date;
+  startsAt: Date;
+  endsAt: Date;
   allDay?: boolean;
-  recurring?: boolean;
-  recurrenceRule?: string;
-  payload?: Record<string, unknown>;
+  timezone?: string;
+  transparency?: string;
+  status?: string;
+  location?: string;
+  source?: string;
+  sourceId?: string;
+  externalEventId?: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ListBusyBlocksParams {

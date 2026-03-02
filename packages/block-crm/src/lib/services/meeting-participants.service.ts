@@ -52,13 +52,11 @@ export function createMeetingParticipantsService(transport: Transport, _config: 
     async create(meetingUniqueId: string, data: CreateMeetingParticipantRequest): Promise<MeetingParticipant> {
       const response = await transport.post<unknown>(`/meetings/${meetingUniqueId}/participants`, {
         participant: {
-          contact_unique_id: data.contactUniqueId,
-          user_unique_id: data.userUniqueId,
-          email: data.email,
-          name: data.name,
-          role: data.role,
-          rsvp_status: data.rsvpStatus,
-          payload: data.payload,
+          participant_unique_id: data.participantUniqueId,
+          participant_email: data.participantEmail,
+          participant_name: data.participantName,
+          participant_phone: data.participantPhone,
+          participant_type: data.participantType,
         },
       });
       return decodeOne(response, meetingParticipantMapper);

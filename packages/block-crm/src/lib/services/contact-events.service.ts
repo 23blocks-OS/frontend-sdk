@@ -141,14 +141,12 @@ export function createContactEventsService(transport: Transport, _config: { apiK
       const response = await transport.post<unknown>('/events', {
         event: {
           contact_unique_id: data.contactUniqueId,
-          user_unique_id: data.userUniqueId,
-          event_type: data.eventType,
-          title: data.title,
-          description: data.description,
+          employee_unique_id: data.employeeUniqueId,
           scheduled_at: data.scheduledAt?.toISOString(),
-          start_time: data.startTime?.toISOString(),
-          end_time: data.endTime?.toISOString(),
-          payload: data.payload,
+          session_location: data.sessionLocation,
+          session_url: data.sessionUrl,
+          recurrence: data.recurrence,
+          occurrences: data.occurrences,
         },
       });
       return decodeOne(response, contactEventMapper);
@@ -157,15 +155,13 @@ export function createContactEventsService(transport: Transport, _config: { apiK
     async update(uniqueId: string, data: UpdateContactEventRequest): Promise<ContactEvent> {
       const response = await transport.put<unknown>(`/events/${uniqueId}`, {
         event: {
-          event_type: data.eventType,
-          title: data.title,
-          description: data.description,
+          contact_unique_id: data.contactUniqueId,
+          employee_unique_id: data.employeeUniqueId,
           scheduled_at: data.scheduledAt?.toISOString(),
-          start_time: data.startTime?.toISOString(),
-          end_time: data.endTime?.toISOString(),
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
+          session_location: data.sessionLocation,
+          session_url: data.sessionUrl,
+          recurrence: data.recurrence,
+          occurrences: data.occurrences,
         },
       });
       return decodeOne(response, contactEventMapper);
@@ -179,7 +175,6 @@ export function createContactEventsService(transport: Transport, _config: { apiK
       const response = await transport.put<unknown>(`/events/${uniqueId}/contacts/confirmation`, {
         event: {
           notes: request?.notes,
-          payload: request?.payload,
         },
       });
       return decodeOne(response, contactEventMapper);
@@ -189,7 +184,6 @@ export function createContactEventsService(transport: Transport, _config: { apiK
       const response = await transport.put<unknown>(`/events/${uniqueId}/contacts/checking`, {
         event: {
           notes: request?.notes,
-          payload: request?.payload,
         },
       });
       return decodeOne(response, contactEventMapper);
@@ -199,7 +193,6 @@ export function createContactEventsService(transport: Transport, _config: { apiK
       const response = await transport.put<unknown>(`/events/${uniqueId}/employees/confirmation`, {
         event: {
           notes: request?.notes,
-          payload: request?.payload,
         },
       });
       return decodeOne(response, contactEventMapper);
@@ -209,7 +202,6 @@ export function createContactEventsService(transport: Transport, _config: { apiK
       const response = await transport.put<unknown>(`/events/${uniqueId}/employees/checking`, {
         event: {
           notes: request?.notes,
-          payload: request?.payload,
         },
       });
       return decodeOne(response, contactEventMapper);
@@ -218,8 +210,10 @@ export function createContactEventsService(transport: Transport, _config: { apiK
     async checkout(uniqueId: string, request?: CheckoutRequest): Promise<ContactEvent> {
       const response = await transport.put<unknown>(`/events/${uniqueId}/employees/checkout`, {
         event: {
-          notes: request?.notes,
-          payload: request?.payload,
+          employee_notes: request?.employeeNotes,
+          contact_notes: request?.contactNotes,
+          contact_approved: request?.contactApproved,
+          event_final_score: request?.eventFinalScore,
         },
       });
       return decodeOne(response, contactEventMapper);
@@ -228,8 +222,10 @@ export function createContactEventsService(transport: Transport, _config: { apiK
     async checkoutStudent(uniqueId: string, request?: CheckoutRequest): Promise<ContactEvent> {
       const response = await transport.put<unknown>(`/events/${uniqueId}/contacts/checkout`, {
         event: {
-          notes: request?.notes,
-          payload: request?.payload,
+          employee_notes: request?.employeeNotes,
+          contact_notes: request?.contactNotes,
+          contact_approved: request?.contactApproved,
+          event_final_score: request?.eventFinalScore,
         },
       });
       return decodeOne(response, contactEventMapper);
@@ -238,8 +234,8 @@ export function createContactEventsService(transport: Transport, _config: { apiK
     async studentNotes(uniqueId: string, request: EventNotesRequest): Promise<ContactEvent> {
       const response = await transport.put<unknown>(`/events/${uniqueId}/contacts/notes`, {
         event: {
-          notes: request.notes,
-          payload: request.payload,
+          contact_notes: request.contactNotes,
+          admin_notes: request.adminNotes,
         },
       });
       return decodeOne(response, contactEventMapper);
@@ -248,8 +244,8 @@ export function createContactEventsService(transport: Transport, _config: { apiK
     async adminNotes(uniqueId: string, request: EventNotesRequest): Promise<ContactEvent> {
       const response = await transport.put<unknown>(`/events/${uniqueId}/admin/notes`, {
         event: {
-          notes: request.notes,
-          payload: request.payload,
+          contact_notes: request.contactNotes,
+          admin_notes: request.adminNotes,
         },
       });
       return decodeOne(response, contactEventMapper);

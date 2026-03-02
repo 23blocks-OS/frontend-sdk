@@ -18,23 +18,20 @@ export interface CreateSubscriberRequest {
   email: string;
   firstName?: string;
   lastName?: string;
-  phone?: string;
+  phoneNumber?: string;
   source?: string;
   sourceId?: string;
-  payload?: Record<string, unknown>;
-  tags?: string[];
+  sourceType?: string;
 }
 
 export interface UpdateSubscriberRequest {
   email?: string;
   firstName?: string;
   lastName?: string;
-  phone?: string;
+  phoneNumber?: string;
   source?: string;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
-  tags?: string[];
+  sourceId?: string;
+  sourceType?: string;
 }
 
 export interface ListSubscribersParams {

@@ -15,25 +15,15 @@ export interface Touch extends IdentityCore {
 
 // Request types
 export interface CreateTouchRequest {
-  contactUniqueId?: string;
-  userUniqueId?: string;
-  touchType?: string;
-  channel?: string;
-  subject?: string;
+  contactId?: string;
   notes?: string;
-  touchedAt?: Date;
-  payload?: Record<string, unknown>;
+  sourceId?: string;
 }
 
 export interface UpdateTouchRequest {
-  touchType?: string;
-  channel?: string;
-  subject?: string;
+  contactId?: string;
   notes?: string;
-  touchedAt?: Date;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  sourceId?: string;
 }
 
 export interface ListTouchesParams {

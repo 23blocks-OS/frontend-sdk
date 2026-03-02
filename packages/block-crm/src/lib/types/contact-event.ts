@@ -17,26 +17,22 @@ export interface ContactEvent extends IdentityCore {
 // Request types
 export interface CreateContactEventRequest {
   contactUniqueId?: string;
-  userUniqueId?: string;
-  eventType?: string;
-  title?: string;
-  description?: string;
+  employeeUniqueId?: string;
   scheduledAt?: Date;
-  startTime?: Date;
-  endTime?: Date;
-  payload?: Record<string, unknown>;
+  sessionLocation?: string;
+  sessionUrl?: string;
+  recurrence?: string;
+  occurrences?: number;
 }
 
 export interface UpdateContactEventRequest {
-  eventType?: string;
-  title?: string;
-  description?: string;
+  contactUniqueId?: string;
+  employeeUniqueId?: string;
   scheduledAt?: Date;
-  startTime?: Date;
-  endTime?: Date;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  sessionLocation?: string;
+  sessionUrl?: string;
+  recurrence?: string;
+  occurrences?: number;
 }
 
 export interface ListContactEventsParams {
@@ -53,20 +49,20 @@ export interface ListContactEventsParams {
 
 export interface ConfirmationRequest {
   notes?: string;
-  payload?: Record<string, unknown>;
 }
 
 export interface CheckinRequest {
   notes?: string;
-  payload?: Record<string, unknown>;
 }
 
 export interface CheckoutRequest {
-  notes?: string;
-  payload?: Record<string, unknown>;
+  employeeNotes?: string;
+  contactNotes?: string;
+  contactApproved?: boolean;
+  eventFinalScore?: number;
 }
 
 export interface EventNotesRequest {
-  notes: string;
-  payload?: Record<string, unknown>;
+  contactNotes?: string;
+  adminNotes?: string;
 }

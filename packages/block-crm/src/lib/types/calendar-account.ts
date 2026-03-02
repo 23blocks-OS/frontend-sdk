@@ -18,25 +18,20 @@ export interface CalendarAccount extends IdentityCore {
 // Request types
 export interface CreateCalendarAccountRequest {
   provider: string;
-  email?: string;
-  name?: string;
+  userEmail?: string;
+  code?: string;
+  redirectUri?: string;
   accessToken?: string;
   refreshToken?: string;
-  tokenExpiresAt?: Date;
-  syncEnabled?: boolean;
-  payload?: Record<string, unknown>;
+  expiresAt?: Date;
+  tokenType?: string;
+  scopes?: string;
+  externalUserId?: string;
+  providerData?: Record<string, unknown>;
 }
 
 export interface UpdateCalendarAccountRequest {
-  email?: string;
-  name?: string;
-  accessToken?: string;
-  refreshToken?: string;
-  tokenExpiresAt?: Date;
   syncEnabled?: boolean;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
 }
 
 export interface ListCalendarAccountsParams {

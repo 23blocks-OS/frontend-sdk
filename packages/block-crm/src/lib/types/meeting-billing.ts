@@ -40,30 +40,40 @@ export interface OutstandingByPayer {
 
 // Request types
 export interface CreateMeetingBillingRequest {
-  participantUniqueId?: string;
+  contactUniqueId?: string;
   participantEmail?: string;
   payerName?: string;
-  amount?: number;
-  currency?: string;
-  billingStatus?: string;
-  dueAt?: Date;
-  notes?: string;
-  payload?: Record<string, unknown>;
+  payerType?: string;
+  feeAmount?: number;
+  feeCurrency?: string;
+  status?: string;
+  billingCode?: string;
+  billingDescription?: string;
+  billingNotes?: string;
+  invoiceDueDate?: Date;
+  paymentMethod?: string;
+  source?: string;
+  sourceId?: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface UpdateMeetingBillingRequest {
-  participantUniqueId?: string;
+  contactUniqueId?: string;
   participantEmail?: string;
   payerName?: string;
-  amount?: number;
-  currency?: string;
-  billingStatus?: string;
+  payerType?: string;
+  feeAmount?: number;
+  feeCurrency?: string;
+  status?: string;
+  billingCode?: string;
+  billingDescription?: string;
+  billingNotes?: string;
+  invoiceDueDate?: Date;
   paidAt?: Date;
-  dueAt?: Date;
-  notes?: string;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  paymentMethod?: string;
+  source?: string;
+  sourceId?: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ListMeetingBillingsParams {

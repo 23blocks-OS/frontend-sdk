@@ -73,11 +73,10 @@ export function createSubscribersService(transport: Transport, _config: { apiKey
           email: data.email,
           first_name: data.firstName,
           last_name: data.lastName,
-          phone: data.phone,
+          phone_number: data.phoneNumber,
           source: data.source,
           source_id: data.sourceId,
-          payload: data.payload,
-          tags: data.tags,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, subscriberMapper);
@@ -89,12 +88,10 @@ export function createSubscribersService(transport: Transport, _config: { apiKey
           email: data.email,
           first_name: data.firstName,
           last_name: data.lastName,
-          phone: data.phone,
+          phone_number: data.phoneNumber,
           source: data.source,
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
-          tags: data.tags,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, subscriberMapper);

@@ -75,11 +75,18 @@ export function createLeadFollowsService(transport: Transport, _config: { apiKey
     async create(leadUniqueId: string, data: CreateLeadFollowRequest): Promise<LeadFollow> {
       const response = await transport.post<unknown>(`/leads/${leadUniqueId}/follows`, {
         follow: {
-          user_unique_id: data.userUniqueId,
-          follow_type: data.followType,
-          scheduled_at: data.scheduledAt?.toISOString(),
+          code: data.code,
           notes: data.notes,
-          payload: data.payload,
+          next_action_at: data.nextActionAt?.toISOString(),
+          reminder: data.reminder,
+          total: data.total,
+          owner_unique_id: data.ownerUniqueId,
+          owner_name: data.ownerName,
+          owner_email: data.ownerEmail,
+          duration: data.duration,
+          duration_unit: data.durationUnit,
+          duration_description: data.durationDescription,
+          status: data.status,
         },
       });
       return decodeOne(response, leadFollowMapper);
@@ -88,13 +95,18 @@ export function createLeadFollowsService(transport: Transport, _config: { apiKey
     async update(leadUniqueId: string, followUniqueId: string, data: UpdateLeadFollowRequest): Promise<LeadFollow> {
       const response = await transport.put<unknown>(`/leads/${leadUniqueId}/follows/${followUniqueId}`, {
         follow: {
-          follow_type: data.followType,
-          scheduled_at: data.scheduledAt?.toISOString(),
-          completed_at: data.completedAt?.toISOString(),
+          code: data.code,
           notes: data.notes,
-          enabled: data.enabled,
+          next_action_at: data.nextActionAt?.toISOString(),
+          reminder: data.reminder,
+          total: data.total,
+          owner_unique_id: data.ownerUniqueId,
+          owner_name: data.ownerName,
+          owner_email: data.ownerEmail,
+          duration: data.duration,
+          duration_unit: data.durationUnit,
+          duration_description: data.durationDescription,
           status: data.status,
-          payload: data.payload,
         },
       });
       return decodeOne(response, leadFollowMapper);

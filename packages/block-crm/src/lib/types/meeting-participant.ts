@@ -17,23 +17,19 @@ export interface MeetingParticipant extends IdentityCore {
 
 // Request types
 export interface CreateMeetingParticipantRequest {
-  contactUniqueId?: string;
-  userUniqueId?: string;
-  email?: string;
-  name?: string;
-  role?: string;
-  rsvpStatus?: string;
-  payload?: Record<string, unknown>;
+  participantUniqueId?: string;
+  participantEmail?: string;
+  participantName?: string;
+  participantPhone?: string;
+  participantType?: string;
 }
 
 export interface UpdateMeetingParticipantRequest {
-  role?: string;
-  rsvpStatus?: string;
-  joinedAt?: Date;
-  leftAt?: Date;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  participantUniqueId?: string;
+  participantEmail?: string;
+  participantName?: string;
+  participantPhone?: string;
+  participantType?: string;
 }
 
 export interface ListMeetingParticipantsParams {
