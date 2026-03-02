@@ -1,3 +1,12 @@
+# 12.0.0 (2026-03-02)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-onboarding to 5.0.0
+- Updated @23blocks/block-search to 6.0.0
+- Updated @23blocks/block-files to 5.0.0
+- Updated @23blocks/block-crm to 5.0.0
+
 ## 11.0.3 (2026-02-24)
 
 ### 🚀 Features
