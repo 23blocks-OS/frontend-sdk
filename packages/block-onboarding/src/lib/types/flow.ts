@@ -32,6 +32,17 @@ export interface UpdateFlowRequest {
   payload?: Record<string, unknown>;
 }
 
+export interface StepBySourceRequest {
+  step_unique_id?: string;
+  step_params?: Record<string, unknown>;
+  step_status?: string;
+  source?: string;
+  source_id?: string;
+  source_type?: string;
+  source_alias?: string;
+  redirect_url?: string;
+}
+
 export interface ListFlowsParams {
   page?: number;
   perPage?: number;

@@ -1,10 +1,15 @@
 export interface UserJourneyReportParams {
-  startDate?: string;
-  endDate?: string;
-  onboardingUniqueId?: string;
+  start_at?: string;
+  end_at?: string;
+  onboarding_unique_id?: string;
+  user_unique_id?: string;
+  step_unique_id?: string;
+  source?: string;
   status?: string;
+  group_by?: string;
+  date_part?: string;
   page?: number;
-  perPage?: number;
+  records?: number;
 }
 
 export interface UserJourneyReportItem {

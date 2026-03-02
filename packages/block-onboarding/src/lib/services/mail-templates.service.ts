@@ -81,15 +81,22 @@ export function createMailTemplatesService(transport: Transport, _config: { apiK
 
     async create(data: CreateMailTemplateRequest): Promise<MailTemplate> {
       const response = await transport.post<unknown>('/mailtemplates', {
-        mail_template: {
-          code: data.code,
+        template: {
           name: data.name,
-          subject: data.subject,
-          from_email: data.fromEmail,
-          from_name: data.fromName,
-          html_content: data.htmlContent,
-          text_content: data.textContent,
-          payload: data.payload,
+          event_name: data.event_name,
+          source: data.source,
+          source_alias: data.source_alias,
+          source_id: data.source_id,
+          source_type: data.source_type,
+          template_name: data.template_name,
+          from_subject: data.from_subject,
+          from_address: data.from_address,
+          from_name: data.from_name,
+          from_domain: data.from_domain,
+          template_html: data.template_html,
+          template_text: data.template_text,
+          preferred_language: data.preferred_language,
+          provider: data.provider,
         },
       });
       return decodeOne(response, mailTemplateMapper);
@@ -97,16 +104,22 @@ export function createMailTemplatesService(transport: Transport, _config: { apiK
 
     async update(uniqueId: string, data: UpdateMailTemplateRequest): Promise<MailTemplate> {
       const response = await transport.put<unknown>(`/mailtemplates/${uniqueId}`, {
-        mail_template: {
+        template: {
           name: data.name,
-          subject: data.subject,
-          from_email: data.fromEmail,
-          from_name: data.fromName,
-          html_content: data.htmlContent,
-          text_content: data.textContent,
-          enabled: data.enabled,
-          status: data.status,
-          payload: data.payload,
+          event_name: data.event_name,
+          source: data.source,
+          source_alias: data.source_alias,
+          source_id: data.source_id,
+          source_type: data.source_type,
+          template_name: data.template_name,
+          from_subject: data.from_subject,
+          from_address: data.from_address,
+          from_name: data.from_name,
+          from_domain: data.from_domain,
+          template_html: data.template_html,
+          template_text: data.template_text,
+          preferred_language: data.preferred_language,
+          provider: data.provider,
         },
       });
       return decodeOne(response, mailTemplateMapper);
@@ -130,14 +143,11 @@ export function createMailTemplatesService(transport: Transport, _config: { apiK
     async createMandrillTemplate(uniqueId: string, data: CreateMandrillTemplateRequest): Promise<MailTemplate> {
       const response = await transport.post<unknown>(`/mailtemplates/${uniqueId}/mandrill`, {
         mandrill: {
-          name: data.name,
-          from_email: data.fromEmail,
-          from_name: data.fromName,
-          subject: data.subject,
-          code: data.code,
-          text: data.text,
-          publish: data.publish,
-          labels: data.labels,
+          from_email: data.from_email,
+          from_name: data.from_name,
+          from_subject: data.from_subject,
+          template_html: data.template_html,
+          template_text: data.template_text,
         },
       });
       return decodeOne(response, mailTemplateMapper);
@@ -146,13 +156,11 @@ export function createMailTemplatesService(transport: Transport, _config: { apiK
     async updateMandrillTemplate(uniqueId: string, data: UpdateMandrillTemplateRequest): Promise<MailTemplate> {
       const response = await transport.put<unknown>(`/mailtemplates/${uniqueId}/mandrill`, {
         mandrill: {
-          from_email: data.fromEmail,
-          from_name: data.fromName,
-          subject: data.subject,
-          code: data.code,
-          text: data.text,
-          publish: data.publish,
-          labels: data.labels,
+          from_email: data.from_email,
+          from_name: data.from_name,
+          from_subject: data.from_subject,
+          template_html: data.template_html,
+          template_text: data.template_text,
         },
       });
       return decodeOne(response, mailTemplateMapper);

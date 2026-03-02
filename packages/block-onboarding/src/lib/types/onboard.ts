@@ -37,18 +37,30 @@ export interface OnboardLogEntry {
 }
 
 export interface StartOnboardRequest {
-  onboardingUniqueId?: string;
-  payload?: Record<string, unknown>;
+  source?: string;
+  source_id?: string;
+  source_type?: string;
+  source_alias?: string;
 }
 
 export interface StepOnboardRequest {
-  stepNumber: number;
-  stepData?: Record<string, unknown>;
+  step_unique_id: string;
+  step_params?: Record<string, unknown>;
+  step_status?: string;
+  source?: string;
+  source_id?: string;
+  source_type?: string;
+  source_alias?: string;
+  redirect_url?: string;
 }
 
 export interface LogOnboardRequest {
-  action: string;
-  stepNumber?: number;
-  message?: string;
-  payload?: Record<string, unknown>;
+  step_unique_id?: string;
+  step_params?: Record<string, unknown>;
+  step_status?: string;
+  source?: string;
+  source_id?: string;
+  source_type?: string;
+  source_alias?: string;
+  redirect_url?: string;
 }

@@ -147,12 +147,19 @@ export function createUserJourneysService(transport: Transport, _config: { apiKe
 
     async reportList(params: UserJourneyReportParams): Promise<UserJourneyReportList> {
       const response = await transport.post<any>('/reports/user_journeys/list', {
-        start_date: params.startDate,
-        end_date: params.endDate,
-        onboarding_unique_id: params.onboardingUniqueId,
-        status: params.status,
-        page: params.page,
-        per_page: params.perPage,
+        query_params: {
+          start_at: params.start_at,
+          end_at: params.end_at,
+          onboarding_unique_id: params.onboarding_unique_id,
+          user_unique_id: params.user_unique_id,
+          step_unique_id: params.step_unique_id,
+          source: params.source,
+          status: params.status,
+          group_by: params.group_by,
+          date_part: params.date_part,
+          page: params.page,
+          records: params.records,
+        },
       });
       return {
         journeys: (response.journeys || []).map((j: any) => ({
@@ -188,10 +195,19 @@ export function createUserJourneysService(transport: Transport, _config: { apiKe
 
     async reportSummary(params: UserJourneyReportParams): Promise<UserJourneyReportSummary> {
       const response = await transport.post<any>('/reports/user_journeys/summary', {
-        start_date: params.startDate,
-        end_date: params.endDate,
-        onboarding_unique_id: params.onboardingUniqueId,
-        status: params.status,
+        query_params: {
+          start_at: params.start_at,
+          end_at: params.end_at,
+          onboarding_unique_id: params.onboarding_unique_id,
+          user_unique_id: params.user_unique_id,
+          step_unique_id: params.step_unique_id,
+          source: params.source,
+          status: params.status,
+          group_by: params.group_by,
+          date_part: params.date_part,
+          page: params.page,
+          records: params.records,
+        },
       });
       return {
         totalJourneys: response.total_journeys,

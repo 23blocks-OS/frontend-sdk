@@ -15,26 +15,39 @@ export interface MailTemplate extends IdentityCore {
 }
 
 export interface CreateMailTemplateRequest {
-  code: string;
   name: string;
-  subject?: string;
-  fromEmail?: string;
-  fromName?: string;
-  htmlContent?: string;
-  textContent?: string;
-  payload?: Record<string, unknown>;
+  event_name?: string;
+  source?: string;
+  source_alias?: string;
+  source_id?: string;
+  source_type?: string;
+  template_name?: string;
+  from_subject?: string;
+  from_address?: string;
+  from_name?: string;
+  from_domain?: string;
+  template_html?: string;
+  template_text?: string;
+  preferred_language?: string;
+  provider?: string;
 }
 
 export interface UpdateMailTemplateRequest {
   name?: string;
-  subject?: string;
-  fromEmail?: string;
-  fromName?: string;
-  htmlContent?: string;
-  textContent?: string;
-  enabled?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  event_name?: string;
+  source?: string;
+  source_alias?: string;
+  source_id?: string;
+  source_type?: string;
+  template_name?: string;
+  from_subject?: string;
+  from_address?: string;
+  from_name?: string;
+  from_domain?: string;
+  template_html?: string;
+  template_text?: string;
+  preferred_language?: string;
+  provider?: string;
 }
 
 export interface ListMailTemplatesParams {
@@ -45,24 +58,19 @@ export interface ListMailTemplatesParams {
 }
 
 export interface CreateMandrillTemplateRequest {
-  name: string;
-  fromEmail?: string;
-  fromName?: string;
-  subject?: string;
-  code?: string;
-  text?: string;
-  publish?: boolean;
-  labels?: string[];
+  from_email?: string;
+  from_name?: string;
+  from_subject?: string;
+  template_html?: string;
+  template_text?: string;
 }
 
 export interface UpdateMandrillTemplateRequest {
-  fromEmail?: string;
-  fromName?: string;
-  subject?: string;
-  code?: string;
-  text?: string;
-  publish?: boolean;
-  labels?: string[];
+  from_email?: string;
+  from_name?: string;
+  from_subject?: string;
+  template_html?: string;
+  template_text?: string;
 }
 
 export interface MandrillTemplateStats {

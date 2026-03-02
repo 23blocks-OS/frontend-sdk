@@ -5,6 +5,7 @@ import type {
   CreateOnboardingRequest,
   UpdateOnboardingRequest,
   ListOnboardingsParams,
+  StepUserRequest,
 } from '../types/onboarding.js';
 import type { OnboardingStep, AddStepRequest, UpdateStepRequest } from '../types/step.js';
 import { onboardingMapper } from '../mappers/onboarding.mapper.js';
@@ -61,7 +62,7 @@ export interface OnboardingsService {
    * Advance a user through an onboarding step.
    * @returns The updated Onboarding record.
    */
-  stepUser(uniqueId: string, userUniqueId: string, stepData?: Record<string, unknown>): Promise<Onboarding>;
+  stepUser(uniqueId: string, userUniqueId: string, data?: StepUserRequest): Promise<Onboarding>;
 }
 
 export function createOnboardingsService(transport: Transport, _config: { apiKey: string }): OnboardingsService {
@@ -87,11 +88,16 @@ export function createOnboardingsService(transport: Transport, _config: { apiKey
     async create(data: CreateOnboardingRequest): Promise<Onboarding> {
       const response = await transport.post<unknown>('/onboardings', {
         onboarding: {
-            code: data.code,
             name: data.name,
             description: data.description,
-            steps: data.steps,
-            payload: data.payload,
+            source: data.source,
+            source_id: data.source_id,
+            source_type: data.source_type,
+            source_alias: data.source_alias,
+            total_steps: data.total_steps,
+            content_url: data.content_url,
+            image_url: data.image_url,
+            video_url: data.video_url,
           },
       });
       return decodeOne(response, onboardingMapper);
@@ -102,10 +108,14 @@ export function createOnboardingsService(transport: Transport, _config: { apiKey
         onboarding: {
             name: data.name,
             description: data.description,
-            steps: data.steps,
-            enabled: data.enabled,
-            status: data.status,
-            payload: data.payload,
+            source: data.source,
+            source_id: data.source_id,
+            source_type: data.source_type,
+            source_alias: data.source_alias,
+            total_steps: data.total_steps,
+            content_url: data.content_url,
+            image_url: data.image_url,
+            video_url: data.video_url,
           },
       });
       return decodeOne(response, onboardingMapper);
@@ -118,12 +128,19 @@ export function createOnboardingsService(transport: Transport, _config: { apiKey
     async addStep(uniqueId: string, data: AddStepRequest): Promise<OnboardingStep> {
       const response = await transport.put<unknown>(`/onboardings/${uniqueId}/steps`, {
         step: {
-          step_number: data.stepNumber,
           name: data.name,
           description: data.description,
-          type: data.type,
-          config: data.config,
-          payload: data.payload,
+          order: data.order,
+          source: data.source,
+          source_id: data.source_id,
+          source_type: data.source_type,
+          source_alias: data.source_alias,
+          step_url: data.step_url,
+          step_params: data.step_params,
+          content_url: data.content_url,
+          image_url: data.image_url,
+          video_url: data.video_url,
+          status: data.status,
         },
       });
       return decodeOne(response, onboardingStepMapper);
@@ -134,9 +151,17 @@ export function createOnboardingsService(transport: Transport, _config: { apiKey
         step: {
           name: data.name,
           description: data.description,
-          type: data.type,
-          config: data.config,
-          payload: data.payload,
+          order: data.order,
+          source: data.source,
+          source_id: data.source_id,
+          source_type: data.source_type,
+          source_alias: data.source_alias,
+          step_url: data.step_url,
+          step_params: data.step_params,
+          content_url: data.content_url,
+          image_url: data.image_url,
+          video_url: data.video_url,
+          status: data.status,
         },
       });
       return decodeOne(response, onboardingStepMapper);
@@ -146,9 +171,18 @@ export function createOnboardingsService(transport: Transport, _config: { apiKey
       await transport.delete(`/onboardings/${uniqueId}/steps/${stepUniqueId}`);
     },
 
-    async stepUser(uniqueId: string, userUniqueId: string, stepData?: Record<string, unknown>): Promise<Onboarding> {
+    async stepUser(uniqueId: string, userUniqueId: string, data?: StepUserRequest): Promise<Onboarding> {
       const response = await transport.put<unknown>(`/onboardings/${uniqueId}/users/${userUniqueId}`, {
-        step_data: stepData,
+        onboard: {
+          step_unique_id: data?.step_unique_id,
+          step_params: data?.step_params,
+          step_status: data?.step_status,
+          source: data?.source,
+          source_id: data?.source_id,
+          source_type: data?.source_type,
+          source_alias: data?.source_alias,
+          redirect_url: data?.redirect_url,
+        },
       });
       return decodeOne(response, onboardingMapper);
     },

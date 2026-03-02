@@ -5,6 +5,7 @@ import type {
   CreateFlowRequest,
   UpdateFlowRequest,
   ListFlowsParams,
+  StepBySourceRequest,
 } from '../types/flow.js';
 import { flowMapper } from '../mappers/flow.mapper.js';
 
@@ -54,7 +55,7 @@ export interface FlowsService {
    * Advance a flow step for a specific source.
    * @returns The updated Flow record after stepping.
    */
-  stepBySource(uniqueId: string, sourceUniqueId: string, stepData?: Record<string, unknown>): Promise<Flow>;
+  stepBySource(uniqueId: string, sourceUniqueId: string, data?: StepBySourceRequest): Promise<Flow>;
 }
 
 export function createFlowsService(transport: Transport, _config: { apiKey: string }): FlowsService {
@@ -122,9 +123,18 @@ export function createFlowsService(transport: Transport, _config: { apiKey: stri
       return decodeOne(response, flowMapper);
     },
 
-    async stepBySource(uniqueId: string, sourceUniqueId: string, stepData?: Record<string, unknown>): Promise<Flow> {
+    async stepBySource(uniqueId: string, sourceUniqueId: string, data?: StepBySourceRequest): Promise<Flow> {
       const response = await transport.put<unknown>(`/flows/${uniqueId}/sources/${sourceUniqueId}`, {
-        step_data: stepData,
+        flow: {
+          step_unique_id: data?.step_unique_id,
+          step_params: data?.step_params,
+          step_status: data?.step_status,
+          source: data?.source,
+          source_id: data?.source_id,
+          source_type: data?.source_type,
+          source_alias: data?.source_alias,
+          redirect_url: data?.redirect_url,
+        },
       });
       return decodeOne(response, flowMapper);
     },

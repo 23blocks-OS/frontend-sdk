@@ -57,9 +57,11 @@ export function createOnboardService(transport: Transport, _config: { apiKey: st
   return {
     async start(uniqueId: string, data?: StartOnboardRequest): Promise<OnboardJourney> {
       const response = await transport.post<unknown>(`/onboard/${uniqueId}/start`, {
-        onboard: {
-          onboarding_unique_id: data?.onboardingUniqueId,
-          payload: data?.payload,
+        data: {
+          source: data?.source,
+          source_id: data?.source_id,
+          source_type: data?.source_type,
+          source_alias: data?.source_alias,
         },
       });
       return decodeOne(response, onboardJourneyMapper);
@@ -96,9 +98,15 @@ export function createOnboardService(transport: Transport, _config: { apiKey: st
 
     async step(uniqueId: string, data: StepOnboardRequest): Promise<OnboardJourney> {
       const response = await transport.put<unknown>(`/onboard/${uniqueId}`, {
-        step: {
-          step_number: data.stepNumber,
-          step_data: data.stepData,
+        onboard: {
+          step_unique_id: data.step_unique_id,
+          step_params: data.step_params,
+          step_status: data.step_status,
+          source: data.source,
+          source_id: data.source_id,
+          source_type: data.source_type,
+          source_alias: data.source_alias,
+          redirect_url: data.redirect_url,
         },
       });
       return decodeOne(response, onboardJourneyMapper);
@@ -106,11 +114,15 @@ export function createOnboardService(transport: Transport, _config: { apiKey: st
 
     async log(uniqueId: string, data: LogOnboardRequest): Promise<OnboardJourney> {
       const response = await transport.put<unknown>(`/onboard/${uniqueId}/log`, {
-        log: {
-          action: data.action,
-          step_number: data.stepNumber,
-          message: data.message,
-          payload: data.payload,
+        onboard: {
+          step_unique_id: data.step_unique_id,
+          step_params: data.step_params,
+          step_status: data.step_status,
+          source: data.source,
+          source_id: data.source_id,
+          source_type: data.source_type,
+          source_alias: data.source_alias,
+          redirect_url: data.redirect_url,
         },
       });
       return decodeOne(response, onboardJourneyMapper);
