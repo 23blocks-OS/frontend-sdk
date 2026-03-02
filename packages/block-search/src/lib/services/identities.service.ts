@@ -65,13 +65,21 @@ export function createIdentitiesService(transport: Transport, _config: { apiKey:
 
     async register(uniqueId: string, data: RegisterIdentityRequest): Promise<SearchIdentity> {
       const response = await transport.post<unknown>(`/identities/${uniqueId}/register/`, {
-        identity: {
-          email: data.email,
+        user: {
+          name: data.name,
           first_name: data.firstName,
           last_name: data.lastName,
-          display_name: data.displayName,
+          email: data.email,
+          phone: data.phone,
           avatar_url: data.avatarUrl,
-          payload: data.payload,
+          role_id: data.roleId,
+          role_name: data.roleName,
+          role_unique_id: data.roleUniqueId,
+          company_id: data.companyId,
+          time_zone: data.timeZone,
+          preferred_language: data.preferredLanguage,
+          max_file_size: data.maxFileSize,
+          max_storage: data.maxStorage,
         },
       });
       return decodeOne(response, searchIdentityMapper);
@@ -79,14 +87,21 @@ export function createIdentitiesService(transport: Transport, _config: { apiKey:
 
     async update(uniqueId: string, data: UpdateIdentityRequest): Promise<SearchIdentity> {
       const response = await transport.put<unknown>(`/identities/${uniqueId}/`, {
-        identity: {
-          email: data.email,
+        user: {
+          name: data.name,
           first_name: data.firstName,
           last_name: data.lastName,
-          display_name: data.displayName,
+          email: data.email,
+          phone: data.phone,
           avatar_url: data.avatarUrl,
-          status: data.status,
-          payload: data.payload,
+          role_id: data.roleId,
+          role_name: data.roleName,
+          role_unique_id: data.roleUniqueId,
+          company_id: data.companyId,
+          time_zone: data.timeZone,
+          preferred_language: data.preferredLanguage,
+          max_file_size: data.maxFileSize,
+          max_storage: data.maxStorage,
         },
       });
       return decodeOne(response, searchIdentityMapper);

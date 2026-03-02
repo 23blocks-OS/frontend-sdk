@@ -130,11 +130,7 @@ export interface EntityType {
  */
 export interface SearchRequest {
   query: string;
-  entityTypes?: string[];
-  include?: string[];
-  exclude?: string[];
-  limit?: number;
-  offset?: number;
+  page?: number;
 }
 
 /**

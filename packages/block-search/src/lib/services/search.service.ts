@@ -168,12 +168,10 @@ export function createSearchService(
           query?: unknown;
         };
       }>('/search', {
-        query: request.query,
-        entity_types: request.entityTypes,
-        include: request.include,
-        exclude: request.exclude,
-        limit: request.limit,
-        offset: request.offset,
+        search: {
+          s: request.query,
+          page: request.page,
+        },
       });
 
       const results = decodeMany(response, searchResultMapper);
@@ -190,8 +188,8 @@ export function createSearchService(
           partition: null,
           key: null,
           query: request.query,
-          include: request.include ?? null,
-          exclude: request.exclude ?? null,
+          include: null,
+          exclude: null,
           payload: null,
           userUniqueId: null,
           userProviderName: null,
@@ -227,8 +225,8 @@ export function createSearchService(
           partition: null,
           key: null,
           query: request.query,
-          include: request.include ?? null,
-          exclude: request.exclude ?? null,
+          include: null,
+          exclude: null,
           payload: null,
           userUniqueId: null,
           userProviderName: null,

@@ -12,22 +12,37 @@ export interface SearchIdentity extends IdentityCore {
 }
 
 export interface RegisterIdentityRequest {
-  email?: string;
+  name?: string;
   firstName?: string;
   lastName?: string;
-  displayName?: string;
+  email?: string;
+  phone?: string;
   avatarUrl?: string;
-  payload?: Record<string, unknown>;
+  roleId?: string;
+  roleName?: string;
+  roleUniqueId?: string;
+  companyId?: string;
+  timeZone?: string;
+  preferredLanguage?: string;
+  maxFileSize?: number;
+  maxStorage?: number;
 }
 
 export interface UpdateIdentityRequest {
-  email?: string;
+  name?: string;
   firstName?: string;
   lastName?: string;
-  displayName?: string;
+  email?: string;
+  phone?: string;
   avatarUrl?: string;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  roleId?: string;
+  roleName?: string;
+  roleUniqueId?: string;
+  companyId?: string;
+  timeZone?: string;
+  preferredLanguage?: string;
+  maxFileSize?: number;
+  maxStorage?: number;
 }
 
 export interface ListIdentitiesParams {

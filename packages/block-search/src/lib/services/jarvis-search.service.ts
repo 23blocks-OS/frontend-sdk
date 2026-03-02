@@ -7,15 +7,14 @@ import { searchResultMapper } from '../mappers/search.mapper.js';
  * Jarvis search query
  */
 export interface JarvisSearchQuery {
-  query: string;
-  entityTypes?: string[];
-  filters?: Record<string, unknown>;
-  limit?: number;
-  offset?: number;
-  includeMetadata?: boolean;
-  includeRelations?: boolean;
-  sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  prompt: string;
+  partition?: string;
+  key?: string;
+  page?: number;
+  records?: number;
+  sort?: string;
+  attributes?: string;
+  language?: string;
 }
 
 /**
@@ -86,15 +85,14 @@ export function createJarvisSearchService(
     async search(query: JarvisSearchQuery): Promise<PageResult<JarvisSearchResult>> {
       const response = await transport.post<unknown>('/jarvis/entities/search', {
         search: {
-          query: query.query,
-          entity_types: query.entityTypes,
-          filters: query.filters,
-          limit: query.limit,
-          offset: query.offset,
-          include_metadata: query.includeMetadata,
-          include_relations: query.includeRelations,
-          sort_by: query.sortBy,
-          sort_order: query.sortOrder,
+          prompt: query.prompt,
+          partition: query.partition,
+          key: query.key,
+          page: query.page,
+          records: query.records,
+          sort: query.sort,
+          attributes: query.attributes,
+          language: query.language,
         },
       });
       return decodePageResult(response, jarvisSearchResultMapper);

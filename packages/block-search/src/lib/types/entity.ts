@@ -27,22 +27,27 @@ export interface EntityFieldSchema {
 
 export interface RegisterEntityRequest {
   entityType: string;
-  alias?: string;
-  description?: string;
-  avatarUrl?: string;
-  url?: string;
-  source?: string;
-  payload?: Record<string, unknown>;
+  entityAlias?: string;
+  content?: string;
+  entityAvatarUrl?: string;
+  entityUrl?: string;
+  entitySource?: string;
+  status?: EntityStatus;
+  timeZone?: string;
+  preferredLanguage?: string;
+  slug?: string;
 }
 
 export interface UpdateEntityRequest {
-  alias?: string;
-  description?: string;
-  avatarUrl?: string;
-  url?: string;
-  source?: string;
+  entityAlias?: string;
+  content?: string;
+  entityAvatarUrl?: string;
+  entityUrl?: string;
+  entitySource?: string;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  timeZone?: string;
+  preferredLanguage?: string;
+  slug?: string;
 }
 
 export interface ListEntitiesParams {
@@ -56,7 +61,12 @@ export interface ListEntitiesParams {
 }
 
 export interface CopilotSearchRequest {
-  query: string;
-  entityTypes?: string[];
-  limit?: number;
+  include?: string[];
+  exclude?: string[];
+  page?: number;
+  records?: number;
+  sort?: string;
+  partition?: string;
+  key?: string;
+  searchType?: string;
 }

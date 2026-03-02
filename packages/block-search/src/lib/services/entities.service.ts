@@ -98,12 +98,15 @@ export function createEntitiesService(transport: Transport, _config: { apiKey: s
       const response = await transport.post<unknown>(`/entities/${uniqueId}/register/`, {
         entity: {
           entity_type: data.entityType,
-          alias: data.alias,
-          description: data.description,
-          avatar_url: data.avatarUrl,
-          url: data.url,
-          source: data.source,
-          payload: data.payload,
+          entity_alias: data.entityAlias,
+          content: data.content,
+          entity_avatar_url: data.entityAvatarUrl,
+          entity_url: data.entityUrl,
+          entity_source: data.entitySource,
+          status: data.status,
+          time_zone: data.timeZone,
+          preferred_language: data.preferredLanguage,
+          slug: data.slug,
         },
       });
       return decodeOne(response, searchEntityMapper);
@@ -112,13 +115,15 @@ export function createEntitiesService(transport: Transport, _config: { apiKey: s
     async update(uniqueId: string, data: UpdateEntityRequest): Promise<SearchEntity> {
       const response = await transport.put<unknown>(`/entities/${uniqueId}/`, {
         entity: {
-          alias: data.alias,
-          description: data.description,
-          avatar_url: data.avatarUrl,
-          url: data.url,
-          source: data.source,
+          entity_alias: data.entityAlias,
+          content: data.content,
+          entity_avatar_url: data.entityAvatarUrl,
+          entity_url: data.entityUrl,
+          entity_source: data.entitySource,
           status: data.status,
-          payload: data.payload,
+          time_zone: data.timeZone,
+          preferred_language: data.preferredLanguage,
+          slug: data.slug,
         },
       });
       return decodeOne(response, searchEntityMapper);
@@ -145,9 +150,16 @@ export function createEntitiesService(transport: Transport, _config: { apiKey: s
 
     async searchByCopilot(data: CopilotSearchRequest): Promise<SearchEntity[]> {
       const response = await transport.post<unknown>('/entities/search', {
-        query: data.query,
-        entity_types: data.entityTypes,
-        limit: data.limit,
+        search: {
+          include: data.include,
+          exclude: data.exclude,
+          page: data.page,
+          records: data.records,
+          sort: data.sort,
+          partition: data.partition,
+          key: data.key,
+          search_type: data.searchType,
+        },
       });
       return decodeMany(response, searchEntityMapper);
     },
