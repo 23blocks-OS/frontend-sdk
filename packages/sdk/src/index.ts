@@ -1,2 +1,2 @@
-// Re-exports all blocks — block-forms aligned with API strong params
+// Re-exports all blocks — search, crm, files, onboarding aligned with API strong params
 export * from './lib/sdk.js';
