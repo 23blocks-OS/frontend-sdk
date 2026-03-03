@@ -60,3 +60,4 @@ export * as wallet from '@23blocks/block-wallet';
 export * as jarvis from '@23blocks/block-jarvis';
 export * as onboarding from '@23blocks/block-onboarding';
 export * as university from '@23blocks/block-university';
+export * as rag from '@23blocks/block-rag';

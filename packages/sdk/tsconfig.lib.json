@@ -12,6 +12,9 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
+      "path": "../block-rag/tsconfig.lib.json"
+    },
+    {
       "path": "../block-university/tsconfig.lib.json"
     },
     {
