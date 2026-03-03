@@ -25,6 +25,7 @@
     "@23blocks/block-jarvis",
     "@23blocks/block-onboarding",
     "@23blocks/block-university",
+    "@23blocks/block-rag",
     "tslib"
   ]
 }

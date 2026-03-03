@@ -27,6 +27,7 @@
   },
   "include": ["src/**/*.ts"],
   "references": [
+    { "path": "../block-rag/tsconfig.lib.json" },
     { "path": "../block-university/tsconfig.lib.json" },
     { "path": "../block-onboarding/tsconfig.lib.json" },
     { "path": "../block-jarvis/tsconfig.lib.json" },

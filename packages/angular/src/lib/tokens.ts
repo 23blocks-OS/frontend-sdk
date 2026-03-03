@@ -18,6 +18,7 @@ import type { JarvisBlockConfig } from '@23blocks/block-jarvis';
 import type { OnboardingBlockConfig } from '@23blocks/block-onboarding';
 import type { UniversityBlockConfig } from '@23blocks/block-university';
 import type { WalletBlockConfig } from '@23blocks/block-wallet';
+import type { RagBlockConfig } from '@23blocks/block-rag';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Transport Tokens (per-service)
@@ -82,6 +83,9 @@ export const ONBOARDING_TRANSPORT = new InjectionToken<Transport | null>('23bloc
 
 /** Transport for University service */
 export const UNIVERSITY_TRANSPORT = new InjectionToken<Transport | null>('23blocks.university.transport');
+
+/** Transport for RAG service */
+export const RAG_TRANSPORT = new InjectionToken<Transport | null>('23blocks.rag.transport');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Config Tokens (per-service)
@@ -211,4 +215,11 @@ export const UNIVERSITY_CONFIG = new InjectionToken<UniversityBlockConfig>(
  */
 export const WALLET_CONFIG = new InjectionToken<WalletBlockConfig>(
   '23blocks.wallet.config'
+);
+
+/**
+ * Injection token for RAG block configuration
+ */
+export const RAG_CONFIG = new InjectionToken<RagBlockConfig>(
+  '23blocks.rag.config'
 );

@@ -19,6 +19,7 @@ import type { WalletBlockConfig } from '@23blocks/block-wallet';
 import type { JarvisBlockConfig } from '@23blocks/block-jarvis';
 import type { OnboardingBlockConfig } from '@23blocks/block-onboarding';
 import type { UniversityBlockConfig } from '@23blocks/block-university';
+import type { RagBlockConfig } from '@23blocks/block-rag';
 import {
   TRANSPORT,
   AUTHENTICATION_CONFIG,
@@ -39,6 +40,7 @@ import {
   JARVIS_CONFIG,
   ONBOARDING_CONFIG,
   UNIVERSITY_CONFIG,
+  RAG_CONFIG,
 } from './tokens';
 
 /**
@@ -64,6 +66,7 @@ export interface Provide23BlocksConfig {
   jarvis?: JarvisBlockConfig;
   onboarding?: OnboardingBlockConfig;
   university?: UniversityBlockConfig;
+  rag?: RagBlockConfig;
 }
 
 /**
@@ -155,6 +158,9 @@ export function provide23Blocks(config: Provide23BlocksConfig): EnvironmentProvi
   if (config.university) {
     providers.push({ provide: UNIVERSITY_CONFIG, useValue: config.university });
   }
+  if (config.rag) {
+    providers.push({ provide: RAG_CONFIG, useValue: config.rag });
+  }
 
   return makeEnvironmentProviders(providers);
 }
@@ -237,6 +243,9 @@ export function get23BlocksProviders(config: Provide23BlocksConfig): Provider[] 
   }
   if (config.university) {
     providers.push({ provide: UNIVERSITY_CONFIG, useValue: config.university });
+  }
+  if (config.rag) {
+    providers.push({ provide: RAG_CONFIG, useValue: config.rag });
   }
 
   return providers;

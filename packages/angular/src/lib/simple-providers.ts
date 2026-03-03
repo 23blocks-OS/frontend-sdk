@@ -23,6 +23,7 @@ import {
   JARVIS_TRANSPORT,
   ONBOARDING_TRANSPORT,
   UNIVERSITY_TRANSPORT,
+  RAG_TRANSPORT,
   // Config tokens
   AUTHENTICATION_CONFIG,
   SEARCH_CONFIG,
@@ -42,6 +43,7 @@ import {
   JARVIS_CONFIG,
   ONBOARDING_CONFIG,
   UNIVERSITY_CONFIG,
+  RAG_CONFIG,
 } from './tokens';
 
 /**
@@ -95,6 +97,8 @@ export interface ServiceUrls {
   onboarding?: string;
   /** University (LMS) service URL */
   university?: string;
+  /** RAG (Retrieval-Augmented Generation) service URL */
+  rag?: string;
 }
 
 /**
@@ -422,6 +426,7 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
     createTransportProvider(JARVIS_TRANSPORT, config.urls.jarvis),
     createTransportProvider(ONBOARDING_TRANSPORT, config.urls.onboarding),
     createTransportProvider(UNIVERSITY_TRANSPORT, config.urls.university),
+    createTransportProvider(RAG_TRANSPORT, config.urls.rag),
 
     // Backward compatibility: provide TRANSPORT token using auth URL if available
     // (for advanced API users who still inject TRANSPORT directly)
@@ -465,6 +470,7 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
     { provide: JARVIS_CONFIG, useValue: blockConfig },
     { provide: ONBOARDING_CONFIG, useValue: blockConfig },
     { provide: UNIVERSITY_CONFIG, useValue: blockConfig },
+    { provide: RAG_CONFIG, useValue: blockConfig },
   ];
 
   return makeEnvironmentProviders(providers);
@@ -545,6 +551,7 @@ export function getBlocks23Providers(config: ProviderConfig): Provider[] {
     createTransportProvider(JARVIS_TRANSPORT, config.urls.jarvis),
     createTransportProvider(ONBOARDING_TRANSPORT, config.urls.onboarding),
     createTransportProvider(UNIVERSITY_TRANSPORT, config.urls.university),
+    createTransportProvider(RAG_TRANSPORT, config.urls.rag),
 
     // Backward compatibility: provide TRANSPORT token using auth URL if available
     {
@@ -585,6 +592,7 @@ export function getBlocks23Providers(config: ProviderConfig): Provider[] {
     { provide: JARVIS_CONFIG, useValue: blockConfig },
     { provide: ONBOARDING_CONFIG, useValue: blockConfig },
     { provide: UNIVERSITY_CONFIG, useValue: blockConfig },
+    { provide: RAG_CONFIG, useValue: blockConfig },
   ];
 }
 

@@ -44,6 +44,7 @@ export {
   JARVIS_TRANSPORT,
   ONBOARDING_TRANSPORT,
   UNIVERSITY_TRANSPORT,
+  RAG_TRANSPORT,
   // Config tokens
   AUTHENTICATION_CONFIG,
   SEARCH_CONFIG,
@@ -63,6 +64,7 @@ export {
   JARVIS_CONFIG,
   ONBOARDING_CONFIG,
   UNIVERSITY_CONFIG,
+  RAG_CONFIG,
 } from './tokens';
 
 // Provider functions (advanced - requires custom transport)
@@ -87,3 +89,4 @@ export { WalletService } from './wallet/index';
 export { JarvisService } from './jarvis/index';
 export { OnboardingService } from './onboarding/index';
 export { UniversityService } from './university/index';
+export { RagService } from './rag/index';
