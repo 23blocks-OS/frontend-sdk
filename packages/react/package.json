@@ -89,6 +89,7 @@
     "@23blocks/block-jarvis": ">=3.3.0",
     "@23blocks/block-onboarding": ">=3.3.0",
     "@23blocks/block-university": ">=3.6.0",
+    "@23blocks/block-rag": ">=1.0.0",
     "@swc/helpers": "~0.5.11"
   },
   "peerDependencies": {

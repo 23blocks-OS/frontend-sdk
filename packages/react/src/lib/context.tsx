@@ -18,6 +18,7 @@ import { createWalletBlock, type WalletBlock, type WalletBlockConfig } from '@23
 import { createJarvisBlock, type JarvisBlock, type JarvisBlockConfig } from '@23blocks/block-jarvis';
 import { createOnboardingBlock, type OnboardingBlock, type OnboardingBlockConfig } from '@23blocks/block-onboarding';
 import { createUniversityBlock, type UniversityBlock, type UniversityBlockConfig } from '@23blocks/block-university';
+import { createRagBlock, type RagBlock, type RagBlockConfig } from '@23blocks/block-rag';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Context Types
@@ -43,6 +44,7 @@ export interface Blocks23Context {
   jarvis: JarvisBlock | null;
   onboarding: OnboardingBlock | null;
   university: UniversityBlock | null;
+  rag: RagBlock | null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -76,6 +78,7 @@ export interface Blocks23ProviderProps {
   jarvis?: JarvisBlockConfig;
   onboarding?: OnboardingBlockConfig;
   university?: UniversityBlockConfig;
+  rag?: RagBlockConfig;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -133,6 +136,7 @@ export function Blocks23Provider({
   jarvis,
   onboarding,
   university,
+  rag,
 }: Blocks23ProviderProps) {
   const value = useMemo<Blocks23Context>(() => ({
     transport,
@@ -154,7 +158,8 @@ export function Blocks23Provider({
     jarvis: jarvis ? createJarvisBlock(transport, jarvis) : null,
     onboarding: onboarding ? createOnboardingBlock(transport, onboarding) : null,
     university: university ? createUniversityBlock(transport, university) : null,
-  }), [transport, authentication, search, products, crm, content, geolocation, conversations, files, forms, assets, campaigns, company, rewards, sales, wallet, jarvis, onboarding, university]);
+    rag: rag ? createRagBlock(transport, rag) : null,
+  }), [transport, authentication, search, products, crm, content, geolocation, conversations, files, forms, assets, campaigns, company, rewards, sales, wallet, jarvis, onboarding, university, rag]);
 
   return (
     <Blocks23ContextInternal.Provider value={value}>
@@ -285,4 +290,10 @@ export function useUniversityBlock(): UniversityBlock {
   const { university } = use23Blocks();
   if (!university) throw new Error('University block not configured. Pass `university` prop to Blocks23Provider.');
   return university;
+}
+
+export function useRagBlock(): RagBlock {
+  const { rag } = use23Blocks();
+  if (!rag) throw new Error('RAG block not configured. Pass `rag` prop to Blocks23Provider.');
+  return rag;
 }
