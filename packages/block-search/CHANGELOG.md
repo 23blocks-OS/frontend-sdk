@@ -1,3 +1,10 @@
+## 6.0.1 (2026-03-03)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/jsonapi-codec to 3.3.2
+- Updated @23blocks/contracts to 2.3.2
+
 # 6.0.0 (2026-03-02)
 
 This was a version bump only for @23blocks/block-search to align it with other projects, there were no code changes.
