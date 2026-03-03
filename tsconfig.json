@@ -38,6 +38,9 @@
     },
     {
       "path": "./packages/testing"
+    },
+    {
+      "path": "./packages/block-rag"
     }
   ]
 }

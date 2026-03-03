@@ -35,6 +35,7 @@
       "@23blocks/block-assets": ["packages/block-assets/src/index.ts"],
       "@23blocks/block-wallet": ["packages/block-wallet/src/index.ts"],
       "@23blocks/block-jarvis": ["packages/block-jarvis/src/index.ts"],
+      "@23blocks/block-rag": ["packages/block-rag/src/index.ts"],
       "@23blocks/angular": ["packages/angular/src/index.ts"],
       "@23blocks/react": ["packages/react/src/index.ts"],
       "@23blocks/sdk": ["packages/sdk/src/index.ts"],

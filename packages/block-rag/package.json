@@ -1,0 +1,68 @@
+{
+  "name": "@23blocks/block-rag",
+  "version": "1.0.0",
+  "description": "RAG block for 23blocks SDK - vector search, document processing, image search, product identification",
+  "license": "MIT",
+  "author": "23blocks <hello@23blocks.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/23blocks-OS/frontend-sdk.git",
+    "directory": "packages/block-rag"
+  },
+  "homepage": "https://github.com/23blocks-OS/frontend-sdk/tree/main/packages/block-rag",
+  "bugs": {
+    "url": "https://github.com/23blocks-OS/frontend-sdk/issues"
+  },
+  "keywords": [
+    "23blocks",
+    "sdk",
+    "rag",
+    "vector-search",
+    "document-processing",
+    "image-search",
+    "product-identification"
+  ],
+  "type": "module",
+  "main": "./dist/index.esm.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "default": "./dist/index.esm.js"
+    }
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md",
+    "!**/*.tsbuildinfo"
+  ],
+  "nx": {
+    "sourceRoot": "packages/block-rag/src",
+    "targets": {
+      "build": {
+        "executor": "@nx/rollup:rollup",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "options": {
+          "outputPath": "packages/block-rag/dist",
+          "main": "packages/block-rag/src/index.ts",
+          "tsConfig": "packages/block-rag/tsconfig.lib.json",
+          "compiler": "swc",
+          "format": [
+            "esm"
+          ]
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@23blocks/contracts": "*",
+    "@23blocks/jsonapi-codec": "*",
+    "@swc/helpers": "~0.5.11"
+  }
+}
