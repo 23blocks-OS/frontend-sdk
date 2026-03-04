@@ -1,3 +1,14 @@
+## 12.1.2 (2026-03-04)
+
+### 📖 Documentation
+
+- add block-rag to llms.txt documentation (19 blocks) ([909382c](https://github.com/23blocks-OS/frontend-sdk/commit/909382c))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 12.1.1 (2026-03-04)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,7 @@
+## 13.1.2 (2026-03-04)
+
+This was a version bump only for @23blocks/angular to align it with other projects, there were no code changes.
+
 ## 13.1.1 (2026-03-04)
 
 ### 🧱 Updated Dependencies
