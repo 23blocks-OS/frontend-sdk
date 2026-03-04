@@ -1,3 +1,14 @@
+## 2.0.1 (2026-03-04)
+
+### 🩹 Fixes
+
+- **@23blocks/block-rag:** add README and npm keywords ([f743483](https://github.com/23blocks-OS/frontend-sdk/commit/f743483))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 2.0.0 (2026-03-03)
 
 ### 🚀 Features

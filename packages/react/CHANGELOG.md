@@ -1,3 +1,9 @@
+## 13.1.1 (2026-03-04)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-rag to 2.0.1
+
 ## 13.1.0 (2026-03-03)
 
 ### 🚀 Features
