@@ -1,3 +1,4 @@
+// Products block aligned with backend strong params
 import { Injectable, Inject, Optional } from '@angular/core';
 import type { Transport } from '@23blocks/contracts';
 import {
