@@ -1,3 +1,24 @@
+# 13.0.0 (2026-03-05)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/sdk:** rebuild with products block strong params alignment ([d2c9edc](https://github.com/23blocks-OS/frontend-sdk/commit/d2c9edc))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/sdk:** rebuild with products block strong params alignment  ([d2c9edc](https://github.com/23blocks-OS/frontend-sdk/commit/d2c9edc))
+  Bundles updated @23blocks/block-products with breaking type/service changes.
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-products to 5.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 12.1.2 (2026-03-04)
 
 ### 📖 Documentation

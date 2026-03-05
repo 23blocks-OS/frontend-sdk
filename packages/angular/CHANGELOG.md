@@ -1,3 +1,24 @@
+# 14.0.0 (2026-03-05)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/angular:** rebuild with products block strong params alignment ([aef50bd](https://github.com/23blocks-OS/frontend-sdk/commit/aef50bd))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/angular:** rebuild with products block strong params alignment  ([aef50bd](https://github.com/23blocks-OS/frontend-sdk/commit/aef50bd))
+  Bundles updated @23blocks/block-products with breaking type/service changes.
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-products to 5.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 13.1.2 (2026-03-04)
 
 This was a version bump only for @23blocks/angular to align it with other projects, there were no code changes.

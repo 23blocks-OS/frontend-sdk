@@ -1,3 +1,24 @@
+# 14.0.0 (2026-03-05)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/react:** rebuild with products block strong params alignment ([28063f5](https://github.com/23blocks-OS/frontend-sdk/commit/28063f5))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/react:** rebuild with products block strong params alignment  ([28063f5](https://github.com/23blocks-OS/frontend-sdk/commit/28063f5))
+  Bundles updated @23blocks/block-products with breaking type/service changes.
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-products to 5.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 13.1.2 (2026-03-04)
 
 This was a version bump only for @23blocks/react to align it with other projects, there were no code changes.

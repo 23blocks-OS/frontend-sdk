@@ -1,3 +1,25 @@
+# 5.0.0 (2026-03-05)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/block-products:** align all types and services with backend strong params ([81e33ae](https://github.com/23blocks-OS/frontend-sdk/commit/81e33ae))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-products:** align all types and services with backend strong params  ([81e33ae](https://github.com/23blocks-OS/frontend-sdk/commit/81e33ae))
+  Request types and service bodies overhauled to match backend strong params.
+  Removed fields that don't exist in backend, added missing fields, fixed root keys,
+  renamed mismatched fields. Added new services: tags, catalogs, category-images.
+  Key changes: product request fields expanded, cart uses sku instead of product IDs,
+  product-sets root key fixed (product_set→set), mycarts root keys fixed,
+  reviews use comment instead of title/content, stock uses available instead of quantity.
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 4.0.1 (2026-03-03)
 
 ### 🧱 Updated Dependencies
