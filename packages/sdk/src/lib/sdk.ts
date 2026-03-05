@@ -57,7 +57,7 @@ export * as company from '@23blocks/block-company';
 export * as rewards from '@23blocks/block-rewards';
 export * as sales from '@23blocks/block-sales';
 export * as wallet from '@23blocks/block-wallet';
-export * as jarvis from '@23blocks/block-jarvis';
+export * as jarvis from '@23blocks/block-jarvis'; // includes analytics service
 export * as onboarding from '@23blocks/block-onboarding';
 export * as university from '@23blocks/block-university';
 export * as rag from '@23blocks/block-rag';
