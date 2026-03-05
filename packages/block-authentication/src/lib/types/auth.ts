@@ -89,6 +89,33 @@ export interface PasswordUpdateRequest {
 }
 
 /**
+ * OTP-based password reset request (mobile flow).
+ * Sends a 6-digit OTP code to the user's email.
+ */
+export interface PasswordOtpRequest {
+  email: string;
+}
+
+/**
+ * OTP-based password reset response.
+ */
+export interface PasswordOtpResponse {
+  status: string;
+  emailHint: string;
+  expiresIn: number;
+  message: string;
+}
+
+/**
+ * OTP verification request for password reset.
+ * Returns a scoped JWT (`password:reset`) that can be used with `updatePassword()`.
+ */
+export interface PasswordOtpVerifyRequest {
+  email: string;
+  code: string;
+}
+
+/**
  * Token validation response.
  *
  * @note The `user` object does NOT include relationships (role, avatar, profile).

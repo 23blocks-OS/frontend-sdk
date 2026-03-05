@@ -7,6 +7,9 @@ import type {
   SignUpResponse,
   PasswordResetRequest,
   PasswordUpdateRequest,
+  PasswordOtpRequest,
+  PasswordOtpResponse,
+  PasswordOtpVerifyRequest,
   TokenValidationResponse,
   RefreshTokenRequest,
   RefreshTokenResponse,
@@ -95,6 +98,26 @@ export interface AuthService {
    * @param request - Provide `resetPasswordToken` for reset flow, or `currentPassword` for change flow.
    */
   updatePassword(request: PasswordUpdateRequest): Promise<void>;
+
+  /**
+   * Request a 6-digit OTP code for password reset (mobile flow).
+   * The OTP is sent to the user's email address.
+   *
+   * @returns PasswordOtpResponse with `status`, `emailHint`, `expiresIn`, and `message`.
+   */
+  requestPasswordOtp(request: PasswordOtpRequest): Promise<PasswordOtpResponse>;
+
+  /**
+   * Verify the OTP code and receive a scoped JWT for password reset.
+   * Use the returned `accessToken` (with `password:reset` scope) to call `updatePassword()`.
+   *
+   * @returns SignInResponse with `user`, `accessToken` (scoped to `password:reset`).
+   * @example
+   * const { accessToken } = await auth.auth.verifyPasswordOtp({ email, code });
+   * // Use the scoped token to update password
+   * await auth.auth.updatePassword({ password: 'new', passwordConfirmation: 'new' });
+   */
+  verifyPasswordOtp(request: PasswordOtpVerifyRequest): Promise<SignInResponse>;
 
   /**
    * Refresh the access token using a refresh token.
@@ -274,6 +297,49 @@ export function createAuthService(
         reset_password_token: request.resetPasswordToken,
         current_password: request.currentPassword,
       });
+    },
+
+    async requestPasswordOtp(request: PasswordOtpRequest): Promise<PasswordOtpResponse> {
+      const response = await transport.post<{
+        data: {
+          attributes: {
+            status: string;
+            email_hint: string;
+            expires_in: number;
+          };
+        };
+        meta?: { message?: string };
+      }>('/auth/password/otp', {
+        email: request.email,
+      });
+
+      const attrs = response.data.attributes;
+      return {
+        status: attrs.status,
+        emailHint: attrs.email_hint,
+        expiresIn: attrs.expires_in,
+        message: response.meta?.message ?? '',
+      };
+    },
+
+    async verifyPasswordOtp(request: PasswordOtpVerifyRequest): Promise<SignInResponse> {
+      const response = await transport.post<{
+        data: unknown;
+        meta?: { auth?: { access_token?: string; refresh_token?: string; expires_in?: number }; access_token?: string; refresh_token?: string; expires_in?: number };
+      }>('/auth/password/otp/verify', {
+        email: request.email,
+        code: request.code,
+      });
+
+      const user = decodeOne(response, userMapper);
+
+      return {
+        user,
+        accessToken: response.meta?.auth?.access_token ?? response.meta?.access_token ?? '',
+        refreshToken: response.meta?.auth?.refresh_token ?? response.meta?.refresh_token,
+        tokenType: 'Bearer',
+        expiresIn: response.meta?.auth?.expires_in ?? response.meta?.expires_in,
+      };
     },
 
     async refreshToken(request: RefreshTokenRequest): Promise<RefreshTokenResponse> {
