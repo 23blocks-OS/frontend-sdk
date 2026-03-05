@@ -274,6 +274,7 @@ export function useWalletBlock(): WalletBlock {
   return wallet;
 }
 
+/** Returns the Jarvis block with all sub-services including analytics. */
 export function useJarvisBlock(): JarvisBlock {
   const { jarvis } = use23Blocks();
   if (!jarvis) throw new Error('Jarvis block not configured. Pass `jarvis` prop to Blocks23Provider.');
