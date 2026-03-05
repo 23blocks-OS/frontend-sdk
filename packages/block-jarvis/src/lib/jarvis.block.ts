@@ -22,6 +22,7 @@ import {
   createAgentToolAssignmentsService,
   createConditionsService,
   createStepTransitionsService,
+  createAnalyticsService,
   type AgentsService,
   type PromptsService,
   type WorkflowsService,
@@ -44,6 +45,7 @@ import {
   type AgentToolAssignmentsService,
   type ConditionsService,
   type StepTransitionsService,
+  type AnalyticsService,
 } from './services/index.js';
 
 export interface JarvisBlockConfig extends BlockConfig {
@@ -79,6 +81,7 @@ export interface JarvisBlock {
   agentToolAssignments: AgentToolAssignmentsService;
   conditions: ConditionsService;
   stepTransitions: StepTransitionsService;
+  analytics: AnalyticsService;
   health(): Promise<HealthCheckResponse>;
 }
 
@@ -109,6 +112,7 @@ export function createJarvisBlock(
     agentToolAssignments: createAgentToolAssignmentsService(transport, config),
     conditions: createConditionsService(transport, config),
     stepTransitions: createStepTransitionsService(transport, config),
+    analytics: createAnalyticsService(transport, config),
     health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }

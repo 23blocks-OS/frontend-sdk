@@ -20,3 +20,4 @@ export * from './agent-tools.service.js';
 export * from './agent-tool-assignments.service.js';
 export * from './conditions.service.js';
 export * from './step-transitions.service.js';
+export * from './analytics.service.js';

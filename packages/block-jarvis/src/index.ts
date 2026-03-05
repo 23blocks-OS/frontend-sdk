@@ -108,6 +108,18 @@ export type {
   CreateExecutionCommentRequest,
   UpdateExecutionCommentRequest,
   ListExecutionCommentsParams,
+  // Analytics types
+  AnalyticsDateRange,
+  AnalyticsOverview,
+  AnalyticsUsageParams,
+  AnalyticsUsageItem,
+  AnalyticsCostParams,
+  AnalyticsCostItem,
+  AnalyticsFeedback,
+  AnalyticsConversations,
+  AnalyticsRag,
+  AnalyticsAgentItem,
+  AnalyticsTrace,
 } from './lib/types/index.js';
 
 // Services
@@ -129,6 +141,7 @@ export type {
   MarvinChatService,
   PromptCommentsService,
   ExecutionCommentsService,
+  AnalyticsService,
 } from './lib/services/index.js';
 
 export {
@@ -149,6 +162,7 @@ export {
   createMarvinChatService,
   createPromptCommentsService,
   createExecutionCommentsService,
+  createAnalyticsService,
 } from './lib/services/index.js';
 
 // Mappers (for advanced use cases)
