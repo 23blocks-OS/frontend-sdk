@@ -13,6 +13,9 @@ import {
   type RefreshTokenResponse,
   type MagicLinkVerifyRequest,
   type AcceptInvitationRequest,
+  type PasswordOtpRequest,
+  type PasswordOtpResponse,
+  type PasswordOtpVerifyRequest,
   type OAuthSocialLoginRequest,
   type TenantLoginRequest,
 } from '@23blocks/block-authentication';
@@ -220,6 +223,31 @@ export class AuthenticationService {
     );
   }
 
+  /**
+   * Request a 6-digit OTP code for password reset (mobile flow).
+   * The OTP is sent to the user's email address.
+   *
+   * @param request - Contains `email` address to send OTP to
+   * @returns Observable emitting PasswordOtpResponse with `status`, `emailHint`, `expiresIn`, `message`
+   */
+  requestPasswordOtp(request: PasswordOtpRequest): Observable<PasswordOtpResponse> {
+    return from(this.ensureConfigured().auth.requestPasswordOtp(request));
+  }
+
+  /**
+   * Verify the OTP code and receive a scoped JWT for password reset.
+   * Automatically stores the scoped token in token mode.
+   * Use the returned token with `auth.auth.updatePassword()` to complete the reset.
+   *
+   * @param request - Contains `email` and 6-digit `code`
+   * @returns Observable emitting SignInResponse with `user` and scoped `accessToken` (`password:reset`)
+   */
+  verifyPasswordOtp(request: PasswordOtpVerifyRequest): Observable<SignInResponse> {
+    return from(this.ensureConfigured().auth.verifyPasswordOtp(request)).pipe(
+      tap((response) => this.storeTokens(response))
+    );
+  }
+
   // ─────────────────────────────────────────────────────────────────────────────
   // Token Management (only applicable with provideBlocks23)
   // ─────────────────────────────────────────────────────────────────────────────
@@ -281,7 +309,7 @@ export class AuthenticationService {
   // Delegated sub-services (Promise-based, auto-sync with block API)
   // ─────────────────────────────────────────────────────────────────────────────
 
-  /** Core auth operations (signIn, signUp, signOut, password reset, magic links, invitations). Promise-based. */
+  /** Core auth operations (signIn, signUp, signOut, password reset link+OTP, magic links, invitations). Promise-based. */
   get auth() { return this.ensureConfigured().auth; }
   /** User CRUD, listing, search, and profile management */
   get users() { return this.ensureConfigured().users; }
