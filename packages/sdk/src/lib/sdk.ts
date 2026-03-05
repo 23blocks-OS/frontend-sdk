@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API)
+// Client Factory (Recommended API) — products block aligned with backend strong params
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
