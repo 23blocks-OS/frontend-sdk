@@ -7,6 +7,9 @@ import type {
   SignUpResponse,
   PasswordResetRequest,
   PasswordUpdateRequest,
+  PasswordOtpRequest,
+  PasswordOtpResponse,
+  PasswordOtpVerifyRequest,
   RefreshTokenRequest,
   RefreshTokenResponse,
   MagicLinkRequest,
@@ -42,6 +45,8 @@ export interface UseAuthActions {
   signOut: () => Promise<void>;
   requestPasswordReset: (request: PasswordResetRequest) => Promise<void>;
   updatePassword: (request: PasswordUpdateRequest) => Promise<void>;
+  requestPasswordOtp: (request: PasswordOtpRequest) => Promise<PasswordOtpResponse>;
+  verifyPasswordOtp: (request: PasswordOtpVerifyRequest) => Promise<SignInResponse>;
   refreshUser: () => Promise<void>;
   refreshToken: (request: RefreshTokenRequest) => Promise<RefreshTokenResponse>;
   requestMagicLink: (request: MagicLinkRequest) => Promise<void>;
@@ -170,6 +175,36 @@ export function useAuth(): UseAuthReturn {
     setError(null);
     try {
       await block.auth.updatePassword(request);
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      setError(error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [block.auth]);
+
+  const requestPasswordOtp = useCallback(async (request: PasswordOtpRequest): Promise<PasswordOtpResponse> => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      return await block.auth.requestPasswordOtp(request);
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      setError(error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [block.auth]);
+
+  const verifyPasswordOtp = useCallback(async (request: PasswordOtpVerifyRequest): Promise<SignInResponse> => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await block.auth.verifyPasswordOtp(request);
+      setUser(response.user);
+      return response;
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);
@@ -387,6 +422,8 @@ export function useAuth(): UseAuthReturn {
     signOut,
     requestPasswordReset,
     updatePassword,
+    requestPasswordOtp,
+    verifyPasswordOtp,
     refreshUser,
     refreshToken,
     requestMagicLink,
