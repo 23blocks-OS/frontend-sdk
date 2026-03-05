@@ -8,6 +8,7 @@ import {
   type SignUpResponse,
   type MagicLinkVerifyRequest,
   type AcceptInvitationRequest,
+  type PasswordOtpVerifyRequest,
 } from '@23blocks/block-authentication';
 import { createSearchBlock, type SearchBlock } from '@23blocks/block-search';
 import { createProductsBlock, type ProductsBlock } from '@23blocks/block-products';
@@ -139,7 +140,7 @@ export interface ClientConfig {
 /**
  * Auth service wrapper with automatic token management
  */
-export interface ManagedAuthService extends Omit<AuthenticationBlock['auth'], 'signIn' | 'signUp' | 'signOut' | 'verifyMagicLink' | 'acceptInvitation'> {
+export interface ManagedAuthService extends Omit<AuthenticationBlock['auth'], 'signIn' | 'signUp' | 'signOut' | 'verifyMagicLink' | 'acceptInvitation' | 'verifyPasswordOtp'> {
   /**
    * Sign in and automatically store tokens (token mode) or let backend set cookies (cookie mode)
    */
@@ -164,6 +165,11 @@ export interface ManagedAuthService extends Omit<AuthenticationBlock['auth'], 's
    * Accept invitation and store tokens
    */
   acceptInvitation(request: AcceptInvitationRequest): Promise<SignInResponse>;
+
+  /**
+   * Verify OTP code for password reset and store scoped token
+   */
+  verifyPasswordOtp(request: PasswordOtpVerifyRequest): Promise<SignInResponse>;
 }
 
 /**
@@ -594,10 +600,19 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
           return response;
         },
 
+        async verifyPasswordOtp(request: PasswordOtpVerifyRequest): Promise<SignInResponse> {
+          const response = await authenticationBlock.auth.verifyPasswordOtp(request);
+          if (authMode === 'token' && tokenManager && response.accessToken) {
+            tokenManager.setTokens(response.accessToken, response.refreshToken);
+          }
+          return response;
+        },
+
         validateToken: authenticationBlock.auth.validateToken.bind(authenticationBlock.auth),
         getCurrentUser: authenticationBlock.auth.getCurrentUser.bind(authenticationBlock.auth),
         requestPasswordReset: authenticationBlock.auth.requestPasswordReset.bind(authenticationBlock.auth),
         updatePassword: authenticationBlock.auth.updatePassword.bind(authenticationBlock.auth),
+        requestPasswordOtp: authenticationBlock.auth.requestPasswordOtp.bind(authenticationBlock.auth),
         refreshToken: authenticationBlock.auth.refreshToken.bind(authenticationBlock.auth),
         requestMagicLink: authenticationBlock.auth.requestMagicLink.bind(authenticationBlock.auth),
         sendInvitation: authenticationBlock.auth.sendInvitation.bind(authenticationBlock.auth),

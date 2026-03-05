@@ -318,7 +318,7 @@ const [authHealth, crmHealth] = await Promise.all([
 ## All 19 Blocks and Their Sub-Services
 
 ### authentication (block-authentication)
-- `auth` - Sign in, sign up, sign out, password reset, magic links, invitations, email confirmation
+- `auth` - Sign in, sign up, sign out, password reset (link + OTP), magic links, invitations, email confirmation
 - `users` - List, get, update, delete, activate/deactivate, change role, search, profile, devices, companies
 - `roles` - CRUD roles, manage permissions per role
 - `permissions` - CRUD standalone permissions
