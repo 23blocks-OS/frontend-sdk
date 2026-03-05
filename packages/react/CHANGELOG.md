@@ -1,3 +1,18 @@
+## 14.1.0 (2026-03-05)
+
+### 🚀 Features
+
+- **@23blocks/react:** add OTP password reset to useAuth hook ([20db7f2](https://github.com/23blocks-OS/frontend-sdk/commit/20db7f2))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.2.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 14.0.0 (2026-03-05)
 
 ### 🚀 Features

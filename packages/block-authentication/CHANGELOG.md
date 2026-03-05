@@ -1,3 +1,14 @@
+## 7.2.0 (2026-03-05)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** add OTP-based password reset for mobile apps ([b8cd80b](https://github.com/23blocks-OS/frontend-sdk/commit/b8cd80b))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 7.1.1 (2026-03-03)
 
 ### 🧱 Updated Dependencies

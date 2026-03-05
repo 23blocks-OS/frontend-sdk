@@ -1,3 +1,18 @@
+## 14.1.0 (2026-03-05)
+
+### 🚀 Features
+
+- **@23blocks/angular:** add OTP password reset Observable methods ([b33f190](https://github.com/23blocks-OS/frontend-sdk/commit/b33f190))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.2.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 14.0.0 (2026-03-05)
 
 ### 🚀 Features

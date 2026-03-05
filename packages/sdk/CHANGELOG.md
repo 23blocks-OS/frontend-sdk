@@ -1,3 +1,18 @@
+## 13.1.0 (2026-03-05)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** add OTP password reset to managed auth service ([62a2a71](https://github.com/23blocks-OS/frontend-sdk/commit/62a2a71))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.2.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 # 13.0.0 (2026-03-05)
 
 ### 🚀 Features
