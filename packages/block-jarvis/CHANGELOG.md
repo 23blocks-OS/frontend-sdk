@@ -1,3 +1,14 @@
+## 5.1.0 (2026-03-05)
+
+### 🚀 Features
+
+- **@23blocks/block-jarvis:** add analytics service with 8 dashboard endpoints ([3738d58](https://github.com/23blocks-OS/frontend-sdk/commit/3738d58))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 5.0.1 (2026-03-03)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,18 @@
+## 13.2.0 (2026-03-05)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with jarvis analytics service ([6fd200f](https://github.com/23blocks-OS/frontend-sdk/commit/6fd200f))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.1.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 13.1.0 (2026-03-05)
 
 ### 🚀 Features
