@@ -512,6 +512,7 @@ const [authHealth, crmHealth] = await Promise.all([
 - `users` - Jarvis user management
 - `mailTemplates` - AI email templates
 - `marvinChat` - Chat interface
+- `analytics` - Dashboard analytics and reporting (overview, usage, costs, feedback, conversations, RAG, agents, trace)
 
 ### onboarding (block-onboarding)
 - `onboardings`, `flows` - Onboarding flow definitions
