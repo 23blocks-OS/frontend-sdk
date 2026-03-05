@@ -77,14 +77,11 @@ export function createProductFiltersService(transport: Transport, _config: { api
       const response = await transport.post<unknown>('/filters/', {
         filter: {
           name: data.name,
-          filter_key: data.filterKey,
-          filter_type: data.filterType,
-          options: data.options,
-          min_value: data.minValue,
-          max_value: data.maxValue,
-          sort_order: data.sortOrder,
-          is_active: data.isActive,
-          payload: data.payload,
+          value: data.value,
+          order: data.order,
+          icon_url: data.iconUrl,
+          image_url: data.imageUrl,
+          language: data.language,
         },
       });
       return decodeOne(response, productFilterMapper);
@@ -94,15 +91,12 @@ export function createProductFiltersService(transport: Transport, _config: { api
       const response = await transport.put<unknown>(`/filters/${uniqueId}`, {
         filter: {
           name: data.name,
-          filter_key: data.filterKey,
-          filter_type: data.filterType,
-          options: data.options,
-          min_value: data.minValue,
-          max_value: data.maxValue,
-          sort_order: data.sortOrder,
-          is_active: data.isActive,
+          value: data.value,
+          order: data.order,
+          icon_url: data.iconUrl,
+          image_url: data.imageUrl,
+          language: data.language,
           status: data.status,
-          payload: data.payload,
         },
       });
       return decodeOne(response, productFilterMapper);

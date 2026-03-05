@@ -6,17 +6,33 @@ import { productStockMapper } from '../mappers/product.mapper.js';
 export interface CreateStockRequest {
   vendorUniqueId: string;
   warehouseUniqueId: string;
-  quantity: number;
-  minQuantity?: number;
-  maxQuantity?: number;
-  reorderPoint?: number;
+  available: number;
+  reserved?: number;
+  enforceAvailability?: boolean;
+  stockUnit?: string;
+  priority?: number;
+  onTransaction?: number;
+  onTransit?: number;
+  prime?: boolean;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
 }
 
 export interface UpdateStockRequest {
-  quantity?: number;
-  minQuantity?: number;
-  maxQuantity?: number;
-  reorderPoint?: number;
+  available?: number;
+  reserved?: number;
+  enforceAvailability?: boolean;
+  stockUnit?: string;
+  priority?: number;
+  onTransaction?: number;
+  onTransit?: number;
+  prime?: boolean;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
 }
 
 export interface SearchStockParams {
@@ -102,10 +118,18 @@ export function createStockService(transport: Transport, _config: { apiKey: stri
         stock: {
           vendor_unique_id: data.vendorUniqueId,
           warehouse_unique_id: data.warehouseUniqueId,
-          quantity: data.quantity,
-          min_quantity: data.minQuantity,
-          max_quantity: data.maxQuantity,
-          reorder_point: data.reorderPoint,
+          available: data.available,
+          reserved: data.reserved,
+          enforce_availability: data.enforceAvailability,
+          stock_unit: data.stockUnit,
+          priority: data.priority,
+          on_transaction: data.onTransaction,
+          on_transit: data.onTransit,
+          prime: data.prime,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, productStockMapper);
@@ -114,10 +138,18 @@ export function createStockService(transport: Transport, _config: { apiKey: stri
     async update(productUniqueId: string, stockUniqueId: string, data: UpdateStockRequest): Promise<ProductStock> {
       const response = await transport.put<unknown>(`/products/${productUniqueId}/stock/${stockUniqueId}`, {
         stock: {
-          quantity: data.quantity,
-          min_quantity: data.minQuantity,
-          max_quantity: data.maxQuantity,
-          reorder_point: data.reorderPoint,
+          available: data.available,
+          reserved: data.reserved,
+          enforce_availability: data.enforceAvailability,
+          stock_unit: data.stockUnit,
+          priority: data.priority,
+          on_transaction: data.onTransaction,
+          on_transit: data.onTransit,
+          prime: data.prime,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, productStockMapper);
@@ -125,14 +157,14 @@ export function createStockService(transport: Transport, _config: { apiKey: stri
 
     async updateWithDetails(vendorUniqueId: string, warehouseUniqueId: string, productUniqueId: string, quantity: number): Promise<ProductStock> {
       const response = await transport.put<unknown>(`/vendors/${vendorUniqueId}/warehouses/${warehouseUniqueId}/products/${productUniqueId}`, {
-        stock: { quantity },
+        stock: { available: quantity },
       });
       return decodeOne(response, productStockMapper);
     },
 
     async updateVariationWithDetails(vendorUniqueId: string, warehouseUniqueId: string, productUniqueId: string, variationUniqueId: string, quantity: number): Promise<ProductStock> {
       const response = await transport.put<unknown>(`/vendors/${vendorUniqueId}/warehouses/${warehouseUniqueId}/products/${productUniqueId}/variations/${variationUniqueId}`, {
-        stock: { quantity },
+        stock: { available: quantity },
       });
       return decodeOne(response, productStockMapper);
     },

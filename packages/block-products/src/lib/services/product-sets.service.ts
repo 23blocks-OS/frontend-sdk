@@ -107,14 +107,26 @@ export function createProductSetsService(transport: Transport, _config: { apiKey
 
     async create(data: CreateProductSetRequest): Promise<ProductSet> {
       const response = await transport.post<unknown>('/sets/', {
-        product_set: {
+        set: {
           name: data.name,
           description: data.description,
           sku: data.sku,
           price: data.price,
-          discount_price: data.discountPrice,
           image_url: data.imageUrl,
-          payload: data.payload,
+          code: data.code,
+          content_url: data.contentUrl,
+          media_url: data.mediaUrl,
+          tax: data.tax,
+          discount: data.discount,
+          status: data.status,
+          open_price: data.openPrice,
+          open_stock: data.openStock,
+          qcode: data.qcode,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          category_unique_id: data.categoryUniqueId,
         },
       });
       return decodeOne(response, productSetMapper);
@@ -122,16 +134,26 @@ export function createProductSetsService(transport: Transport, _config: { apiKey
 
     async update(uniqueId: string, data: UpdateProductSetRequest): Promise<ProductSet> {
       const response = await transport.put<unknown>(`/sets/${uniqueId}`, {
-        product_set: {
+        set: {
           name: data.name,
           description: data.description,
           sku: data.sku,
           price: data.price,
-          discount_price: data.discountPrice,
           image_url: data.imageUrl,
-          enabled: data.enabled,
+          code: data.code,
+          content_url: data.contentUrl,
+          media_url: data.mediaUrl,
+          tax: data.tax,
+          discount: data.discount,
           status: data.status,
-          payload: data.payload,
+          open_price: data.openPrice,
+          open_stock: data.openStock,
+          qcode: data.qcode,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          category_unique_id: data.categoryUniqueId,
         },
       });
       return decodeOne(response, productSetMapper);

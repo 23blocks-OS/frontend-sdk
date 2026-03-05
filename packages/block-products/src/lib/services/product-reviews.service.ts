@@ -1,20 +1,17 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
-import type { ProductReview } from '../types/product.js';
+import type { ProductReview, ReviewModerationRequest } from '../types/product.js';
 import { productReviewMapper } from '../mappers/product.mapper.js';
 
 export interface CreateReviewRequest {
   rating: number;
-  title?: string;
-  content?: string;
-  payload?: Record<string, unknown>;
+  comment?: string;
 }
 
 export interface UpdateReviewRequest {
   rating?: number;
-  title?: string;
-  content?: string;
-  payload?: Record<string, unknown>;
+  comment?: string;
+  moderationNotes?: string;
 }
 
 export interface ProductReviewsService {
@@ -59,6 +56,7 @@ export interface ProductReviewsService {
    * @returns The flagged ProductReview
    */
   flag(productUniqueId: string, reviewUniqueId: string): Promise<ProductReview>;
+  moderate(productUniqueId: string, reviewUniqueId: string, data: ReviewModerationRequest): Promise<ProductReview>;
 
   /**
    * List all reviews submitted by a specific user.
@@ -85,9 +83,7 @@ export function createProductReviewsService(transport: Transport, _config: { api
       const response = await transport.post<unknown>(`/products/${productUniqueId}/reviews`, {
         review: {
           rating: data.rating,
-          title: data.title,
-          content: data.content,
-          payload: data.payload,
+          comment: data.comment,
         },
       });
       return decodeOne(response, productReviewMapper);
@@ -97,9 +93,8 @@ export function createProductReviewsService(transport: Transport, _config: { api
       const response = await transport.put<unknown>(`/products/${productUniqueId}/reviews/${reviewUniqueId}`, {
         review: {
           rating: data.rating,
-          title: data.title,
-          content: data.content,
-          payload: data.payload,
+          comment: data.comment,
+          moderation_notes: data.moderationNotes,
         },
       });
       return decodeOne(response, productReviewMapper);
@@ -111,6 +106,16 @@ export function createProductReviewsService(transport: Transport, _config: { api
 
     async flag(productUniqueId: string, reviewUniqueId: string): Promise<ProductReview> {
       const response = await transport.put<unknown>(`/products/${productUniqueId}/reviews/${reviewUniqueId}/flag`, {});
+      return decodeOne(response, productReviewMapper);
+    },
+
+    async moderate(productUniqueId: string, reviewUniqueId: string, data: ReviewModerationRequest): Promise<ProductReview> {
+      const response = await transport.put<unknown>(`/products/${productUniqueId}/reviews/${reviewUniqueId}/moderate`, {
+        review: {
+          status: data.status,
+          moderation_notes: data.moderationNotes,
+        },
+      });
       return decodeOne(response, productReviewMapper);
     },
 

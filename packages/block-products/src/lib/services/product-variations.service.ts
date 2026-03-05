@@ -61,7 +61,7 @@ export interface ProductVariationsService {
    * @param data - Review data including rating, optional title, and content
    * @returns The newly created review
    */
-  createReview(productUniqueId: string, variationUniqueId: string, data: { rating: number; title?: string; content?: string }): Promise<any>;
+  createReview(productUniqueId: string, variationUniqueId: string, data: { rating: number; comment?: string }): Promise<any>;
 
   /**
    * Update an existing review for a product variation.
@@ -71,7 +71,7 @@ export interface ProductVariationsService {
    * @param data - Fields to update on the review
    * @returns The updated review
    */
-  updateReview(productUniqueId: string, variationUniqueId: string, reviewUniqueId: string, data: { rating?: number; title?: string; content?: string }): Promise<any>;
+  updateReview(productUniqueId: string, variationUniqueId: string, reviewUniqueId: string, data: { rating?: number; comment?: string }): Promise<any>;
 
   /**
    * Delete a review for a product variation.
@@ -114,6 +114,35 @@ export function createProductVariationsService(transport: Transport, _config: { 
           extra_variation: data.extraVariation,
           price: data.price,
           image_url: data.imageUrl,
+          description: data.description,
+          content_url: data.contentUrl,
+          cost: data.cost,
+          discount: data.discount,
+          tax: data.tax,
+          fees: data.fees,
+          fees_value: data.feesValue,
+          vendor_discount: data.vendorDiscount,
+          vendor_discount_value: data.vendorDiscountValue,
+          vendor_price: data.vendorPrice,
+          open_price: data.openPrice,
+          open_stock: data.openStock,
+          qcode: data.qcode,
+          product_id: data.productId,
+          category_unique_id: data.categoryUniqueId,
+          status: data.status,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          enforce_stock: data.enforceStock,
+          allow_proximity: data.allowProximity,
+          product_type: data.productType,
+          stock: data.stock,
+          stock_unit: data.stockUnit,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, productVariationMapper);
@@ -123,13 +152,42 @@ export function createProductVariationsService(transport: Transport, _config: { 
       const response = await transport.put<unknown>(`/products/${productUniqueId}/variations/${variationUniqueId}`, {
         variation: {
           name: data.name,
+          sku: data.sku,
           size: data.size,
           color: data.color,
           extra_variation: data.extraVariation,
           price: data.price,
           image_url: data.imageUrl,
-          enabled: data.enabled,
+          description: data.description,
+          content_url: data.contentUrl,
+          cost: data.cost,
+          discount: data.discount,
+          tax: data.tax,
+          fees: data.fees,
+          fees_value: data.feesValue,
+          vendor_discount: data.vendorDiscount,
+          vendor_discount_value: data.vendorDiscountValue,
+          vendor_price: data.vendorPrice,
+          open_price: data.openPrice,
+          open_stock: data.openStock,
+          qcode: data.qcode,
+          product_id: data.productId,
+          category_unique_id: data.categoryUniqueId,
+          product_unique_id: data.productUniqueId,
           status: data.status,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          enforce_stock: data.enforceStock,
+          allow_proximity: data.allowProximity,
+          product_type: data.productType,
+          stock: data.stock,
+          stock_unit: data.stockUnit,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, productVariationMapper);
@@ -144,23 +202,21 @@ export function createProductVariationsService(transport: Transport, _config: { 
       return decodePageResult(response, productReviewMapper);
     },
 
-    async createReview(productUniqueId: string, variationUniqueId: string, data: { rating: number; title?: string; content?: string }): Promise<any> {
+    async createReview(productUniqueId: string, variationUniqueId: string, data: { rating: number; comment?: string }): Promise<any> {
       const response = await transport.post<unknown>(`/products/${productUniqueId}/variations/${variationUniqueId}/reviews`, {
         review: {
           rating: data.rating,
-          title: data.title,
-          content: data.content,
+          comment: data.comment,
         },
       });
       return decodeOne(response, productReviewMapper);
     },
 
-    async updateReview(productUniqueId: string, variationUniqueId: string, reviewUniqueId: string, data: { rating?: number; title?: string; content?: string }): Promise<any> {
+    async updateReview(productUniqueId: string, variationUniqueId: string, reviewUniqueId: string, data: { rating?: number; comment?: string }): Promise<any> {
       const response = await transport.put<unknown>(`/products/${productUniqueId}/variations/${variationUniqueId}/reviews/${reviewUniqueId}`, {
         review: {
           rating: data.rating,
-          title: data.title,
-          content: data.content,
+          comment: data.comment,
         },
       });
       return decodeOne(response, productReviewMapper);

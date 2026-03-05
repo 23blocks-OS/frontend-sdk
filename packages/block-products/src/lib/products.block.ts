@@ -25,6 +25,9 @@ import {
   createRemarketingService,
   createVisitorsService,
   createProductVendorsService,
+  createTagsService,
+  createCatalogsService,
+  createCategoryImagesService,
   type ProductsService,
   type CartService,
   type CartDetailsService,
@@ -50,6 +53,9 @@ import {
   type RemarketingService,
   type VisitorsService,
   type ProductVendorsService,
+  type TagsService,
+  type CatalogsService,
+  type CategoryImagesService,
 } from './services/index.js';
 
 /**
@@ -112,6 +118,12 @@ export interface ProductsBlock {
   visitors: VisitorsService;
   /** Product-vendor association management */
   productVendors: ProductVendorsService;
+  /** Tag management */
+  tags: TagsService;
+  /** Product catalog management */
+  catalogs: CatalogsService;
+  /** Category image management */
+  categoryImages: CategoryImagesService;
   /** Ping the service health endpoint */
   health(): Promise<HealthCheckResponse>;
 }
@@ -155,6 +167,9 @@ export function createProductsBlock(
     remarketing: createRemarketingService(transport, config),
     visitors: createVisitorsService(transport, config),
     productVendors: createProductVendorsService(transport, config),
+    tags: createTagsService(transport, config),
+    catalogs: createCatalogsService(transport, config),
+    categoryImages: createCategoryImagesService(transport, config),
     health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
@@ -185,5 +200,7 @@ export const productsBlockMetadata: BlockMetadata = {
     'ProductPrice',
     'ProductFilter',
     'ProductVendor',
+    'Tag',
+    'CategoryImage',
   ],
 };

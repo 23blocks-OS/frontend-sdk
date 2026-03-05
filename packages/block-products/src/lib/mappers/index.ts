@@ -8,4 +8,6 @@ export * from './product-price.mapper.js';
 export * from './product-filter.mapper.js';
 export * from './product-variation-review.mapper.js';
 export * from './product-vendor.mapper.js';
+export * from './tag.mapper.js';
+export * from './category-image.mapper.js';
 export * from './utils.js';

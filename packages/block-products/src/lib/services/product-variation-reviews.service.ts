@@ -4,6 +4,7 @@ import type {
   ProductVariationReview,
   CreateVariationReviewRequest,
   UpdateVariationReviewRequest,
+  VariationReviewModerationRequest,
   ListVariationReviewsParams,
 } from '../types/product-variation-review.js';
 import { productVariationReviewMapper } from '../mappers/product-variation-review.mapper.js';
@@ -73,6 +74,7 @@ export interface ProductVariationReviewsService {
    * @returns The flagged ProductVariationReview
    */
   flag(variationUniqueId: string, reviewUniqueId: string): Promise<ProductVariationReview>;
+  moderate(variationUniqueId: string, reviewUniqueId: string, data: VariationReviewModerationRequest): Promise<ProductVariationReview>;
 
   /**
    * List all variation reviews submitted by a specific user.
@@ -117,9 +119,7 @@ export function createProductVariationReviewsService(transport: Transport, _conf
       const response = await transport.post<unknown>(`/product_variations/${variationUniqueId}/reviews`, {
         review: {
           rating: data.rating,
-          title: data.title,
-          content: data.content,
-          payload: data.payload,
+          comment: data.comment,
         },
       });
       return decodeOne(response, productVariationReviewMapper);
@@ -129,11 +129,8 @@ export function createProductVariationReviewsService(transport: Transport, _conf
       const response = await transport.put<unknown>(`/product_variations/${variationUniqueId}/reviews/${reviewUniqueId}`, {
         review: {
           rating: data.rating,
-          title: data.title,
-          content: data.content,
-          enabled: data.enabled,
+          comment: data.comment,
           status: data.status,
-          payload: data.payload,
         },
       });
       return decodeOne(response, productVariationReviewMapper);
@@ -155,6 +152,16 @@ export function createProductVariationReviewsService(transport: Transport, _conf
 
     async flag(variationUniqueId: string, reviewUniqueId: string): Promise<ProductVariationReview> {
       const response = await transport.put<unknown>(`/product_variations/${variationUniqueId}/reviews/${reviewUniqueId}/flag`, {});
+      return decodeOne(response, productVariationReviewMapper);
+    },
+
+    async moderate(variationUniqueId: string, reviewUniqueId: string, data: VariationReviewModerationRequest): Promise<ProductVariationReview> {
+      const response = await transport.put<unknown>(`/product_variations/${variationUniqueId}/reviews/${reviewUniqueId}/moderate`, {
+        review: {
+          status: data.status,
+          moderation_notes: data.moderationNotes,
+        },
+      });
       return decodeOne(response, productVariationReviewMapper);
     },
 

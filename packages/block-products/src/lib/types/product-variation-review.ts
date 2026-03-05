@@ -20,18 +20,18 @@ export interface ProductVariationReview extends IdentityCore {
 
 export interface CreateVariationReviewRequest {
   rating: number;
-  title?: string;
-  content?: string;
-  payload?: Record<string, unknown>;
+  comment?: string;
 }
 
 export interface UpdateVariationReviewRequest {
   rating?: number;
-  title?: string;
-  content?: string;
-  enabled?: boolean;
+  comment?: string;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
+}
+
+export interface VariationReviewModerationRequest {
+  status: string;
+  moderationNotes?: string;
 }
 
 export interface ListVariationReviewsParams {

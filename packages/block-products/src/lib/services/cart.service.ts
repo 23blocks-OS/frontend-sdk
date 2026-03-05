@@ -137,7 +137,11 @@ export function createCartService(transport: Transport, _config: { apiKey: strin
       const response = await transport.put<unknown>(`/carts/${userUniqueId}`, {
         cart: {
           notes: data.notes,
-          payload: data.payload,
+          delivery: data.delivery,
+          order_unique_id: data.orderUniqueId,
+          order_system: data.orderSystem,
+          order_display_id: data.orderDisplayId,
+          order_status: data.orderStatus,
         },
       });
       return decodeOne(response, cartMapper);
@@ -150,11 +154,10 @@ export function createCartService(transport: Transport, _config: { apiKey: strin
     async addItem(userUniqueId: string, item: AddToCartRequest): Promise<Cart> {
       const response = await transport.put<unknown>(`/carts/${userUniqueId}/add`, {
         product: {
-          product_unique_id: item.productUniqueId,
-          product_variation_unique_id: item.productVariationUniqueId,
+          sku: item.sku,
           quantity: item.quantity,
-          vendor_unique_id: item.vendorUniqueId,
-          warehouse_unique_id: item.warehouseUniqueId,
+          category_name: item.categoryName,
+          category_unique_id: item.categoryUniqueId,
           notes: item.notes,
         },
       });

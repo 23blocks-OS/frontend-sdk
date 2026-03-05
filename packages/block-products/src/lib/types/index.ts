@@ -8,3 +8,5 @@ export * from './product-price.js';
 export * from './product-filter.js';
 export * from './product-variation-review.js';
 export * from './product-vendor.js';
+export * from './tag.js';
+export * from './category-image.js';

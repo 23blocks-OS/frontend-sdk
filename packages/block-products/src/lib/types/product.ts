@@ -122,10 +122,27 @@ export interface ProductVariation extends IdentityCore {
 
 export interface ProductImage extends IdentityCore {
   productUniqueId: string;
-  imageUrl: string;
+  name?: string;
+  url?: string;
+  imageUrl?: string;
+  thumbnail?: string;
   thumbnailUrl?: string;
-  displayOrder?: number;
-  isPrimary?: boolean;
+  fileType?: string;
+  fileSize?: number;
+  description?: string;
+  originalName?: string;
+  originalFile?: string;
+  isPublic?: boolean;
+  isMainImage?: boolean;
+  aiEnabled?: boolean;
+  rawContent?: string;
+  content?: string;
+  structuredContent?: Record<string, unknown>;
+  fileStructure?: Record<string, unknown>;
+  metadata?: Record<string, unknown>;
+  schemaModel?: string;
+  vectorDb?: string;
+  payload?: Record<string, unknown>;
   status: EntityStatus;
   enabled: boolean;
 }
@@ -135,11 +152,18 @@ export interface ProductStock extends IdentityCore {
   productVariationUniqueId?: string;
   vendorUniqueId: string;
   warehouseUniqueId: string;
-  quantity: number;
-  reservedQuantity?: number;
-  availableQuantity?: number;
-  minQuantity?: number;
-  maxQuantity?: number;
+  available: number;
+  reserved?: number;
+  enforceAvailability?: boolean;
+  stockUnit?: string;
+  priority?: number;
+  onTransaction?: number;
+  onTransit?: number;
+  prime?: boolean;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
   status: EntityStatus;
   enabled: boolean;
 }
@@ -149,12 +173,17 @@ export interface ProductReview extends IdentityCore {
   userUniqueId: string;
   userName?: string;
   rating: number;
-  title?: string;
-  content?: string;
+  comment?: string;
   isVerifiedPurchase?: boolean;
   helpfulCount?: number;
+  moderationNotes?: string;
   status: EntityStatus;
   enabled: boolean;
+}
+
+export interface ReviewModerationRequest {
+  status: string;
+  moderationNotes?: string;
 }
 
 // Request types
@@ -166,26 +195,72 @@ export interface CreateProductRequest {
   price?: number;
   cost?: number;
   imageUrl?: string;
-  brandUniqueId?: string;
-  categoryUniqueIds?: string[];
-  payload?: Record<string, unknown>;
+  contentUrl?: string;
+  discount?: number;
+  tax?: number;
+  fees?: number;
+  feesValue?: number;
+  vendorDiscount?: number;
+  vendorDiscountValue?: number;
+  vendorPrice?: number;
+  openPrice?: boolean;
+  openStock?: boolean;
+  qcode?: string;
+  productId?: string;
+  categoryUniqueId?: string;
+  productUniqueId?: string;
+  status?: EntityStatus;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  enforceStock?: boolean;
+  allowProximity?: boolean;
+  stock?: number;
+  stockUnit?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  showIn?: string;
 }
 
 export interface UpdateProductRequest {
   name?: string;
   description?: string;
   productType?: string;
+  sku?: string;
   price?: number;
   cost?: number;
   discount?: number;
   tax?: number;
   fees?: number;
+  feesValue?: number;
   imageUrl?: string;
-  brandUniqueId?: string;
-  categoryUniqueIds?: string[];
-  enabled?: boolean;
+  contentUrl?: string;
+  vendorDiscount?: number;
+  vendorDiscountValue?: number;
+  vendorPrice?: number;
+  openPrice?: boolean;
+  openStock?: boolean;
+  qcode?: string;
+  productId?: string;
+  categoryUniqueId?: string;
+  productUniqueId?: string;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  enforceStock?: boolean;
+  allowProximity?: boolean;
+  stock?: number;
+  stockUnit?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  showIn?: string;
 }
 
 export interface ListProductsParams {
@@ -212,6 +287,35 @@ export interface CreateVariationRequest {
   extraVariation?: string;
   price?: number;
   imageUrl?: string;
+  description?: string;
+  contentUrl?: string;
+  cost?: number;
+  discount?: number;
+  tax?: number;
+  fees?: number;
+  feesValue?: number;
+  vendorDiscount?: number;
+  vendorDiscountValue?: number;
+  vendorPrice?: number;
+  openPrice?: boolean;
+  openStock?: boolean;
+  qcode?: string;
+  productId?: string;
+  categoryUniqueId?: string;
+  status?: EntityStatus;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  enforceStock?: boolean;
+  allowProximity?: boolean;
+  productType?: string;
+  stock?: number;
+  stockUnit?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
 }
 
 export interface UpdateVariationRequest {
@@ -221,6 +325,35 @@ export interface UpdateVariationRequest {
   extraVariation?: string;
   price?: number;
   imageUrl?: string;
-  enabled?: boolean;
+  sku?: string;
+  description?: string;
+  contentUrl?: string;
+  cost?: number;
+  discount?: number;
+  tax?: number;
+  fees?: number;
+  feesValue?: number;
+  vendorDiscount?: number;
+  vendorDiscountValue?: number;
+  vendorPrice?: number;
+  openPrice?: boolean;
+  openStock?: boolean;
+  qcode?: string;
+  productId?: string;
+  categoryUniqueId?: string;
+  productUniqueId?: string;
   status?: EntityStatus;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  enforceStock?: boolean;
+  allowProximity?: boolean;
+  productType?: string;
+  stock?: number;
+  stockUnit?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
 }

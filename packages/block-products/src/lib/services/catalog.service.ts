@@ -15,6 +15,10 @@ import type {
   UpdateVendorRequest,
   CreateWarehouseRequest,
   UpdateWarehouseRequest,
+  CreateChannelRequest,
+  UpdateChannelRequest,
+  CreateCollectionRequest,
+  UpdateCollectionRequest,
   ListCategoriesParams,
   ListVendorsParams,
   ListWarehousesParams,
@@ -197,33 +201,19 @@ export interface WarehousesService {
 }
 
 export interface ChannelsService {
-  /**
-   * List all available sales channels.
-   * @returns Array of Channel items
-   */
   list(): Promise<Channel[]>;
-
-  /**
-   * Get a single channel by its unique identifier.
-   * @param uniqueId - The channel unique ID
-   * @returns The matching Channel
-   */
   get(uniqueId: string): Promise<Channel>;
+  create(data: CreateChannelRequest): Promise<Channel>;
+  update(uniqueId: string, data: UpdateChannelRequest): Promise<Channel>;
+  delete(uniqueId: string): Promise<void>;
 }
 
 export interface CollectionsService {
-  /**
-   * List all product collections.
-   * @returns Array of Collection items
-   */
   list(): Promise<Collection[]>;
-
-  /**
-   * Get a single collection by its unique identifier.
-   * @param uniqueId - The collection unique ID
-   * @returns The matching Collection
-   */
   get(uniqueId: string): Promise<Collection>;
+  create(data: CreateCollectionRequest): Promise<Collection>;
+  update(uniqueId: string, data: UpdateCollectionRequest): Promise<Collection>;
+  delete(uniqueId: string): Promise<void>;
 }
 
 export function createCategoriesService(transport: Transport, _config: { apiKey: string }): CategoriesService {
@@ -250,10 +240,20 @@ export function createCategoriesService(transport: Transport, _config: { apiKey:
         category: {
           name: data.name,
           description: data.description,
-          parent_unique_id: data.parentUniqueId,
+          code: data.code,
+          parent_id: data.parentId,
           display_order: data.displayOrder,
           image_url: data.imageUrl,
           icon_url: data.iconUrl,
+          content_url: data.contentUrl,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, categoryMapper);
@@ -264,12 +264,20 @@ export function createCategoriesService(transport: Transport, _config: { apiKey:
         category: {
           name: data.name,
           description: data.description,
-          parent_unique_id: data.parentUniqueId,
+          code: data.code,
+          parent_id: data.parentId,
           display_order: data.displayOrder,
           image_url: data.imageUrl,
           icon_url: data.iconUrl,
-          enabled: data.enabled,
-          status: data.status,
+          content_url: data.contentUrl,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, categoryMapper);
@@ -311,9 +319,18 @@ export function createBrandsService(transport: Transport, _config: { apiKey: str
       const response = await transport.post<unknown>('/brands', {
         brand: {
           name: data.name,
+          code: data.code,
           image_url: data.imageUrl,
+          thumbnail_url: data.thumbnailUrl,
+          content_url: data.contentUrl,
+          media_url: data.mediaUrl,
           is_global: data.isGlobal,
           country_id: data.countryId,
+          country_name: data.countryName,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
         },
       });
       return decodeOne(response, brandMapper);
@@ -323,11 +340,18 @@ export function createBrandsService(transport: Transport, _config: { apiKey: str
       const response = await transport.put<unknown>(`/brands/${uniqueId}`, {
         brand: {
           name: data.name,
+          code: data.code,
           image_url: data.imageUrl,
+          thumbnail_url: data.thumbnailUrl,
+          content_url: data.contentUrl,
+          media_url: data.mediaUrl,
           is_global: data.isGlobal,
           country_id: data.countryId,
-          enabled: data.enabled,
-          status: data.status,
+          country_name: data.countryName,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
         },
       });
       return decodeOne(response, brandMapper);
@@ -365,6 +389,18 @@ export function createVendorsService(transport: Transport, _config: { apiKey: st
           contact_name: data.contactName,
           tax_id: data.taxId,
           image_url: data.imageUrl,
+          code: data.code,
+          thumbnail_url: data.thumbnailUrl,
+          content_url: data.contentUrl,
+          media_url: data.mediaUrl,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, vendorMapper);
@@ -379,8 +415,18 @@ export function createVendorsService(transport: Transport, _config: { apiKey: st
           contact_name: data.contactName,
           tax_id: data.taxId,
           image_url: data.imageUrl,
-          enabled: data.enabled,
-          status: data.status,
+          code: data.code,
+          thumbnail_url: data.thumbnailUrl,
+          content_url: data.contentUrl,
+          media_url: data.mediaUrl,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, vendorMapper);
@@ -417,6 +463,19 @@ export function createWarehousesService(transport: Transport, _config: { apiKey:
           address_unique_id: data.addressUniqueId,
           location_unique_id: data.locationUniqueId,
           is_global: data.isGlobal,
+          code: data.code,
+          is_multichannel: data.isMultichannel,
+          channel_unique_id: data.channelUniqueId,
+          channel_code: data.channelCode,
+          channel_name: data.channelName,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, warehouseMapper);
@@ -426,11 +485,23 @@ export function createWarehousesService(transport: Transport, _config: { apiKey:
       const response = await transport.put<unknown>(`/warehouses/${uniqueId}`, {
         warehouse: {
           name: data.name,
+          vendor_unique_id: data.vendorUniqueId,
           address_unique_id: data.addressUniqueId,
           location_unique_id: data.locationUniqueId,
           is_global: data.isGlobal,
-          enabled: data.enabled,
-          status: data.status,
+          code: data.code,
+          is_multichannel: data.isMultichannel,
+          channel_unique_id: data.channelUniqueId,
+          channel_code: data.channelCode,
+          channel_name: data.channelName,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, warehouseMapper);
@@ -453,6 +524,53 @@ export function createChannelsService(transport: Transport, _config: { apiKey: s
       const response = await transport.get<unknown>(`/channels/${uniqueId}`);
       return decodeOne(response, channelMapper);
     },
+
+    async create(data: CreateChannelRequest): Promise<Channel> {
+      const response = await transport.post<unknown>('/channels', {
+        channel: {
+          code: data.code,
+          name: data.name,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          currency_unique_id: data.currencyUniqueId,
+          currency_code: data.currencyCode,
+          currency_name: data.currencyName,
+          api_description: data.apiDescription,
+          api_url: data.apiUrl,
+          api_keys_description: data.apiKeysDescription,
+          api_keys_id: data.apiKeysId,
+        },
+      });
+      return decodeOne(response, channelMapper);
+    },
+
+    async update(uniqueId: string, data: UpdateChannelRequest): Promise<Channel> {
+      const response = await transport.put<unknown>(`/channels/${uniqueId}`, {
+        channel: {
+          code: data.code,
+          name: data.name,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          currency_unique_id: data.currencyUniqueId,
+          currency_code: data.currencyCode,
+          currency_name: data.currencyName,
+          api_description: data.apiDescription,
+          api_url: data.apiUrl,
+          api_keys_description: data.apiKeysDescription,
+          api_keys_id: data.apiKeysId,
+          status: data.status,
+        },
+      });
+      return decodeOne(response, channelMapper);
+    },
+
+    async delete(uniqueId: string): Promise<void> {
+      await transport.delete(`/channels/${uniqueId}`);
+    },
   };
 }
 
@@ -466,6 +584,60 @@ export function createCollectionsService(transport: Transport, _config: { apiKey
     async get(uniqueId: string): Promise<Collection> {
       const response = await transport.get<unknown>(`/collections/${uniqueId}`);
       return decodeOne(response, collectionMapper);
+    },
+
+    async create(data: CreateCollectionRequest): Promise<Collection> {
+      const response = await transport.post<unknown>('/collections', {
+        collection: {
+          code: data.code,
+          name: data.name,
+          is_global: data.isGlobal,
+          country_id: data.countryId,
+          country_name: data.countryName,
+          currency_unique_id: data.currencyUniqueId,
+          currency_code: data.currencyCode,
+          currency_name: data.currencyName,
+          is_multichannel: data.isMultichannel,
+          channel_unique_id: data.channelUniqueId,
+          channel_code: data.channelCode,
+          channel_name: data.channelName,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          status: data.status,
+        },
+      });
+      return decodeOne(response, collectionMapper);
+    },
+
+    async update(uniqueId: string, data: UpdateCollectionRequest): Promise<Collection> {
+      const response = await transport.put<unknown>(`/collections/${uniqueId}`, {
+        collection: {
+          code: data.code,
+          name: data.name,
+          is_global: data.isGlobal,
+          country_id: data.countryId,
+          country_name: data.countryName,
+          currency_unique_id: data.currencyUniqueId,
+          currency_code: data.currencyCode,
+          currency_name: data.currencyName,
+          is_multichannel: data.isMultichannel,
+          channel_unique_id: data.channelUniqueId,
+          channel_code: data.channelCode,
+          channel_name: data.channelName,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          status: data.status,
+        },
+      });
+      return decodeOne(response, collectionMapper);
+    },
+
+    async delete(uniqueId: string): Promise<void> {
+      await transport.delete(`/collections/${uniqueId}`);
     },
   };
 }

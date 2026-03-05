@@ -1,19 +1,29 @@
 import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
 
 export interface ProductPromotion extends IdentityCore {
-  productUniqueId: string;
+  priceUniqueId?: string;
+  code?: string;
   name: string;
   description?: string;
-  promotionType: string;
-  discountType: 'percentage' | 'fixed';
-  discountValue: number;
-  startDate?: Date;
-  endDate?: Date;
-  minQuantity?: number;
-  maxQuantity?: number;
-  isStackable: boolean;
+  discountMoney?: number;
+  discountPercentage?: number;
+  additionalPoints?: number;
+  minimumPurchase?: number;
+  discountMoneyField?: string;
+  discountPercentageField?: string;
+  validFrom?: string;
+  validTo?: string;
+  contentUrl?: string;
+  imageUrl?: string;
+  mediaUrl?: string;
+  thumbnailUrl?: string;
+  qcode?: string;
+  timeZone?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
   status: EntityStatus;
-  payload?: Record<string, unknown>;
 }
 
 export interface ListProductPromotionsParams {
@@ -28,31 +38,53 @@ export interface ListProductPromotionsParams {
 }
 
 export interface CreateProductPromotionRequest {
-  productUniqueId?: string;
+  priceUniqueId?: string;
+  code?: string;
   name: string;
   description?: string;
-  promotionType: string;
-  discountType: 'percentage' | 'fixed';
-  discountValue: number;
-  startDate?: string | Date;
-  endDate?: string | Date;
-  minQuantity?: number;
-  maxQuantity?: number;
-  isStackable?: boolean;
-  payload?: Record<string, unknown>;
+  discountMoney?: number;
+  discountPercentage?: number;
+  additionalPoints?: number;
+  minimumPurchase?: number;
+  discountMoneyField?: string;
+  discountPercentageField?: string;
+  validFrom?: string;
+  validTo?: string;
+  contentUrl?: string;
+  imageUrl?: string;
+  mediaUrl?: string;
+  thumbnailUrl?: string;
+  qcode?: string;
+  status?: EntityStatus;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  timeZone?: string;
 }
 
 export interface UpdateProductPromotionRequest {
+  priceUniqueId?: string;
+  code?: string;
   name?: string;
   description?: string;
-  promotionType?: string;
-  discountType?: 'percentage' | 'fixed';
-  discountValue?: number;
-  startDate?: string | Date;
-  endDate?: string | Date;
-  minQuantity?: number;
-  maxQuantity?: number;
-  isStackable?: boolean;
+  discountMoney?: number;
+  discountPercentage?: number;
+  additionalPoints?: number;
+  minimumPurchase?: number;
+  discountMoneyField?: string;
+  discountPercentageField?: string;
+  validFrom?: string;
+  validTo?: string;
+  contentUrl?: string;
+  imageUrl?: string;
+  mediaUrl?: string;
+  thumbnailUrl?: string;
+  qcode?: string;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
+  timeZone?: string;
 }

@@ -73,11 +73,10 @@ export interface CartDetail extends IdentityCore {
 
 // Request types
 export interface AddToCartRequest {
-  productUniqueId: string;
-  productVariationUniqueId?: string;
+  sku: string;
   quantity: number;
-  vendorUniqueId?: string;
-  warehouseUniqueId?: string;
+  categoryName?: string;
+  categoryUniqueId?: string;
   notes?: string;
 }
 
@@ -88,7 +87,11 @@ export interface UpdateCartItemRequest {
 
 export interface UpdateCartRequest {
   notes?: string;
-  payload?: Record<string, unknown>;
+  delivery?: number;
+  orderUniqueId?: string;
+  orderSystem?: string;
+  orderDisplayId?: string;
+  orderStatus?: string;
 }
 
 export interface CheckoutRequest {

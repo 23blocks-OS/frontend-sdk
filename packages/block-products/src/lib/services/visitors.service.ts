@@ -1,23 +1,18 @@
 import type { Transport } from '@23blocks/contracts';
 
 export interface CreateVisitorRequest {
-  sessionId?: string;
-  userAgent?: string;
-  ipAddress?: string;
-  referrer?: string;
-  landingPage?: string;
-  payload?: Record<string, unknown>;
+  uniqueId?: string;
+  provider?: string;
+  uid?: string;
+  email?: string;
 }
 
 export interface Visitor {
   uniqueId: string;
-  sessionId: string;
-  userAgent?: string;
-  ipAddress?: string;
-  referrer?: string;
-  landingPage?: string;
+  provider?: string;
+  uid?: string;
+  email?: string;
   createdAt: Date;
-  payload?: Record<string, unknown>;
 }
 
 export interface VisitorsService {
@@ -34,23 +29,18 @@ export function createVisitorsService(transport: Transport, _config: { apiKey: s
     async create(data: CreateVisitorRequest): Promise<Visitor> {
       const response = await transport.post<any>('/visitors', {
         visitor: {
-          session_id: data.sessionId,
-          user_agent: data.userAgent,
-          ip_address: data.ipAddress,
-          referrer: data.referrer,
-          landing_page: data.landingPage,
-          payload: data.payload,
+          unique_id: data.uniqueId,
+          provider: data.provider,
+          uid: data.uid,
+          email: data.email,
         },
       });
       return {
         uniqueId: response.unique_id,
-        sessionId: response.session_id,
-        userAgent: response.user_agent,
-        ipAddress: response.ip_address,
-        referrer: response.referrer,
-        landingPage: response.landing_page,
+        provider: response.provider,
+        uid: response.uid,
+        email: response.email,
         createdAt: new Date(response.created_at),
-        payload: response.payload,
       };
     },
   };

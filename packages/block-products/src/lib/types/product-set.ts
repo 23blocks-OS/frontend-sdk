@@ -18,9 +18,21 @@ export interface CreateProductSetRequest {
   description?: string;
   sku?: string;
   price?: number;
-  discountPrice?: number;
   imageUrl?: string;
-  payload?: Record<string, unknown>;
+  code?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
+  tax?: number;
+  discount?: number;
+  status?: EntityStatus;
+  openPrice?: boolean;
+  openStock?: boolean;
+  qcode?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  categoryUniqueId?: string;
 }
 
 export interface UpdateProductSetRequest {
@@ -28,11 +40,21 @@ export interface UpdateProductSetRequest {
   description?: string;
   sku?: string;
   price?: number;
-  discountPrice?: number;
   imageUrl?: string;
-  enabled?: boolean;
+  code?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
+  tax?: number;
+  discount?: number;
   status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  openPrice?: boolean;
+  openStock?: boolean;
+  qcode?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  categoryUniqueId?: string;
 }
 
 export interface ListProductSetsParams {

@@ -18,3 +18,6 @@ export * from './remarketing.service.js';
 export * from './visitors.service.js';
 export * from './product-variation-reviews.service.js';
 export * from './product-vendors.service.js';
+export * from './tags.service.js';
+export * from './catalogs.service.js';
+export * from './category-images.service.js';

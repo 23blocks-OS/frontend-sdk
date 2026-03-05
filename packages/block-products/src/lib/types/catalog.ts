@@ -139,68 +139,260 @@ export interface Warehouse extends IdentityCore {
 export interface Channel extends IdentityCore {
   code: string;
   name: string;
-  description?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  currencyUniqueId?: string;
+  currencyCode?: string;
+  currencyName?: string;
+  apiDescription?: string;
+  apiUrl?: string;
+  apiKeysDescription?: string;
+  apiKeysId?: string;
   status: EntityStatus;
   enabled: boolean;
-  payload?: Record<string, unknown>;
+}
+
+export interface CreateChannelRequest {
+  code?: string;
+  name: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  currencyUniqueId?: string;
+  currencyCode?: string;
+  currencyName?: string;
+  apiDescription?: string;
+  apiUrl?: string;
+  apiKeysDescription?: string;
+  apiKeysId?: string;
+}
+
+export interface UpdateChannelRequest {
+  code?: string;
+  name?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  currencyUniqueId?: string;
+  currencyCode?: string;
+  currencyName?: string;
+  apiDescription?: string;
+  apiUrl?: string;
+  apiKeysDescription?: string;
+  apiKeysId?: string;
+  status?: EntityStatus;
 }
 
 export interface Collection extends IdentityCore {
   code: string;
   name: string;
-  description?: string;
-  imageUrl?: string;
-  displayOrder?: number;
+  isGlobal?: boolean;
+  countryId?: string;
+  countryName?: string;
+  currencyUniqueId?: string;
+  currencyCode?: string;
+  currencyName?: string;
+  isMultichannel?: boolean;
+  channelUniqueId?: string;
+  channelCode?: string;
+  channelName?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
   status: EntityStatus;
   enabled: boolean;
-  payload?: Record<string, unknown>;
-  productCount?: number;
+}
+
+export interface CreateCollectionRequest {
+  code?: string;
+  name: string;
+  isGlobal?: boolean;
+  countryId?: string;
+  countryName?: string;
+  currencyUniqueId?: string;
+  currencyCode?: string;
+  currencyName?: string;
+  isMultichannel?: boolean;
+  channelUniqueId?: string;
+  channelCode?: string;
+  channelName?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  status?: EntityStatus;
+}
+
+export interface UpdateCollectionRequest {
+  code?: string;
+  name?: string;
+  isGlobal?: boolean;
+  countryId?: string;
+  countryName?: string;
+  currencyUniqueId?: string;
+  currencyCode?: string;
+  currencyName?: string;
+  isMultichannel?: boolean;
+  channelUniqueId?: string;
+  channelCode?: string;
+  channelName?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  status?: EntityStatus;
 }
 
 export interface ProductCatalog extends IdentityCore {
   code: string;
   name: string;
   description?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
+  imageUrl?: string;
+  thumbnailUrl?: string;
+  itemsCounter?: number;
+  isGlobal?: boolean;
+  countryId?: string;
+  countryName?: string;
+  currencyUniqueId?: string;
+  currencyCode?: string;
+  currencyName?: string;
+  isMultichannel?: boolean;
+  channelUniqueId?: string;
+  channelCode?: string;
+  channelName?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
   status: EntityStatus;
   enabled: boolean;
-  payload?: Record<string, unknown>;
+}
+
+export interface CreateProductCatalogRequest {
+  code?: string;
+  name: string;
+  description?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
+  imageUrl?: string;
+  thumbnailUrl?: string;
+  itemsCounter?: number;
+  isGlobal?: boolean;
+  countryId?: string;
+  countryName?: string;
+  currencyUniqueId?: string;
+  currencyCode?: string;
+  currencyName?: string;
+  isMultichannel?: boolean;
+  channelUniqueId?: string;
+  channelCode?: string;
+  channelName?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  status?: EntityStatus;
+}
+
+export interface UpdateProductCatalogRequest {
+  code?: string;
+  name?: string;
+  description?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
+  imageUrl?: string;
+  thumbnailUrl?: string;
+  itemsCounter?: number;
+  isGlobal?: boolean;
+  countryId?: string;
+  countryName?: string;
+  currencyUniqueId?: string;
+  currencyCode?: string;
+  currencyName?: string;
+  isMultichannel?: boolean;
+  channelUniqueId?: string;
+  channelCode?: string;
+  channelName?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  status?: EntityStatus;
 }
 
 // Request types
 export interface CreateCategoryRequest {
   name: string;
   description?: string;
-  parentUniqueId?: string;
+  code?: string;
+  parentId?: string;
   displayOrder?: number;
   imageUrl?: string;
   iconUrl?: string;
+  contentUrl?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
 }
 
 export interface UpdateCategoryRequest {
   name?: string;
   description?: string;
-  parentUniqueId?: string;
+  code?: string;
+  parentId?: string;
   displayOrder?: number;
   imageUrl?: string;
   iconUrl?: string;
-  enabled?: boolean;
-  status?: EntityStatus;
+  contentUrl?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
 }
 
 export interface CreateBrandRequest {
   name: string;
+  code?: string;
   imageUrl?: string;
+  thumbnailUrl?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
   isGlobal?: boolean;
   countryId?: string;
+  countryName?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
 }
 
 export interface UpdateBrandRequest {
   name?: string;
+  code?: string;
   imageUrl?: string;
+  thumbnailUrl?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
   isGlobal?: boolean;
   countryId?: string;
-  enabled?: boolean;
-  status?: EntityStatus;
+  countryName?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
 }
 
 export interface CreateVendorRequest {
@@ -210,6 +402,18 @@ export interface CreateVendorRequest {
   contactName?: string;
   taxId?: string;
   imageUrl?: string;
+  code?: string;
+  thumbnailUrl?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
 }
 
 export interface UpdateVendorRequest {
@@ -219,8 +423,18 @@ export interface UpdateVendorRequest {
   contactName?: string;
   taxId?: string;
   imageUrl?: string;
-  enabled?: boolean;
-  status?: EntityStatus;
+  code?: string;
+  thumbnailUrl?: string;
+  contentUrl?: string;
+  mediaUrl?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
 }
 
 export interface CreateWarehouseRequest {
@@ -229,15 +443,40 @@ export interface CreateWarehouseRequest {
   addressUniqueId?: string;
   locationUniqueId?: string;
   isGlobal?: boolean;
+  code?: string;
+  isMultichannel?: boolean;
+  channelUniqueId?: string;
+  channelCode?: string;
+  channelName?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
 }
 
 export interface UpdateWarehouseRequest {
   name?: string;
+  vendorUniqueId?: string;
   addressUniqueId?: string;
   locationUniqueId?: string;
   isGlobal?: boolean;
-  enabled?: boolean;
-  status?: EntityStatus;
+  code?: string;
+  isMultichannel?: boolean;
+  channelUniqueId?: string;
+  channelCode?: string;
+  channelName?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  slug?: string;
+  source?: string;
+  sourceAlias?: string;
+  sourceId?: string;
+  sourceType?: string;
 }
 
 export interface ListCategoriesParams {

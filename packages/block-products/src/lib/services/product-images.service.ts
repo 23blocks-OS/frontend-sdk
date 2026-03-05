@@ -10,10 +10,25 @@ export interface PresignResponse {
 }
 
 export interface CreateProductImageRequest {
-  key: string;
-  filename: string;
-  contentType?: string;
-  isPrimary?: boolean;
+  name?: string;
+  url?: string;
+  thumbnail?: string;
+  fileType?: string;
+  fileSize?: number;
+  description?: string;
+  originalName?: string;
+  originalFile?: string;
+  isPublic?: boolean;
+  isMainImage?: boolean;
+  aiEnabled?: boolean;
+  rawContent?: string;
+  content?: string;
+  structuredContent?: Record<string, unknown>;
+  fileStructure?: Record<string, unknown>;
+  metadata?: Record<string, unknown>;
+  schemaModel?: string;
+  vectorDb?: string;
+  payload?: Record<string, unknown>;
 }
 
 export interface ProductImagesService {
@@ -67,7 +82,7 @@ export interface ProductImagesService {
    * @param data - Fields to update (isPrimary)
    * @returns The updated ProductImage
    */
-  update(productUniqueId: string, imageUniqueId: string, data: { isPrimary?: boolean }): Promise<ProductImage>;
+  update(productUniqueId: string, imageUniqueId: string, data: Partial<CreateProductImageRequest>): Promise<ProductImage>;
 
   /**
    * Delete a product image.
@@ -127,11 +142,26 @@ export function createProductImagesService(transport: Transport, _config: { apiK
 
     async create(productUniqueId: string, data: CreateProductImageRequest): Promise<ProductImage> {
       const response = await transport.post<unknown>(`/products/${productUniqueId}/images`, {
-        file: {
-          key: data.key,
-          filename: data.filename,
-          content_type: data.contentType,
-          is_primary: data.isPrimary,
+        image: {
+          name: data.name,
+          url: data.url,
+          thumbnail: data.thumbnail,
+          file_type: data.fileType,
+          file_size: data.fileSize,
+          description: data.description,
+          original_name: data.originalName,
+          original_file: data.originalFile,
+          is_public: data.isPublic,
+          is_main_image: data.isMainImage,
+          ai_enabled: data.aiEnabled,
+          raw_content: data.rawContent,
+          content: data.content,
+          structured_content: data.structuredContent,
+          file_structure: data.fileStructure,
+          metadata: data.metadata,
+          schema_model: data.schemaModel,
+          vector_db: data.vectorDb,
+          payload: data.payload,
         },
       });
       return decodeOne(response, productImageMapper);
@@ -142,10 +172,28 @@ export function createProductImagesService(transport: Transport, _config: { apiK
       return decodeOne(response, productImageMapper);
     },
 
-    async update(productUniqueId: string, imageUniqueId: string, data: { isPrimary?: boolean }): Promise<ProductImage> {
+    async update(productUniqueId: string, imageUniqueId: string, data: Partial<CreateProductImageRequest>): Promise<ProductImage> {
       const response = await transport.put<unknown>(`/products/${productUniqueId}/images/${imageUniqueId}`, {
-        file: {
-          is_primary: data.isPrimary,
+        image: {
+          name: data.name,
+          url: data.url,
+          thumbnail: data.thumbnail,
+          file_type: data.fileType,
+          file_size: data.fileSize,
+          description: data.description,
+          original_name: data.originalName,
+          original_file: data.originalFile,
+          is_public: data.isPublic,
+          is_main_image: data.isMainImage,
+          ai_enabled: data.aiEnabled,
+          raw_content: data.rawContent,
+          content: data.content,
+          structured_content: data.structuredContent,
+          file_structure: data.fileStructure,
+          metadata: data.metadata,
+          schema_model: data.schemaModel,
+          vector_db: data.vectorDb,
+          payload: data.payload,
         },
       });
       return decodeOne(response, productImageMapper);

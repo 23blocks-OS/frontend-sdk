@@ -4,17 +4,17 @@ import type { Cart } from '../types/cart.js';
 import { cartMapper } from '../mappers/cart.mapper.js';
 
 export interface AddToMyCartRequest {
-  productUniqueId: string;
-  variationUniqueId?: string;
+  sku: string;
   quantity: number;
-  price?: number;
+  categoryName?: string;
+  categoryUniqueId?: string;
   notes?: string;
-  payload?: Record<string, unknown>;
 }
 
 export interface UpdateMyCartRequest {
   notes?: string;
-  payload?: Record<string, unknown>;
+  delivery?: number;
+  cartUniqueId?: string;
 }
 
 export interface MyCartsService {
@@ -84,15 +84,18 @@ export function createMyCartsService(transport: Transport, _config: { apiKey: st
     },
 
     async create(): Promise<Cart> {
-      const response = await transport.post<unknown>('/mycarts', {});
+      const response = await transport.post<unknown>('/mycarts', {
+        mycart: {},
+      });
       return decodeOne(response, cartMapper);
     },
 
     async update(uniqueId: string, data: UpdateMyCartRequest): Promise<Cart> {
       const response = await transport.put<unknown>(`/mycarts/${uniqueId}`, {
-        cart: {
+        mycart: {
           notes: data.notes,
-          payload: data.payload,
+          delivery: data.delivery,
+          cart_unique_id: data.cartUniqueId,
         },
       });
       return decodeOne(response, cartMapper);
@@ -100,13 +103,12 @@ export function createMyCartsService(transport: Transport, _config: { apiKey: st
 
     async addToCart(data: AddToMyCartRequest): Promise<Cart> {
       const response = await transport.put<unknown>('/mycarts', {
-        cart: {
-          product_unique_id: data.productUniqueId,
-          variation_unique_id: data.variationUniqueId,
+        product: {
+          sku: data.sku,
           quantity: data.quantity,
-          price: data.price,
+          category_name: data.categoryName,
+          category_unique_id: data.categoryUniqueId,
           notes: data.notes,
-          payload: data.payload,
         },
       });
       return decodeOne(response, cartMapper);

@@ -28,23 +28,27 @@ export interface ListShoppingListsParams {
 
 export interface CreateShoppingListRequest {
   name: string;
-  description?: string;
-  isPublic?: boolean;
-  payload?: Record<string, unknown>;
+  notes?: string;
+  delivery?: number;
+  status?: EntityStatus;
+  enabled?: boolean;
+  qcode?: string;
 }
 
 export interface UpdateShoppingListRequest {
   name?: string;
-  description?: string;
-  isPublic?: boolean;
-  status?: EntityStatus;
-  payload?: Record<string, unknown>;
+  notes?: string;
+  delivery?: number;
+  enabled?: boolean;
+  qcode?: string;
 }
 
 export interface AddShoppingListItemRequest {
-  productUniqueId: string;
+  sku: string;
   quantity?: number;
-  note?: string;
+  notes?: string;
+  categoryName?: string;
+  categoryUniqueId?: string;
 }
 
 export interface RemoveShoppingListItemRequest {

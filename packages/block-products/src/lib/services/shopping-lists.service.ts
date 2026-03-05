@@ -4,6 +4,7 @@ import type {
   ShoppingList,
   CreateShoppingListRequest,
   UpdateShoppingListRequest,
+  AddShoppingListItemRequest,
   ListShoppingListsParams,
 } from '../types/shopping-list.js';
 import { shoppingListMapper } from '../mappers/shopping-list.mapper.js';
@@ -52,7 +53,7 @@ export interface ShoppingListsService {
    * @param quantity - Quantity of the product (defaults to 1)
    * @returns The updated ShoppingList
    */
-  addItem(uniqueId: string, productUniqueId: string, quantity?: number): Promise<ShoppingList>;
+  addItem(uniqueId: string, data: AddShoppingListItemRequest): Promise<ShoppingList>;
 
   /**
    * Remove a product item from the shopping list.
@@ -95,9 +96,11 @@ export function createShoppingListsService(transport: Transport, _config: { apiK
       const response = await transport.post<unknown>('/shopping_lists/', {
         shopping_list: {
           name: data.name,
-          description: data.description,
-          is_public: data.isPublic,
-          payload: data.payload,
+          notes: data.notes,
+          delivery: data.delivery,
+          status: data.status,
+          enabled: data.enabled,
+          qcode: data.qcode,
         },
       });
       return decodeOne(response, shoppingListMapper);
@@ -107,10 +110,10 @@ export function createShoppingListsService(transport: Transport, _config: { apiK
       const response = await transport.put<unknown>(`/shopping_lists/${uniqueId}`, {
         shopping_list: {
           name: data.name,
-          description: data.description,
-          is_public: data.isPublic,
-          status: data.status,
-          payload: data.payload,
+          notes: data.notes,
+          delivery: data.delivery,
+          enabled: data.enabled,
+          qcode: data.qcode,
         },
       });
       return decodeOne(response, shoppingListMapper);
@@ -120,11 +123,14 @@ export function createShoppingListsService(transport: Transport, _config: { apiK
       await transport.delete(`/shopping_lists/${uniqueId}`);
     },
 
-    async addItem(uniqueId: string, productUniqueId: string, quantity = 1): Promise<ShoppingList> {
+    async addItem(uniqueId: string, data: AddShoppingListItemRequest): Promise<ShoppingList> {
       const response = await transport.post<unknown>(`/shopping_lists/${uniqueId}/items`, {
         item: {
-          product_unique_id: productUniqueId,
-          quantity,
+          sku: data.sku,
+          quantity: data.quantity,
+          notes: data.notes,
+          category_name: data.categoryName,
+          category_unique_id: data.categoryUniqueId,
         },
       });
       return decodeOne(response, shoppingListMapper);

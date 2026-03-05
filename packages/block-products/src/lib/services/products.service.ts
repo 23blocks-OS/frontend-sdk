@@ -183,7 +183,7 @@ export interface ProductsService {
    * @param content - Optional review body text
    * @returns The newly created ProductReview
    */
-  addReview(productUniqueId: string, rating: number, title?: string, content?: string): Promise<ProductReview>;
+  addReview(productUniqueId: string, rating: number, comment?: string): Promise<ProductReview>;
 }
 
 export function createProductsService(transport: Transport, _config: { apiKey: string }): ProductsService {
@@ -221,9 +221,34 @@ export function createProductsService(transport: Transport, _config: { apiKey: s
           price: data.price,
           cost: data.cost,
           image_url: data.imageUrl,
-          brand_unique_id: data.brandUniqueId,
-          category_unique_ids: data.categoryUniqueIds,
-          payload: data.payload,
+          content_url: data.contentUrl,
+          discount: data.discount,
+          tax: data.tax,
+          fees: data.fees,
+          fees_value: data.feesValue,
+          vendor_discount: data.vendorDiscount,
+          vendor_discount_value: data.vendorDiscountValue,
+          vendor_price: data.vendorPrice,
+          open_price: data.openPrice,
+          open_stock: data.openStock,
+          qcode: data.qcode,
+          product_id: data.productId,
+          category_unique_id: data.categoryUniqueId,
+          product_unique_id: data.productUniqueId,
+          status: data.status,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          enforce_stock: data.enforceStock,
+          allow_proximity: data.allowProximity,
+          stock: data.stock,
+          stock_unit: data.stockUnit,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
+          show_in: data.showIn,
         },
       });
       return decodeOne(response, productMapper);
@@ -235,17 +260,38 @@ export function createProductsService(transport: Transport, _config: { apiKey: s
           name: data.name,
           description: data.description,
           product_type: data.productType,
+          sku: data.sku,
           price: data.price,
           cost: data.cost,
           discount: data.discount,
           tax: data.tax,
           fees: data.fees,
+          fees_value: data.feesValue,
           image_url: data.imageUrl,
-          brand_unique_id: data.brandUniqueId,
-          category_unique_ids: data.categoryUniqueIds,
-          enabled: data.enabled,
+          content_url: data.contentUrl,
+          vendor_discount: data.vendorDiscount,
+          vendor_discount_value: data.vendorDiscountValue,
+          vendor_price: data.vendorPrice,
+          open_price: data.openPrice,
+          open_stock: data.openStock,
+          qcode: data.qcode,
+          product_id: data.productId,
+          category_unique_id: data.categoryUniqueId,
+          product_unique_id: data.productUniqueId,
           status: data.status,
-          payload: data.payload,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          enforce_stock: data.enforceStock,
+          allow_proximity: data.allowProximity,
+          stock: data.stock,
+          stock_unit: data.stockUnit,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
+          show_in: data.showIn,
         },
       });
       return decodeOne(response, productMapper);
@@ -265,7 +311,7 @@ export function createProductsService(transport: Transport, _config: { apiKey: s
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
 
-      const response = await transport.post<unknown>('/products/search', { search: query }, { params: queryParams });
+      const response = await transport.post<unknown>('/products/search', { search: { search_by: query } }, { params: queryParams });
       return decodePageResult(response, productMapper);
     },
 
@@ -300,6 +346,35 @@ export function createProductsService(transport: Transport, _config: { apiKey: s
           extra_variation: data.extraVariation,
           price: data.price,
           image_url: data.imageUrl,
+          description: data.description,
+          content_url: data.contentUrl,
+          cost: data.cost,
+          discount: data.discount,
+          tax: data.tax,
+          fees: data.fees,
+          fees_value: data.feesValue,
+          vendor_discount: data.vendorDiscount,
+          vendor_discount_value: data.vendorDiscountValue,
+          vendor_price: data.vendorPrice,
+          open_price: data.openPrice,
+          open_stock: data.openStock,
+          qcode: data.qcode,
+          product_id: data.productId,
+          category_unique_id: data.categoryUniqueId,
+          status: data.status,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          enforce_stock: data.enforceStock,
+          allow_proximity: data.allowProximity,
+          product_type: data.productType,
+          stock: data.stock,
+          stock_unit: data.stockUnit,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, productVariationMapper);
@@ -314,8 +389,37 @@ export function createProductsService(transport: Transport, _config: { apiKey: s
           extra_variation: data.extraVariation,
           price: data.price,
           image_url: data.imageUrl,
-          enabled: data.enabled,
+          sku: data.sku,
+          description: data.description,
+          content_url: data.contentUrl,
+          cost: data.cost,
+          discount: data.discount,
+          tax: data.tax,
+          fees: data.fees,
+          fees_value: data.feesValue,
+          vendor_discount: data.vendorDiscount,
+          vendor_discount_value: data.vendorDiscountValue,
+          vendor_price: data.vendorPrice,
+          open_price: data.openPrice,
+          open_stock: data.openStock,
+          qcode: data.qcode,
+          product_id: data.productId,
+          category_unique_id: data.categoryUniqueId,
+          product_unique_id: data.productUniqueId,
           status: data.status,
+          meta_title: data.metaTitle,
+          meta_description: data.metaDescription,
+          meta_keywords: data.metaKeywords,
+          slug: data.slug,
+          enforce_stock: data.enforceStock,
+          allow_proximity: data.allowProximity,
+          product_type: data.productType,
+          stock: data.stock,
+          stock_unit: data.stockUnit,
+          source: data.source,
+          source_alias: data.sourceAlias,
+          source_id: data.sourceId,
+          source_type: data.sourceType,
         },
       });
       return decodeOne(response, productVariationMapper);
@@ -333,9 +437,9 @@ export function createProductsService(transport: Transport, _config: { apiKey: s
 
     async addImage(productUniqueId: string, imageUrl: string, isPrimary = false): Promise<ProductImage> {
       const response = await transport.post<unknown>(`/products/${productUniqueId}/images`, {
-        file: {
-          image_url: imageUrl,
-          is_primary: isPrimary,
+        image: {
+          url: imageUrl,
+          is_main_image: isPrimary,
         },
       });
       return decodeOne(response, productImageMapper);
@@ -364,7 +468,7 @@ export function createProductsService(transport: Transport, _config: { apiKey: s
         stock: {
           vendor_unique_id: vendorUniqueId,
           warehouse_unique_id: warehouseUniqueId,
-          quantity: quantity,
+          available: quantity,
         },
       });
       return decodeOne(response, productStockMapper);
@@ -376,12 +480,11 @@ export function createProductsService(transport: Transport, _config: { apiKey: s
       return decodePageResult(response, productReviewMapper);
     },
 
-    async addReview(productUniqueId: string, rating: number, title?: string, content?: string): Promise<ProductReview> {
+    async addReview(productUniqueId: string, rating: number, comment?: string): Promise<ProductReview> {
       const response = await transport.post<unknown>(`/products/${productUniqueId}/reviews`, {
         review: {
           rating,
-          title,
-          content,
+          comment,
         },
       });
       return decodeOne(response, productReviewMapper);
