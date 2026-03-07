@@ -13,3 +13,4 @@ export * from './source.js';
 export * from './user.js';
 export * from './meeting.js';
 export * from './web-notification.js';
+export * from './message-action.js';

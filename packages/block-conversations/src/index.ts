@@ -74,6 +74,11 @@ export type {
   CreateWebNotificationRequest,
   BulkWebNotificationRequest,
   ListWebNotificationsParams,
+  // Message Action types
+  MessageAction,
+  CreateMessageActionRequest,
+  UpdateMessageActionRequest,
+  ListMessageActionsParams,
 } from './lib/types/index.js';
 
 // Services
@@ -93,6 +98,7 @@ export type {
   UsersService,
   MeetingsService,
   WebNotificationsService,
+  MessageActionsService,
 } from './lib/services/index.js';
 
 export {
@@ -111,6 +117,7 @@ export {
   createUsersService,
   createMeetingsService,
   createWebNotificationsService,
+  createMessageActionsService,
 } from './lib/services/index.js';
 
 // Mappers (for advanced use cases)
@@ -126,4 +133,5 @@ export {
   conversationsUserMapper,
   meetingMapper,
   webNotificationMapper,
+  messageActionMapper,
 } from './lib/mappers/index.js';

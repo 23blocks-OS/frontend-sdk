@@ -15,6 +15,7 @@ import {
   createUsersService,
   createMeetingsService,
   createWebNotificationsService,
+  createMessageActionsService,
   type MessagesService,
   type DraftMessagesService,
   type GroupsService,
@@ -30,6 +31,7 @@ import {
   type UsersService,
   type MeetingsService,
   type WebNotificationsService,
+  type MessageActionsService,
 } from './services/index.js';
 
 /**
@@ -72,6 +74,8 @@ export interface ConversationsBlock {
   meetings: MeetingsService;
   /** Web push notification management */
   webNotifications: WebNotificationsService;
+  /** Message action management (inline creation via messages.create) */
+  messageActions: MessageActionsService;
   /** Ping the service health endpoint */
   health(): Promise<HealthCheckResponse>;
 }
@@ -105,6 +109,7 @@ export function createConversationsBlock(
     users: createUsersService(transport, config),
     meetings: createMeetingsService(transport, config),
     webNotifications: createWebNotificationsService(transport, config),
+    messageActions: createMessageActionsService(transport, config),
     health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
@@ -126,5 +131,6 @@ export const conversationsBlockMetadata: BlockMetadata = {
     'User',
     'Meeting',
     'WebNotification',
+    'MessageAction',
   ],
 };

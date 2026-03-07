@@ -1,4 +1,5 @@
 import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
+import type { MessageAction, CreateMessageActionRequest } from './message-action.js';
 
 export interface Message extends IdentityCore {
   contextId?: string;
@@ -52,6 +53,9 @@ export interface Message extends IdentityCore {
   // Tracking
   createdBy?: string;
   updatedBy?: string;
+
+  // Inline message actions
+  messageActions?: MessageAction[];
 }
 
 // Request types
@@ -83,6 +87,7 @@ export interface CreateMessageRequest {
   ragSources?: string[];
   idempotencyKey?: string;
   payload?: Record<string, unknown>;
+  actions?: CreateMessageActionRequest[];
 }
 
 export interface UpdateMessageRequest {

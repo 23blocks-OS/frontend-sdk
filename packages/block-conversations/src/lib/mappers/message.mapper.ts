@@ -1,10 +1,12 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
+import { resolveRelationshipMany } from '@23blocks/jsonapi-codec';
 import type { Message } from '../types/message.js';
+import { messageActionMapper } from './message-action.mapper.js';
 import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus, parseStringArray } from './utils.js';
 
 export const messageMapper: ResourceMapper<Message> = {
   type: 'Message',
-  map: (resource) => ({
+  map: (resource, included) => ({
     id: resource.id,
     uniqueId: parseString(resource.attributes['unique_id']),
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
@@ -61,5 +63,8 @@ export const messageMapper: ResourceMapper<Message> = {
     // Tracking
     createdBy: parseString(resource.attributes['created_by']),
     updatedBy: parseString(resource.attributes['updated_by']),
+
+    // Inline message actions (from included resources)
+    messageActions: resolveRelationshipMany(resource, 'message_actions', included, messageActionMapper),
   }),
 };

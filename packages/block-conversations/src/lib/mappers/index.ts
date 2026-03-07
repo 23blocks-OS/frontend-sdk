@@ -9,4 +9,5 @@ export * from './source.mapper.js';
 export * from './user.mapper.js';
 export * from './meeting.mapper.js';
 export * from './web-notification.mapper.js';
+export * from './message-action.mapper.js';
 export * from './utils.js';
