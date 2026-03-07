@@ -56,6 +56,7 @@ export class ConversationsService {
   get users() { return this.ensureConfigured().users; }
   get meetings() { return this.ensureConfigured().meetings; }
   get webNotifications() { return this.ensureConfigured().webNotifications; }
+  get messageActions() { return this.ensureConfigured().messageActions; }
 
   /** Full block access */
   get conversationsBlock(): ConversationsBlock { return this.ensureConfigured(); }
