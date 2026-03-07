@@ -403,6 +403,7 @@ const [authHealth, crmHealth] = await Promise.all([
 - `contexts`, `sources` - Conversation context
 - `availabilities` - User availability
 - `messageFiles` - File attachments
+- `messageActions` - Message action management (inline creation via messages.create)
 - `users` - Conversation participants
 - `meetings` - Meeting scheduling
 

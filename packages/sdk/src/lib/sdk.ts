@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — products block aligned with backend strong params
+// Client Factory (Recommended API) — conversations inline message actions, products block aligned with backend strong params
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
