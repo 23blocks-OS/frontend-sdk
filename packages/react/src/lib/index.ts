@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — blocks expose health(), CreateOrderRequest supports flat + items[]
+// Main API (Recommended) — conversations inline message actions, blocks expose health()
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
