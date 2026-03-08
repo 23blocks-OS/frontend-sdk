@@ -475,6 +475,11 @@ const [authHealth, crmHealth] = await Promise.all([
 - `jobs` - Async job status tracking (progress, pages, chunks, embeddings, timing)
 - `images` - Image upload for vector indexing and unified search (text, image URL, base64, filters, similarity threshold)
 - `products` - Product identification from images and unified product search
+- `evaluations.datasets` - CRUD evaluation datasets
+- `evaluations.questions` - Batch create and list questions per dataset
+- `evaluations.runs` - Create (async), get, list, cancel evaluation runs with polling helper
+- `evaluations.results` - List per-question results per run
+- `evaluations.comparison` - Compare metrics across two completed runs
 
 ### rewards (block-rewards)
 - `rewards` - Reward definitions
