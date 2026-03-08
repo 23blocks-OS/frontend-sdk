@@ -1,3 +1,18 @@
+## 14.3.0 (2026-03-08)
+
+### 🚀 Features
+
+- **@23blocks/angular:** add messageActions getter to ConversationsService ([1baa340](https://github.com/23blocks-OS/frontend-sdk/commit/1baa340))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 4.1.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 14.2.0 (2026-03-05)
 
 ### 🚀 Features

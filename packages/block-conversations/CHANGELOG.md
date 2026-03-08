@@ -1,3 +1,14 @@
+## 4.1.0 (2026-03-08)
+
+### 🚀 Features
+
+- **@23blocks/block-conversations:** add inline message actions and MessageActionsService ([f9f6172](https://github.com/23blocks-OS/frontend-sdk/commit/f9f6172))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 4.0.1 (2026-03-03)
 
 ### 🧱 Updated Dependencies

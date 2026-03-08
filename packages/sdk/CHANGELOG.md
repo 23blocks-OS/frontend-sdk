@@ -1,3 +1,18 @@
+## 13.3.0 (2026-03-08)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with conversations message actions ([68ccec2](https://github.com/23blocks-OS/frontend-sdk/commit/68ccec2))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 4.1.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 13.2.0 (2026-03-05)
 
 ### 🚀 Features
