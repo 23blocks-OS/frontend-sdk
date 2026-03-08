@@ -50,6 +50,7 @@ export class RagService {
   get jobs() { return this.ensureConfigured().jobs; }
   get images() { return this.ensureConfigured().images; }
   get products() { return this.ensureConfigured().products; }
+  get evaluations() { return this.ensureConfigured().evaluations; }
 
   /** Full block access */
   get ragBlock(): RagBlock { return this.ensureConfigured(); }
