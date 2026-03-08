@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — conversations inline message actions, blocks expose health()
+// Main API (Recommended) — RAG evaluations, conversations inline message actions
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
