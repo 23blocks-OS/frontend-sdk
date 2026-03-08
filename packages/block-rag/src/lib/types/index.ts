@@ -29,3 +29,38 @@ export type {
   ProductIdentifyResponse,
   ProductSearchRequest,
 } from './product.js';
+
+export type {
+  EvaluationDataset,
+  CreateEvaluationDatasetRequest,
+  UpdateEvaluationDatasetRequest,
+  ListEvaluationDatasetsParams,
+} from './evaluation-dataset.js';
+
+export type {
+  EvaluationQuestion,
+  CreateEvaluationQuestionsRequest,
+  ListEvaluationQuestionsParams,
+} from './evaluation-question.js';
+
+export type {
+  EvaluationRun,
+  EvaluationRunMetrics,
+  EvaluationRunProgress,
+  CreateEvaluationRunRequest,
+  ListEvaluationRunsParams,
+  PollOptions,
+} from './evaluation-run.js';
+
+export type {
+  EvaluationResult,
+  ListEvaluationResultsParams,
+} from './evaluation-result.js';
+
+export type {
+  EvaluationComparisonParams,
+  EvaluationComparisonResult,
+  EvaluationComparisonRunSummary,
+  EvaluationComparisonMetricDelta,
+  EvaluationComparisonPerQuestion,
+} from './evaluation-comparison.js';

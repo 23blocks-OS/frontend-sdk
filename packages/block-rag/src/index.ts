@@ -1,6 +1,6 @@
 // Block factory and metadata
 export { createRagBlock, ragBlockMetadata } from './lib/rag.block.js';
-export type { RagBlock, RagBlockConfig } from './lib/rag.block.js';
+export type { RagBlock, RagBlockConfig, EvaluationsServices } from './lib/rag.block.js';
 
 // Types - Re-export all types
 export * from './lib/types/index.js';

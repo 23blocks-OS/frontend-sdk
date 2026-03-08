@@ -5,17 +5,38 @@ import {
   createJobsService,
   createImagesService,
   createRagProductsService,
+  createEvaluationDatasetsService,
+  createEvaluationQuestionsService,
+  createEvaluationRunsService,
+  createEvaluationResultsService,
+  createEvaluationComparisonService,
   type ScopeService,
   type RagFilesService,
   type JobsService,
   type ImagesService,
   type RagProductsService,
+  type EvaluationDatasetsService,
+  type EvaluationQuestionsService,
+  type EvaluationRunsService,
+  type EvaluationResultsService,
+  type EvaluationComparisonService,
 } from './services/index.js';
 
 /**
  * Configuration for the RAG block
  */
 export interface RagBlockConfig extends BlockConfig {}
+
+/**
+ * Evaluation sub-services composite
+ */
+export interface EvaluationsServices {
+  datasets: EvaluationDatasetsService;
+  questions: EvaluationQuestionsService;
+  runs: EvaluationRunsService;
+  results: EvaluationResultsService;
+  comparison: EvaluationComparisonService;
+}
 
 /**
  * RAG block interface
@@ -45,6 +66,11 @@ export interface RagBlock {
    * Product identification and search
    */
   products: RagProductsService;
+
+  /**
+   * RAG evaluation: datasets, questions, runs, results, and comparison
+   */
+  evaluations: EvaluationsServices;
 
   /** Ping the service health endpoint */
   health(): Promise<HealthCheckResponse>;
@@ -98,6 +124,13 @@ export function createRagBlock(
     jobs: createJobsService(transport, config),
     images: createImagesService(transport, config),
     products: createRagProductsService(transport, config),
+    evaluations: {
+      datasets: createEvaluationDatasetsService(transport, config),
+      questions: createEvaluationQuestionsService(transport, config),
+      runs: createEvaluationRunsService(transport, config),
+      results: createEvaluationResultsService(transport, config),
+      comparison: createEvaluationComparisonService(transport, config),
+    },
     health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
@@ -115,5 +148,9 @@ export const ragBlockMetadata = {
     'ImageSearchResult',
     'ProductSearchResult',
     'ProductIdentifyResult',
+    'EvaluationDataset',
+    'EvaluationQuestion',
+    'EvaluationRun',
+    'EvaluationResult',
   ],
 };
