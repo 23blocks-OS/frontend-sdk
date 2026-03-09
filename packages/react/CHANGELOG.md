@@ -1,3 +1,18 @@
+## 14.4.0 (2026-03-09)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with rag evaluation service ([9f5553c](https://github.com/23blocks-OS/frontend-sdk/commit/9f5553c))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-rag to 2.1.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 14.3.0 (2026-03-08)
 
 ### 🚀 Features

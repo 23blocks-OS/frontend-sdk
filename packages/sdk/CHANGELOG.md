@@ -1,3 +1,18 @@
+## 13.4.0 (2026-03-09)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with rag evaluation service ([5e9a2f0](https://github.com/23blocks-OS/frontend-sdk/commit/5e9a2f0))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-rag to 2.1.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 13.3.0 (2026-03-08)
 
 ### 🚀 Features

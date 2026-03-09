@@ -1,3 +1,18 @@
+## 14.4.0 (2026-03-09)
+
+### 🚀 Features
+
+- **@23blocks/angular:** add evaluations getter to RagService ([2ce1b38](https://github.com/23blocks-OS/frontend-sdk/commit/2ce1b38))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-rag to 2.1.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 14.3.0 (2026-03-08)
 
 ### 🚀 Features
