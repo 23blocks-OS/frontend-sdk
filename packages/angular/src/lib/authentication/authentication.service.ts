@@ -20,7 +20,7 @@ import {
   type TenantLoginRequest,
 } from '@23blocks/block-authentication';
 import { TRANSPORT, AUTHENTICATION_TRANSPORT, AUTHENTICATION_CONFIG } from '../tokens';
-import { TOKEN_MANAGER, SIMPLE_CONFIG, type TokenManagerService, type Simple23BlocksConfig } from '../simple-providers';
+import { TOKEN_MANAGER, TOKEN_LIFECYCLE, SIMPLE_CONFIG, type TokenManagerService, type TokenLifecycleManagerService, type AuthStateListener, type Simple23BlocksConfig } from '../simple-providers';
 
 /**
  * Angular service wrapping the Authentication block.
@@ -46,18 +46,21 @@ export class AuthenticationService {
   private readonly block: AuthenticationBlock | null;
   private readonly tokenManager: TokenManagerService | null;
   private readonly simpleConfig: Simple23BlocksConfig | null;
+  private readonly lifecycle: TokenLifecycleManagerService | null;
 
   constructor(
     @Optional() @Inject(AUTHENTICATION_TRANSPORT) serviceTransport: Transport | null,
     @Optional() @Inject(TRANSPORT) legacyTransport: Transport | null,
     @Inject(AUTHENTICATION_CONFIG) config: AuthenticationBlockConfig,
     @Optional() @Inject(TOKEN_MANAGER) tokenManager: TokenManagerService | null,
-    @Optional() @Inject(SIMPLE_CONFIG) simpleConfig: Simple23BlocksConfig | null
+    @Optional() @Inject(SIMPLE_CONFIG) simpleConfig: Simple23BlocksConfig | null,
+    @Optional() @Inject(TOKEN_LIFECYCLE) lifecycle: TokenLifecycleManagerService | null
   ) {
     const transport = serviceTransport ?? legacyTransport;
     this.block = transport ? createAuthenticationBlock(transport, config) : null;
     this.tokenManager = tokenManager;
     this.simpleConfig = simpleConfig;
+    this.lifecycle = lifecycle;
   }
 
   private ensureConfigured(): AuthenticationBlock {
@@ -103,7 +106,10 @@ export class AuthenticationService {
    */
   signIn(request: SignInRequest): Observable<SignInResponse> {
     return from(this.ensureConfigured().auth.signIn(request)).pipe(
-      tap((response) => this.storeTokens(response))
+      tap((response) => {
+        this.storeTokens(response);
+        if (response.accessToken) this.lifecycle?.start();
+      })
     );
   }
 
@@ -122,6 +128,7 @@ export class AuthenticationService {
       tap((response) => {
         if (this.isTokenMode && this.tokenManager && response.accessToken) {
           this.tokenManager.setTokens(response.accessToken);
+          this.lifecycle?.start();
         }
       })
     );
@@ -136,6 +143,7 @@ export class AuthenticationService {
   signOut(): Observable<void> {
     return from(this.ensureConfigured().auth.signOut()).pipe(
       tap(() => {
+        this.lifecycle?.stop();
         if (this.isTokenMode && this.tokenManager) {
           this.tokenManager.clearTokens();
         }
@@ -166,7 +174,10 @@ export class AuthenticationService {
    */
   verifyMagicLink(request: MagicLinkVerifyRequest): Observable<SignInResponse> {
     return from(this.ensureConfigured().auth.verifyMagicLink(request)).pipe(
-      tap((response) => this.storeTokens(response))
+      tap((response) => {
+        this.storeTokens(response);
+        if (response.accessToken) this.lifecycle?.start();
+      })
     );
   }
 
@@ -180,7 +191,10 @@ export class AuthenticationService {
    */
   acceptInvitation(request: AcceptInvitationRequest): Observable<SignInResponse> {
     return from(this.ensureConfigured().auth.acceptInvitation(request)).pipe(
-      tap((response) => this.storeTokens(response))
+      tap((response) => {
+        this.storeTokens(response);
+        if (response.accessToken) this.lifecycle?.start();
+      })
     );
   }
 
@@ -303,6 +317,33 @@ export class AuthenticationService {
       return null;
     }
     return !!this.tokenManager.getAccessToken();
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Token Lifecycle
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Subscribe to auth state changes (token refreshed, session expired, etc.).
+   * Returns an unsubscribe function.
+   * Only active when tokenLifecycle is enabled.
+   */
+  onAuthStateChanged(listener: AuthStateListener): () => void {
+    return this.lifecycle?.onAuthStateChanged(listener) ?? (() => {});
+  }
+
+  /**
+   * Force an immediate token refresh.
+   * Returns the new access token. Throws if lifecycle is unavailable or refresh fails.
+   */
+  refreshSession(): Promise<string> {
+    if (!this.lifecycle) {
+      return Promise.reject(new Error(
+        '[23blocks] Token lifecycle is not available. ' +
+        'Ensure authMode is "token" and tokenLifecycle is not disabled.'
+      ));
+    }
+    return this.lifecycle.refreshNow();
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

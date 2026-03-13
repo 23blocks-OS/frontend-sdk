@@ -1,7 +1,9 @@
 import type { Provider, EnvironmentProviders } from '@angular/core';
 import { InjectionToken, makeEnvironmentProviders } from '@angular/core';
 import { createHttpTransport } from '@23blocks/transport-http';
-import type { Transport } from '@23blocks/contracts';
+import type { Transport, RequestOptions } from '@23blocks/contracts';
+import { BlockErrorException } from '@23blocks/contracts';
+import { createAuthenticationBlock } from '@23blocks/block-authentication';
 import {
   TRANSPORT,
   // Per-service transport tokens
@@ -102,6 +104,44 @@ export interface ServiceUrls {
 }
 
 /**
+ * Auth state change events
+ */
+export type AuthStateEvent = 'SIGNED_IN' | 'SIGNED_OUT' | 'TOKEN_REFRESHED' | 'SESSION_EXPIRED';
+
+/**
+ * Callback invoked when auth state changes
+ */
+export type AuthStateListener = (event: AuthStateEvent) => void;
+
+/**
+ * Configuration for automatic token lifecycle management
+ */
+export interface TokenLifecycleConfig {
+  /** Seconds before token expiry to trigger a proactive refresh. @default 120 */
+  refreshBufferSeconds?: number;
+  /** Refresh token when tab becomes visible. @default true */
+  enableVisibilityRefresh?: boolean;
+  /** Schedule proactive refresh based on JWT `exp` claim. @default true */
+  enableProactiveRefresh?: boolean;
+}
+
+/**
+ * Token lifecycle manager interface
+ */
+export interface TokenLifecycleManagerService {
+  start(): void;
+  stop(): void;
+  onAuthStateChanged(listener: AuthStateListener): () => void;
+  refreshNow(): Promise<string>;
+  destroy(): void;
+}
+
+/**
+ * Injection token for the token lifecycle manager
+ */
+export const TOKEN_LIFECYCLE = new InjectionToken<TokenLifecycleManagerService | null>('23blocks.token-lifecycle');
+
+/**
  * Configuration for providing 23blocks services
  */
 export interface ProviderConfig {
@@ -157,6 +197,17 @@ export interface ProviderConfig {
    * @default 30000
    */
   timeout?: number;
+
+  /**
+   * Token lifecycle configuration for automatic refresh and 401 retry.
+   * - Pass an object to customize (e.g., `{ refreshBufferSeconds: 60 }`)
+   * - Pass `false` to disable entirely
+   * - Omit or pass `{}` to use defaults (enabled with 120s buffer)
+   *
+   * Only applies in token mode. Ignored in cookie mode.
+   * @default {} (enabled with defaults)
+   */
+  tokenLifecycle?: TokenLifecycleConfig | false;
 }
 
 /**
@@ -332,6 +383,206 @@ function createTransportWithAuth(
   });
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Token Lifecycle Helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+function decodeJwtExp(token: string): number | null {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    let payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    const pad = payload.length % 4;
+    if (pad) payload += '='.repeat(4 - pad);
+    let decoded: string;
+    if (typeof atob === 'function') {
+      decoded = atob(payload);
+    } else if (typeof Buffer !== 'undefined') {
+      decoded = Buffer.from(payload, 'base64').toString('utf-8');
+    } else {
+      return null;
+    }
+    const parsed = JSON.parse(decoded);
+    return typeof parsed.exp === 'number' ? parsed.exp : null;
+  } catch {
+    return null;
+  }
+}
+
+function isBrowserEnv(): boolean {
+  try {
+    return typeof window !== 'undefined'
+      && typeof window.localStorage !== 'undefined'
+      && typeof window.localStorage.getItem === 'function';
+  } catch {
+    return false;
+  }
+}
+
+type RefreshTokenFn = (refreshToken: string) => Promise<{
+  accessToken: string;
+  refreshToken?: string;
+  expiresIn?: number;
+}>;
+
+function createLifecycleManager(
+  tokenManager: TokenManagerService,
+  refreshFn: RefreshTokenFn,
+  config: TokenLifecycleConfig = {}
+): TokenLifecycleManagerService {
+  const {
+    refreshBufferSeconds = 120,
+    enableVisibilityRefresh = true,
+    enableProactiveRefresh = true,
+  } = config;
+
+  const listeners = new Set<AuthStateListener>();
+  let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+  let refreshPromise: Promise<string> | null = null;
+  let visibilityHandler: (() => void) | null = null;
+  let destroyed = false;
+  let running = false;
+
+  function notify(event: AuthStateEvent): void {
+    listeners.forEach((l) => { try { l(event); } catch {} });
+  }
+
+  function clearTimer(): void {
+    if (refreshTimer !== null) { clearTimeout(refreshTimer); refreshTimer = null; }
+  }
+
+  function scheduleRefresh(): void {
+    if (!enableProactiveRefresh || destroyed || !running) return;
+    clearTimer();
+    const accessToken = tokenManager.getAccessToken();
+    if (!accessToken) return;
+    const exp = decodeJwtExp(accessToken);
+    if (!exp) return;
+    const refreshInSeconds = (exp - Math.floor(Date.now() / 1000)) - refreshBufferSeconds;
+    if (refreshInSeconds <= 0) {
+      refreshNow().catch(() => {});
+      return;
+    }
+    refreshTimer = setTimeout(() => {
+      if (!destroyed && running) refreshNow().catch(() => {});
+    }, refreshInSeconds * 1000);
+  }
+
+  function handleVisibilityChange(): void {
+    if (destroyed || !running || typeof document === 'undefined') return;
+    if (document.visibilityState === 'visible') {
+      const accessToken = tokenManager.getAccessToken();
+      if (!accessToken) return;
+      const exp = decodeJwtExp(accessToken);
+      if (!exp) { refreshNow().catch(() => {}); return; }
+      const secondsUntilExpiry = exp - Math.floor(Date.now() / 1000);
+      if (secondsUntilExpiry <= refreshBufferSeconds) {
+        refreshNow().catch(() => {});
+      } else {
+        scheduleRefresh();
+      }
+    }
+  }
+
+  async function refreshNow(): Promise<string> {
+    if (destroyed) throw new Error('[23blocks] Lifecycle destroyed');
+    if (refreshPromise) return refreshPromise;
+    refreshPromise = (async () => {
+      try {
+        const rt = tokenManager.getRefreshToken();
+        if (!rt) throw new Error('No refresh token');
+        const result = await refreshFn(rt);
+        tokenManager.setTokens(result.accessToken, result.refreshToken);
+        scheduleRefresh();
+        notify('TOKEN_REFRESHED');
+        return result.accessToken;
+      } catch (error) {
+        clearTimer();
+        tokenManager.clearTokens();
+        running = false;
+        notify('SESSION_EXPIRED');
+        throw error;
+      } finally {
+        refreshPromise = null;
+      }
+    })();
+    return refreshPromise;
+  }
+
+  return {
+    start() {
+      if (destroyed) return;
+      running = true;
+      scheduleRefresh();
+      if (enableVisibilityRefresh && isBrowserEnv() && !visibilityHandler && typeof document !== 'undefined') {
+        visibilityHandler = handleVisibilityChange;
+        document.addEventListener('visibilitychange', visibilityHandler);
+      }
+    },
+    stop() {
+      running = false;
+      clearTimer();
+      refreshPromise = null;
+    },
+    onAuthStateChanged(listener: AuthStateListener): () => void {
+      listeners.add(listener);
+      return () => { listeners.delete(listener); };
+    },
+    refreshNow,
+    destroy() {
+      destroyed = true;
+      running = false;
+      clearTimer();
+      refreshPromise = null;
+      if (visibilityHandler && typeof document !== 'undefined') {
+        document.removeEventListener('visibilitychange', visibilityHandler);
+        visibilityHandler = null;
+      }
+      listeners.clear();
+    },
+  };
+}
+
+function createRetryTransport(
+  baseTransport: Transport,
+  getLifecycle: () => TokenLifecycleManagerService | null
+): Transport {
+  async function withRetry<T>(fn: () => Promise<T>): Promise<T> {
+    try {
+      return await fn();
+    } catch (error) {
+      if (error instanceof BlockErrorException && error.status === 401) {
+        const lc = getLifecycle();
+        if (lc) {
+          try { await lc.refreshNow(); return await fn(); } catch { throw error; }
+        }
+      }
+      throw error;
+    }
+  }
+  return {
+    get<T>(path: string, options?: RequestOptions): Promise<T> {
+      return withRetry(() => baseTransport.get<T>(path, options));
+    },
+    post<T>(path: string, body?: unknown, options?: RequestOptions): Promise<T> {
+      return withRetry(() => baseTransport.post<T>(path, body, options));
+    },
+    patch<T>(path: string, body?: unknown, options?: RequestOptions): Promise<T> {
+      return withRetry(() => baseTransport.patch<T>(path, body, options));
+    },
+    put<T>(path: string, body?: unknown, options?: RequestOptions): Promise<T> {
+      return withRetry(() => baseTransport.put<T>(path, body, options));
+    },
+    delete<T>(path: string, options?: RequestOptions): Promise<T> {
+      return withRetry(() => baseTransport.delete<T>(path, options));
+    },
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Providers
+// ─────────────────────────────────────────────────────────────────────────────
+
 /**
  * Provide 23blocks services with simplified configuration.
  *
@@ -380,6 +631,7 @@ function createTransportWithAuth(
 export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
   // Block config for all services
   const blockConfig = { apiKey: config.apiKey, tenantId: config.tenantId };
+  const lifecycleEnabled = config.authMode !== 'cookie' && config.tokenLifecycle !== false;
 
   // Helper to create transport provider for a service URL
   const createTransportProvider = (
@@ -387,11 +639,15 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
     url: string | undefined
   ): Provider => ({
     provide: token,
-    useFactory: (tokenManager: TokenManagerService) => {
+    useFactory: (tokenManager: TokenManagerService, lifecycle: TokenLifecycleManagerService | null) => {
       if (!url) return null;
-      return createTransportWithAuth(url, config, tokenManager);
+      const base = createTransportWithAuth(url, config, tokenManager);
+      if (lifecycleEnabled && lifecycle) {
+        return createRetryTransport(base, () => lifecycle);
+      }
+      return base;
     },
-    deps: [TOKEN_MANAGER],
+    deps: [TOKEN_MANAGER, TOKEN_LIFECYCLE],
   });
 
   const providers: Provider[] = [
@@ -407,7 +663,40 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
       },
     },
 
-    // Per-service transport factories (null if URL not configured)
+    // Token lifecycle manager - uses a dedicated refresh transport (avoids circular retry)
+    {
+      provide: TOKEN_LIFECYCLE,
+      useFactory: (tokenManager: TokenManagerService) => {
+        if (!lifecycleEnabled || !config.urls.authentication) return null;
+
+        // Dedicated transport for refresh calls — NOT wrapped with retry
+        const refreshTransport = createTransportWithAuth(config.urls.authentication, config, tokenManager);
+
+        const authBlock = createAuthenticationBlock(refreshTransport, blockConfig);
+
+        const refreshFn: RefreshTokenFn = async (refreshToken: string) => {
+          const response = await authBlock.auth.refreshToken({ refreshToken });
+          return {
+            accessToken: response.accessToken,
+            refreshToken: response.refreshToken,
+            expiresIn: response.expiresIn,
+          };
+        };
+
+        const lcConfig = typeof config.tokenLifecycle === 'object' ? config.tokenLifecycle : {};
+        const lc = createLifecycleManager(tokenManager, refreshFn, lcConfig);
+
+        // Auto-start if tokens exist (page reload)
+        if (tokenManager.getAccessToken() && tokenManager.getRefreshToken()) {
+          lc.start();
+        }
+
+        return lc;
+      },
+      deps: [TOKEN_MANAGER],
+    },
+
+    // Per-service transport factories (null if URL not configured, wrapped with retry if lifecycle enabled)
     createTransportProvider(AUTHENTICATION_TRANSPORT, config.urls.authentication),
     createTransportProvider(SEARCH_TRANSPORT, config.urls.search),
     createTransportProvider(PRODUCTS_TRANSPORT, config.urls.products),
@@ -505,6 +794,7 @@ export function provideBlocks23(config: ProviderConfig): EnvironmentProviders {
 export function getBlocks23Providers(config: ProviderConfig): Provider[] {
   // Block config for all services
   const blockConfig = { apiKey: config.apiKey, tenantId: config.tenantId };
+  const lifecycleEnabled = config.authMode !== 'cookie' && config.tokenLifecycle !== false;
 
   // Helper to create transport provider for a service URL
   const createTransportProvider = (
@@ -512,11 +802,15 @@ export function getBlocks23Providers(config: ProviderConfig): Provider[] {
     url: string | undefined
   ): Provider => ({
     provide: token,
-    useFactory: (tokenManager: TokenManagerService) => {
+    useFactory: (tokenManager: TokenManagerService, lifecycle: TokenLifecycleManagerService | null) => {
       if (!url) return null;
-      return createTransportWithAuth(url, config, tokenManager);
+      const base = createTransportWithAuth(url, config, tokenManager);
+      if (lifecycleEnabled && lifecycle) {
+        return createRetryTransport(base, () => lifecycle);
+      }
+      return base;
     },
-    deps: [TOKEN_MANAGER],
+    deps: [TOKEN_MANAGER, TOKEN_LIFECYCLE],
   });
 
   return [
@@ -532,7 +826,28 @@ export function getBlocks23Providers(config: ProviderConfig): Provider[] {
       },
     },
 
-    // Per-service transport factories (null if URL not configured)
+    // Token lifecycle manager
+    {
+      provide: TOKEN_LIFECYCLE,
+      useFactory: (tokenManager: TokenManagerService) => {
+        if (!lifecycleEnabled || !config.urls.authentication) return null;
+        const refreshTransport = createTransportWithAuth(config.urls.authentication, config, tokenManager);
+        const authBlock = createAuthenticationBlock(refreshTransport, blockConfig);
+        const refreshFn: RefreshTokenFn = async (refreshToken: string) => {
+          const response = await authBlock.auth.refreshToken({ refreshToken });
+          return { accessToken: response.accessToken, refreshToken: response.refreshToken, expiresIn: response.expiresIn };
+        };
+        const lcConfig = typeof config.tokenLifecycle === 'object' ? config.tokenLifecycle : {};
+        const lc = createLifecycleManager(tokenManager, refreshFn, lcConfig);
+        if (tokenManager.getAccessToken() && tokenManager.getRefreshToken()) {
+          lc.start();
+        }
+        return lc;
+      },
+      deps: [TOKEN_MANAGER],
+    },
+
+    // Per-service transport factories (null if URL not configured, wrapped with retry if lifecycle enabled)
     createTransportProvider(AUTHENTICATION_TRANSPORT, config.urls.authentication),
     createTransportProvider(SEARCH_TRANSPORT, config.urls.search),
     createTransportProvider(PRODUCTS_TRANSPORT, config.urls.products),

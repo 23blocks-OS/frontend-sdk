@@ -13,6 +13,13 @@ export {
   TOKEN_MANAGER,
   PROVIDER_CONFIG,
 
+  // Token lifecycle
+  type TokenLifecycleConfig,
+  type TokenLifecycleManagerService,
+  type AuthStateEvent,
+  type AuthStateListener,
+  TOKEN_LIFECYCLE,
+
   // Backward compatibility (deprecated)
   type Simple23BlocksConfig,
   SIMPLE_CONFIG,
