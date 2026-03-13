@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — RAG evaluations, conversations inline message actions
+// Client Factory (Recommended API) — token lifecycle with auto-refresh and 401 retry
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
@@ -13,7 +13,17 @@ export {
   type TokenManager,
 } from './client.js';
 
-export { createTokenManager } from './token-manager.js';
+export { createTokenManager, isBrowser } from './token-manager.js';
+
+export {
+  createTokenLifecycleManager,
+  createRetryingTransport,
+  type AuthStateEvent,
+  type AuthStateListener,
+  type RefreshTokenFn,
+  type TokenLifecycleConfig,
+  type TokenLifecycleManager,
+} from './token-lifecycle.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Core (safe to re-export directly - no conflicts)

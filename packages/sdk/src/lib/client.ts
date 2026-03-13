@@ -29,6 +29,13 @@ import { createOnboardingBlock, type OnboardingBlock } from '@23blocks/block-onb
 import { createUniversityBlock, type UniversityBlock } from '@23blocks/block-university';
 
 import { createTokenManager, type StorageType, type TokenManager } from './token-manager.js';
+import {
+  createTokenLifecycleManager,
+  createRetryingTransport,
+  type TokenLifecycleConfig,
+  type TokenLifecycleManager,
+  type AuthStateListener,
+} from './token-lifecycle.js';
 
 /**
  * Authentication mode
@@ -135,6 +142,17 @@ export interface ClientConfig {
    * @default 30000
    */
   timeout?: number;
+
+  /**
+   * Token lifecycle configuration for automatic refresh and 401 retry.
+   * - Pass an object to customize (e.g., `{ refreshBufferSeconds: 60 }`)
+   * - Pass `false` to disable entirely
+   * - Omit or pass `{}` to use defaults (enabled with 120s buffer)
+   *
+   * Only applies in token mode. Ignored in cookie mode.
+   * @default {} (enabled with defaults)
+   */
+  tokenLifecycle?: TokenLifecycleConfig | false;
 }
 
 /**
@@ -348,6 +366,25 @@ export interface Blocks23Client {
    * In cookie mode: always returns null (check with validateToken instead)
    */
   isAuthenticated(): boolean | null;
+
+  /**
+   * Subscribe to auth state changes (token refreshed, session expired, etc.).
+   * Returns an unsubscribe function.
+   * Only active when tokenLifecycle is enabled (token mode).
+   */
+  onAuthStateChanged(listener: AuthStateListener): () => void;
+
+  /**
+   * Force an immediate token refresh.
+   * Returns the new access token. Throws if no lifecycle or refresh fails.
+   */
+  refreshSession(): Promise<string>;
+
+  /**
+   * Destroy the client — stops lifecycle timers and cleans up listeners.
+   * Call when the client is no longer needed (e.g., component unmount).
+   */
+  destroy(): void;
 }
 
 /**
@@ -428,6 +465,7 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
     storage = isBrowser() ? 'localStorage' : 'memory',
     headers: staticHeaders = {},
     timeout,
+    tokenLifecycle: lifecycleConfig = {},
   } = config;
 
   // Create token manager for token mode
@@ -440,8 +478,12 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
     });
   }
 
-  // Factory to create transport for a specific service URL
-  function createServiceTransport(baseUrl: string) {
+  // Token lifecycle manager (created lazily after auth block exists)
+  let lifecycle: TokenLifecycleManager | null = null;
+  const lifecycleEnabled = authMode === 'token' && lifecycleConfig !== false;
+
+  // Factory to create base transport for a specific service URL
+  function createBaseTransport(baseUrl: string) {
     return createHttpTransport({
       baseUrl,
       timeout,
@@ -467,6 +509,15 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
         return headers;
       },
     });
+  }
+
+  // Factory to create transport with optional 401 retry
+  function createServiceTransport(baseUrl: string) {
+    const base = createBaseTransport(baseUrl);
+    if (lifecycleEnabled) {
+      return createRetryingTransport(base, () => lifecycle);
+    }
+    return base;
   }
 
   // Helper to create a proxy that throws when accessing unconfigured service
@@ -558,6 +609,28 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
     ? createUniversityBlock(createServiceTransport(urls.university), blockConfig)
     : null;
 
+  // Create lifecycle manager if enabled and auth block is available
+  if (lifecycleEnabled && tokenManager && authenticationBlock) {
+    const lifecycleRefreshFn = async (refreshToken: string) => {
+      const response = await authenticationBlock.auth.refreshToken({ refreshToken });
+      return {
+        accessToken: response.accessToken,
+        refreshToken: response.refreshToken,
+        expiresIn: response.expiresIn,
+      };
+    };
+    lifecycle = createTokenLifecycleManager(
+      tokenManager,
+      lifecycleRefreshFn,
+      typeof lifecycleConfig === 'object' ? lifecycleConfig : {}
+    );
+
+    // Auto-start if tokens already exist (page reload scenario)
+    if (tokenManager.getAccessToken() && tokenManager.getRefreshToken()) {
+      lifecycle.start();
+    }
+  }
+
   // Create managed auth service with automatic token handling (only if auth URL configured)
   const managedAuth: ManagedAuthService = authenticationBlock
     ? {
@@ -565,6 +638,7 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
           const response = await authenticationBlock.auth.signIn(request);
           if (authMode === 'token' && tokenManager && response.accessToken) {
             tokenManager.setTokens(response.accessToken, response.refreshToken);
+            lifecycle?.start();
           }
           return response;
         },
@@ -578,6 +652,7 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
         },
 
         async signOut(): Promise<void> {
+          lifecycle?.stop();
           await authenticationBlock.auth.signOut();
           if (authMode === 'token' && tokenManager) {
             tokenManager.clearTokens();
@@ -588,6 +663,7 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
           const response = await authenticationBlock.auth.verifyMagicLink(request);
           if (authMode === 'token' && tokenManager && response.accessToken) {
             tokenManager.setTokens(response.accessToken, response.refreshToken);
+            lifecycle?.start();
           }
           return response;
         },
@@ -596,6 +672,7 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
           const response = await authenticationBlock.auth.acceptInvitation(request);
           if (authMode === 'token' && tokenManager && response.accessToken) {
             tokenManager.setTokens(response.accessToken, response.refreshToken);
+            lifecycle?.start();
           }
           return response;
         },
@@ -604,6 +681,7 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
           const response = await authenticationBlock.auth.verifyPasswordOtp(request);
           if (authMode === 'token' && tokenManager && response.accessToken) {
             tokenManager.setTokens(response.accessToken, response.refreshToken);
+            lifecycle?.start();
           }
           return response;
         },
@@ -682,6 +760,29 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
         return null;
       }
       return tokenManager ? !!tokenManager.getAccessToken() : false;
+    },
+
+    onAuthStateChanged(listener: AuthStateListener): () => void {
+      if (lifecycle) {
+        return lifecycle.onAuthStateChanged(listener);
+      }
+      // No lifecycle — return no-op unsubscribe
+      return () => {};
+    },
+
+    async refreshSession(): Promise<string> {
+      if (!lifecycle) {
+        throw new Error(
+          '[23blocks] Token lifecycle is not available. ' +
+          'Ensure authMode is "token" and tokenLifecycle is not disabled.'
+        );
+      }
+      return lifecycle.refreshNow();
+    },
+
+    destroy(): void {
+      lifecycle?.destroy();
+      lifecycle = null;
     },
   };
 }

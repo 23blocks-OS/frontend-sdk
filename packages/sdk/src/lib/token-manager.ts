@@ -88,7 +88,7 @@ class MemoryStorage {
  * Uses try/catch to handle edge runtimes (Lambda@Edge, Cloudflare Workers)
  * that may throw on property access.
  */
-function isBrowser(): boolean {
+export function isBrowser(): boolean {
   try {
     return typeof window !== 'undefined'
       && typeof window.localStorage !== 'undefined'
