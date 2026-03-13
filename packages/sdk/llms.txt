@@ -294,6 +294,13 @@ The client provides:
 - `client.authentication` - Full authentication block
 - `client.{blockName}` - All other blocks
 - `client.getAccessToken()`, `client.setTokens()`, `client.clearSession()` - Token utilities
+- `client.onAuthStateChanged(listener)` - Subscribe to auth state changes (TOKEN_REFRESHED, SESSION_EXPIRED)
+- `client.refreshSession()` - Force immediate token refresh
+- `client.destroy()` - Cleanup lifecycle timers and listeners
+
+### Token Lifecycle (Auto-Refresh & 401 Retry)
+
+Enabled by default in token mode. Handles proactive refresh (JWT exp decode, 120s buffer), 401 retry (refresh + retry once), tab visibility refresh (sleep/wake), concurrency lock, and session expiry (clears tokens, emits SESSION_EXPIRED). Disable with `tokenLifecycle: false`. Customize with `tokenLifecycle: { refreshBufferSeconds: 60 }`.
 
 ## Health Check
 

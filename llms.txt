@@ -294,6 +294,31 @@ The client provides:
 - `client.authentication` - Full authentication block
 - `client.{blockName}` - All other blocks
 - `client.getAccessToken()`, `client.setTokens()`, `client.clearSession()` - Token utilities
+- `client.onAuthStateChanged(listener)` - Subscribe to auth state changes (TOKEN_REFRESHED, SESSION_EXPIRED)
+- `client.refreshSession()` - Force immediate token refresh
+- `client.destroy()` - Cleanup lifecycle timers and listeners
+
+### Token Lifecycle (Auto-Refresh & 401 Retry)
+
+Enabled by default in token mode. Handles:
+- **Proactive refresh** - Decodes JWT `exp`, schedules refresh 120s before expiry
+- **401 retry** - On 401 errors, refreshes token and retries the request once
+- **Tab visibility** - Refreshes stale tokens when tab becomes visible (laptop sleep/wake)
+- **Concurrency lock** - Multiple simultaneous 401s share a single refresh call
+- **Session expiry** - Clears tokens and emits SESSION_EXPIRED if refresh fails
+
+```typescript
+// Disable lifecycle
+const client = create23BlocksClient({ ..., tokenLifecycle: false });
+
+// Custom config
+const client = create23BlocksClient({ ..., tokenLifecycle: { refreshBufferSeconds: 60 } });
+
+// Listen for events
+const unsub = client.onAuthStateChanged((event) => {
+  if (event === 'SESSION_EXPIRED') redirectToLogin();
+});
+```
 
 ## Health Check
 
