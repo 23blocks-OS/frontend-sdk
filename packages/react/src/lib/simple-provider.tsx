@@ -1,5 +1,7 @@
 import { createContext, useContext, useMemo, useCallback, useEffect, useState, useRef, type ReactNode } from 'react';
 import { createHttpTransport } from '@23blocks/transport-http';
+import type { Transport } from '@23blocks/contracts';
+import { BlockErrorException } from '@23blocks/contracts';
 import { createAuthenticationBlock, type AuthenticationBlock, type SignInRequest, type SignInResponse, type SignUpRequest, type SignUpResponse, type User, type UpdateProfileRequest } from '@23blocks/block-authentication';
 import { createSearchBlock, type SearchBlock } from '@23blocks/block-search';
 import { createProductsBlock, type ProductsBlock } from '@23blocks/block-products';
@@ -102,6 +104,39 @@ export interface ServiceUrls {
 }
 
 /**
+ * Auth state change events emitted by the token lifecycle manager
+ */
+export type AuthStateEvent = 'SIGNED_IN' | 'SIGNED_OUT' | 'TOKEN_REFRESHED' | 'SESSION_EXPIRED';
+
+/**
+ * Callback invoked when auth state changes
+ */
+export type AuthStateListener = (event: AuthStateEvent) => void;
+
+/**
+ * Configuration for automatic token lifecycle management
+ */
+export interface TokenLifecycleConfig {
+  /** Seconds before token expiry to trigger a proactive refresh. @default 120 */
+  refreshBufferSeconds?: number;
+  /** Refresh token when tab becomes visible. @default true */
+  enableVisibilityRefresh?: boolean;
+  /** Schedule proactive refresh based on JWT `exp` claim. @default true */
+  enableProactiveRefresh?: boolean;
+}
+
+/**
+ * Token lifecycle manager interface
+ */
+interface TokenLifecycleManager {
+  start(): void;
+  stop(): void;
+  onAuthStateChanged(listener: AuthStateListener): () => void;
+  refreshNow(): Promise<string>;
+  destroy(): void;
+}
+
+/**
  * Provider props
  */
 export interface ProviderProps {
@@ -200,6 +235,17 @@ export interface ProviderProps {
    * @default 30000
    */
   timeout?: number;
+
+  /**
+   * Token lifecycle configuration for automatic refresh and 401 retry.
+   * - Pass an object to customize (e.g., `{ refreshBufferSeconds: 60 }`)
+   * - Pass `false` to disable entirely
+   * - Omit or pass `{}` to use defaults (enabled with 120s buffer)
+   *
+   * Only applies in token mode. Ignored in cookie mode.
+   * @default {} (enabled with defaults)
+   */
+  tokenLifecycle?: TokenLifecycleConfig | false;
 }
 
 /**
@@ -242,6 +288,18 @@ export interface ClientContext {
    * Returns an unsubscribe function.
    */
   onStorageChange: (callback: () => void) => () => void;
+
+  /**
+   * Subscribe to auth state changes (token refreshed, session expired, etc.).
+   * Returns an unsubscribe function.
+   */
+  onAuthStateChanged: (listener: AuthStateListener) => () => void;
+
+  /**
+   * Force an immediate token refresh.
+   * Returns the new access token on success.
+   */
+  refreshSession: () => Promise<string>;
 
   // Config info
   authMode: AuthMode;
@@ -443,6 +501,192 @@ function createAsyncTokenManager(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Token Lifecycle Helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+function decodeJwtExp(token: string): number | null {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    let payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    const pad = payload.length % 4;
+    if (pad) payload += '='.repeat(4 - pad);
+    let decoded: string;
+    if (typeof atob === 'function') {
+      decoded = atob(payload);
+    } else if (typeof Buffer !== 'undefined') {
+      decoded = Buffer.from(payload, 'base64').toString('utf-8');
+    } else {
+      return null;
+    }
+    const parsed = JSON.parse(decoded);
+    return typeof parsed.exp === 'number' ? parsed.exp : null;
+  } catch {
+    return null;
+  }
+}
+
+function isBrowserEnv(): boolean {
+  try {
+    return typeof window !== 'undefined'
+      && typeof window.localStorage !== 'undefined'
+      && typeof window.localStorage.getItem === 'function';
+  } catch {
+    return false;
+  }
+}
+
+type RefreshTokenFn = (refreshToken: string) => Promise<{
+  accessToken: string;
+  refreshToken?: string;
+  expiresIn?: number;
+}>;
+
+function createLifecycleManager(
+  tokenManager: TokenManager,
+  refreshFn: RefreshTokenFn,
+  config: TokenLifecycleConfig = {}
+): TokenLifecycleManager {
+  const {
+    refreshBufferSeconds = 120,
+    enableVisibilityRefresh = true,
+    enableProactiveRefresh = true,
+  } = config;
+
+  const listeners = new Set<AuthStateListener>();
+  let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+  let refreshPromise: Promise<string> | null = null;
+  let visibilityHandler: (() => void) | null = null;
+  let destroyed = false;
+  let running = false;
+
+  function notify(event: AuthStateEvent): void {
+    listeners.forEach((l) => { try { l(event); } catch {} });
+  }
+
+  function clearTimer(): void {
+    if (refreshTimer !== null) { clearTimeout(refreshTimer); refreshTimer = null; }
+  }
+
+  function scheduleRefresh(): void {
+    if (!enableProactiveRefresh || destroyed || !running) return;
+    clearTimer();
+    const accessToken = tokenManager.getAccessToken();
+    if (!accessToken) return;
+    const exp = decodeJwtExp(accessToken);
+    if (!exp) return;
+    const refreshInSeconds = (exp - Math.floor(Date.now() / 1000)) - refreshBufferSeconds;
+    if (refreshInSeconds <= 0) {
+      refreshNow().catch(() => {});
+      return;
+    }
+    refreshTimer = setTimeout(() => {
+      if (!destroyed && running) refreshNow().catch(() => {});
+    }, refreshInSeconds * 1000);
+  }
+
+  function handleVisibilityChange(): void {
+    if (destroyed || !running || typeof document === 'undefined') return;
+    if (document.visibilityState === 'visible') {
+      const accessToken = tokenManager.getAccessToken();
+      if (!accessToken) return;
+      const exp = decodeJwtExp(accessToken);
+      if (!exp) { refreshNow().catch(() => {}); return; }
+      const secondsUntilExpiry = exp - Math.floor(Date.now() / 1000);
+      if (secondsUntilExpiry <= refreshBufferSeconds) {
+        refreshNow().catch(() => {});
+      } else {
+        scheduleRefresh();
+      }
+    }
+  }
+
+  async function refreshNow(): Promise<string> {
+    if (destroyed) throw new Error('[23blocks] Lifecycle destroyed');
+    if (refreshPromise) return refreshPromise;
+    refreshPromise = (async () => {
+      try {
+        const rt = tokenManager.getRefreshToken();
+        if (!rt) throw new Error('No refresh token');
+        const result = await refreshFn(rt);
+        tokenManager.setTokens(result.accessToken, result.refreshToken);
+        scheduleRefresh();
+        notify('TOKEN_REFRESHED');
+        return result.accessToken;
+      } catch (error) {
+        clearTimer();
+        tokenManager.clearTokens();
+        running = false;
+        notify('SESSION_EXPIRED');
+        throw error;
+      } finally {
+        refreshPromise = null;
+      }
+    })();
+    return refreshPromise;
+  }
+
+  return {
+    start() {
+      if (destroyed) return;
+      running = true;
+      scheduleRefresh();
+      if (enableVisibilityRefresh && isBrowserEnv() && !visibilityHandler && typeof document !== 'undefined') {
+        visibilityHandler = handleVisibilityChange;
+        document.addEventListener('visibilitychange', visibilityHandler);
+      }
+    },
+    stop() {
+      running = false;
+      clearTimer();
+      refreshPromise = null;
+    },
+    onAuthStateChanged(listener: AuthStateListener): () => void {
+      listeners.add(listener);
+      return () => { listeners.delete(listener); };
+    },
+    refreshNow,
+    destroy() {
+      destroyed = true;
+      running = false;
+      clearTimer();
+      refreshPromise = null;
+      if (visibilityHandler && typeof document !== 'undefined') {
+        document.removeEventListener('visibilitychange', visibilityHandler);
+        visibilityHandler = null;
+      }
+      listeners.clear();
+    },
+  };
+}
+
+function createRetryTransport(
+  baseTransport: Transport,
+  getLifecycle: () => TokenLifecycleManager | null
+): Transport {
+  async function withRetry<T>(fn: () => Promise<T>): Promise<T> {
+    try {
+      return await fn();
+    } catch (error) {
+      if (error instanceof BlockErrorException && error.status === 401) {
+        const lc = getLifecycle();
+        if (lc) {
+          try { await lc.refreshNow(); return await fn(); } catch { throw error; }
+        }
+      }
+      throw error;
+    }
+  }
+  return {
+    get: (path, options) => withRetry(() => baseTransport.get(path, options)),
+    post: (path, body, options) => withRetry(() => baseTransport.post(path, body, options)),
+    patch: (path, body, options) => withRetry(() => baseTransport.patch(path, body, options)),
+    put: (path, body, options) => withRetry(() => baseTransport.put(path, body, options)),
+    delete: (path, options) => withRetry(() => baseTransport.delete(path, options)),
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Context
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -556,10 +800,13 @@ export function Provider({
   customStorage,
   headers: staticHeaders = {},
   timeout,
+  tokenLifecycle: lifecycleConfig = {},
 }: ProviderProps) {
   // Track if async storage has loaded tokens
   const [isReady, setIsReady] = useState(!customStorage);
   const tokenManagerRef = useRef<TokenManager | null>(null);
+  const lifecycleRef = useRef<TokenLifecycleManager | null>(null);
+  const lifecycleEnabled = authMode === 'token' && lifecycleConfig !== false;
 
   // Create token manager (memoized) with scoped storage keys
   const tokenManager = useMemo(() => {
@@ -582,8 +829,8 @@ export function Provider({
     }
   }, [authMode, apiKey, storage, tenantId, customStorage]);
 
-  // Factory to create transport for a specific service URL
-  const createServiceTransport = useCallback((baseUrl: string) => {
+  // Factory to create base transport for a specific service URL
+  const createBaseTransport = useCallback((baseUrl: string) => {
     return createHttpTransport({
       baseUrl,
       timeout,
@@ -609,6 +856,15 @@ export function Provider({
       },
     });
   }, [apiKey, tenantId, authMode, staticHeaders, timeout]);
+
+  // Factory to create transport with optional 401 retry
+  const createServiceTransport = useCallback((baseUrl: string) => {
+    const base = createBaseTransport(baseUrl);
+    if (lifecycleEnabled) {
+      return createRetryTransport(base, () => lifecycleRef.current);
+    }
+    return base;
+  }, [createBaseTransport, lifecycleEnabled]);
 
   // Create blocks (memoized) - each with its own transport (no fallback)
   const blockConfig = useMemo(() => ({ apiKey, tenantId }), [apiKey, tenantId]);
@@ -740,6 +996,41 @@ export function Provider({
     return createUniversityBlock(createServiceTransport(urls.university), blockConfig);
   }, [createServiceTransport, urls.university, blockConfig]);
 
+  // Create and manage lifecycle manager
+  useEffect(() => {
+    if (!lifecycleEnabled || !tokenManager || !urls.authentication) {
+      lifecycleRef.current = null;
+      return;
+    }
+
+    const authBlock = authentication as AuthenticationBlock;
+    const refreshFn: RefreshTokenFn = async (refreshToken: string) => {
+      const response = await authBlock.auth.refreshToken({ refreshToken });
+      return {
+        accessToken: response.accessToken,
+        refreshToken: response.refreshToken,
+        expiresIn: response.expiresIn,
+      };
+    };
+
+    const lc = createLifecycleManager(
+      tokenManager,
+      refreshFn,
+      typeof lifecycleConfig === 'object' ? lifecycleConfig : {}
+    );
+    lifecycleRef.current = lc;
+
+    // Auto-start if tokens already exist (page reload)
+    if (tokenManager.getAccessToken() && tokenManager.getRefreshToken()) {
+      lc.start();
+    }
+
+    return () => {
+      lc.destroy();
+      lifecycleRef.current = null;
+    };
+  }, [lifecycleEnabled, tokenManager, authentication, urls.authentication, lifecycleConfig]);
+
   // Check if authentication is configured for auth methods
   const isAuthConfigured = !!urls.authentication;
 
@@ -754,6 +1045,7 @@ export function Provider({
     const response = await (authentication as AuthenticationBlock).auth.signIn(request);
     if (authMode === 'token' && tokenManager && response.accessToken) {
       tokenManager.setTokens(response.accessToken, response.refreshToken);
+      lifecycleRef.current?.start();
     }
     return response;
   }, [authentication, authMode, tokenManager, isAuthConfigured]);
@@ -779,6 +1071,7 @@ export function Provider({
         "Add 'urls.authentication' to your Provider configuration."
       );
     }
+    lifecycleRef.current?.stop();
     await (authentication as AuthenticationBlock).auth.signOut();
     if (authMode === 'token' && tokenManager) {
       tokenManager.clearTokens();
@@ -799,6 +1092,21 @@ export function Provider({
   const onStorageChange = useCallback((callback: () => void): (() => void) => {
     return tokenManager?.onStorageChange(callback) ?? (() => {});
   }, [tokenManager]);
+
+  const onAuthStateChanged = useCallback((listener: AuthStateListener): (() => void) => {
+    return lifecycleRef.current?.onAuthStateChanged(listener) ?? (() => {});
+  }, []);
+
+  const refreshSession = useCallback(async (): Promise<string> => {
+    const lc = lifecycleRef.current;
+    if (!lc) {
+      throw new Error(
+        '[23blocks] Token lifecycle is not available. ' +
+        'Ensure authMode is "token" and tokenLifecycle is not disabled.'
+      );
+    }
+    return lc.refreshNow();
+  }, []);
 
   const value = useMemo<ClientContext>(() => ({
     // Blocks
@@ -834,6 +1142,10 @@ export function Provider({
     isAuthenticated,
     onStorageChange,
 
+    // Lifecycle
+    onAuthStateChanged,
+    refreshSession,
+
     // Config
     authMode,
     isReady,
@@ -841,7 +1153,8 @@ export function Provider({
     authentication, search, products, crm, content, geolocation, conversations,
     files, forms, assets, campaigns, company, rewards, sales, wallet, jarvis,
     onboarding, university, signIn, signUp, signOut, getAccessToken, getRefreshToken,
-    setTokens, clearTokens, isAuthenticated, onStorageChange, authMode, isReady,
+    setTokens, clearTokens, isAuthenticated, onStorageChange, onAuthStateChanged,
+    refreshSession, authMode, isReady,
   ]);
 
   return (
@@ -997,6 +1310,10 @@ export function useAuth() {
     // Token validation
     validateToken: () => getAuth().validateToken(),
     getCurrentUser: () => getAuth().getCurrentUser(),
+
+    // Token lifecycle
+    onAuthStateChanged: context.onAuthStateChanged,
+    refreshSession: context.refreshSession,
 
     // Full block access for advanced usage
     authentication: context.authentication,

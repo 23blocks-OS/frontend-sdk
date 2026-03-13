@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — RAG evaluations, conversations inline message actions
+// Main API (Recommended) — token lifecycle with auto-refresh and 401 retry
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
@@ -15,6 +15,9 @@ export {
   type TokenManager,
   type AsyncStorageInterface,
   type UseUserReturn,
+  type AuthStateEvent,
+  type AuthStateListener,
+  type TokenLifecycleConfig,
 
   // Backward compatibility (deprecated)
   SimpleBlocks23Provider,
