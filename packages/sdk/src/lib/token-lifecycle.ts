@@ -276,6 +276,11 @@ export function createTokenLifecycleManager(
 
         const result = await refreshFn(refreshToken);
 
+        // Guard: don't store tokens if lifecycle was stopped/destroyed during the async call
+        if (!running || destroyed) {
+          return result.accessToken;
+        }
+
         // Store new tokens
         tokenManager.setTokens(result.accessToken, result.refreshToken);
 
@@ -304,12 +309,14 @@ export function createTokenLifecycleManager(
     running = true;
     scheduleRefresh();
     registerVisibilityListener();
+    notify('SIGNED_IN');
   }
 
   function stop(): void {
     running = false;
     clearTimer();
     refreshPromise = null;
+    notify('SIGNED_OUT');
   }
 
   function destroy(): void {

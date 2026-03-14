@@ -610,9 +610,11 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
     : null;
 
   // Create lifecycle manager if enabled and auth block is available
-  if (lifecycleEnabled && tokenManager && authenticationBlock) {
+  if (lifecycleEnabled && tokenManager && urls.authentication) {
+    // Dedicated transport for refresh calls — NOT wrapped with retry to avoid circular 401 handling
+    const refreshAuthBlock = createAuthenticationBlock(createBaseTransport(urls.authentication), blockConfig);
     const lifecycleRefreshFn = async (refreshToken: string) => {
-      const response = await authenticationBlock.auth.refreshToken({ refreshToken });
+      const response = await refreshAuthBlock.auth.refreshToken({ refreshToken });
       return {
         accessToken: response.accessToken,
         refreshToken: response.refreshToken,
@@ -647,6 +649,7 @@ export function create23BlocksClient(config: ClientConfig): Blocks23Client {
           const response = await authenticationBlock.auth.signUp(request);
           if (authMode === 'token' && tokenManager && response.accessToken) {
             tokenManager.setTokens(response.accessToken);
+            lifecycle?.start();
           }
           return response;
         },
