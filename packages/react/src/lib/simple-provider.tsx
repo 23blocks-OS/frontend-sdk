@@ -502,6 +502,10 @@ function createAsyncTokenManager(
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Token Lifecycle Helpers
+// CANONICAL SOURCE: packages/sdk/src/lib/token-lifecycle.ts
+// These are inlined here to avoid adding @23blocks/sdk as a dependency
+// (which would change ng-packagr and consumer dependency requirements).
+// When fixing bugs, update all three copies: sdk, react, angular.
 // ─────────────────────────────────────────────────────────────────────────────
 
 function decodeJwtExp(token: string): number | null {
@@ -609,6 +613,8 @@ function createLifecycleManager(
         const rt = tokenManager.getRefreshToken();
         if (!rt) throw new Error('No refresh token');
         const result = await refreshFn(rt);
+        // Guard: don't store tokens if lifecycle was stopped/destroyed during the async call
+        if (!running || destroyed) return result.accessToken;
         tokenManager.setTokens(result.accessToken, result.refreshToken);
         scheduleRefresh();
         notify('TOKEN_REFRESHED');
@@ -635,11 +641,13 @@ function createLifecycleManager(
         visibilityHandler = handleVisibilityChange;
         document.addEventListener('visibilitychange', visibilityHandler);
       }
+      notify('SIGNED_IN');
     },
     stop() {
       running = false;
       clearTimer();
       refreshPromise = null;
+      notify('SIGNED_OUT');
     },
     onAuthStateChanged(listener: AuthStateListener): () => void {
       listeners.add(listener);
@@ -806,6 +814,8 @@ export function Provider({
   const [isReady, setIsReady] = useState(!customStorage);
   const tokenManagerRef = useRef<TokenManager | null>(null);
   const lifecycleRef = useRef<TokenLifecycleManager | null>(null);
+  // Buffer listeners registered before lifecycle is initialized
+  const pendingListenersRef = useRef<Set<AuthStateListener>>(new Set());
   const lifecycleEnabled = authMode === 'token' && lifecycleConfig !== false;
 
   // Create token manager (memoized) with scoped storage keys
@@ -1003,9 +1013,11 @@ export function Provider({
       return;
     }
 
-    const authBlock = authentication as AuthenticationBlock;
+    // Dedicated transport for refresh calls — NOT wrapped with retry to avoid circular 401 handling
+    const refreshTransport = createBaseTransport(urls.authentication);
+    const refreshAuthBlock = createAuthenticationBlock(refreshTransport, blockConfig);
     const refreshFn: RefreshTokenFn = async (refreshToken: string) => {
-      const response = await authBlock.auth.refreshToken({ refreshToken });
+      const response = await refreshAuthBlock.auth.refreshToken({ refreshToken });
       return {
         accessToken: response.accessToken,
         refreshToken: response.refreshToken,
@@ -1020,6 +1032,12 @@ export function Provider({
     );
     lifecycleRef.current = lc;
 
+    // Replay any listeners that were registered before lifecycle was ready
+    pendingListenersRef.current.forEach((listener) => {
+      lc.onAuthStateChanged(listener);
+    });
+    pendingListenersRef.current.clear();
+
     // Auto-start if tokens already exist (page reload)
     if (tokenManager.getAccessToken() && tokenManager.getRefreshToken()) {
       lc.start();
@@ -1029,7 +1047,7 @@ export function Provider({
       lc.destroy();
       lifecycleRef.current = null;
     };
-  }, [lifecycleEnabled, tokenManager, authentication, urls.authentication, lifecycleConfig]);
+  }, [lifecycleEnabled, tokenManager, createBaseTransport, blockConfig, urls.authentication, lifecycleConfig]);
 
   // Check if authentication is configured for auth methods
   const isAuthConfigured = !!urls.authentication;
@@ -1060,6 +1078,7 @@ export function Provider({
     const response = await (authentication as AuthenticationBlock).auth.signUp(request);
     if (authMode === 'token' && tokenManager && response.accessToken) {
       tokenManager.setTokens(response.accessToken);
+      lifecycleRef.current?.start();
     }
     return response;
   }, [authentication, authMode, tokenManager, isAuthConfigured]);
@@ -1094,7 +1113,15 @@ export function Provider({
   }, [tokenManager]);
 
   const onAuthStateChanged = useCallback((listener: AuthStateListener): (() => void) => {
-    return lifecycleRef.current?.onAuthStateChanged(listener) ?? (() => {});
+    const lc = lifecycleRef.current;
+    if (lc) {
+      return lc.onAuthStateChanged(listener);
+    }
+    // Lifecycle not ready yet — buffer the listener for replay when it initializes
+    pendingListenersRef.current.add(listener);
+    return () => {
+      pendingListenersRef.current.delete(listener);
+    };
   }, []);
 
   const refreshSession = useCallback(async (): Promise<string> => {
