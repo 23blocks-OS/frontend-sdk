@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — token lifecycle with auto-refresh and 401 retry
+// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, full barrel exports
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
