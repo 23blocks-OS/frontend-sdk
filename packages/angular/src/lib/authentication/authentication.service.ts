@@ -141,9 +141,10 @@ export class AuthenticationService {
    * @returns Observable that completes on successful sign-out
    */
   signOut(): Observable<void> {
+    // Stop lifecycle BEFORE the API call to prevent refresh during signOut
+    this.lifecycle?.stop();
     return from(this.ensureConfigured().auth.signOut()).pipe(
       tap(() => {
-        this.lifecycle?.stop();
         if (this.isTokenMode && this.tokenManager) {
           this.tokenManager.clearTokens();
         }

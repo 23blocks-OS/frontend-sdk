@@ -385,6 +385,10 @@ function createTransportWithAuth(
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Token Lifecycle Helpers
+// CANONICAL SOURCE: packages/sdk/src/lib/token-lifecycle.ts
+// These are inlined here to avoid adding @23blocks/sdk as a dependency
+// (which would change ng-packagr and consumer dependency requirements).
+// When fixing bugs, update all three copies: sdk, react, angular.
 // ─────────────────────────────────────────────────────────────────────────────
 
 function decodeJwtExp(token: string): number | null {
@@ -492,6 +496,8 @@ function createLifecycleManager(
         const rt = tokenManager.getRefreshToken();
         if (!rt) throw new Error('No refresh token');
         const result = await refreshFn(rt);
+        // Guard: don't store tokens if lifecycle was stopped/destroyed during the async call
+        if (!running || destroyed) return result.accessToken;
         tokenManager.setTokens(result.accessToken, result.refreshToken);
         scheduleRefresh();
         notify('TOKEN_REFRESHED');
@@ -518,11 +524,13 @@ function createLifecycleManager(
         visibilityHandler = handleVisibilityChange;
         document.addEventListener('visibilitychange', visibilityHandler);
       }
+      notify('SIGNED_IN');
     },
     stop() {
       running = false;
       clearTimer();
       refreshPromise = null;
+      notify('SIGNED_OUT');
     },
     onAuthStateChanged(listener: AuthStateListener): () => void {
       listeners.add(listener);
