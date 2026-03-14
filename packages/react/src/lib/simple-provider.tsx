@@ -2,7 +2,7 @@ import { createContext, useContext, useMemo, useCallback, useEffect, useState, u
 import { createHttpTransport } from '@23blocks/transport-http';
 import type { Transport } from '@23blocks/contracts';
 import { BlockErrorException } from '@23blocks/contracts';
-import { createAuthenticationBlock, type AuthenticationBlock, type SignInRequest, type SignInResponse, type SignUpRequest, type SignUpResponse, type User, type UpdateProfileRequest } from '@23blocks/block-authentication';
+import { createAuthenticationBlock, type AuthenticationBlock, type SignInRequest, type SignInResponse, type SignUpRequest, type SignUpResponse, type MagicLinkVerifyRequest, type AcceptInvitationRequest, type User, type UpdateProfileRequest } from '@23blocks/block-authentication';
 import { createSearchBlock, type SearchBlock } from '@23blocks/block-search';
 import { createProductsBlock, type ProductsBlock } from '@23blocks/block-products';
 import { createCrmBlock, type CrmBlock } from '@23blocks/block-crm';
@@ -276,6 +276,8 @@ export interface ClientContext {
   signIn: (request: SignInRequest) => Promise<SignInResponse>;
   signUp: (request: SignUpRequest) => Promise<SignUpResponse>;
   signOut: () => Promise<void>;
+  verifyMagicLink: (request: MagicLinkVerifyRequest) => Promise<SignInResponse>;
+  acceptInvitation: (request: AcceptInvitationRequest) => Promise<SignInResponse>;
 
   // Token utilities
   getAccessToken: () => string | null;
@@ -818,6 +820,15 @@ export function Provider({
   const pendingListenersRef = useRef<Set<AuthStateListener>>(new Set());
   const lifecycleEnabled = authMode === 'token' && lifecycleConfig !== false;
 
+  // Stabilize object props to prevent cascading memo invalidation
+  // when consumers pass inline objects (e.g., headers={{}} or tokenLifecycle={{}})
+  const headersJson = JSON.stringify(staticHeaders);
+  const headersRef = useRef(staticHeaders);
+  headersRef.current = staticHeaders;
+  const lifecycleConfigJson = typeof lifecycleConfig === 'object' ? JSON.stringify(lifecycleConfig) : String(lifecycleConfig);
+  const lifecycleConfigRef = useRef(lifecycleConfig);
+  lifecycleConfigRef.current = lifecycleConfig;
+
   // Create token manager (memoized) with scoped storage keys
   const tokenManager = useMemo(() => {
     if (authMode !== 'token') {
@@ -847,7 +858,7 @@ export function Provider({
       credentials: authMode === 'cookie' ? 'include' : undefined,
       headers: () => {
         const headers: Record<string, string> = {
-          ...staticHeaders,
+          ...headersRef.current,
           'x-api-key': apiKey,
         };
 
@@ -865,7 +876,8 @@ export function Provider({
         return headers;
       },
     });
-  }, [apiKey, tenantId, authMode, staticHeaders, timeout]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiKey, tenantId, authMode, headersJson, timeout]);
 
   // Factory to create transport with optional 401 retry
   const createServiceTransport = useCallback((baseUrl: string) => {
@@ -1025,10 +1037,11 @@ export function Provider({
       };
     };
 
+    const lcConfig = typeof lifecycleConfigRef.current === 'object' ? lifecycleConfigRef.current : {};
     const lc = createLifecycleManager(
       tokenManager,
       refreshFn,
-      typeof lifecycleConfig === 'object' ? lifecycleConfig : {}
+      lcConfig
     );
     lifecycleRef.current = lc;
 
@@ -1047,7 +1060,8 @@ export function Provider({
       lc.destroy();
       lifecycleRef.current = null;
     };
-  }, [lifecycleEnabled, tokenManager, createBaseTransport, blockConfig, urls.authentication, lifecycleConfig]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lifecycleEnabled, tokenManager, createBaseTransport, blockConfig, urls.authentication, lifecycleConfigJson]);
 
   // Check if authentication is configured for auth methods
   const isAuthConfigured = !!urls.authentication;
@@ -1095,6 +1109,36 @@ export function Provider({
     if (authMode === 'token' && tokenManager) {
       tokenManager.clearTokens();
     }
+  }, [authentication, authMode, tokenManager, isAuthConfigured]);
+
+  const verifyMagicLink = useCallback(async (request: MagicLinkVerifyRequest): Promise<SignInResponse> => {
+    if (!isAuthConfigured) {
+      throw new Error(
+        '[23blocks] Cannot call verifyMagicLink: The authentication service URL is not configured. ' +
+        "Add 'urls.authentication' to your Provider configuration."
+      );
+    }
+    const response = await (authentication as AuthenticationBlock).auth.verifyMagicLink(request);
+    if (authMode === 'token' && tokenManager && response.accessToken) {
+      tokenManager.setTokens(response.accessToken, response.refreshToken);
+      lifecycleRef.current?.start();
+    }
+    return response;
+  }, [authentication, authMode, tokenManager, isAuthConfigured]);
+
+  const acceptInvitation = useCallback(async (request: AcceptInvitationRequest): Promise<SignInResponse> => {
+    if (!isAuthConfigured) {
+      throw new Error(
+        '[23blocks] Cannot call acceptInvitation: The authentication service URL is not configured. ' +
+        "Add 'urls.authentication' to your Provider configuration."
+      );
+    }
+    const response = await (authentication as AuthenticationBlock).auth.acceptInvitation(request);
+    if (authMode === 'token' && tokenManager && response.accessToken) {
+      tokenManager.setTokens(response.accessToken, response.refreshToken);
+      lifecycleRef.current?.start();
+    }
+    return response;
   }, [authentication, authMode, tokenManager, isAuthConfigured]);
 
   // Token utilities
@@ -1160,6 +1204,8 @@ export function Provider({
     signIn,
     signUp,
     signOut,
+    verifyMagicLink,
+    acceptInvitation,
 
     // Token utilities
     getAccessToken,
@@ -1179,9 +1225,9 @@ export function Provider({
   }), [
     authentication, search, products, crm, content, geolocation, conversations,
     files, forms, assets, campaigns, company, rewards, sales, wallet, jarvis,
-    onboarding, university, signIn, signUp, signOut, getAccessToken, getRefreshToken,
-    setTokens, clearTokens, isAuthenticated, onStorageChange, onAuthStateChanged,
-    refreshSession, authMode, isReady,
+    onboarding, university, signIn, signUp, signOut, verifyMagicLink, acceptInvitation,
+    getAccessToken, getRefreshToken, setTokens, clearTokens, isAuthenticated,
+    onStorageChange, onAuthStateChanged, refreshSession, authMode, isReady,
   ]);
 
   return (
@@ -1302,17 +1348,15 @@ export function useAuth() {
     refreshToken: (...args: Parameters<AuthenticationBlock['auth']['refreshToken']>) =>
       getAuth().refreshToken(...args),
 
-    // Magic link (passwordless)
+    // Magic link (passwordless) — verifyMagicLink uses managed wrapper with token storage
     requestMagicLink: (...args: Parameters<AuthenticationBlock['auth']['requestMagicLink']>) =>
       getAuth().requestMagicLink(...args),
-    verifyMagicLink: (...args: Parameters<AuthenticationBlock['auth']['verifyMagicLink']>) =>
-      getAuth().verifyMagicLink(...args),
+    verifyMagicLink: context.verifyMagicLink,
 
-    // Invitations
+    // Invitations — acceptInvitation uses managed wrapper with token storage
     sendInvitation: (...args: Parameters<AuthenticationBlock['auth']['sendInvitation']>) =>
       getAuth().sendInvitation(...args),
-    acceptInvitation: (...args: Parameters<AuthenticationBlock['auth']['acceptInvitation']>) =>
-      getAuth().acceptInvitation(...args),
+    acceptInvitation: context.acceptInvitation,
     resendInvitation: (...args: Parameters<AuthenticationBlock['auth']['resendInvitation']>) =>
       getAuth().resendInvitation(...args),
 
