@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, prompt tests, agent tests, templates, company keys, LLM providers
+// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, JSON:API codec fixes for agent executions and vendor reports
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
