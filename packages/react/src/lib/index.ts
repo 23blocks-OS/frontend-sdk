@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, prompt tests, agent tests, templates, company keys, LLM providers
+// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, JSON:API codec fixes for agent executions and vendor reports
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
