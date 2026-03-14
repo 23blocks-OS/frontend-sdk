@@ -1,5 +1,5 @@
 import type { Transport } from '@23blocks/contracts';
-import { decodeOne } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodeMany, extractPageMeta } from '@23blocks/jsonapi-codec';
 import type {
   VendorPayment,
   CreateVendorPaymentRequest,
@@ -148,7 +148,7 @@ export function createVendorPaymentsService(transport: Transport, _config: { api
     },
 
     async reportList(params: VendorPaymentReportParams): Promise<VendorPaymentReportList> {
-      const response = await transport.post<any>('/reports/vendors/payments/list', {
+      const response = await transport.post<unknown>('/reports/vendors/payments/list', {
         start_date: params.startDate,
         end_date: params.endDate,
         vendor_unique_id: params.vendorUniqueId,
@@ -156,33 +156,39 @@ export function createVendorPaymentsService(transport: Transport, _config: { api
         page: params.page,
         per_page: params.perPage,
       });
+      const decoded = decodeMany(response, vendorPaymentMapper);
+      const pageMeta = extractPageMeta(response);
+      const doc = response as Record<string, unknown>;
+      const metaObj = (doc['meta'] || {}) as Record<string, unknown>;
+      const summaryObj = (metaObj['summary'] || {}) as Record<string, unknown>;
+      const periodObj = (summaryObj['period'] || {}) as Record<string, unknown>;
       return {
-        payments: (response.payments || []).map((p: any) => ({
-          uniqueId: p.unique_id,
-          orderUniqueId: p.order_unique_id,
-          vendorName: p.vendor_name,
-          amount: p.amount,
-          status: p.status,
-          paidAt: p.paid_at ? new Date(p.paid_at) : undefined,
-          createdAt: new Date(p.created_at),
+        payments: decoded.map((vp) => ({
+          uniqueId: vp.uniqueId,
+          orderUniqueId: vp.vendorUniqueId || '',
+          vendorName: vp.vendorName,
+          amount: vp.price || 0,
+          status: vp.status || '',
+          paidAt: vp.paidAt,
+          createdAt: vp.createdAt,
         })),
         summary: {
-          totalPayments: response.summary.total_payments,
-          totalAmount: response.summary.total_amount,
-          totalPending: response.summary.total_pending,
-          totalPaid: response.summary.total_paid,
-          paymentsByStatus: response.summary.payments_by_status,
-          currency: response.summary.currency,
+          totalPayments: Number(summaryObj['total_payments'] || 0),
+          totalAmount: Number(summaryObj['total_amount'] || 0),
+          totalPending: Number(summaryObj['total_pending'] || 0),
+          totalPaid: Number(summaryObj['total_paid'] || 0),
+          paymentsByStatus: (summaryObj['payments_by_status'] || {}) as Record<string, number>,
+          currency: String(summaryObj['currency'] || ''),
           period: {
-            startDate: new Date(response.summary.period.start_date),
-            endDate: new Date(response.summary.period.end_date),
+            startDate: periodObj['start_date'] ? new Date(periodObj['start_date'] as string) : new Date(),
+            endDate: periodObj['end_date'] ? new Date(periodObj['end_date'] as string) : new Date(),
           },
         },
         meta: {
-          totalCount: response.meta.total_count,
-          page: response.meta.current_page,
-          perPage: response.meta.per_page,
-          totalPages: response.meta.total_pages,
+          totalCount: pageMeta.totalCount,
+          page: pageMeta.currentPage,
+          perPage: pageMeta.perPage,
+          totalPages: pageMeta.totalPages,
         },
       };
     },
@@ -210,7 +216,7 @@ export function createVendorPaymentsService(transport: Transport, _config: { api
     },
 
     async providerReportList(params: ProviderReportParams): Promise<ProviderReportList> {
-      const response = await transport.post<any>('/reports/orders/providers/list', {
+      const response = await transport.post<unknown>('/reports/orders/providers/list', {
         start_date: params.startDate,
         end_date: params.endDate,
         vendor_unique_id: params.vendorUniqueId,
@@ -218,30 +224,36 @@ export function createVendorPaymentsService(transport: Transport, _config: { api
         page: params.page,
         per_page: params.perPage,
       });
+      const decoded = decodeMany(response, orderDetailVendorMapper);
+      const pageMeta = extractPageMeta(response);
+      const doc = response as Record<string, unknown>;
+      const metaObj = (doc['meta'] || {}) as Record<string, unknown>;
+      const summaryObj = (metaObj['summary'] || {}) as Record<string, unknown>;
+      const periodObj = (summaryObj['period'] || {}) as Record<string, unknown>;
       return {
-        providers: (response.providers || []).map((p: any) => ({
-          uniqueId: p.unique_id,
-          vendorName: p.vendor_name,
-          amount: p.amount,
-          commission: p.commission,
-          status: p.status,
-          createdAt: new Date(p.created_at),
+        providers: decoded.map((odv) => ({
+          uniqueId: odv.uniqueId,
+          vendorName: odv.vendorName,
+          amount: 0,
+          commission: undefined,
+          status: odv.status || '',
+          createdAt: odv.createdAt,
         })),
         summary: {
-          totalProviders: response.summary.total_providers,
-          totalAmount: response.summary.total_amount,
-          totalCommission: response.summary.total_commission,
-          providersByStatus: response.summary.providers_by_status,
+          totalProviders: Number(summaryObj['total_providers'] || 0),
+          totalAmount: Number(summaryObj['total_amount'] || 0),
+          totalCommission: Number(summaryObj['total_commission'] || 0),
+          providersByStatus: (summaryObj['providers_by_status'] || {}) as Record<string, number>,
           period: {
-            startDate: new Date(response.summary.period.start_date),
-            endDate: new Date(response.summary.period.end_date),
+            startDate: periodObj['start_date'] ? new Date(periodObj['start_date'] as string) : new Date(),
+            endDate: periodObj['end_date'] ? new Date(periodObj['end_date'] as string) : new Date(),
           },
         },
         meta: {
-          totalCount: response.meta.total_count,
-          page: response.meta.current_page,
-          perPage: response.meta.per_page,
-          totalPages: response.meta.total_pages,
+          totalCount: pageMeta.totalCount,
+          page: pageMeta.currentPage,
+          perPage: pageMeta.perPage,
+          totalPages: pageMeta.totalPages,
         },
       };
     },
