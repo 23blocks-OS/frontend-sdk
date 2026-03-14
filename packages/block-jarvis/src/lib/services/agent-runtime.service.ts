@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   AgentThread,
   AgentMessage,
@@ -9,6 +10,7 @@ import type {
   AgentRunExecution,
   ListAgentRunExecutionsParams,
 } from '../types/agent-runtime.js';
+import { runExecutionMapper } from '../mappers/run-execution.mapper.js';
 import { buildContextBody } from './entities.service.js';
 
 function buildRuntimeMessageBody(data: SendAgentMessageRequest): Record<string, unknown> {
@@ -173,52 +175,13 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
       if (params?.status) queryParams['status'] = params.status;
       if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
 
-      const response = await transport.get<any>(`/agents/${agentUniqueId}/executions`, { params: queryParams });
-      const data = response.data || [];
-      return {
-        data: data.map((e: any) => ({
-          id: e.id,
-          uniqueId: e.unique_id,
-          agentUniqueId: e.agent_unique_id,
-          runId: e.run_id,
-          threadId: e.thread_id,
-          status: e.status,
-          input: e.input,
-          output: e.output,
-          tokens: e.tokens,
-          cost: e.cost,
-          duration: e.duration,
-          error: e.error,
-          createdAt: new Date(e.created_at),
-          updatedAt: new Date(e.updated_at),
-        })),
-        meta: {
-          totalCount: response.meta?.total_count || data.length,
-          currentPage: response.meta?.current_page || 1,
-          perPage: response.meta?.per_page || data.length,
-          totalPages: response.meta?.total_pages || 1,
-        },
-      };
+      const response = await transport.get<unknown>(`/agents/${agentUniqueId}/executions`, { params: queryParams });
+      return decodePageResult(response, runExecutionMapper);
     },
 
     async getExecution(agentUniqueId: string, executionUniqueId: string): Promise<AgentRunExecution> {
-      const response = await transport.get<any>(`/agents/${agentUniqueId}/executions/${executionUniqueId}`);
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        agentUniqueId: response.agent_unique_id,
-        runId: response.run_id,
-        threadId: response.thread_id,
-        status: response.status,
-        input: response.input,
-        output: response.output,
-        tokens: response.tokens,
-        cost: response.cost,
-        duration: response.duration,
-        error: response.error,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      const response = await transport.get<unknown>(`/agents/${agentUniqueId}/executions/${executionUniqueId}`);
+      return decodeOne(response, runExecutionMapper);
     },
 
     async getRunStatus(agentUniqueId: string, threadId: string, runId: string): Promise<AgentRunExecution> {

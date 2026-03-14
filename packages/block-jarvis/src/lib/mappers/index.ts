@@ -22,4 +22,6 @@ export * from './agent-test.mapper.js';
 export * from './prompt-template.mapper.js';
 export * from './company-key.mapper.js';
 export * from './llm-provider.mapper.js';
+export * from './run-execution.mapper.js';
+export * from './openai-model.mapper.js';
 export * from './utils.js';

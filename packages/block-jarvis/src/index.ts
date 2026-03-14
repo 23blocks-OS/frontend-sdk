@@ -271,4 +271,6 @@ export {
   promptTemplateMapper,
   companyKeyMapper,
   llmProviderMapper,
+  runExecutionMapper,
+  openaiModelMapper,
 } from './lib/mappers/index.js';

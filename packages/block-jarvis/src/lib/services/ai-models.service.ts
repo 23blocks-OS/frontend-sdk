@@ -1,5 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   AIModel,
   CreateAIModelRequest,
@@ -7,6 +7,7 @@ import type {
   ListAIModelsParams,
 } from '../types/ai-model.js';
 import { aiModelMapper } from '../mappers/ai-model.mapper.js';
+import { openaiModelMapper } from '../mappers/openai-model.mapper.js';
 
 function buildAIModelBody(data: CreateAIModelRequest): Record<string, unknown> {
   const body: Record<string, unknown> = {};
@@ -76,15 +77,8 @@ export function createAIModelsService(transport: Transport, _config: { apiKey: s
     },
 
     async openaiAvailable(): Promise<OpenAIModel[]> {
-      const response = await transport.get<any>('/vendors/openai/models');
-      const data = response.data || response;
-      if (Array.isArray(data)) {
-        return data.map((m: any) => ({
-          id: m.id || m.name,
-          name: m.name || m.id,
-        }));
-      }
-      return [];
+      const response = await transport.get<unknown>('/vendors/openai/models');
+      return decodeMany(response, openaiModelMapper);
     },
   };
 }

@@ -58,21 +58,27 @@ export function createWorkflowInstancesService(transport: Transport, _config: { 
     },
 
     async getDetails(workflowUniqueId: string, instanceUniqueId: string): Promise<WorkflowInstanceDetails> {
-      const response = await transport.get<any>(`/workflows/${workflowUniqueId}/instances/${instanceUniqueId}/details`);
+      const response = await transport.get<unknown>(`/workflows/${workflowUniqueId}/instances/${instanceUniqueId}/details`);
+      const doc = response as Record<string, unknown>;
+      const instance = decodeOne(response, workflowInstanceMapper);
+      // Workflow and steps metadata are included as top-level attributes in the JSON:API resource
+      const attrs = (doc as any).data?.attributes || {};
+      const workflow = attrs['workflow'] || {};
+      const steps = attrs['steps'] || [];
       return {
-        instance: decodeOne(response.instance || response, workflowInstanceMapper),
+        instance,
         workflow: {
-          uniqueId: response.workflow?.unique_id,
-          name: response.workflow?.name,
+          uniqueId: workflow.unique_id || instance.workflowUniqueId,
+          name: workflow.name || '',
         },
-        steps: (response.steps || []).map((s: any) => ({
-          stepUniqueId: s.step_unique_id,
-          stepName: s.step_name,
-          order: s.order,
-          status: s.status,
-          startedAt: s.started_at ? new Date(s.started_at) : undefined,
-          completedAt: s.completed_at ? new Date(s.completed_at) : undefined,
-        })),
+        steps: Array.isArray(steps) ? steps.map((s: Record<string, unknown>) => ({
+          stepUniqueId: String(s['step_unique_id'] || ''),
+          stepName: String(s['step_name'] || ''),
+          order: Number(s['order'] || 0),
+          status: String(s['status'] || ''),
+          startedAt: s['started_at'] ? new Date(s['started_at'] as string) : undefined,
+          completedAt: s['completed_at'] ? new Date(s['completed_at'] as string) : undefined,
+        })) : [],
       };
     },
 
