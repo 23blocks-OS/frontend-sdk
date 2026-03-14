@@ -208,7 +208,10 @@ export class AuthenticationService {
    */
   facebookLogin(request: OAuthSocialLoginRequest): Observable<SignInResponse> {
     return from(this.ensureConfigured().oauth.facebookLogin(request)).pipe(
-      tap((response) => this.storeTokens(response))
+      tap((response) => {
+        this.storeTokens(response);
+        if (response.accessToken) this.lifecycle?.start();
+      })
     );
   }
 
@@ -221,7 +224,10 @@ export class AuthenticationService {
    */
   googleLogin(request: OAuthSocialLoginRequest): Observable<SignInResponse> {
     return from(this.ensureConfigured().oauth.googleLogin(request)).pipe(
-      tap((response) => this.storeTokens(response))
+      tap((response) => {
+        this.storeTokens(response);
+        if (response.accessToken) this.lifecycle?.start();
+      })
     );
   }
 
@@ -234,7 +240,10 @@ export class AuthenticationService {
    */
   tenantLogin(request: TenantLoginRequest): Observable<SignInResponse> {
     return from(this.ensureConfigured().oauth.tenantLogin(request)).pipe(
-      tap((response) => this.storeTokens(response))
+      tap((response) => {
+        this.storeTokens(response);
+        if (response.accessToken) this.lifecycle?.start();
+      })
     );
   }
 
