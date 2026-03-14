@@ -50,6 +50,48 @@ Releases are automated via GitHub Actions using npm Trusted Publishing (OIDC). P
 
 Manual release: `npm run release` or `npm run release:dry-run`
 
+### SDK Feature Deployment Checklist
+
+**Follow this exact checklist when adding a new feature to any `block-*` package. Do NOT skip steps. Do NOT spend time verifying the release pipeline — it works automatically.**
+
+#### Step 1: Implement the feature in `block-*`
+- Create types in `types/` with proper interfaces
+- Create mapper in `mappers/` with `ResourceMapper<T>`
+- Create service in `services/` with CRUD methods (PUT for updates, never PATCH)
+- Wire into block factory (`*.block.ts`) — add to interface, factory return, and `resourceTypes`
+- Update barrel exports: `types/index.ts`, `services/index.ts`, `mappers/index.ts`
+- Update `src/index.ts` with new public exports
+- **Build & verify:** `npx nx build @23blocks/block-xxx --skip-nx-cache`
+
+#### Step 2: Update meta-packages (ALL THREE — mandatory)
+Meta-packages bundle block code at build time. Publishing a new block version does NOT deliver fixes to meta-package consumers. You MUST rebuild all three:
+
+- **Angular** (`packages/angular/`): Add getter to the relevant service (e.g., `get evaluations() { return this.ensureConfigured().evaluations; }`)
+- **SDK** (`packages/sdk/src/lib/sdk.ts`): Make a real file change (update JSDoc comment) — `--allow-empty` commits do NOT work with nx release
+- **React** (`packages/react/src/lib/index.ts`): Make a real file change (update JSDoc comment)
+- **Build all:** `npm run build`
+
+#### Step 3: Update documentation
+- Update `llms.txt` (root) — add new sub-services to the relevant block section
+- Update `packages/sdk/llms.txt` — same additions
+
+#### Step 4: Commit with correct scopes
+Commit scope MUST match the nx project name exactly (e.g., `@23blocks/block-rag`, NOT `block-rag`):
+
+```bash
+git commit -m "feat(@23blocks/block-xxx): description"
+git commit -m "feat(@23blocks/angular): add xxx getter to YyyService"
+git commit -m "feat(@23blocks/sdk): rebuild with xxx feature"
+git commit -m "feat(@23blocks/react): rebuild with xxx feature"
+git commit -m "docs: add xxx to sub-service list in llms.txt"
+```
+
+#### Step 5: Push and verify (< 2 minutes)
+```bash
+git push origin main
+```
+Then check: `gh run list --workflow=release.yml --limit 1` — confirm status is "completed" + "success". **That's it. Done. Do not dig into logs, do not download tarballs, do not inspect bundles.**
+
 ## Architecture
 
 ```
