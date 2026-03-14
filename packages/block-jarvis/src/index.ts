@@ -108,6 +108,31 @@ export type {
   CreateExecutionCommentRequest,
   UpdateExecutionCommentRequest,
   ListExecutionCommentsParams,
+  // Tool types
+  Tool,
+  CreateToolRequest,
+  UpdateToolRequest,
+  ListToolsParams,
+  // Agent Tool types
+  AgentTool,
+  CreateAgentToolRequest,
+  UpdateAgentToolRequest,
+  ListAgentToolsParams,
+  // Agent Tool Assignment types
+  AgentToolAssignment,
+  CreateAgentToolAssignmentRequest,
+  UpdateAgentToolAssignmentRequest,
+  ListAgentToolAssignmentsParams,
+  // Condition types
+  Condition,
+  CreateConditionRequest,
+  UpdateConditionRequest,
+  ListConditionsParams,
+  // Step Transition types
+  StepTransition,
+  CreateStepTransitionRequest,
+  UpdateStepTransitionRequest,
+  ListStepTransitionsParams,
   // Analytics types
   AnalyticsDateRange,
   AnalyticsOverview,
@@ -141,6 +166,11 @@ export type {
   MarvinChatService,
   PromptCommentsService,
   ExecutionCommentsService,
+  ToolsService,
+  AgentToolsService,
+  AgentToolAssignmentsService,
+  ConditionsService,
+  StepTransitionsService,
   AnalyticsService,
 } from './lib/services/index.js';
 
@@ -162,6 +192,11 @@ export {
   createMarvinChatService,
   createPromptCommentsService,
   createExecutionCommentsService,
+  createToolsService,
+  createAgentToolsService,
+  createAgentToolAssignmentsService,
+  createConditionsService,
+  createStepTransitionsService,
   createAnalyticsService,
 } from './lib/services/index.js';
 
@@ -182,4 +217,9 @@ export {
   mailTemplateMapper,
   promptCommentMapper,
   executionCommentMapper,
+  toolMapper,
+  agentToolMapper,
+  agentToolAssignmentMapper,
+  conditionMapper,
+  stepTransitionMapper,
 } from './lib/mappers/index.js';
