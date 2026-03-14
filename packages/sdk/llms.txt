@@ -535,14 +535,21 @@ const [authHealth, crmHealth] = await Promise.all([
 - `webhooks` - Wallet webhooks
 
 ### jarvis (block-jarvis)
-- `agents`, `agentRuntime` - AI agent management and execution
-- `prompts`, `promptComments` - Prompt management
+- `agents`, `agentRuntime` - AI agent management and execution (run status polling)
+- `prompts`, `promptComments` - Prompt management (publish versions, execute with streaming)
 - `workflows`, `workflowSteps`, `workflowParticipants`, `workflowInstances` - AI workflows
-- `executions`, `executionComments` - Execution tracking
+- `executions`, `executionComments` - Execution tracking (filter by runUniqueId, list by prompt version, get by prompt)
 - `conversations` - AI conversations
-- `aiModels` - Model configuration
+- `aiModels` - Model configuration (OpenAI available models)
 - `entities`, `clusters` - Knowledge management
 - `users` - Jarvis user management
+- `tools`, `agentTools`, `agentToolAssignments` - Tool management and agent-tool assignments
+- `conditions`, `stepTransitions` - Workflow BPMN conditions and step transitions
+- `promptTests`, `promptTestEvaluations` - Prompt test cases, execution, evaluation, version comparison
+- `agentTests` - Agent test cases, execution, results
+- `promptTemplates` - Read-only prompt template gallery
+- `companyKeys` - Company API key management (list, create, delete)
+- `llmProviders` - LLM provider listing, validation, and model discovery
 - `mailTemplates` - AI email templates
 - `marvinChat` - Chat interface
 - `analytics` - Dashboard analytics and reporting (overview, usage, costs, feedback, conversations, RAG, agents, trace)
