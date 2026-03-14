@@ -20,6 +20,7 @@ export interface ListExecutionsParams {
   perPage?: number;
   agentUniqueId?: string;
   promptUniqueId?: string;
+  runUniqueId?: string;
   status?: string;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';

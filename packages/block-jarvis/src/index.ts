@@ -133,6 +133,34 @@ export type {
   CreateStepTransitionRequest,
   UpdateStepTransitionRequest,
   ListStepTransitionsParams,
+  // Prompt Test types
+  PromptTest,
+  CreatePromptTestRequest,
+  UpdatePromptTestRequest,
+  ListPromptTestsParams,
+  PromptTestResult,
+  ListPromptTestResultsParams,
+  PromptTestEvaluation,
+  CreatePromptTestEvaluationRequest,
+  CompareVersionsRequest,
+  CompareVersionsResponse,
+  // Agent Test types
+  AgentTest,
+  CreateAgentTestRequest,
+  UpdateAgentTestRequest,
+  ListAgentTestsParams,
+  AgentTestResult,
+  ListAgentTestResultsParams,
+  // Prompt Template types
+  PromptTemplate,
+  ListPromptTemplatesParams,
+  // Company Key types
+  CompanyKey,
+  CreateCompanyKeyRequest,
+  // LLM Provider types
+  LlmProvider,
+  LlmProviderModel,
+  LlmProviderValidation,
   // Analytics types
   AnalyticsDateRange,
   AnalyticsOverview,
@@ -171,6 +199,13 @@ export type {
   AgentToolAssignmentsService,
   ConditionsService,
   StepTransitionsService,
+  PromptTestsService,
+  PromptTestEvaluationsService,
+  AgentTestsService,
+  PromptTemplatesService,
+  CompanyKeysService,
+  LlmProvidersService,
+  OpenAIModel,
   AnalyticsService,
 } from './lib/services/index.js';
 
@@ -197,6 +232,12 @@ export {
   createAgentToolAssignmentsService,
   createConditionsService,
   createStepTransitionsService,
+  createPromptTestsService,
+  createPromptTestEvaluationsService,
+  createAgentTestsService,
+  createPromptTemplatesService,
+  createCompanyKeysService,
+  createLlmProvidersService,
   createAnalyticsService,
 } from './lib/services/index.js';
 
@@ -222,4 +263,12 @@ export {
   agentToolAssignmentMapper,
   conditionMapper,
   stepTransitionMapper,
+  promptTestMapper,
+  promptTestResultMapper,
+  promptTestEvaluationMapper,
+  agentTestMapper,
+  agentTestResultMapper,
+  promptTemplateMapper,
+  companyKeyMapper,
+  llmProviderMapper,
 } from './lib/mappers/index.js';

@@ -23,6 +23,12 @@ import {
   createConditionsService,
   createStepTransitionsService,
   createAnalyticsService,
+  createPromptTestsService,
+  createPromptTestEvaluationsService,
+  createAgentTestsService,
+  createPromptTemplatesService,
+  createCompanyKeysService,
+  createLlmProvidersService,
   type AgentsService,
   type PromptsService,
   type WorkflowsService,
@@ -46,6 +52,12 @@ import {
   type ConditionsService,
   type StepTransitionsService,
   type AnalyticsService,
+  type PromptTestsService,
+  type PromptTestEvaluationsService,
+  type AgentTestsService,
+  type PromptTemplatesService,
+  type CompanyKeysService,
+  type LlmProvidersService,
 } from './services/index.js';
 
 export interface JarvisBlockConfig extends BlockConfig {
@@ -82,6 +94,12 @@ export interface JarvisBlock {
   conditions: ConditionsService;
   stepTransitions: StepTransitionsService;
   analytics: AnalyticsService;
+  promptTests: PromptTestsService;
+  promptTestEvaluations: PromptTestEvaluationsService;
+  agentTests: AgentTestsService;
+  promptTemplates: PromptTemplatesService;
+  companyKeys: CompanyKeysService;
+  llmProviders: LlmProvidersService;
   health(): Promise<HealthCheckResponse>;
 }
 
@@ -91,7 +109,7 @@ export function createJarvisBlock(
 ): JarvisBlock {
   return {
     agents: createAgentsService(transport, config),
-    prompts: createPromptsService(transport, config),
+    prompts: createPromptsService(transport, config, config.sseUrl),
     workflows: createWorkflowsService(transport, config),
     executions: createExecutionsService(transport, config),
     conversations: createConversationsService(transport, config),
@@ -113,6 +131,12 @@ export function createJarvisBlock(
     conditions: createConditionsService(transport, config),
     stepTransitions: createStepTransitionsService(transport, config),
     analytics: createAnalyticsService(transport, config),
+    promptTests: createPromptTestsService(transport, config),
+    promptTestEvaluations: createPromptTestEvaluationsService(transport, config),
+    agentTests: createAgentTestsService(transport, config),
+    promptTemplates: createPromptTemplatesService(transport, config),
+    companyKeys: createCompanyKeysService(transport, config),
+    llmProviders: createLlmProvidersService(transport, config),
     health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
@@ -127,5 +151,13 @@ export const jarvisBlockMetadata: BlockMetadata = {
     'Workflow',
     'Execution',
     'Conversation',
+    'PromptTest',
+    'PromptTestResult',
+    'PromptTestEvaluation',
+    'AgentTest',
+    'AgentTestResult',
+    'PromptTemplate',
+    'CompanyKey',
+    'LlmProvider',
   ],
 };

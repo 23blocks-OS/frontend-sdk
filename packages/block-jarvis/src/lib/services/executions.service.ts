@@ -33,6 +33,8 @@ export interface ExecutionsService {
    * @returns The updated Execution record with cancelled status.
    */
   cancel(uniqueId: string): Promise<Execution>;
+  listByPromptVersion(promptUniqueId: string, versionUniqueId: string, params?: ListExecutionsParams): Promise<PageResult<Execution>>;
+  getByPrompt(promptUniqueId: string, executionUniqueId: string): Promise<Execution>;
 }
 
 export function createExecutionsService(transport: Transport, _config: { apiKey: string }): ExecutionsService {
@@ -43,6 +45,7 @@ export function createExecutionsService(transport: Transport, _config: { apiKey:
       if (params?.perPage) queryParams['records'] = String(params.perPage);
       if (params?.agentUniqueId) queryParams['agent_unique_id'] = params.agentUniqueId;
       if (params?.promptUniqueId) queryParams['prompt_unique_id'] = params.promptUniqueId;
+      if (params?.runUniqueId) queryParams['run_unique_id'] = params.runUniqueId;
       if (params?.status) queryParams['status'] = params.status;
       if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
 
@@ -70,6 +73,7 @@ export function createExecutionsService(transport: Transport, _config: { apiKey:
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
+      if (params?.runUniqueId) queryParams['run_unique_id'] = params.runUniqueId;
       if (params?.status) queryParams['status'] = params.status;
       if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
 
@@ -79,6 +83,23 @@ export function createExecutionsService(transport: Transport, _config: { apiKey:
 
     async cancel(uniqueId: string): Promise<Execution> {
       const response = await transport.post<unknown>(`/executions/${uniqueId}/cancel`, {});
+      return decodeOne(response, executionMapper);
+    },
+
+    async listByPromptVersion(promptUniqueId: string, versionUniqueId: string, params?: ListExecutionsParams): Promise<PageResult<Execution>> {
+      const queryParams: Record<string, string> = {};
+      if (params?.page) queryParams['page'] = String(params.page);
+      if (params?.perPage) queryParams['records'] = String(params.perPage);
+      if (params?.runUniqueId) queryParams['run_unique_id'] = params.runUniqueId;
+      if (params?.status) queryParams['status'] = params.status;
+      if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
+
+      const response = await transport.get<unknown>(`/prompts/${promptUniqueId}/versions/${versionUniqueId}/executions`, { params: queryParams });
+      return decodePageResult(response, executionMapper);
+    },
+
+    async getByPrompt(promptUniqueId: string, executionUniqueId: string): Promise<Execution> {
+      const response = await transport.get<unknown>(`/prompts/${promptUniqueId}/executions/${executionUniqueId}`);
       return decodeOne(response, executionMapper);
     },
   };

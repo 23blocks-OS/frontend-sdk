@@ -83,6 +83,7 @@ export interface AgentRuntimeService {
   getMessages(agentUniqueId: string, threadId: string): Promise<AgentMessage[]>;
   listExecutions(agentUniqueId: string, params?: ListAgentRunExecutionsParams): Promise<PageResult<AgentRunExecution>>;
   getExecution(agentUniqueId: string, executionUniqueId: string): Promise<AgentRunExecution>;
+  getRunStatus(agentUniqueId: string, threadId: string, runId: string): Promise<AgentRunExecution>;
 }
 
 export function createAgentRuntimeService(transport: Transport, _config: { apiKey: string }, sseUrl?: string): AgentRuntimeService {
@@ -208,6 +209,26 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
         agentUniqueId: response.agent_unique_id,
         runId: response.run_id,
         threadId: response.thread_id,
+        status: response.status,
+        input: response.input,
+        output: response.output,
+        tokens: response.tokens,
+        cost: response.cost,
+        duration: response.duration,
+        error: response.error,
+        createdAt: new Date(response.created_at),
+        updatedAt: new Date(response.updated_at),
+      };
+    },
+
+    async getRunStatus(agentUniqueId: string, threadId: string, runId: string): Promise<AgentRunExecution> {
+      const response = await transport.get<any>(`/agents/${agentUniqueId}/threads/${threadId}/runs/${runId}`);
+      return {
+        id: response.id,
+        uniqueId: response.unique_id,
+        agentUniqueId: response.agent_unique_id,
+        runId: response.run_id || runId,
+        threadId: response.thread_id || threadId,
         status: response.status,
         input: response.input,
         output: response.output,

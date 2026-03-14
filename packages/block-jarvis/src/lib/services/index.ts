@@ -21,3 +21,8 @@ export * from './agent-tool-assignments.service.js';
 export * from './conditions.service.js';
 export * from './step-transitions.service.js';
 export * from './analytics.service.js';
+export * from './prompt-tests.service.js';
+export * from './agent-tests.service.js';
+export * from './prompt-templates.service.js';
+export * from './company-keys.service.js';
+export * from './llm-providers.service.js';

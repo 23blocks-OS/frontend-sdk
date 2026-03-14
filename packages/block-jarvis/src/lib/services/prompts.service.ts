@@ -58,9 +58,12 @@ export interface PromptsService {
   delete(uniqueId: string): Promise<void>;
   execute(uniqueId: string, data: ExecutePromptRequest): Promise<ExecutePromptResponse>;
   render(uniqueId: string, data: RenderPromptRequest): Promise<RenderPromptResponse>;
+  publish(uniqueId: string, versionUniqueId: string): Promise<Prompt>;
+  executeStream(uniqueId: string, data: ExecutePromptRequest): Promise<ReadableStream<string>>;
+  executeVersionStream(uniqueId: string, versionUniqueId: string, data: ExecutePromptRequest): Promise<ReadableStream<string>>;
 }
 
-export function createPromptsService(transport: Transport, _config: { apiKey: string }): PromptsService {
+export function createPromptsService(transport: Transport, _config: { apiKey: string }, sseUrl?: string): PromptsService {
   return {
     async list(params?: ListPromptsParams): Promise<PageResult<Prompt>> {
       const queryParams: Record<string, string> = {};
@@ -111,6 +114,51 @@ export function createPromptsService(transport: Transport, _config: { apiKey: st
         cost: response.cost,
         duration: response.duration,
       };
+    },
+
+    async publish(uniqueId: string, versionUniqueId: string): Promise<Prompt> {
+      const response = await transport.post<unknown>(
+        `/prompts/${uniqueId}/versions/${versionUniqueId}/publish`, {}
+      );
+      return decodeOne(response, promptMapper);
+    },
+
+    async executeStream(uniqueId: string, data: ExecutePromptRequest): Promise<ReadableStream<string>> {
+      const response = await transport.post<Response>(
+        `/prompts/${uniqueId}/execute/stream`,
+        {
+          agent_unique_id: data.agentUniqueId,
+          variables: data.variables,
+        },
+        {
+          responseType: 'stream',
+          headers: { Accept: 'text/event-stream' },
+          ...(sseUrl ? { baseUrl: sseUrl } : {}),
+        },
+      );
+      if (response.body) {
+        return response.body.pipeThrough(new TextDecoderStream());
+      }
+      throw new Error('Streaming not supported');
+    },
+
+    async executeVersionStream(uniqueId: string, versionUniqueId: string, data: ExecutePromptRequest): Promise<ReadableStream<string>> {
+      const response = await transport.post<Response>(
+        `/prompts/${uniqueId}/versions/${versionUniqueId}/execute/stream`,
+        {
+          agent_unique_id: data.agentUniqueId,
+          variables: data.variables,
+        },
+        {
+          responseType: 'stream',
+          headers: { Accept: 'text/event-stream' },
+          ...(sseUrl ? { baseUrl: sseUrl } : {}),
+        },
+      );
+      if (response.body) {
+        return response.body.pipeThrough(new TextDecoderStream());
+      }
+      throw new Error('Streaming not supported');
     },
 
     async render(uniqueId: string, data: RenderPromptRequest): Promise<RenderPromptResponse> {

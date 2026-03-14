@@ -24,12 +24,18 @@ function buildAIModelBody(data: CreateAIModelRequest): Record<string, unknown> {
   return body;
 }
 
+export interface OpenAIModel {
+  id: string;
+  name: string;
+}
+
 export interface AIModelsService {
   list(params?: ListAIModelsParams): Promise<PageResult<AIModel>>;
   get(uniqueId: string): Promise<AIModel>;
   create(data: CreateAIModelRequest): Promise<AIModel>;
   update(uniqueId: string, data: UpdateAIModelRequest): Promise<AIModel>;
   delete(uniqueId: string): Promise<void>;
+  openaiAvailable(): Promise<OpenAIModel[]>;
 }
 
 export function createAIModelsService(transport: Transport, _config: { apiKey: string }): AIModelsService {
@@ -67,6 +73,18 @@ export function createAIModelsService(transport: Transport, _config: { apiKey: s
 
     async delete(uniqueId: string): Promise<void> {
       await transport.delete(`/ai_models/${uniqueId}`);
+    },
+
+    async openaiAvailable(): Promise<OpenAIModel[]> {
+      const response = await transport.get<any>('/vendors/openai/models');
+      const data = response.data || response;
+      if (Array.isArray(data)) {
+        return data.map((m: any) => ({
+          id: m.id || m.name,
+          name: m.name || m.id,
+        }));
+      }
+      return [];
     },
   };
 }
