@@ -67,6 +67,9 @@ export class ProductsService {
   get remarketing() { return this.ensureConfigured().remarketing; }
   get visitors() { return this.ensureConfigured().visitors; }
   get productVendors() { return this.ensureConfigured().productVendors; }
+  get tags() { return this.ensureConfigured().tags; }
+  get catalogs() { return this.ensureConfigured().catalogs; }
+  get categoryImages() { return this.ensureConfigured().categoryImages; }
 
   /** Full block access */
   get productsBlock(): ProductsBlock { return this.ensureConfigured(); }

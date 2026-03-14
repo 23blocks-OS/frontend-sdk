@@ -51,6 +51,11 @@ export class RagService {
   get images() { return this.ensureConfigured().images; }
   get products() { return this.ensureConfigured().products; }
   get evaluations() { return this.ensureConfigured().evaluations; }
+  get datasets() { return this.ensureConfigured().evaluations.datasets; }
+  get questions() { return this.ensureConfigured().evaluations.questions; }
+  get runs() { return this.ensureConfigured().evaluations.runs; }
+  get results() { return this.ensureConfigured().evaluations.results; }
+  get comparison() { return this.ensureConfigured().evaluations.comparison; }
 
   /** Full block access */
   get ragBlock(): RagBlock { return this.ensureConfigured(); }

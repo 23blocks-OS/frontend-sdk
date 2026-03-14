@@ -58,6 +58,11 @@ export class JarvisService {
   get marvinChat() { return this.ensureConfigured().marvinChat; }
   get promptComments() { return this.ensureConfigured().promptComments; }
   get executionComments() { return this.ensureConfigured().executionComments; }
+  get tools() { return this.ensureConfigured().tools; }
+  get agentTools() { return this.ensureConfigured().agentTools; }
+  get agentToolAssignments() { return this.ensureConfigured().agentToolAssignments; }
+  get conditions() { return this.ensureConfigured().conditions; }
+  get stepTransitions() { return this.ensureConfigured().stepTransitions; }
   get analytics() { return this.ensureConfigured().analytics; }
 
   /** Full block access */
