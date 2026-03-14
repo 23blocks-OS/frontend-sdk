@@ -272,11 +272,13 @@ export interface ClientContext {
   onboarding: OnboardingBlock;
   university: UniversityBlock;
 
-  // Auth with automatic token management
+  // Auth with automatic token management (stores tokens + starts lifecycle)
   signIn: (request: SignInRequest) => Promise<SignInResponse>;
   signUp: (request: SignUpRequest) => Promise<SignUpResponse>;
   signOut: () => Promise<void>;
+  /** Verify magic link and store tokens. Starts lifecycle for proactive refresh. */
   verifyMagicLink: (request: MagicLinkVerifyRequest) => Promise<SignInResponse>;
+  /** Accept invitation and store tokens. Starts lifecycle for proactive refresh. */
   acceptInvitation: (request: AcceptInvitationRequest) => Promise<SignInResponse>;
 
   // Token utilities

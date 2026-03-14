@@ -571,23 +571,36 @@ const [authHealth, crmHealth] = await Promise.all([
 ## React Integration
 
 ```typescript
-import { Blocks23Provider, useAuth, useSearch, useRagBlock } from '@23blocks/react';
+import { Provider, useAuth, useClient } from '@23blocks/react';
 
 function App() {
   return (
-    <Blocks23Provider config={{
-      apiKey: 'your-api-key',
-      urls: { authentication: '...', search: '...' },
-    }}>
+    <Provider
+      apiKey="your-api-key"
+      urls={{ authentication: '...', crm: '...', search: '...' }}
+      // tokenLifecycle enabled by default in token mode
+    >
       <MyComponent />
-    </Blocks23Provider>
+    </Provider>
   );
 }
 
 function MyComponent() {
-  const auth = useAuth();        // AuthenticationBlock
-  const search = useSearch();    // SearchBlock
-  // Blocks are memoized - stable references across re-renders
+  const { signIn, signOut, isAuthenticated, onAuthStateChanged, refreshSession } = useAuth();
+  const { crm, search } = useClient();
+
+  // Token lifecycle is automatic:
+  // - Proactive refresh before JWT expiry
+  // - 401 retry with token refresh
+  // - Tab visibility refresh (laptop sleep/wake)
+  // - SESSION_EXPIRED event when refresh fails
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged((event) => {
+      if (event === 'SESSION_EXPIRED') router.push('/login');
+    });
+    return unsub;
+  }, [onAuthStateChanged]);
 }
 ```
 
@@ -602,6 +615,7 @@ export const appConfig = {
     provideBlocks23({
       apiKey: 'your-api-key',
       urls: { authentication: '...', crm: '...' },
+      // tokenLifecycle enabled by default in token mode
     }),
   ],
 };
@@ -614,8 +628,16 @@ export class MyComponent {
   private auth = inject(AuthenticationService);
   private crm = inject(CrmService);
 
-  // Angular services delegate to block sub-services via typed getters
+  // Auth-flow methods return Observables with automatic token + lifecycle management:
+  // auth.signIn({ email, password }).subscribe(...)
+  // auth.signOut().subscribe(...)
+
+  // Sub-services are Promise-based getters:
   // auth.users.list() returns Promise<PageResult<User>>
-  // auth.auth.signIn() wraps in Observable with token management
+  // auth.roles.list() returns Promise<PageResult<Role>>
+
+  // Token lifecycle:
+  // auth.onAuthStateChanged(event => { ... }) — subscribe to SIGNED_IN, TOKEN_REFRESHED, SESSION_EXPIRED
+  // auth.refreshSession() — force immediate token refresh
 }
 ```

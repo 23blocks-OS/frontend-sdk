@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — blocks expose health(), CreateOrderRequest supports flat + items[]
+// Main API (Recommended) — token lifecycle with auto-refresh and 401 retry
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
