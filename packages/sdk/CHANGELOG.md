@@ -1,3 +1,18 @@
+## 13.5.0 (2026-03-14)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** add token lifecycle management with auto-refresh and 401 retry ([5426358](https://github.com/23blocks-OS/frontend-sdk/commit/5426358))
+
+### 📖 Documentation
+
+- add token lifecycle to llms.txt ([f42d730](https://github.com/23blocks-OS/frontend-sdk/commit/f42d730))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 13.4.0 (2026-03-09)
 
 ### 🚀 Features

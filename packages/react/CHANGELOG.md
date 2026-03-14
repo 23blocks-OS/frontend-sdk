@@ -1,3 +1,14 @@
+## 14.5.0 (2026-03-14)
+
+### 🚀 Features
+
+- **@23blocks/react:** integrate token lifecycle in Provider ([71aee53](https://github.com/23blocks-OS/frontend-sdk/commit/71aee53))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 14.4.0 (2026-03-09)
 
 ### 🚀 Features

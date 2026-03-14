@@ -1,3 +1,14 @@
+## 14.5.0 (2026-03-14)
+
+### 🚀 Features
+
+- **@23blocks/angular:** integrate token lifecycle with AuthenticationService ([df3c6c3](https://github.com/23blocks-OS/frontend-sdk/commit/df3c6c3))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 14.4.0 (2026-03-09)
 
 ### 🚀 Features
