@@ -1,3 +1,14 @@
+## 5.3.0 (2026-03-14)
+
+### 🚀 Features
+
+- **@23blocks/block-jarvis:** add prompt tests, agent tests, templates, company keys, LLM providers services ([c8c0cfd](https://github.com/23blocks-OS/frontend-sdk/commit/c8c0cfd))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 5.2.0 (2026-03-14)
 
 ### 🚀 Features

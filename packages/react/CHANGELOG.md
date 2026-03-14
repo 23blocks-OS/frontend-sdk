@@ -1,3 +1,18 @@
+## 14.7.0 (2026-03-14)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with jarvis prompt tests, agent tests, templates, company keys, LLM providers ([cc27b30](https://github.com/23blocks-OS/frontend-sdk/commit/cc27b30))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.3.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 14.6.0 (2026-03-14)
 
 ### 🚀 Features

@@ -1,3 +1,18 @@
+## 14.7.0 (2026-03-14)
+
+### 🚀 Features
+
+- **@23blocks/angular:** add promptTests, agentTests, promptTemplates, companyKeys, llmProviders getters to JarvisService ([88284f6](https://github.com/23blocks-OS/frontend-sdk/commit/88284f6))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.3.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 14.6.0 (2026-03-14)
 
 ### 🚀 Features

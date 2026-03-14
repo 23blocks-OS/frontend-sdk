@@ -1,3 +1,22 @@
+## 13.7.0 (2026-03-14)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with jarvis prompt tests, agent tests, templates, company keys, LLM providers ([017b6da](https://github.com/23blocks-OS/frontend-sdk/commit/017b6da))
+
+### 📖 Documentation
+
+- add jarvis prompt tests, agent tests, templates, company keys, LLM providers to llms.txt ([c5d6d23](https://github.com/23blocks-OS/frontend-sdk/commit/c5d6d23))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.3.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 13.6.0 (2026-03-14)
 
 ### 🚀 Features
