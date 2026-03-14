@@ -64,6 +64,12 @@ export class JarvisService {
   get conditions() { return this.ensureConfigured().conditions; }
   get stepTransitions() { return this.ensureConfigured().stepTransitions; }
   get analytics() { return this.ensureConfigured().analytics; }
+  get promptTests() { return this.ensureConfigured().promptTests; }
+  get promptTestEvaluations() { return this.ensureConfigured().promptTestEvaluations; }
+  get agentTests() { return this.ensureConfigured().agentTests; }
+  get promptTemplates() { return this.ensureConfigured().promptTemplates; }
+  get companyKeys() { return this.ensureConfigured().companyKeys; }
+  get llmProviders() { return this.ensureConfigured().llmProviders; }
 
   /** Full block access */
   get jarvisBlock(): JarvisBlock { return this.ensureConfigured(); }
