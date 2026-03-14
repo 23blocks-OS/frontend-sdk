@@ -1,3 +1,19 @@
+## 13.7.1 (2026-03-14)
+
+### 🩹 Fixes
+
+- **@23blocks/sdk:** rebuild with JSON:API codec fixes for jarvis and sales blocks ([876ca0c](https://github.com/23blocks-OS/frontend-sdk/commit/876ca0c))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.3.1
+- Updated @23blocks/block-sales to 8.0.2
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 13.7.0 (2026-03-14)
 
 ### 🚀 Features

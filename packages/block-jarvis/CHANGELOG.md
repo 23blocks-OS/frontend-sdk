@@ -1,3 +1,14 @@
+## 5.3.1 (2026-03-14)
+
+### 🩹 Fixes
+
+- **@23blocks/block-jarvis:** use JSON:API codec for agent executions, OpenAI models, and workflow instance details ([bf922f6](https://github.com/23blocks-OS/frontend-sdk/commit/bf922f6))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 5.3.0 (2026-03-14)
 
 ### 🚀 Features

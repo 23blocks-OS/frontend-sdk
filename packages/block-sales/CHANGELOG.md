@@ -1,3 +1,14 @@
+## 8.0.2 (2026-03-14)
+
+### 🩹 Fixes
+
+- **@23blocks/block-sales:** use JSON:API codec for vendor payment and provider report list endpoints ([d90e5f7](https://github.com/23blocks-OS/frontend-sdk/commit/d90e5f7))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 8.0.1 (2026-03-03)
 
 ### 🧱 Updated Dependencies
