@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — token lifecycle with auto-refresh and 401 retry
+// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, full barrel exports
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
