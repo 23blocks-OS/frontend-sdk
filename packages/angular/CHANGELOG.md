@@ -1,3 +1,18 @@
+## 14.6.0 (2026-03-14)
+
+### 🚀 Features
+
+- **@23blocks/angular:** add missing service getters to JarvisService, ProductsService, and RagService ([fa3e6db](https://github.com/23blocks-OS/frontend-sdk/commit/fa3e6db))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.2.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 14.5.1 (2026-03-14)
 
 ### 🩹 Fixes

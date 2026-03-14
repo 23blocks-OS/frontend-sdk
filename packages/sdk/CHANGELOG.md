@@ -1,3 +1,18 @@
+## 13.6.0 (2026-03-14)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with jarvis barrel exports and angular getter fixes ([eeee532](https://github.com/23blocks-OS/frontend-sdk/commit/eeee532))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.2.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 13.5.1 (2026-03-14)
 
 ### 🩹 Fixes

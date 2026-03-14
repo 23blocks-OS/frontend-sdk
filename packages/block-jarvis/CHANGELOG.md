@@ -1,3 +1,14 @@
+## 5.2.0 (2026-03-14)
+
+### 🚀 Features
+
+- **@23blocks/block-jarvis:** export missing types, services, and mappers for tools, conditions, and transitions ([7733d1a](https://github.com/23blocks-OS/frontend-sdk/commit/7733d1a))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 5.1.0 (2026-03-05)
 
 ### 🚀 Features
