@@ -1,3 +1,18 @@
+## 13.5.1 (2026-03-14)
+
+### 🩹 Fixes
+
+- **@23blocks/sdk:** fix token lifecycle security and correctness issues ([0886883](https://github.com/23blocks-OS/frontend-sdk/commit/0886883))
+
+### 📖 Documentation
+
+- update llms.txt and JSDoc for token lifecycle across all packages ([74d8319](https://github.com/23blocks-OS/frontend-sdk/commit/74d8319))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 13.5.0 (2026-03-14)
 
 ### 🚀 Features

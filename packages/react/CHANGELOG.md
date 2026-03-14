@@ -1,3 +1,19 @@
+## 14.5.1 (2026-03-14)
+
+### 🩹 Fixes
+
+- **@23blocks/react:** add managed verifyMagicLink/acceptInvitation and stabilize memo deps ([ee811ee](https://github.com/23blocks-OS/frontend-sdk/commit/ee811ee))
+- **@23blocks/react:** fix lifecycle circular retry, late-subscriber, and signUp ([31b18a9](https://github.com/23blocks-OS/frontend-sdk/commit/31b18a9))
+
+### 📖 Documentation
+
+- update llms.txt and JSDoc for token lifecycle across all packages ([74d8319](https://github.com/23blocks-OS/frontend-sdk/commit/74d8319))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 14.5.0 (2026-03-14)
 
 ### 🚀 Features

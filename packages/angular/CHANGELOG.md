@@ -1,3 +1,19 @@
+## 14.5.1 (2026-03-14)
+
+### 🩹 Fixes
+
+- **@23blocks/angular:** start lifecycle on OAuth login methods ([6af5acd](https://github.com/23blocks-OS/frontend-sdk/commit/6af5acd))
+- **@23blocks/angular:** fix lifecycle stop-before-signOut and token storage race ([e009c86](https://github.com/23blocks-OS/frontend-sdk/commit/e009c86))
+
+### 📖 Documentation
+
+- update llms.txt and JSDoc for token lifecycle across all packages ([74d8319](https://github.com/23blocks-OS/frontend-sdk/commit/74d8319))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Juan Pelaez
+
 ## 14.5.0 (2026-03-14)
 
 ### 🚀 Features
