@@ -1,5 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodeMany, decodePageResult, extractPageMeta } from '@23blocks/jsonapi-codec';
 import type {
   UserJourney,
   StartJourneyRequest,
@@ -146,7 +146,7 @@ export function createUserJourneysService(transport: Transport, _config: { apiKe
     },
 
     async reportList(params: UserJourneyReportParams): Promise<UserJourneyReportList> {
-      const response = await transport.post<any>('/reports/user_journeys/list', {
+      const response = await transport.post<unknown>('/reports/user_journeys/list', {
         query_params: {
           start_at: params.start_at,
           end_at: params.end_at,
@@ -161,34 +161,40 @@ export function createUserJourneysService(transport: Transport, _config: { apiKe
           records: params.records,
         },
       });
+      const decoded = decodeMany(response, userJourneyMapper);
+      const pageMeta = extractPageMeta(response);
+      const doc = response as Record<string, unknown>;
+      const metaObj = (doc['meta'] || {}) as Record<string, unknown>;
+      const summaryObj = (metaObj['summary'] || {}) as Record<string, unknown>;
+      const periodObj = (summaryObj['period'] || {}) as Record<string, unknown>;
       return {
-        journeys: (response.journeys || []).map((j: any) => ({
-          uniqueId: j.unique_id,
-          userUniqueId: j.user_unique_id,
-          onboardingName: j.onboarding_name,
-          progress: j.progress,
-          status: j.status,
-          startedAt: new Date(j.started_at),
-          completedAt: j.completed_at ? new Date(j.completed_at) : undefined,
+        journeys: decoded.map((uj) => ({
+          uniqueId: uj.uniqueId,
+          userUniqueId: uj.userUniqueId || '',
+          onboardingName: uj.onboardingUniqueId || '',
+          progress: uj.progress || 0,
+          status: uj.status,
+          startedAt: uj.startedAt || uj.createdAt,
+          completedAt: uj.completedAt,
         })),
         summary: {
-          totalJourneys: response.summary.total_journeys,
-          totalCompleted: response.summary.total_completed,
-          totalAbandoned: response.summary.total_abandoned,
-          totalActive: response.summary.total_active,
-          averageProgress: response.summary.average_progress,
-          completionRate: response.summary.completion_rate,
-          journeysByStatus: response.summary.journeys_by_status,
+          totalJourneys: Number(summaryObj['total_journeys'] || 0),
+          totalCompleted: Number(summaryObj['total_completed'] || 0),
+          totalAbandoned: Number(summaryObj['total_abandoned'] || 0),
+          totalActive: Number(summaryObj['total_active'] || 0),
+          averageProgress: Number(summaryObj['average_progress'] || 0),
+          completionRate: Number(summaryObj['completion_rate'] || 0),
+          journeysByStatus: (summaryObj['journeys_by_status'] || {}) as Record<string, number>,
           period: {
-            startDate: new Date(response.summary.period.start_date),
-            endDate: new Date(response.summary.period.end_date),
+            startDate: periodObj['start_date'] ? new Date(periodObj['start_date'] as string) : new Date(),
+            endDate: periodObj['end_date'] ? new Date(periodObj['end_date'] as string) : new Date(),
           },
         },
         meta: {
-          totalCount: response.meta.total_count,
-          page: response.meta.current_page,
-          perPage: response.meta.per_page,
-          totalPages: response.meta.total_pages,
+          totalCount: pageMeta.totalCount,
+          page: pageMeta.currentPage,
+          perPage: pageMeta.perPage,
+          totalPages: pageMeta.totalPages,
         },
       };
     },
