@@ -1,3 +1,14 @@
+## 5.0.2 (2026-04-16)
+
+### 🩹 Fixes
+
+- **@23blocks/block-crm:** use JSON:API codec for billing reports and mandrill stats ([1bfe1af](https://github.com/23blocks-OS/frontend-sdk/commit/1bfe1af))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 5.0.1 (2026-03-03)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,14 @@
+## 5.0.2 (2026-04-16)
+
+### 🩹 Fixes
+
+- **@23blocks/block-onboarding:** use JSON:API codec for user journey report list endpoint ([56085a4](https://github.com/23blocks-OS/frontend-sdk/commit/56085a4))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 5.0.1 (2026-03-03)
 
 ### 🧱 Updated Dependencies

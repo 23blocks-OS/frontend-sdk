@@ -1,3 +1,19 @@
+## 14.7.2 (2026-04-16)
+
+### 🩹 Fixes
+
+- **@23blocks/react:** rebuild with CRM billing reports and onboarding journey codec fixes ([25bece8](https://github.com/23blocks-OS/frontend-sdk/commit/25bece8))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-onboarding to 5.0.2
+- Updated @23blocks/block-crm to 5.0.2
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 14.7.1 (2026-03-14)
 
 ### 🩹 Fixes
