@@ -1,10 +1,12 @@
 import type { Transport } from '@23blocks/contracts';
+import { decodeOne } from '@23blocks/jsonapi-codec';
 import type {
   BillingReportParams,
   RevenueReport,
   AgingReport,
   ParticipantBillingReport,
 } from '../types/billing-report.js';
+import { revenueReportMapper, agingReportMapper, participantBillingReportMapper } from '../mappers/billing-report.mapper.js';
 
 export interface BillingReportsService {
   /**
@@ -36,58 +38,18 @@ export function createBillingReportsService(transport: Transport, _config: { api
       if (params?.endDate) queryParams['end_date'] = params.endDate;
       if (params?.status) queryParams['status'] = params.status;
 
-      const response = await transport.get<any>('/billings/reports/revenue', { params: queryParams });
-      return {
-        totalRevenue: response.total_revenue,
-        totalBilled: response.total_billed,
-        totalPaid: response.total_paid,
-        totalOutstanding: response.total_outstanding,
-        currency: response.currency,
-        period: {
-          startDate: new Date(response.period.start_date),
-          endDate: new Date(response.period.end_date),
-        },
-        breakdown: {
-          byMonth: response.breakdown.by_month,
-          byStatus: response.breakdown.by_status,
-        },
-      };
+      const response = await transport.get<unknown>('/billings/reports/revenue', { params: queryParams });
+      return decodeOne(response, revenueReportMapper);
     },
 
     async getAgingReport(): Promise<AgingReport> {
-      const response = await transport.get<any>('/billings/reports/aging');
-      return {
-        current: response.current,
-        thirtyDays: response.thirty_days,
-        sixtyDays: response.sixty_days,
-        ninetyDays: response.ninety_days,
-        over90Days: response.over_90_days,
-        total: response.total,
-        items: (response.items || []).map((i: any) => ({
-          billingUniqueId: i.billing_unique_id,
-          accountName: i.account_name,
-          contactName: i.contact_name,
-          amount: i.amount,
-          dueDate: new Date(i.due_date),
-          daysOutstanding: i.days_outstanding,
-        })),
-      };
+      const response = await transport.get<unknown>('/billings/reports/aging');
+      return decodeOne(response, agingReportMapper);
     },
 
     async getParticipantReport(participantEmail: string): Promise<ParticipantBillingReport> {
-      const response = await transport.get<any>(`/billings/reports/participant/${encodeURIComponent(participantEmail)}`);
-      return {
-        participantEmail: response.participant_email,
-        totalBilled: response.total_billed,
-        totalPaid: response.total_paid,
-        totalOutstanding: response.total_outstanding,
-        sessions: (response.sessions || []).map((s: any) => ({
-          meetingUniqueId: s.meeting_unique_id,
-          date: new Date(s.date),
-          amount: s.amount,
-          status: s.status,
-        })),
-      };
+      const response = await transport.get<unknown>(`/billings/reports/participant/${encodeURIComponent(participantEmail)}`);
+      return decodeOne(response, participantBillingReportMapper);
     },
   };
 }

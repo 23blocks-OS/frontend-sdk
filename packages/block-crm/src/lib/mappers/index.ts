@@ -22,3 +22,5 @@ export * from './zoom-host.mapper.js';
 export * from './utils.js';
 export * from './mail-template.mapper.js';
 export * from './user.mapper.js';
+export * from './billing-report.mapper.js';
+export * from './mandrill-stats.mapper.js';

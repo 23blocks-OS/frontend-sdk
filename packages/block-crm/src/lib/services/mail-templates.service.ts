@@ -1,5 +1,6 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
+import { mandrillStatsMapper } from '../mappers/mandrill-stats.mapper.js';
 import type {
   CrmMailTemplate,
   CreateCrmMailTemplateRequest,
@@ -139,18 +140,8 @@ export function createCrmMailTemplatesService(transport: Transport, _config: { a
     },
 
     async getMandrillStats(uniqueId: string): Promise<MandrillTemplateStats> {
-      const response = await transport.get<any>(`/mailtemplates/${uniqueId}/mandrill/stats`);
-      return {
-        slug: response.slug,
-        name: response.name,
-        sentCount: response.sent_count || 0,
-        openCount: response.open_count || 0,
-        clickCount: response.click_count || 0,
-        bounceCount: response.bounce_count || 0,
-        complaintCount: response.complaint_count || 0,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+      const response = await transport.get<unknown>(`/mailtemplates/${uniqueId}/mandrill/stats`);
+      return decodeOne(response, mandrillStatsMapper);
     },
 
     async createMandrillTemplate(uniqueId: string, data: CreateMandrillTemplateRequest): Promise<CrmMailTemplate> {
