@@ -1,3 +1,18 @@
+## 13.9.0 (2026-04-17)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with provider field for prompts and agents ([c8c3da2](https://github.com/23blocks-OS/frontend-sdk/commit/c8c3da2))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.5.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 13.8.0 (2026-04-17)
 
 ### 🚀 Features
