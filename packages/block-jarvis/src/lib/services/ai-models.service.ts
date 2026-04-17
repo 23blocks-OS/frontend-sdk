@@ -25,10 +25,14 @@ function buildAIModelBody(data: CreateAIModelRequest): Record<string, unknown> {
   return body;
 }
 
-export interface OpenAIModel {
+export interface VendorModel {
   id: string;
   name: string;
+  provider?: string;
 }
+
+/** @deprecated Use VendorModel instead */
+export type OpenAIModel = VendorModel;
 
 export interface AIModelsService {
   list(params?: ListAIModelsParams): Promise<PageResult<AIModel>>;
@@ -36,7 +40,10 @@ export interface AIModelsService {
   create(data: CreateAIModelRequest): Promise<AIModel>;
   update(uniqueId: string, data: UpdateAIModelRequest): Promise<AIModel>;
   delete(uniqueId: string): Promise<void>;
-  openaiAvailable(): Promise<OpenAIModel[]>;
+  /** Fetch available models from a vendor (openai, mistral, etc.) */
+  vendorModels(vendor: string): Promise<VendorModel[]>;
+  /** @deprecated Use vendorModels('openai') instead */
+  openaiAvailable(): Promise<VendorModel[]>;
 }
 
 export function createAIModelsService(transport: Transport, _config: { apiKey: string }): AIModelsService {
@@ -76,9 +83,14 @@ export function createAIModelsService(transport: Transport, _config: { apiKey: s
       await transport.delete(`/ai_models/${uniqueId}`);
     },
 
-    async openaiAvailable(): Promise<OpenAIModel[]> {
-      const response = await transport.get<unknown>('/vendors/openai/models');
-      return decodeMany(response, openaiModelMapper);
+    async vendorModels(vendor: string): Promise<VendorModel[]> {
+      const response = await transport.get<unknown>(`/vendors/${encodeURIComponent(vendor)}/models`);
+      const decoded = decodeMany(response, openaiModelMapper);
+      return decoded.map((m) => ({ ...m, provider: vendor }));
+    },
+
+    async openaiAvailable(): Promise<VendorModel[]> {
+      return this.vendorModels('openai');
     },
   };
 }

@@ -206,6 +206,7 @@ export type {
   CompanyKeysService,
   LlmProvidersService,
   OpenAIModel,
+  VendorModel,
   AnalyticsService,
 } from './lib/services/index.js';
 

@@ -13,4 +13,6 @@ export interface CreateCompanyKeyRequest {
   name?: string;
   keyValue: string;
   provider?: string;
+  apiSecret?: string;
+  baseUrl?: string;
 }

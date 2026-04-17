@@ -25,6 +25,8 @@ export function createCompanyKeysService(transport: Transport, _config: { apiKey
       if (data.name) body['name'] = data.name;
       body['key_value'] = data.keyValue;
       if (data.provider) body['provider'] = data.provider;
+      if (data.apiSecret) body['api_secret'] = data.apiSecret;
+      if (data.baseUrl) body['base_url'] = data.baseUrl;
 
       const response = await transport.post<unknown>(`/companies/${urlId}/keys`, {
         key: body,
