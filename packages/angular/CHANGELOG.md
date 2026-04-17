@@ -1,3 +1,18 @@
+## 14.8.0 (2026-04-17)
+
+### 🚀 Features
+
+- **@23blocks/angular:** rebuild with Mistral vendor support and generic vendorModels API ([ff913e7](https://github.com/23blocks-OS/frontend-sdk/commit/ff913e7))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.4.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 14.7.2 (2026-04-16)
 
 ### 🩹 Fixes

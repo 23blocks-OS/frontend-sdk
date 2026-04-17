@@ -1,3 +1,22 @@
+## 13.8.0 (2026-04-17)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with Mistral vendor support and generic vendorModels API ([57241f1](https://github.com/23blocks-OS/frontend-sdk/commit/57241f1))
+
+### 📖 Documentation
+
+- update llms.txt with vendorModels and Mistral support for aiModels sub-service ([494caa4](https://github.com/23blocks-OS/frontend-sdk/commit/494caa4))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.4.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 13.7.2 (2026-04-16)
 
 ### 🩹 Fixes

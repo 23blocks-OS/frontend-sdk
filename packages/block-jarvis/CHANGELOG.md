@@ -1,3 +1,14 @@
+## 5.4.0 (2026-04-17)
+
+### 🚀 Features
+
+- **@23blocks/block-jarvis:** add generic vendorModels API and Mistral provider support ([817410c](https://github.com/23blocks-OS/frontend-sdk/commit/817410c))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 5.3.1 (2026-03-14)
 
 ### 🩹 Fixes
