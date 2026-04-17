@@ -10,6 +10,7 @@ export const agentMapper: ResourceMapper<Agent> = {
     name: parseString(resource.attributes['name']) || '',
     description: parseString(resource.attributes['description']),
     instructions: parseString(resource.attributes['instructions']),
+    provider: parseString(resource.attributes['provider']),
     model: parseString(resource.attributes['model']),
     source: parseString(resource.attributes['source']),
     sourceId: parseString(resource.attributes['source_id']),

@@ -4,6 +4,7 @@ export interface Agent {
   name: string;
   description?: string;
   instructions?: string;
+  provider?: string;
   model?: string;
   source?: string;
   sourceId?: string;
@@ -48,6 +49,7 @@ export interface CreateAgentRequest {
   name: string;
   description?: string;
   instructions?: string;
+  provider?: string;
   model?: string;
   source?: string;
   sourceId?: string;

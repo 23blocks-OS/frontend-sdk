@@ -30,6 +30,7 @@ export const promptMapper: ResourceMapper<Prompt> = {
     isPublic: parseBoolean(resource.attributes['is_public']),
     source: parseString(resource.attributes['source']),
 
+    provider: parseString(resource.attributes['provider']),
     model: parseString(resource.attributes['model']),
     frequencyPenalty: parseOptionalNumber(resource.attributes['frequency_penalty']),
     maxTokens: parseOptionalNumber(resource.attributes['max_tokens']),

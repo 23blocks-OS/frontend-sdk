@@ -24,6 +24,7 @@ function buildPromptBody(data: CreatePromptRequest): Record<string, unknown> {
   if (data.mediaUrl) body['media_url'] = data.mediaUrl;
   if (data.publishAt) body['publish_at'] = data.publishAt;
   if (data.publishUntil) body['publish_until'] = data.publishUntil;
+  if (data.provider) body['provider'] = data.provider;
   if (data.model) body['model'] = data.model;
   if (data.frequencyPenalty !== undefined) body['frequency_penalty'] = data.frequencyPenalty;
   if (data.maxTokens !== undefined) body['max_tokens'] = data.maxTokens;

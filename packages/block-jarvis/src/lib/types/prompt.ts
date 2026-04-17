@@ -20,6 +20,7 @@ export interface Prompt {
   isPublic?: boolean;
   source?: string;
 
+  provider?: string;
   model?: string;
   frequencyPenalty?: number;
   maxTokens?: number;
@@ -71,6 +72,7 @@ export interface CreatePromptRequest {
   mediaUrl?: string;
   publishAt?: Date;
   publishUntil?: Date;
+  provider?: string;
   model?: string;
   frequencyPenalty?: number;
   maxTokens?: number;
