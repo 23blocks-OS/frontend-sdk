@@ -538,7 +538,7 @@ const [authHealth, crmHealth] = await Promise.all([
 - `workflows`, `workflowSteps`, `workflowParticipants`, `workflowInstances` - AI workflows
 - `executions`, `executionComments` - Execution tracking (filter by runUniqueId, list by prompt version, get by prompt)
 - `conversations` - AI conversations
-- `aiModels` - Model configuration (OpenAI available models)
+- `aiModels` - Model configuration, vendor model discovery (OpenAI, Mistral, etc. via vendorModels)
 - `entities`, `clusters` - Knowledge management
 - `users` - Jarvis user management
 - `tools`, `agentTools`, `agentToolAssignments` - Tool management and agent-tool assignments
