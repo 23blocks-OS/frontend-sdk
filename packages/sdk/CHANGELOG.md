@@ -1,3 +1,18 @@
+## 13.10.0 (2026-04-17)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with strong params audit fields ([bcd7433](https://github.com/23blocks-OS/frontend-sdk/commit/bcd7433))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.6.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 13.9.0 (2026-04-17)
 
 ### 🚀 Features

@@ -1,3 +1,14 @@
+## 5.6.0 (2026-04-17)
+
+### 🚀 Features
+
+- **@23blocks/block-jarvis:** add missing fields from strong params audit ([78269dd](https://github.com/23blocks-OS/frontend-sdk/commit/78269dd))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 5.5.0 (2026-04-17)
 
 ### 🚀 Features
