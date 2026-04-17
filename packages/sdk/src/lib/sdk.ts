@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, JSON:API codec fixes for CRM billing reports and onboarding journeys
+// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, Mistral vendor support, generic vendorModels API
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
