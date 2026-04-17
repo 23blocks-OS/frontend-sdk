@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, provider field on prompts/agents, Mistral vendor support
+// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, strong params audit: code, stepType, gatewayType, instructions, tokenCostCurrency
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
