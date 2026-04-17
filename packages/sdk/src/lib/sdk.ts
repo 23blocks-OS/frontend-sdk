@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, Mistral vendor support, generic vendorModels API
+// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, provider field on prompts/agents, Mistral vendor support
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
