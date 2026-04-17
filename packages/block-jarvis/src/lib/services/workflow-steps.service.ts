@@ -13,6 +13,10 @@ function buildStepBody(data: AddWorkflowStepRequest): Record<string, unknown> {
   const body: Record<string, unknown> = {};
   if (data.name) body['name'] = data.name;
   if (data.description) body['description'] = data.description;
+  if (data.stepType) body['step_type'] = data.stepType;
+  if (data.gatewayType) body['gateway_type'] = data.gatewayType;
+  if (data.isEntryPoint !== undefined) body['is_entry_point'] = data.isEntryPoint;
+  if (data.isExitPoint !== undefined) body['is_exit_point'] = data.isExitPoint;
   if (data.source) body['source'] = data.source;
   if (data.sourceId) body['source_id'] = data.sourceId;
   if (data.sourceType) body['source_type'] = data.sourceType;

@@ -1,6 +1,7 @@
 export interface Agent {
   id: string;
   uniqueId: string;
+  code?: string;
   name: string;
   description?: string;
   instructions?: string;
@@ -46,11 +47,13 @@ export interface Agent {
 
 /** Matches agent_params in agents_controller.rb */
 export interface CreateAgentRequest {
+  code?: string;
   name: string;
   description?: string;
   instructions?: string;
   provider?: string;
   model?: string;
+  status?: string;
   source?: string;
   sourceId?: string;
   sourceType?: string;

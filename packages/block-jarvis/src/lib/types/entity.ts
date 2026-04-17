@@ -7,9 +7,12 @@ export interface Entity {
   entitySource?: string;
   entityUrl?: string;
   content?: string;
+  instructions?: string;
   stripeId?: string;
   status: string;
   timeZone?: string;
+  createdBy?: string;
+  updatedBy?: string;
   preferredLanguage?: string;
   entityAvatarUrl?: string;
   enabled?: boolean;
@@ -25,9 +28,12 @@ export interface RegisterEntityRequest {
   entitySource?: string;
   entityUrl?: string;
   content?: string;
+  instructions?: string;
   stripeId?: string;
   status?: string;
   timeZone?: string;
+  createdBy?: string;
+  updatedBy?: string;
   preferredLanguage?: string;
   entityAvatarUrl?: string;
 }

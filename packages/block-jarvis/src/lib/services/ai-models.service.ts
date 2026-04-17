@@ -19,7 +19,9 @@ function buildAIModelBody(data: CreateAIModelRequest): Record<string, unknown> {
   if (data.imageUrl) body['image_url'] = data.imageUrl;
   if (data.videoUrl) body['video_url'] = data.videoUrl;
   if (data.inputTokenCost !== undefined) body['input_token_cost'] = data.inputTokenCost;
+  if (data.inputTokenCostCurrency) body['input_token_cost_currency'] = data.inputTokenCostCurrency;
   if (data.outputTokenCost !== undefined) body['output_token_cost'] = data.outputTokenCost;
+  if (data.outputTokenCostCurrency) body['output_token_cost_currency'] = data.outputTokenCostCurrency;
   if (data.apiUrl) body['api_url'] = data.apiUrl;
   if (data.status) body['status'] = data.status;
   return body;

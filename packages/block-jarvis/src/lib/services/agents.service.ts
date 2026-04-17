@@ -12,8 +12,10 @@ import { agentMapper } from '../mappers/agent.mapper.js';
 
 function buildAgentBody(data: CreateAgentRequest): Record<string, unknown> {
   const body: Record<string, unknown> = {};
+  if (data.code) body['code'] = data.code;
   if (data.name) body['name'] = data.name;
   if (data.description) body['description'] = data.description;
+  if (data.status) body['status'] = data.status;
   if (data.instructions) body['instructions'] = data.instructions;
   if (data.provider) body['provider'] = data.provider;
   if (data.model) body['model'] = data.model;

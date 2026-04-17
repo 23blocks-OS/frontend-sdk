@@ -4,6 +4,10 @@ export interface WorkflowStep {
   workflowUniqueId: string;
   name: string;
   description?: string;
+  stepType?: string;
+  gatewayType?: string;
+  isEntryPoint?: boolean;
+  isExitPoint?: boolean;
   source?: string;
   sourceId?: string;
   sourceType?: string;
@@ -29,6 +33,10 @@ export interface WorkflowStep {
 export interface AddWorkflowStepRequest {
   name: string;
   description?: string;
+  stepType?: string;
+  gatewayType?: string;
+  isEntryPoint?: boolean;
+  isExitPoint?: boolean;
   source?: string;
   sourceId?: string;
   sourceType?: string;

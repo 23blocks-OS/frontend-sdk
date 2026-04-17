@@ -18,7 +18,10 @@ function buildEntityBody(data: RegisterEntityRequest): Record<string, unknown> {
   if (data.entitySource) body['entity_source'] = data.entitySource;
   if (data.entityUrl) body['entity_url'] = data.entityUrl;
   if (data.content) body['content'] = data.content;
+  if (data.instructions) body['instructions'] = data.instructions;
   if (data.stripeId) body['stripe_id'] = data.stripeId;
+  if (data.createdBy) body['created_by'] = data.createdBy;
+  if (data.updatedBy) body['updated_by'] = data.updatedBy;
   if (data.status) body['status'] = data.status;
   if (data.timeZone) body['time_zone'] = data.timeZone;
   if (data.preferredLanguage) body['preferred_language'] = data.preferredLanguage;

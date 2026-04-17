@@ -9,7 +9,9 @@ export interface AIModel {
   imageUrl?: string;
   videoUrl?: string;
   inputTokenCost?: number;
+  inputTokenCostCurrency?: string;
   outputTokenCost?: number;
+  outputTokenCostCurrency?: string;
   apiUrl?: string;
   status: string;
   enabled?: boolean;
@@ -27,7 +29,9 @@ export interface CreateAIModelRequest {
   imageUrl?: string;
   videoUrl?: string;
   inputTokenCost?: number;
+  inputTokenCostCurrency?: string;
   outputTokenCost?: number;
+  outputTokenCostCurrency?: string;
   apiUrl?: string;
   status?: string;
 }
