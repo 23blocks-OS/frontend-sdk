@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, JSON:API codec fixes for CRM billing reports and onboarding journeys
+// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, Mistral vendor support, generic vendorModels API
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
