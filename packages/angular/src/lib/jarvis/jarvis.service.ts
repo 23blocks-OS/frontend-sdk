@@ -10,7 +10,7 @@ import { TRANSPORT, JARVIS_TRANSPORT, JARVIS_CONFIG } from '../tokens';
 /**
  * Angular service wrapping the Jarvis block.
  *
- * Exposes block sub-services directly via typed getters (provider field on prompts/agents, Mistral vendor support).
+ * Exposes block sub-services directly via typed getters (strong params audit: code, stepType, gatewayType, instructions, tokenCostCurrency).
  * All methods return Promises - use `from()` to convert to Observables if needed.
  *
  * @example
