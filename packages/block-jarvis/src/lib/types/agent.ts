@@ -34,6 +34,7 @@ export interface Agent {
   supervisorEnabled?: boolean;
   supervisorEmail?: string;
   supervisorPhoneNumber?: string;
+  supervisorUserUid?: string;
   lastActivityAt?: Date;
   totalMessagesProcessed?: number;
   averageResponseTime?: number;
@@ -81,6 +82,7 @@ export interface CreateAgentRequest {
   supervisorEnabled?: boolean;
   supervisorEmail?: string;
   supervisorPhoneNumber?: string;
+  supervisorUserUid?: string;
   lastActivityAt?: Date;
   totalMessagesProcessed?: number;
   averageResponseTime?: number;

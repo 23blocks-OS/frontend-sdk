@@ -83,6 +83,7 @@ export type {
   SendAgentMessageRequest,
   AgentRunExecution,
   ListAgentRunExecutionsParams,
+  HandoffStatus,
   // Mail Template types
   MailTemplate,
   CreateMailTemplateRequest,

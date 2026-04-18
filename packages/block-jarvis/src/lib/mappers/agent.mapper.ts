@@ -40,6 +40,7 @@ export const agentMapper: ResourceMapper<Agent> = {
     supervisorEnabled: resource.attributes['supervisor_enabled'] != null ? parseBoolean(resource.attributes['supervisor_enabled']) : undefined,
     supervisorEmail: parseString(resource.attributes['supervisor_email']),
     supervisorPhoneNumber: parseString(resource.attributes['supervisor_phone_number']),
+    supervisorUserUid: parseString(resource.attributes['supervisor_user_uid']) || undefined,
     lastActivityAt: parseDate(resource.attributes['last_activity_at']),
     totalMessagesProcessed: parseOptionalNumber(resource.attributes['total_messages_processed']),
     averageResponseTime: parseOptionalNumber(resource.attributes['average_response_time']),

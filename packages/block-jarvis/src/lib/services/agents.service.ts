@@ -46,6 +46,7 @@ function buildAgentBody(data: CreateAgentRequest): Record<string, unknown> {
   if (data.supervisorEnabled !== undefined) body['supervisor_enabled'] = data.supervisorEnabled;
   if (data.supervisorEmail) body['supervisor_email'] = data.supervisorEmail;
   if (data.supervisorPhoneNumber) body['supervisor_phone_number'] = data.supervisorPhoneNumber;
+  if (data.supervisorUserUid) body['supervisor_user_uid'] = data.supervisorUserUid;
   if (data.lastActivityAt) body['last_activity_at'] = data.lastActivityAt;
   if (data.totalMessagesProcessed !== undefined) body['total_messages_processed'] = data.totalMessagesProcessed;
   if (data.averageResponseTime !== undefined) body['average_response_time'] = data.averageResponseTime;

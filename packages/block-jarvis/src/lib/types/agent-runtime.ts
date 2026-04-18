@@ -109,4 +109,13 @@ export interface ListAgentRunExecutionsParams {
   sortOrder?: 'asc' | 'desc';
 }
 
+export interface HandoffStatus {
+  delegationUniqueId?: string;
+  status: string;
+  supervisorUserUid?: string;
+  agentUniqueId?: string;
+  contextUniqueId?: string;
+  createdAt?: Date;
+}
+
 export type { CreateContextRequest, SendMessageRequest };

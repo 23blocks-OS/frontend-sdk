@@ -9,6 +9,7 @@ import type {
   SendAgentMessageRequest,
   AgentRunExecution,
   ListAgentRunExecutionsParams,
+  HandoffStatus,
 } from '../types/agent-runtime.js';
 import { runExecutionMapper } from '../mappers/run-execution.mapper.js';
 import { buildContextBody } from './entities.service.js';
@@ -86,6 +87,12 @@ export interface AgentRuntimeService {
   listExecutions(agentUniqueId: string, params?: ListAgentRunExecutionsParams): Promise<PageResult<AgentRunExecution>>;
   getExecution(agentUniqueId: string, executionUniqueId: string): Promise<AgentRunExecution>;
   getRunStatus(agentUniqueId: string, threadId: string, runId: string): Promise<AgentRunExecution>;
+  /** Initiate a supervisor handoff for a conversation context. */
+  initiateHandoff(agentUniqueId: string, contextUniqueId: string): Promise<HandoffStatus>;
+  /** Get the current handoff status for a conversation context. */
+  getHandoffStatus(agentUniqueId: string, contextUniqueId: string): Promise<HandoffStatus>;
+  /** Revoke an active handoff delegation. */
+  revokeHandoff(agentUniqueId: string, contextUniqueId: string, delegationUniqueId: string): Promise<void>;
 }
 
 export function createAgentRuntimeService(transport: Transport, _config: { apiKey: string }, sseUrl?: string): AgentRuntimeService {
@@ -202,6 +209,34 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
         createdAt: new Date(response.created_at),
         updatedAt: new Date(response.updated_at),
       };
+    },
+
+    async initiateHandoff(agentUniqueId: string, contextUniqueId: string): Promise<HandoffStatus> {
+      const response = await transport.post<any>(`/agents/${agentUniqueId}/context/${contextUniqueId}/handoff`, {});
+      return {
+        delegationUniqueId: response.delegation_unique_id || response.unique_id,
+        status: response.status || 'active',
+        supervisorUserUid: response.supervisor_user_uid,
+        agentUniqueId: response.agent_unique_id || agentUniqueId,
+        contextUniqueId: response.context_unique_id || contextUniqueId,
+        createdAt: response.created_at ? new Date(response.created_at) : undefined,
+      };
+    },
+
+    async getHandoffStatus(agentUniqueId: string, contextUniqueId: string): Promise<HandoffStatus> {
+      const response = await transport.get<any>(`/agents/${agentUniqueId}/context/${contextUniqueId}/handoff`);
+      return {
+        delegationUniqueId: response.delegation_unique_id || response.unique_id,
+        status: response.status || 'none',
+        supervisorUserUid: response.supervisor_user_uid,
+        agentUniqueId: response.agent_unique_id || agentUniqueId,
+        contextUniqueId: response.context_unique_id || contextUniqueId,
+        createdAt: response.created_at ? new Date(response.created_at) : undefined,
+      };
+    },
+
+    async revokeHandoff(agentUniqueId: string, contextUniqueId: string, delegationUniqueId: string): Promise<void> {
+      await transport.delete(`/agents/${agentUniqueId}/context/${contextUniqueId}/handoff/${delegationUniqueId}`);
     },
   };
 }
