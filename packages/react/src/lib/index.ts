@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, strong params audit: code, stepType, gatewayType, instructions, tokenCostCurrency
+// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, supervisor handoff and delegation management
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
