@@ -58,6 +58,8 @@ import {
   type PromptTemplatesService,
   type CompanyKeysService,
   type LlmProvidersService,
+  createDelegationsService,
+  type DelegationsService,
 } from './services/index.js';
 
 export interface JarvisBlockConfig extends BlockConfig {
@@ -100,6 +102,7 @@ export interface JarvisBlock {
   promptTemplates: PromptTemplatesService;
   companyKeys: CompanyKeysService;
   llmProviders: LlmProvidersService;
+  delegations: DelegationsService;
   health(): Promise<HealthCheckResponse>;
 }
 
@@ -137,6 +140,7 @@ export function createJarvisBlock(
     promptTemplates: createPromptTemplatesService(transport, config),
     companyKeys: createCompanyKeysService(transport, config),
     llmProviders: createLlmProvidersService(transport, config),
+    delegations: createDelegationsService(transport, config),
     health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }

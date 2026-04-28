@@ -26,3 +26,4 @@ export * from './agent-tests.service.js';
 export * from './prompt-templates.service.js';
 export * from './company-keys.service.js';
 export * from './llm-providers.service.js';
+export * from './delegations.service.js';
