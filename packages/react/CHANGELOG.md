@@ -1,3 +1,18 @@
+## 14.11.0 (2026-04-28)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with supervisor handoff and delegation management ([ddc278c](https://github.com/23blocks-OS/frontend-sdk/commit/ddc278c))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.7.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 14.10.0 (2026-04-17)
 
 ### 🚀 Features

@@ -1,3 +1,18 @@
+## 13.11.0 (2026-04-28)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with supervisor handoff and delegation management ([fec35a9](https://github.com/23blocks-OS/frontend-sdk/commit/fec35a9))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.7.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 13.10.0 (2026-04-17)
 
 ### 🚀 Features

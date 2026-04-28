@@ -1,3 +1,14 @@
+## 5.7.0 (2026-04-28)
+
+### 🚀 Features
+
+- **@23blocks/block-jarvis:** add supervisor handoff and delegation management ([33ff3d2](https://github.com/23blocks-OS/frontend-sdk/commit/33ff3d2))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 5.6.0 (2026-04-17)
 
 ### 🚀 Features
