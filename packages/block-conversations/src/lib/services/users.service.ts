@@ -7,7 +7,7 @@ import type {
   ListUsersParams,
 } from '../types/user.js';
 import type { Group } from '../types/group.js';
-import type { Conversation } from '../types/conversation.js';
+import type { Conversation, UnreadSummary, UnreadSummaryParams } from '../types/conversation.js';
 import { conversationsUserMapper } from '../mappers/user.mapper.js';
 import { groupMapper } from '../mappers/group.mapper.js';
 
@@ -74,6 +74,14 @@ export interface UsersService {
    * @returns Paginated list of Group records within the specified context
    */
   listContextGroups(uniqueId: string, contextUniqueId: string): Promise<PageResult<Group>>;
+
+  /**
+   * Get aggregated unread summary for a user's conversations.
+   * @param uniqueId - Unique ID of the user
+   * @param params - Optional grouping and custom filter parameters
+   * @returns UnreadSummary with buckets, total counts, and groupBy field
+   */
+  getUnreadSummary(uniqueId: string, params?: UnreadSummaryParams): Promise<UnreadSummary>;
 }
 
 export function createUsersService(transport: Transport, _config: { apiKey: string }): UsersService {
@@ -184,6 +192,34 @@ export function createUsersService(transport: Transport, _config: { apiKey: stri
     async listContextGroups(uniqueId: string, contextUniqueId: string): Promise<PageResult<Group>> {
       const response = await transport.get<unknown>(`/users/${uniqueId}/context/${contextUniqueId}/groups`);
       return decodePageResult(response, groupMapper);
+    },
+
+    async getUnreadSummary(uniqueId: string, params?: UnreadSummaryParams): Promise<UnreadSummary> {
+      const queryParams: Record<string, string> = {};
+      if (params?.groupBy) queryParams['group_by'] = params.groupBy;
+      if (params?.custom) {
+        for (const [key, value] of Object.entries(params.custom)) {
+          queryParams[`custom[${key}]`] = value;
+        }
+      }
+
+      const response = await transport.get<unknown>(`/users/${uniqueId}/unread-summary`, { params: queryParams });
+      const doc = response as Record<string, unknown>;
+      const data = (doc['data'] || {}) as Record<string, unknown>;
+      const attrs = (data['attributes'] || {}) as Record<string, unknown>;
+      const rawBuckets = (attrs['buckets'] || []) as Array<Record<string, unknown>>;
+
+      return {
+        buckets: rawBuckets.map((b) => ({
+          key: String(b['key'] || ''),
+          unreadCount: Number(b['unread_count'] || 0),
+          conversationCount: Number(b['conversation_count'] || 0),
+          conversationPayload: b['conversation_payload'] as Record<string, unknown> | undefined,
+        })),
+        totalUnreadCount: Number(attrs['total_unread_count'] || 0),
+        totalConversationCount: Number(attrs['total_conversation_count'] || 0),
+        groupBy: String(attrs['group_by'] || params?.groupBy || 'reference'),
+      };
     },
   };
 }

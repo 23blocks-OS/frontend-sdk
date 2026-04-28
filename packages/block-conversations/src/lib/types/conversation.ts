@@ -24,6 +24,27 @@ export interface Conversation {
   meta?: ConversationMeta;
 }
 
+export interface UnreadSummaryBucket {
+  key: string;
+  unreadCount: number;
+  conversationCount: number;
+  conversationPayload?: Record<string, unknown>;
+}
+
+export interface UnreadSummary {
+  buckets: UnreadSummaryBucket[];
+  totalUnreadCount: number;
+  totalConversationCount: number;
+  groupBy: string;
+}
+
+export interface UnreadSummaryParams {
+  /** Group by: 'reference', 'source', 'source_type', 'source_alias', or 'payload:<key_name>' */
+  groupBy?: string;
+  /** Custom filters for drill-down, e.g. { project_id: 'P1', role: 'Developer' } */
+  custom?: Record<string, string>;
+}
+
 // Request types
 export interface GetConversationParams {
   context: string;
