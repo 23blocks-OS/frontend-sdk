@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, supervisor handoff and delegation management
+// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, delegations CRUD, conversations unread summary
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
