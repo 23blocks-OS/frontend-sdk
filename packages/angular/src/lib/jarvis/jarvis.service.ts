@@ -10,7 +10,7 @@ import { TRANSPORT, JARVIS_TRANSPORT, JARVIS_CONFIG } from '../tokens';
 /**
  * Angular service wrapping the Jarvis block.
  *
- * Exposes block sub-services directly via typed getters (supervisor handoff, delegation management, supervisorUserUid).
+ * Exposes block sub-services directly via typed getters (delegations CRUD, unread summary for conversations).
  * All methods return Promises - use `from()` to convert to Observables if needed.
  *
  * @example
@@ -70,6 +70,7 @@ export class JarvisService {
   get promptTemplates() { return this.ensureConfigured().promptTemplates; }
   get companyKeys() { return this.ensureConfigured().companyKeys; }
   get llmProviders() { return this.ensureConfigured().llmProviders; }
+  get delegations() { return this.ensureConfigured().delegations; }
 
   /** Full block access */
   get jarvisBlock(): JarvisBlock { return this.ensureConfigured(); }
