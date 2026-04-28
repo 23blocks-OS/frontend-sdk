@@ -1,3 +1,19 @@
+## 13.12.0 (2026-04-28)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with delegations CRUD and conversations unread summary ([e2ab290](https://github.com/23blocks-OS/frontend-sdk/commit/e2ab290))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 4.2.0
+- Updated @23blocks/block-jarvis to 5.8.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 13.11.0 (2026-04-28)
 
 ### 🚀 Features

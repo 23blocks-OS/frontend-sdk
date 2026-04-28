@@ -1,3 +1,19 @@
+## 14.12.0 (2026-04-28)
+
+### 🚀 Features
+
+- **@23blocks/angular:** add delegations getter to JarvisService, rebuild with unread summary ([01f62a7](https://github.com/23blocks-OS/frontend-sdk/commit/01f62a7))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 4.2.0
+- Updated @23blocks/block-jarvis to 5.8.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 14.11.0 (2026-04-28)
 
 ### 🚀 Features

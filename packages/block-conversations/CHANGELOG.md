@@ -1,3 +1,14 @@
+## 4.2.0 (2026-04-28)
+
+### 🚀 Features
+
+- **@23blocks/block-conversations:** add unread summary with payload grouping and drill-down ([9e03fad](https://github.com/23blocks-OS/frontend-sdk/commit/9e03fad))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 4.1.0 (2026-03-08)
 
 ### 🚀 Features

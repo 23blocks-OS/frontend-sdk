@@ -1,3 +1,14 @@
+## 5.8.0 (2026-04-28)
+
+### 🚀 Features
+
+- **@23blocks/block-jarvis:** add delegations CRUD service under identities ([d3adf46](https://github.com/23blocks-OS/frontend-sdk/commit/d3adf46))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 5.7.0 (2026-04-28)
 
 ### 🚀 Features
