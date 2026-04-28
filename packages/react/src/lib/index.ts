@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, supervisor handoff and delegation management
+// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, delegations CRUD, conversations unread summary
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
