@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, delegations CRUD, conversations unread summary
+// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, AI conversation summaries and digest
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
