@@ -3,6 +3,8 @@ import { decodeMany } from '@23blocks/jsonapi-codec';
 import type {
   Conversation,
   GetConversationParams,
+  ConversationSummary,
+  DigestRequest,
 } from '../types/conversation.js';
 import { messageMapper } from '../mappers/message.mapper.js';
 
@@ -26,6 +28,20 @@ export interface ConversationsService {
    * @returns void on successful deletion
    */
   deleteContext(context: string): Promise<void>;
+
+  /**
+   * Generate or retrieve a cached AI summary of a conversation.
+   * @param contextId - Context unique ID of the conversation
+   * @returns ConversationSummary with status, content, and cache info
+   */
+  summary(contextId: string): Promise<ConversationSummary>;
+
+  /**
+   * Generate a cross-conversation digest for multiple conversations.
+   * @param data - Array of context IDs (up to 50) and optional custom prompt ID
+   * @returns Array of ConversationSummary objects
+   */
+  digest(data: DigestRequest): Promise<ConversationSummary[]>;
 }
 
 export function createConversationsService(transport: Transport, _config: { apiKey: string }): ConversationsService {
@@ -62,6 +78,53 @@ export function createConversationsService(transport: Transport, _config: { apiK
 
     async deleteContext(context: string): Promise<void> {
       await transport.delete(`/conversations/${context}`);
+    },
+
+    async summary(contextId: string): Promise<ConversationSummary> {
+      const response = await transport.post<unknown>(`/conversations/${contextId}/summary`, {});
+      const doc = response as Record<string, unknown>;
+      const data = (doc['data'] || {}) as Record<string, unknown>;
+      const attrs = (data['attributes'] || {}) as Record<string, unknown>;
+      const content = attrs['content'] as Record<string, unknown> | undefined;
+      return {
+        contextUniqueId: String(attrs['context_unique_id'] || contextId),
+        status: (attrs['status'] || 'pending') as ConversationSummary['status'],
+        content: content ? {
+          summary: String(content['summary'] || ''),
+          keyPoints: Array.isArray(content['key_points']) ? content['key_points'] as string[] : undefined,
+          actionItems: Array.isArray(content['action_items']) ? content['action_items'] as string[] : undefined,
+        } : undefined,
+        messageCount: attrs['message_count'] != null ? Number(attrs['message_count']) : undefined,
+        fromCache: attrs['from_cache'] != null ? Boolean(attrs['from_cache']) : undefined,
+      };
+    },
+
+    async digest(data: DigestRequest): Promise<ConversationSummary[]> {
+      const body: Record<string, unknown> = {
+        context_unique_ids: data.contextUniqueIds,
+      };
+      if (data.promptId) body['prompt_id'] = data.promptId;
+
+      const response = await transport.post<unknown>('/conversations/digest', body);
+      const doc = response as Record<string, unknown>;
+      const resData = (doc['data'] || {}) as Record<string, unknown>;
+      const attrs = (resData['attributes'] || {}) as Record<string, unknown>;
+      const summaries = (attrs['summary'] || []) as Array<Record<string, unknown>>;
+
+      return summaries.map((s) => {
+        const content = s['content'] as Record<string, unknown> | undefined;
+        return {
+          contextUniqueId: String(s['context_unique_id'] || ''),
+          status: (s['status'] || 'pending') as ConversationSummary['status'],
+          content: content ? {
+            summary: String(content['summary'] || ''),
+            keyPoints: Array.isArray(content['key_points']) ? content['key_points'] as string[] : undefined,
+            actionItems: Array.isArray(content['action_items']) ? content['action_items'] as string[] : undefined,
+          } : undefined,
+          messageCount: s['message_count'] != null ? Number(s['message_count']) : undefined,
+          fromCache: s['from_cache'] != null ? Boolean(s['from_cache']) : undefined,
+        };
+      });
     },
   };
 }

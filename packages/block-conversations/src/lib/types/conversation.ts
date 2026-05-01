@@ -45,6 +45,25 @@ export interface UnreadSummaryParams {
   custom?: Record<string, string>;
 }
 
+export interface ConversationSummaryContent {
+  summary: string;
+  keyPoints?: string[];
+  actionItems?: string[];
+}
+
+export interface ConversationSummary {
+  contextUniqueId: string;
+  status: 'completed' | 'pending' | 'failed' | 'stale';
+  content?: ConversationSummaryContent;
+  messageCount?: number;
+  fromCache?: boolean;
+}
+
+export interface DigestRequest {
+  contextUniqueIds: string[];
+  promptId?: string;
+}
+
 // Request types
 export interface GetConversationParams {
   context: string;
