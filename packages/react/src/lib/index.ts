@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, delegations CRUD, conversations unread summary
+// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, AI conversation summaries and digest
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
