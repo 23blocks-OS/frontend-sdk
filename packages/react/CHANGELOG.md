@@ -1,3 +1,18 @@
+## 14.13.0 (2026-05-02)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with AI conversation summaries and digest ([1fd7c6e](https://github.com/23blocks-OS/frontend-sdk/commit/1fd7c6e))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 4.3.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 14.12.0 (2026-04-28)
 
 ### 🚀 Features

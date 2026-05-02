@@ -1,3 +1,14 @@
+## 4.3.0 (2026-05-02)
+
+### 🚀 Features
+
+- **@23blocks/block-conversations:** add AI conversation summary and cross-conversation digest ([0107b36](https://github.com/23blocks-OS/frontend-sdk/commit/0107b36))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 4.2.0 (2026-04-28)
 
 ### 🚀 Features
