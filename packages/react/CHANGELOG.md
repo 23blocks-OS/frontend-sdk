@@ -1,3 +1,18 @@
+## 14.14.0 (2026-05-15)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with batch messaging for conversations ([9eb9fda](https://github.com/23blocks-OS/frontend-sdk/commit/9eb9fda))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 4.4.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 14.13.0 (2026-05-02)
 
 ### 🚀 Features

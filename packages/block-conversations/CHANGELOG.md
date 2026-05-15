@@ -1,3 +1,14 @@
+## 4.4.0 (2026-05-15)
+
+### 🚀 Features
+
+- **@23blocks/block-conversations:** add batch messaging endpoint ([79d66be](https://github.com/23blocks-OS/frontend-sdk/commit/79d66be))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 4.3.0 (2026-05-02)
 
 ### 🚀 Features
