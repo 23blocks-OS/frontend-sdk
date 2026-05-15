@@ -5,6 +5,8 @@ import type {
   CreateMessageRequest,
   UpdateMessageRequest,
   ListMessagesParams,
+  BatchMessagesRequest,
+  BatchMessagesResult,
 } from '../types/message.js';
 import { messageMapper } from '../mappers/message.mapper.js';
 
@@ -74,6 +76,14 @@ export interface MessagesService {
    * @returns Paginated list of deleted Message records with pagination metadata
    */
   listDeleted(params?: ListMessagesParams): Promise<PageResult<Message>>;
+
+  /**
+   * Send messages to multiple conversations in one call (max 2000 items).
+   * Requires conversations:batch scope.
+   * @param data - Batch of message items, each with conversationUniqueId and content
+   * @returns BatchMessagesResult with counts for created, duplicates, failed, and email stats
+   */
+  batch(data: BatchMessagesRequest): Promise<BatchMessagesResult>;
 }
 
 export function createMessagesService(transport: Transport, _config: { apiKey: string }): MessagesService {
@@ -205,6 +215,49 @@ export function createMessagesService(transport: Transport, _config: { apiKey: s
 
       const response = await transport.get<unknown>('/messages/trash/show', { params: queryParams });
       return decodePageResult(response, messageMapper);
+    },
+
+    async batch(data: BatchMessagesRequest): Promise<BatchMessagesResult> {
+      const response = await transport.post<unknown>('/messages/batch', {
+        batch: {
+          messages: data.messages.map((m) => ({
+            conversation_unique_id: m.conversationUniqueId,
+            content: m.content,
+            notification_content: m.notificationContent,
+            notification_url: m.notificationUrl,
+            notification_url_roles: m.notificationUrlRoles,
+            sender_role: m.senderRole,
+            notify_roles: m.notifyRoles,
+            idempotency_key: m.idempotencyKey,
+            source: m.source,
+            source_id: m.sourceId,
+            source_alias: m.sourceAlias,
+            source_type: m.sourceType,
+            target: m.target,
+            target_id: m.targetId,
+            target_alias: m.targetAlias,
+            target_type: m.targetType,
+            payload: m.payload,
+          })),
+        },
+      });
+      const doc = response as Record<string, unknown>;
+      const attrs = ((doc['data'] as Record<string, unknown>)?.['attributes'] || doc) as Record<string, unknown>;
+      return {
+        total: Number(attrs['total'] || 0),
+        created: Number(attrs['created'] || 0),
+        duplicates: Number(attrs['duplicates'] || 0),
+        failed: Number(attrs['failed'] || 0),
+        failedItems: Array.isArray(attrs['failed_items'])
+          ? (attrs['failed_items'] as Array<Record<string, unknown>>).map((fi) => ({
+              conversationUniqueId: String(fi['conversation_unique_id'] || ''),
+              error: String(fi['error'] || ''),
+            }))
+          : [],
+        emailsSent: Number(attrs['emails_sent'] || 0),
+        emailsFailed: Number(attrs['emails_failed'] || 0),
+        emailsSkipped: Number(attrs['emails_skipped'] || 0),
+      };
     },
   };
 }

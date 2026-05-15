@@ -97,6 +97,46 @@ export interface UpdateMessageRequest {
   payload?: Record<string, unknown>;
 }
 
+export interface BatchMessageItem {
+  conversationUniqueId: string;
+  content: string;
+  notificationContent?: string;
+  notificationUrl?: string;
+  notificationUrlRoles?: string[];
+  senderRole?: string;
+  notifyRoles?: string[];
+  idempotencyKey?: string;
+  source?: string;
+  sourceId?: string;
+  sourceAlias?: string;
+  sourceType?: string;
+  target?: string;
+  targetId?: string;
+  targetAlias?: string;
+  targetType?: string;
+  payload?: Record<string, unknown>;
+}
+
+export interface BatchMessagesRequest {
+  messages: BatchMessageItem[];
+}
+
+export interface BatchFailedItem {
+  conversationUniqueId: string;
+  error: string;
+}
+
+export interface BatchMessagesResult {
+  total: number;
+  created: number;
+  duplicates: number;
+  failed: number;
+  failedItems: BatchFailedItem[];
+  emailsSent: number;
+  emailsFailed: number;
+  emailsSkipped: number;
+}
+
 export interface ListMessagesParams {
   page?: number;
   perPage?: number;
