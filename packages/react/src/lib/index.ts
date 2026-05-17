@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, batch messaging for conversations
+// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, passwordless login (OTP-based)
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
