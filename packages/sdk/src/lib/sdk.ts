@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, batch messaging for conversations
+// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, passwordless login (OTP-based)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
