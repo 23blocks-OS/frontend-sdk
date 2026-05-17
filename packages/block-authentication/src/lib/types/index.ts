@@ -44,6 +44,9 @@ export {
   type ValidateDocumentRequest,
   type ValidateDocumentResponse,
   type AuthHeaders,
+  type PasswordlessRequest,
+  type PasswordlessResponse,
+  type PasswordlessVerifyRequest,
 } from './auth.js';
 
 // API Key types

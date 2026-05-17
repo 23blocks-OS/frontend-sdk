@@ -254,6 +254,33 @@ export interface ValidateDocumentResponse {
 }
 
 /**
+ * Passwordless login request — sends a 6-digit OTP to the user's email.
+ */
+export interface PasswordlessRequest {
+  email: string;
+}
+
+/**
+ * Passwordless login response (always 200 for anti-enumeration).
+ */
+export interface PasswordlessResponse {
+  status: string;
+  emailHint: string;
+  expiresIn: number;
+}
+
+/**
+ * Passwordless OTP verification request.
+ * If MFA is enabled, include mfaCode or backupCode on the second attempt.
+ */
+export interface PasswordlessVerifyRequest {
+  email: string;
+  code: string;
+  mfaCode?: string;
+  backupCode?: string;
+}
+
+/**
  * Auth headers extracted from response
  */
 export interface AuthHeaders {

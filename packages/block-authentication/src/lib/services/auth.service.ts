@@ -26,6 +26,9 @@ import type {
   AccountRecoveryRequest,
   AccountRecoveryResponse,
   CompleteRecoveryRequest,
+  PasswordlessRequest,
+  PasswordlessResponse,
+  PasswordlessVerifyRequest,
   User,
 } from '../types/index.js';
 import { userMapper } from '../mappers/index.js';
@@ -199,6 +202,24 @@ export interface AuthService {
    * @returns The recovered User.
    */
   completeAccountRecovery(request: CompleteRecoveryRequest): Promise<User>;
+
+  /**
+   * Request a passwordless login OTP code sent to the user's email.
+   * Always returns 200 regardless of whether the email exists (anti-enumeration).
+   *
+   * @returns PasswordlessResponse with `status`, `emailHint`, `expiresIn`.
+   */
+  requestPasswordlessCode(request: PasswordlessRequest): Promise<PasswordlessResponse>;
+
+  /**
+   * Verify the passwordless OTP code and sign in.
+   * Returns full-scope JWT identical to password login.
+   * If MFA is required, the response will have an error code of `mfa_required` —
+   * re-call with the same email + code plus `mfaCode` or `backupCode`.
+   *
+   * @returns SignInResponse with `user`, `accessToken`, optional `refreshToken`.
+   */
+  verifyPasswordlessCode(request: PasswordlessVerifyRequest): Promise<SignInResponse>;
 }
 
 /**
@@ -527,6 +548,51 @@ export function createAuthService(
         password_confirmation: request.passwordConfirmation,
       });
       return decodeOne(response, userMapper);
+    },
+
+    async requestPasswordlessCode(request: PasswordlessRequest): Promise<PasswordlessResponse> {
+      const response = await transport.post<{
+        data: {
+          attributes: {
+            status: string;
+            email_hint: string;
+            expires_in: number;
+          };
+        };
+      }>('/auth/passwordless/request', {
+        email: request.email,
+      });
+
+      const attrs = response.data.attributes;
+      return {
+        status: attrs.status,
+        emailHint: attrs.email_hint,
+        expiresIn: attrs.expires_in,
+      };
+    },
+
+    async verifyPasswordlessCode(request: PasswordlessVerifyRequest): Promise<SignInResponse> {
+      const body: Record<string, string> = {
+        email: request.email,
+        code: request.code,
+      };
+      if (request.mfaCode) body['mfa_code'] = request.mfaCode;
+      if (request.backupCode) body['backup_code'] = request.backupCode;
+
+      const response = await transport.post<{
+        data: unknown;
+        meta?: { auth?: { access_token?: string; refresh_token?: string; expires_in?: number }; access_token?: string; refresh_token?: string; expires_in?: number };
+      }>('/auth/passwordless/verify', body);
+
+      const user = decodeOne(response, userMapper);
+
+      return {
+        user,
+        accessToken: response.meta?.auth?.access_token ?? response.meta?.access_token ?? '',
+        refreshToken: response.meta?.auth?.refresh_token ?? response.meta?.refresh_token,
+        tokenType: 'Bearer',
+        expiresIn: response.meta?.auth?.expires_in ?? response.meta?.expires_in,
+      };
     },
   };
 }
