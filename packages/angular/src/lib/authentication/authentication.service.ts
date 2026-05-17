@@ -16,6 +16,9 @@ import {
   type PasswordOtpRequest,
   type PasswordOtpResponse,
   type PasswordOtpVerifyRequest,
+  type PasswordlessRequest,
+  type PasswordlessResponse,
+  type PasswordlessVerifyRequest,
   type OAuthSocialLoginRequest,
   type TenantLoginRequest,
 } from '@23blocks/block-authentication';
@@ -268,6 +271,31 @@ export class AuthenticationService {
    */
   verifyPasswordOtp(request: PasswordOtpVerifyRequest): Observable<SignInResponse> {
     return from(this.ensureConfigured().auth.verifyPasswordOtp(request)).pipe(
+      tap((response) => this.storeTokens(response))
+    );
+  }
+
+  /**
+   * Request a passwordless login OTP code.
+   * Always returns 200 regardless of email existence (anti-enumeration).
+   *
+   * @param request - Contains `email`
+   * @returns Observable emitting PasswordlessResponse with `status`, `emailHint`, `expiresIn`
+   */
+  requestPasswordlessCode(request: PasswordlessRequest): Observable<PasswordlessResponse> {
+    return from(this.ensureConfigured().auth.requestPasswordlessCode(request));
+  }
+
+  /**
+   * Verify passwordless OTP and sign in.
+   * Automatically stores tokens in token mode.
+   * If MFA is required, re-call with mfaCode or backupCode.
+   *
+   * @param request - Contains `email`, `code`, optional `mfaCode` or `backupCode`
+   * @returns Observable emitting SignInResponse with `user`, `accessToken`, optional `refreshToken`
+   */
+  verifyPasswordlessCode(request: PasswordlessVerifyRequest): Observable<SignInResponse> {
+    return from(this.ensureConfigured().auth.verifyPasswordlessCode(request)).pipe(
       tap((response) => this.storeTokens(response))
     );
   }
