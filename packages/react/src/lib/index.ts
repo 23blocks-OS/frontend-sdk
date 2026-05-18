@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, passwordless login (OTP-based)
+// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, agent identity (AID) registration
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
