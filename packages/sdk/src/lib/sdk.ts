@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, passwordless login (OTP-based)
+// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, agent identity (AID) registration
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
