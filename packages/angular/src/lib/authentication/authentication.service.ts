@@ -448,6 +448,8 @@ export class AuthenticationService {
   get adminRsaKeys() { return this.ensureConfigured().adminRsaKeys; }
   /** OpenID Connect configuration */
   get oidc() { return this.ensureConfigured().oidc; }
+  /** Agent Identity (AID) registration — agents can self-register */
+  get agentRegistrations() { return this.ensureConfigured().agentRegistrations; }
 
   /** Direct access to the underlying AuthenticationBlock instance */
   get authenticationBlock(): AuthenticationBlock { return this.ensureConfigured(); }
