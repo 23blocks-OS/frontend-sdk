@@ -1,3 +1,14 @@
+## 7.3.0 (2026-05-18)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** add passwordless login with OTP ([6791ad8](https://github.com/23blocks-OS/frontend-sdk/commit/6791ad8))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 7.2.0 (2026-03-05)
 
 ### 🚀 Features
