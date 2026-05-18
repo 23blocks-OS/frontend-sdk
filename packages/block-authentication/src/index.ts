@@ -158,6 +158,12 @@ export {
   type OidcTokenRequest,
   type OidcTokenResponse,
   type OidcUserInfo,
+
+  // Agent Registration types
+  type AgentRegistration,
+  type RequestAgentRegistrationData,
+  type ApproveAgentRegistrationData,
+  type AgentRegistrationStatusRequest,
 } from './lib/types/index.js';
 
 // Services (for advanced usage)
@@ -207,6 +213,8 @@ export {
   type AdminRsaKeysService,
   // OIDC
   type OidcService,
+  // Agent Registrations
+  type AgentRegistrationsService,
 } from './lib/services/index.js';
 
 // Mappers (for custom decoding)

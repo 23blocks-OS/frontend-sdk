@@ -80,3 +80,6 @@ export {
 
 // OIDC
 export { createOidcService, type OidcService } from './oidc.service.js';
+
+// Agent Registrations
+export { createAgentRegistrationsService, type AgentRegistrationsService } from './agent-registrations.service.js';

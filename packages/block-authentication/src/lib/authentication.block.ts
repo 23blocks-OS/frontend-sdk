@@ -58,6 +58,7 @@ import {
   type AdminRsaKeysService,
 } from './services/jwks.service.js';
 import { createOidcService, type OidcService } from './services/oidc.service.js';
+import { createAgentRegistrationsService, type AgentRegistrationsService } from './services/agent-registrations.service.js';
 
 /**
  * Configuration for the Authentication block
@@ -218,6 +219,11 @@ export interface AuthenticationBlock {
    */
   oidc: OidcService;
 
+  /**
+   * Agent Identity (AID) registration — agents can self-register without admin JWT.
+   */
+  agentRegistrations: AgentRegistrationsService;
+
   /** Ping the service health endpoint */
   health(): Promise<HealthCheckResponse>;
 }
@@ -288,6 +294,7 @@ export function createAuthenticationBlock(
     jwks: createJwksService(transport),
     adminRsaKeys: createAdminRsaKeysService(transport),
     oidc: createOidcService(transport),
+    agentRegistrations: createAgentRegistrationsService(transport),
     health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }

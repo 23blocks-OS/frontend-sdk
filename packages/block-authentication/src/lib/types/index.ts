@@ -179,3 +179,11 @@ export {
   type OidcTokenResponse,
   type OidcUserInfo,
 } from './oidc.js';
+
+// Agent Registration types
+export {
+  type AgentRegistration,
+  type RequestAgentRegistrationData,
+  type ApproveAgentRegistrationData,
+  type AgentRegistrationStatusRequest,
+} from './agent-registration.js';
