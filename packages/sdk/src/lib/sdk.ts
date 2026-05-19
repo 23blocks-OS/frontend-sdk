@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, agent identity (AID) registration
+// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, inline reCAPTCHA v3 support
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
