@@ -1,3 +1,18 @@
+## 14.16.0 (2026-05-19)
+
+### 🚀 Features
+
+- **@23blocks/angular:** add agentRegistrations getter to AuthenticationService ([bfc2cc6](https://github.com/23blocks-OS/frontend-sdk/commit/bfc2cc6))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.4.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 14.15.0 (2026-05-18)
 
 ### 🚀 Features

@@ -1,3 +1,14 @@
+## 7.4.0 (2026-05-19)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** add Agent Identity (AID) registration service ([117bce1](https://github.com/23blocks-OS/frontend-sdk/commit/117bce1))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 7.3.0 (2026-05-18)
 
 ### 🚀 Features
