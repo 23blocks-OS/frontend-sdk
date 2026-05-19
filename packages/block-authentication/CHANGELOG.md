@@ -1,3 +1,14 @@
+## 7.5.0 (2026-05-19)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** add reCAPTCHA v3 token support to unauthenticated auth endpoints ([5fc7dae](https://github.com/23blocks-OS/frontend-sdk/commit/5fc7dae))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 7.4.0 (2026-05-19)
 
 ### 🚀 Features

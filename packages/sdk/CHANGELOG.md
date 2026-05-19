@@ -1,3 +1,18 @@
+## 13.17.0 (2026-05-19)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with reCAPTCHA v3 token support ([45b06e0](https://github.com/23blocks-OS/frontend-sdk/commit/45b06e0))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.5.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 13.16.0 (2026-05-19)
 
 ### 🚀 Features
