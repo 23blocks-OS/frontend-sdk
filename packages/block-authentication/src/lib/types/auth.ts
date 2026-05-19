@@ -6,6 +6,7 @@ import type { User } from './user.js';
 export interface SignInRequest {
   email: string;
   password: string;
+  recaptchaToken?: string;
 }
 
 /**
@@ -53,6 +54,8 @@ export interface SignUpRequest {
   uid?: string;
   /** Subscription model unique_id - assigns user to a subscription/plan on registration */
   subscription?: string;
+  /** reCAPTCHA v3 token (required when tenant has recaptcha_enforcement enabled) */
+  recaptchaToken?: string;
 }
 
 /**
@@ -76,6 +79,7 @@ export interface SignUpResponse {
 export interface PasswordResetRequest {
   email: string;
   redirectUrl?: string;
+  recaptchaToken?: string;
 }
 
 /**
@@ -94,6 +98,7 @@ export interface PasswordUpdateRequest {
  */
 export interface PasswordOtpRequest {
   email: string;
+  recaptchaToken?: string;
 }
 
 /**
@@ -258,6 +263,7 @@ export interface ValidateDocumentResponse {
  */
 export interface PasswordlessRequest {
   email: string;
+  recaptchaToken?: string;
 }
 
 /**

@@ -237,6 +237,7 @@ export function createAuthService(
       }>('/auth/sign_in', {
         email: request.email,
         password: request.password,
+        recaptcha_token: request.recaptchaToken,
       });
 
       const user = decodeOne(response, userMapper);
@@ -257,6 +258,7 @@ export function createAuthService(
       }>('/auth', {
         confirm_success_url: request.confirmSuccessUrl,
         subscription: request.subscription,
+        recaptcha_token: request.recaptchaToken,
         user: {
           email: request.email,
           password: request.password,
@@ -308,6 +310,7 @@ export function createAuthService(
       await transport.post('/auth/password', {
         email: request.email,
         redirect_url: request.redirectUrl,
+        recaptcha_token: request.recaptchaToken,
       });
     },
 
@@ -332,6 +335,7 @@ export function createAuthService(
         meta?: { message?: string };
       }>('/auth/password/otp', {
         email: request.email,
+        recaptcha_token: request.recaptchaToken,
       });
 
       const attrs = response.data.attributes;
@@ -561,6 +565,7 @@ export function createAuthService(
         };
       }>('/auth/passwordless/request', {
         email: request.email,
+        recaptcha_token: request.recaptchaToken,
       });
 
       const attrs = response.data.attributes;
