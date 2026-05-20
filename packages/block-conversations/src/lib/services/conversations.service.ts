@@ -5,6 +5,7 @@ import type {
   GetConversationParams,
   ConversationSummary,
   DigestRequest,
+  DigestResponse,
 } from '../types/conversation.js';
 import { messageMapper } from '../mappers/message.mapper.js';
 
@@ -39,9 +40,9 @@ export interface ConversationsService {
   /**
    * Generate a cross-conversation digest for multiple conversations.
    * @param data - Array of context IDs (up to 50) and optional custom prompt ID
-   * @returns Array of ConversationSummary objects
+   * @returns DigestResponse with summaries, conversationsFound count, total, and optional error
    */
-  digest(data: DigestRequest): Promise<ConversationSummary[]>;
+  digest(data: DigestRequest): Promise<DigestResponse>;
 }
 
 export function createConversationsService(transport: Transport, _config: { apiKey: string }): ConversationsService {
@@ -99,7 +100,7 @@ export function createConversationsService(transport: Transport, _config: { apiK
       };
     },
 
-    async digest(data: DigestRequest): Promise<ConversationSummary[]> {
+    async digest(data: DigestRequest): Promise<DigestResponse> {
       const body: Record<string, unknown> = {
         context_unique_ids: data.contextUniqueIds,
       };
@@ -108,10 +109,10 @@ export function createConversationsService(transport: Transport, _config: { apiK
       const response = await transport.post<unknown>('/conversations/digest', body);
       const doc = response as Record<string, unknown>;
       const resData = (doc['data'] || {}) as Record<string, unknown>;
-      const attrs = (resData['attributes'] || {}) as Record<string, unknown>;
-      const summaries = (attrs['summary'] || []) as Array<Record<string, unknown>>;
+      const attrs = (resData['attributes'] || doc) as Record<string, unknown>;
+      const rawSummaries = (attrs['summary'] || attrs['summaries'] || []) as Array<Record<string, unknown>>;
 
-      return summaries.map((s) => {
+      const summaries = rawSummaries.map((s) => {
         const content = s['content'] as Record<string, unknown> | undefined;
         return {
           contextUniqueId: String(s['context_unique_id'] || ''),
@@ -125,6 +126,13 @@ export function createConversationsService(transport: Transport, _config: { apiK
           fromCache: s['from_cache'] != null ? Boolean(s['from_cache']) : undefined,
         };
       });
+
+      return {
+        summaries,
+        conversationsFound: Number(attrs['conversations_found'] || 0),
+        total: Number(attrs['total'] || summaries.length),
+        error: attrs['error'] ? String(attrs['error']) : undefined,
+      };
     },
   };
 }

@@ -64,6 +64,16 @@ export interface DigestRequest {
   promptId?: string;
 }
 
+export interface DigestResponse {
+  summaries: ConversationSummary[];
+  /** Number of conversations found matching the request IDs */
+  conversationsFound: number;
+  /** Number of summaries successfully generated */
+  total: number;
+  /** Error message if Jarvis AI processing failed */
+  error?: string;
+}
+
 // Request types
 export interface GetConversationParams {
   context: string;
