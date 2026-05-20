@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, inline reCAPTCHA v3 support
+// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, DigestResponse with conversationsFound
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
