@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, inline reCAPTCHA v3 support
+// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, DigestResponse with conversationsFound
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
