@@ -1,3 +1,14 @@
+## 7.7.0 (2026-05-21)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** add agentAuthorizationDomain to Company type ([dc5b618](https://github.com/23blocks-OS/frontend-sdk/commit/dc5b618))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 7.6.0 (2026-05-21)
 
 ### 🚀 Features

@@ -1,3 +1,18 @@
+## 13.20.0 (2026-05-21)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with Company.agentAuthorizationDomain ([600dd23](https://github.com/23blocks-OS/frontend-sdk/commit/600dd23))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.7.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 13.19.0 (2026-05-21)
 
 ### 🚀 Features
