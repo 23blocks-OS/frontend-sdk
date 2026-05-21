@@ -8,6 +8,7 @@ export interface Company extends IdentityCore {
   code: string;
   preferredLanguage: string | null;
   preferredDomain: string | null;
+  agentAuthorizationDomain: string | null;
   apiUrl: string | null;
   apiAccessKey: string | null;
   payload: Record<string, unknown> | null;
