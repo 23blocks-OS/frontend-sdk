@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, DigestResponse with conversationsFound
+// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, RFC 8628 agent registration with resolve/suspend/reactivate
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
