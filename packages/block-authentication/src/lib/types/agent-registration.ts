@@ -8,6 +8,9 @@ export interface AgentRegistration {
   description?: string;
   status: 'pending' | 'approved' | 'rejected' | 'suspended';
   roleId?: number;
+  companyUrlId?: string;
+  companyName?: string;
+  companyUniqueId?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -22,6 +25,8 @@ export interface AgentRegistrationResponse extends AgentRegistration {
   expiresIn?: number;
   /** Recommended polling interval in seconds (default 5) */
   interval?: number;
+  /** Token endpoint URL for the agent to exchange credentials */
+  tokenEndpoint?: string;
 }
 
 export interface RequestAgentRegistrationData {

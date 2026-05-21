@@ -18,6 +18,9 @@ function parseRegistration(attrs: Record<string, unknown>): AgentRegistration {
     description: attrs['description'] ? String(attrs['description']) : undefined,
     status: (attrs['status'] || 'pending') as AgentRegistration['status'],
     roleId: attrs['role_id'] != null ? Number(attrs['role_id']) : undefined,
+    companyUrlId: attrs['company_url_id'] ? String(attrs['company_url_id']) : undefined,
+    companyName: attrs['company_name'] ? String(attrs['company_name']) : undefined,
+    companyUniqueId: attrs['company_unique_id'] ? String(attrs['company_unique_id']) : undefined,
     createdAt: attrs['created_at'] ? new Date(attrs['created_at'] as string) : undefined,
     updatedAt: attrs['updated_at'] ? new Date(attrs['updated_at'] as string) : undefined,
   };
@@ -30,6 +33,7 @@ function parseRegistrationResponse(attrs: Record<string, unknown>): AgentRegistr
     userCode: attrs['user_code'] ? String(attrs['user_code']) : undefined,
     expiresIn: attrs['expires_in'] != null ? Number(attrs['expires_in']) : undefined,
     interval: attrs['interval'] != null ? Number(attrs['interval']) : undefined,
+    tokenEndpoint: attrs['token_endpoint'] ? String(attrs['token_endpoint']) : undefined,
   };
 }
 
