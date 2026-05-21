@@ -37,7 +37,7 @@ import { TOKEN_MANAGER, TOKEN_LIFECYCLE, SIMPLE_CONFIG, type TokenManagerService
  * @example
  * ```typescript
  * // Auth flows (Observable with token management):
- * this.auth.signIn({ email, password }).subscribe(...) // Company.agentAuthorizationDomain
+ * this.auth.signIn({ email, password }).subscribe(...) // AID tokenEndpoint, company fields
  *
  * // Other services (Promise-based, wrap in from() if needed):
  * const user = await this.auth.users.get(userId);
