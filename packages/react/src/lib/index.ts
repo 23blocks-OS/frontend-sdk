@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, Company.agentAuthorizationDomain field
+// Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, AID tokenEndpoint and company fields
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
