@@ -1,3 +1,18 @@
+## 13.19.0 (2026-05-21)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with RFC 8628 agent registration ([39a49a8](https://github.com/23blocks-OS/frontend-sdk/commit/39a49a8))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.6.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 13.18.0 (2026-05-21)
 
 ### 🚀 Features

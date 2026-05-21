@@ -1,3 +1,14 @@
+## 7.6.0 (2026-05-21)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** expand AID registration with RFC 8628 device flow ([84f3ed6](https://github.com/23blocks-OS/frontend-sdk/commit/84f3ed6))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 7.5.0 (2026-05-19)
 
 ### 🚀 Features

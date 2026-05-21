@@ -1,3 +1,18 @@
+## 14.19.0 (2026-05-21)
+
+### 🚀 Features
+
+- **@23blocks/angular:** rebuild with RFC 8628 agent registration ([a2ec8b9](https://github.com/23blocks-OS/frontend-sdk/commit/a2ec8b9))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.6.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 14.18.0 (2026-05-21)
 
 ### 🚀 Features
