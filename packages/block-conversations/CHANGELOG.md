@@ -1,3 +1,14 @@
+## 4.5.0 (2026-05-21)
+
+### 🚀 Features
+
+- **@23blocks/block-conversations:** add DigestResponse type with conversationsFound and error fields ([e251fa7](https://github.com/23blocks-OS/frontend-sdk/commit/e251fa7))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 4.4.0 (2026-05-15)
 
 ### 🚀 Features

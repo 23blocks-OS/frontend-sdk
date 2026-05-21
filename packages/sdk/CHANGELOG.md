@@ -1,3 +1,18 @@
+## 13.18.0 (2026-05-21)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with DigestResponse type ([524006b](https://github.com/23blocks-OS/frontend-sdk/commit/524006b))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 4.5.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 13.17.0 (2026-05-19)
 
 ### 🚀 Features
