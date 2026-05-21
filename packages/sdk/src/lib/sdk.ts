@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, RFC 8628 agent registration with resolve/suspend/reactivate
+// Client Factory (Recommended API) — token lifecycle, auto-refresh, 401 retry, Company.agentAuthorizationDomain field
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
