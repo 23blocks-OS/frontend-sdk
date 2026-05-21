@@ -161,6 +161,7 @@ export {
 
   // Agent Registration types
   type AgentRegistration,
+  type AgentRegistrationResponse,
   type RequestAgentRegistrationData,
   type ApproveAgentRegistrationData,
   type AgentRegistrationStatusRequest,
