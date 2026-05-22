@@ -1,3 +1,18 @@
+## 14.21.0 (2026-05-22)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with AID tokenEndpoint and company fields ([2422c47](https://github.com/23blocks-OS/frontend-sdk/commit/2422c47))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.8.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 14.20.0 (2026-05-21)
 
 ### 🚀 Features

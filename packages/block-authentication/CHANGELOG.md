@@ -1,3 +1,14 @@
+## 7.8.0 (2026-05-22)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** add tokenEndpoint and company fields to AgentRegistration ([8e79357](https://github.com/23blocks-OS/frontend-sdk/commit/8e79357))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6 (1M context)
+- Juan Pelaez
+
 ## 7.7.0 (2026-05-21)
 
 ### 🚀 Features
