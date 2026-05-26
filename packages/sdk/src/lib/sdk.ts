@@ -50,6 +50,17 @@ export * from '@23blocks/transport-http';
 //   import { User } from '@23blocks/block-authentication';
 //   import { Category } from '@23blocks/block-crm';
 //   import { CreatePurchaseRequest, StripeCheckoutSession, VendorPayment } from '@23blocks/block-sales';
+//
+// Breaking changes for `files`:
+//  - `storageFiles` methods require a `urlId` (company tenant identifier) as the
+//    first argument. Routes moved to `/storage/:url_id/files`.
+//  - `entityFiles` methods require an `entityUniqueId` as the first argument.
+//    Routes moved to `/entities/:unique_id/files`. New methods added for
+//    presignUpload, multipart upload, associate/disassociate, and entity
+//    management (listEntities, getEntity, registerEntity).
+//  - `userFiles.presignUpload` / `multipartPresign` / `multipartComplete` now
+//    return JSON:API-shaped responses with `presignedUrl`, `signedUrl`,
+//    `publicUrl`, `fileName`, `fileId`, `expiresAt` fields.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export * as authentication from '@23blocks/block-authentication';
