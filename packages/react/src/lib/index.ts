@@ -1,5 +1,16 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, AID tokenEndpoint and company fields
+//
+// Breaking changes for useFilesBlock():
+//  - `storageFiles` methods require a `urlId` (company tenant identifier) as
+//    the first argument. Routes moved to `/storage/:url_id/files`.
+//  - `entityFiles` methods require an `entityUniqueId` as the first argument.
+//    Routes moved to `/entities/:unique_id/files`. New methods added for
+//    presignUpload, multipart upload, associate/disassociate, and entity
+//    management (listEntities, getEntity, registerEntity).
+//  - `userFiles.presignUpload` / `multipartPresign` / `multipartComplete` now
+//    return JSON:API-shaped responses with `presignedUrl`, `signedUrl`,
+//    `publicUrl`, `fileName`, `fileId`, `expiresAt` fields.
 // ─────────────────────────────────────────────────────────────────────────────
 export {
   // Main exports
