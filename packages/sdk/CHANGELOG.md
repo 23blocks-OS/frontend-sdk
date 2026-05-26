@@ -1,3 +1,25 @@
+# 14.0.0 (2026-05-26)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/sdk:** rebuild with files block API alignment ([b8f55d7](https://github.com/23blocks-OS/frontend-sdk/commit/b8f55d7))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/sdk:** rebuild with files block API alignment  ([b8f55d7](https://github.com/23blocks-OS/frontend-sdk/commit/b8f55d7))
+  consumers of files.storageFiles and files.entityFiles
+  must update method calls. userFiles upload response shapes changed.
+  Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-files to 6.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 13.21.0 (2026-05-22)
 
 ### 🚀 Features

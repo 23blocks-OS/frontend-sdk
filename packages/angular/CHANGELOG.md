@@ -1,3 +1,26 @@
+# 15.0.0 (2026-05-26)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/angular:** rebuild with files block API alignment ([0b975dc](https://github.com/23blocks-OS/frontend-sdk/commit/0b975dc))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/angular:** rebuild with files block API alignment  ([0b975dc](https://github.com/23blocks-OS/frontend-sdk/commit/0b975dc))
+  consumers of FilesService.storageFiles and
+  FilesService.entityFiles must update method calls to pass the new
+  required positional arguments.
+  Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-files to 6.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 14.21.0 (2026-05-22)
 
 ### 🚀 Features

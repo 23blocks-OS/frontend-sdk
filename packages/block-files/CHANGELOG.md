@@ -1,3 +1,24 @@
+# 6.0.0 (2026-05-26)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-files:** align with documented files API ([34377b4](https://github.com/23blocks-OS/frontend-sdk/commit/34377b4))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-files:** align with documented files API  ([34377b4](https://github.com/23blocks-OS/frontend-sdk/commit/34377b4))
+  storageFiles and entityFiles method signatures changed
+  (added required positional args). userFiles upload response shapes
+  changed. The previous routes did not exist on the API, so any consumer
+  calling storageFiles.* or entityFiles.* methods was already failing; the
+  contract change makes them work.
+  Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 5.0.1 (2026-03-03)
 
 ### 🧱 Updated Dependencies

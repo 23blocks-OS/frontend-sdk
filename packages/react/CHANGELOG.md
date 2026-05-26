@@ -1,3 +1,26 @@
+# 15.0.0 (2026-05-26)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/react:** rebuild with files block API alignment ([6e29ff5](https://github.com/23blocks-OS/frontend-sdk/commit/6e29ff5))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/react:** rebuild with files block API alignment  ([6e29ff5](https://github.com/23blocks-OS/frontend-sdk/commit/6e29ff5))
+  consumers of useFilesBlock().storageFiles and
+  useFilesBlock().entityFiles must update method calls to pass the new
+  required positional arguments.
+  Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-files to 6.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 14.21.0 (2026-05-22)
 
 ### 🚀 Features
