@@ -108,29 +108,30 @@ export interface UpdateUserFileRequest {
 
 export interface PresignUploadRequest {
   fileName: string;
-  serialization?: string;
 }
 
 export interface PresignUploadResponse {
   presignedUrl: string;
-  fileKey: string;
-  fields?: Record<string, string>;
+  signedUrl: string;
+  publicUrl: string;
+  fileName: string;
+  fileId: string;
   expiresAt: Date;
 }
 
 export interface MultipartPresignRequest {
   fileName: string;
   partCount: number;
-  serialization?: string;
 }
 
 export interface MultipartPresignResponse {
   uploadId: string;
-  fileKey: string;
+  fileId: string;
   parts: Array<{
     partNumber: number;
     presignedUrl: string;
   }>;
+  expiresAt: Date;
 }
 
 export interface MultipartCompleteRequest {
@@ -140,7 +141,13 @@ export interface MultipartCompleteRequest {
     partNumber: number;
     etag: string;
   }>;
-  serialization?: string;
+}
+
+export interface MultipartCompleteResponse {
+  publicUrl: string;
+  fileName: string;
+  fileId: string;
+  expiresAt: Date;
 }
 
 export interface UserFileAccessInput {

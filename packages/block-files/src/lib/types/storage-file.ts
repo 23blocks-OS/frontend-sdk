@@ -106,23 +106,24 @@ export interface UpdateStorageFileRequest {
 export interface ListStorageFilesParams {
   page?: number;
   perPage?: number;
-  ownerUniqueId?: string;
-  ownerType?: string;
+  search?: string;
+  ext?: string;
   fileType?: string;
   mimeType?: string;
   status?: EntityStatus;
-  search?: string;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }
 
-export interface UploadFileRequest {
-  file: File | Blob;
-  ownerUniqueId: string;
-  ownerType: string;
-  fileName?: string;
-  fileType?: string;
-  generateThumbnail?: boolean;
-  generatePreview?: boolean;
-  tags?: string[];
+export interface StoragePresignUploadRequest {
+  fileName: string;
+}
+
+export interface StoragePresignUploadResponse {
+  presignedUrl: string;
+  signedUrl: string;
+  publicUrl: string;
+  fileName: string;
+  fileId: string;
+  expiresAt: Date;
 }

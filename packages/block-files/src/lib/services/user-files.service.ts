@@ -10,6 +10,7 @@ import type {
   MultipartPresignRequest,
   MultipartPresignResponse,
   MultipartCompleteRequest,
+  MultipartCompleteResponse,
   UserFileAccessGrant,
   UserFileAccessInput,
   UserFileDelegationGrant,
@@ -84,9 +85,9 @@ export interface UserFilesService {
    * Complete a multipart upload after all parts have been uploaded
    * @param userUniqueId - The unique identifier of the user
    * @param data - Completion data including file name, upload ID, and part ETags
-   * @returns The finalized UserFile record
+   * @returns Confirmation with public URL, file id, and expiration
    */
-  multipartComplete(userUniqueId: string, data: MultipartCompleteRequest): Promise<UserFile>;
+  multipartComplete(userUniqueId: string, data: MultipartCompleteRequest): Promise<MultipartCompleteResponse>;
 
   // ---- File status ----
 
@@ -391,53 +392,86 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
 
     async presignUpload(userUniqueId: string, data: PresignUploadRequest): Promise<PresignUploadResponse> {
       const response = await transport.put<{
-        presigned_url: string;
-        file_key: string;
-        fields?: Record<string, string>;
-        expires_at: string;
-      }>(`/users/${userUniqueId}/presign_upload`, {
-        file_name: data.fileName,
-        serialization: data.serialization,
+        data: {
+          attributes: {
+            presigned_url: string;
+            signed_url: string;
+            public_url: string;
+            file_name: string;
+            file_id: string;
+            expires_at: string;
+          };
+        };
+      }>(`/users/${userUniqueId}/presign_upload`, undefined, {
+        params: {
+          filename: data.fileName,
+          serialization: 'jsonapi',
+        },
       });
+      const attrs = response.data.attributes;
       return {
-        presignedUrl: response.presigned_url,
-        fileKey: response.file_key,
-        fields: response.fields,
-        expiresAt: new Date(response.expires_at),
+        presignedUrl: attrs.presigned_url,
+        signedUrl: attrs.signed_url,
+        publicUrl: attrs.public_url,
+        fileName: attrs.file_name,
+        fileId: attrs.file_id,
+        expiresAt: new Date(attrs.expires_at),
       };
     },
 
     async multipartPresign(userUniqueId: string, data: MultipartPresignRequest): Promise<MultipartPresignResponse> {
       const response = await transport.post<{
-        upload_id: string;
-        file_key: string;
-        parts: Array<{ part_number: number; presigned_url: string }>;
+        data: {
+          attributes: {
+            upload_id: string;
+            presigned_urls: string[];
+            file_id: string;
+            expires_at: string;
+          };
+        };
       }>(`/users/${userUniqueId}/multipart_presign_upload`, {
         filename: data.fileName,
         part_count: data.partCount,
-        serialization: data.serialization,
+        serialization: 'jsonapi',
       });
+      const attrs = response.data.attributes;
       return {
-        uploadId: response.upload_id,
-        fileKey: response.file_key,
-        parts: response.parts.map((p) => ({
-          partNumber: p.part_number,
-          presignedUrl: p.presigned_url,
+        uploadId: attrs.upload_id,
+        fileId: attrs.file_id,
+        parts: attrs.presigned_urls.map((url, idx) => ({
+          partNumber: idx + 1,
+          presignedUrl: url,
         })),
+        expiresAt: new Date(attrs.expires_at),
       };
     },
 
-    async multipartComplete(userUniqueId: string, data: MultipartCompleteRequest): Promise<UserFile> {
-      const response = await transport.post<unknown>(`/users/${userUniqueId}/multipart_complete_upload`, {
+    async multipartComplete(userUniqueId: string, data: MultipartCompleteRequest): Promise<MultipartCompleteResponse> {
+      const response = await transport.post<{
+        data: {
+          attributes: {
+            public_url: string;
+            file_name: string;
+            file_id: string;
+            expires_at: string;
+          };
+        };
+      }>(`/users/${userUniqueId}/multipart_complete_upload`, {
         filename: data.fileName,
         upload_id: data.uploadId,
         parts: data.parts.map((p) => ({
           ETag: p.etag,
           PartNumber: p.partNumber,
         })),
-        serialization: data.serialization,
+        serialization: 'jsonapi',
       });
-      return decodeOne(response, userFileMapper);
+      const attrs = response.data.attributes;
+      return {
+        publicUrl: attrs.public_url,
+        fileName: attrs.file_name,
+        fileId: attrs.file_id,
+        expiresAt: new Date(attrs.expires_at),
+      };
     },
 
     async approve(userUniqueId: string, fileUniqueId: string): Promise<UserFile> {
