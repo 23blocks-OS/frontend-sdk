@@ -13,9 +13,20 @@ import { TRANSPORT, FILES_TRANSPORT, FILES_CONFIG } from '../tokens';
  * Exposes block sub-services directly via typed getters.
  * All methods return Promises - use `from()` to convert to Observables if needed.
  *
+ * Breaking changes for the files block:
+ *  - `storageFiles` methods now require a `urlId` (company tenant identifier) as
+ *    the first argument. Routes moved to `/storage/:url_id/files`.
+ *  - `entityFiles` methods now require an `entityUniqueId` as the first argument.
+ *    Routes moved to `/entities/:unique_id/files`. Added `presignUpload`,
+ *    `multipartPresign`, `multipartComplete`, `associate`, `disassociate`,
+ *    `listEntities`, `getEntity`, `registerEntity`.
+ *  - `userFiles.presignUpload` / `multipartPresign` / `multipartComplete` now
+ *    return JSON:API-shaped responses with `presignedUrl`, `signedUrl`,
+ *    `publicUrl`, `fileName`, `fileId`, `expiresAt` fields.
+ *
  * @example
  * ```typescript
- * const files = await this.filesService.storageFiles.list();
+ * const files = await this.filesService.storageFiles.list(companyUrlId);
  * ```
  */
 @Injectable({ providedIn: 'root' })
