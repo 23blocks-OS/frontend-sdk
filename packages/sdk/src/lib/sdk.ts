@@ -36,6 +36,13 @@ export {
 // content) and the canonical name/description/tags fields that the earlier
 // mappers silently dropped.
 //
+// Several jarvis/products endpoints now correctly parse JSON:API responses
+// (was reading flat top-level fields, silently dropping everything):
+// jarvis.prompts.execute, jarvis.marvinChat.sendMessage,
+// jarvis.agentRuntime.initiateHandoff/getHandoffStatus,
+// products.visitors.create. Removed dead marvin routes
+// (getContext/createContext on /marvin/contexts).
+//
 // The SDK uses `assertUuid` internally to validate path-param UUIDs on
 // endpoints confirmed by each block's API team to require strict RFC 4122
 // format.
