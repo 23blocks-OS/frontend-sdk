@@ -1,4 +1,16 @@
 // ─────────────────────────────────────────────────────────────────────────────
+// Runtime UUID validation
+//
+// `isUuid` and `assertUuid` (from @23blocks/contracts, re-exported via
+// @23blocks/sdk) are now used internally to validate path-param UUIDs on
+// endpoints confirmed to require strict RFC 4122 format. Methods on
+// useConversationsBlock().{contexts,conversations,messages,...} and the
+// jarvis context endpoint throw a TypeError at the call site if you pass a
+// non-UUID value, with an actionable message and a suggestion to use
+// `reference`/`source_id`/`source_alias` for custom identifiers.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Main API (Recommended) — token lifecycle, auto-refresh, 401 retry, AID tokenEndpoint and company fields
 //
 // Breaking changes for useFilesBlock():
