@@ -1,3 +1,19 @@
+## 4.6.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/block-conversations:** validate path-param UUIDs at SDK entry ([0cc0c75](https://github.com/23blocks-OS/frontend-sdk/commit/0cc0c75))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/jsonapi-codec to 3.3.3
+- Updated @23blocks/contracts to 2.4.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 4.5.0 (2026-05-21)
 
 ### 🚀 Features

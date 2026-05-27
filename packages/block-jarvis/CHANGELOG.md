@@ -1,3 +1,19 @@
+## 5.8.1 (2026-05-27)
+
+### 🩹 Fixes
+
+- **@23blocks/block-jarvis:** validate context.uniqueId is RFC 4122 UUID ([d913501](https://github.com/23blocks-OS/frontend-sdk/commit/d913501))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/jsonapi-codec to 3.3.3
+- Updated @23blocks/contracts to 2.4.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 5.8.0 (2026-04-28)
 
 ### 🚀 Features

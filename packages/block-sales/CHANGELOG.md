@@ -1,3 +1,10 @@
+## 8.0.3 (2026-05-27)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/jsonapi-codec to 3.3.3
+- Updated @23blocks/contracts to 2.4.0
+
 ## 8.0.2 (2026-03-14)
 
 ### 🩹 Fixes

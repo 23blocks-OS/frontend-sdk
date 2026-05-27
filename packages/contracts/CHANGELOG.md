@@ -1,3 +1,14 @@
+## 2.4.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/contracts:** add isUuid + assertUuid for client-side UUID validation ([32056a9](https://github.com/23blocks-OS/frontend-sdk/commit/32056a9))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 2.3.2 (2026-03-03)
 
 This was a version bump only for @23blocks/contracts to align it with other projects, there were no code changes.

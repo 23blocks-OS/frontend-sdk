@@ -1,3 +1,19 @@
+## 6.0.1 (2026-05-27)
+
+### 📖 Documentation
+
+- **@23blocks/block-files:** clarify presign->upload->register flow on userFiles ([3a337c3](https://github.com/23blocks-OS/frontend-sdk/commit/3a337c3))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/jsonapi-codec to 3.3.3
+- Updated @23blocks/contracts to 2.4.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 # 6.0.0 (2026-05-26)
 
 ### 🩹 Fixes
