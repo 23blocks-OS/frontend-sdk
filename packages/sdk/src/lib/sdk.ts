@@ -42,8 +42,17 @@ export {
 // jarvis.agentRuntime.initiateHandoff/getHandoffStatus,
 // jarvis.agentRuntime.getMessages/getConversation/getContext (messages come
 // from the JSON:API `included[]` array with source_alias→role translation),
-// products.visitors.create. Removed dead marvin routes
-// (getContext/createContext on /marvin/contexts).
+// products.visitors.create, and all 13 methods in block-assets
+// (entities.{listAccesses,getAccess,requestAccess,listAccessRequests,
+// approveAccessRequest}, asset-images/asset-events/categories.create*,
+// users.{listOwnership,listEntities,listAssets}, assets.createOTP).
+// Removed dead marvin routes (getContext/createContext on /marvin/contexts).
+//
+// block-onboarding BREAKING: listAbandonedJourneys replaced with
+// triggerRun (it was actually a fire-and-email action, not a list);
+// getMandrillStats return shape changed to MandrillTimeSeriesPoint[]
+// (was a single stats object with fields that didn't exist in the
+// response).
 //
 // The SDK uses `assertUuid` internally to validate path-param UUIDs on
 // endpoints confirmed by each block's API team to require strict RFC 4122
