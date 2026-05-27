@@ -1,3 +1,18 @@
+## 14.3.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with block-authentication UUID validation ([831bb5d](https://github.com/23blocks-OS/frontend-sdk/commit/831bb5d))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.9.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 14.2.0 (2026-05-27)
 
 ### 🚀 Features

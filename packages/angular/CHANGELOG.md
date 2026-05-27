@@ -1,3 +1,9 @@
+## 15.1.2 (2026-05-27)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.9.0
+
 ## 15.1.1 (2026-05-27)
 
 ### 🧱 Updated Dependencies

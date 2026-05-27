@@ -1,3 +1,14 @@
+## 7.9.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** validate path-param UUIDs at SDK entry ([b83bd93](https://github.com/23blocks-OS/frontend-sdk/commit/b83bd93))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 7.8.1 (2026-05-27)
 
 ### 🧱 Updated Dependencies
