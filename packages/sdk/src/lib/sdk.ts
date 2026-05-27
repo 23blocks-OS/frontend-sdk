@@ -32,8 +32,12 @@ export {
 // uses `assertUuid` internally to validate path-param UUIDs on endpoints
 // confirmed by each block's API team to require strict RFC 4122 format.
 // Coverage: block-conversations (all path-param uniqueIds), block-jarvis
-// (all path-param uniqueIds except OpenAI-format threadId/runId), and
-// block-files (all path-param uniqueIds except :url_id which is base64url).
+// (all path-param uniqueIds except OpenAI-format threadId/runId),
+// block-files (all path-param uniqueIds except :url_id which is base64url),
+// and block-authentication (users, roles, permissions, agent_registrations,
+// service_tokens, mailtemplates, subscription_models, mfa — but NOT
+// companies' :url_id, magic_link tokens, agent_registrations resolve codes,
+// block_code slugs, or numeric service ids).
 // Invalid UUIDs throw a TypeError at the call site with an actionable
 // message instead of failing at the backend with an opaque PostgreSQL error.
 // ─────────────────────────────────────────────────────────────────────────────
