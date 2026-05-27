@@ -48,15 +48,22 @@ function buildRuntimeMessageBody(data: SendAgentMessageRequest): Record<string, 
 }
 
 function parseAgentThread(response: any): AgentThread {
+  // Accept either:
+  //   - flat shape (legacy / nested under response.thread): { id, thread_id, agent_unique_id, ... }
+  //   - JSON:API shape: { data: { id, attributes: { unique_id, payload: { thread_id, agent_unique_id }, status, created_at, updated_at } } }
+  const data = response?.data ?? response;
+  const attrs = data?.attributes ?? data ?? {};
+  const payload = attrs?.payload ?? {};
+
   return {
-    id: response.id,
-    threadId: response.thread_id,
-    agentUniqueId: response.agent_unique_id,
-    contextUniqueId: response.context_unique_id,
-    status: response.status,
-    metadata: response.metadata,
-    createdAt: new Date(response.created_at),
-    updatedAt: new Date(response.updated_at),
+    id: String(data?.id ?? attrs?.id ?? ''),
+    threadId: String(payload.thread_id ?? attrs.thread_id ?? data?.thread_id ?? ''),
+    agentUniqueId: String(payload.agent_unique_id ?? attrs.agent_unique_id ?? data?.agent_unique_id ?? ''),
+    contextUniqueId: attrs.unique_id ?? attrs.context_unique_id ?? data?.context_unique_id,
+    status: attrs.status ?? data?.status,
+    metadata: attrs.metadata ?? data?.metadata,
+    createdAt: new Date(attrs.created_at ?? data?.created_at ?? Date.now()),
+    updatedAt: new Date(attrs.updated_at ?? data?.updated_at ?? Date.now()),
   };
 }
 
@@ -116,9 +123,12 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
       const response = await transport.post<any>(`/agents/${agentUniqueId}/context`, data ? {
         context: buildContextBody(data),
       } : {});
-      return {
-        thread: parseAgentThread(response.thread || response),
-      };
+      const thread = parseAgentThread(response.thread ?? response);
+      const result: AgentContext = { thread };
+      if (thread.contextUniqueId) {
+        result.conversation = { uniqueId: thread.contextUniqueId, messages: [] };
+      }
+      return result;
     },
 
     async getConversation(agentUniqueId: string, contextUniqueId: string): Promise<{ messages: AgentMessage[] }> {
