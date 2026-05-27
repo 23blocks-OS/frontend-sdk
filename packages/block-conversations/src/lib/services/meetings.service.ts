@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Meeting,
@@ -87,6 +88,7 @@ export function createMeetingsService(transport: Transport, _config: { apiKey: s
     },
 
     async get(uniqueId: string): Promise<Meeting> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/meetings/${uniqueId}`);
       return decodeOne(response, meetingMapper);
     },
@@ -110,6 +112,7 @@ export function createMeetingsService(transport: Transport, _config: { apiKey: s
     },
 
     async update(uniqueId: string, data: UpdateMeetingRequest): Promise<Meeting> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/meetings/${uniqueId}`, {
         meeting: {
           title: data.title,
@@ -126,10 +129,12 @@ export function createMeetingsService(transport: Transport, _config: { apiKey: s
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/meetings/${uniqueId}`);
     },
 
     async createSession(uniqueId: string): Promise<MeetingSession> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<Record<string, unknown>>(`/meetings/${uniqueId}/session`, {});
       return {
         sessionId: String(response.session_id ?? response.sessionId ?? ''),
@@ -141,11 +146,13 @@ export function createMeetingsService(transport: Transport, _config: { apiKey: s
     },
 
     async start(uniqueId: string): Promise<Meeting> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/meetings/${uniqueId}/start`, {});
       return decodeOne(response, meetingMapper);
     },
 
     async end(uniqueId: string): Promise<Meeting> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/meetings/${uniqueId}/end`, {});
       return decodeOne(response, meetingMapper);
     },

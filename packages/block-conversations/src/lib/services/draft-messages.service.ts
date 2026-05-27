@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   DraftMessage,
@@ -77,6 +78,7 @@ export function createDraftMessagesService(transport: Transport, _config: { apiK
     },
 
     async get(uniqueId: string): Promise<DraftMessage> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/draft_messages/${uniqueId}`);
       return decodeOne(response, draftMessageMapper);
     },
@@ -117,6 +119,7 @@ export function createDraftMessagesService(transport: Transport, _config: { apiK
     },
 
     async update(uniqueId: string, data: UpdateDraftMessageRequest): Promise<DraftMessage> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/draft_messages/${uniqueId}`, {
         draft_message: {
             content: data.content,
@@ -129,6 +132,7 @@ export function createDraftMessagesService(transport: Transport, _config: { apiK
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/draft_messages/${uniqueId}`);
     },
 
@@ -144,6 +148,7 @@ export function createDraftMessagesService(transport: Transport, _config: { apiK
     },
 
     async publish(uniqueId: string): Promise<DraftMessage> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/draft_messages/${uniqueId}/publish`, {});
       return decodeOne(response, draftMessageMapper);
     },

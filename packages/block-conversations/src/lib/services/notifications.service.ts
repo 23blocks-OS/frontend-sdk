@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Notification,
@@ -92,6 +93,7 @@ export function createNotificationsService(transport: Transport, _config: { apiK
     },
 
     async get(uniqueId: string): Promise<Notification> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/notifications/${uniqueId}`);
       return decodeOne(response, notificationMapper);
     },
@@ -121,6 +123,7 @@ export function createNotificationsService(transport: Transport, _config: { apiK
     },
 
     async update(uniqueId: string, data: UpdateNotificationRequest): Promise<Notification> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/notifications/${uniqueId}`, {
         notification: {
             content: data.content,
@@ -133,15 +136,18 @@ export function createNotificationsService(transport: Transport, _config: { apiK
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/notifications/${uniqueId}`);
     },
 
     async markAsRead(uniqueId: string): Promise<Notification> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/notifications/${uniqueId}/read`, {});
       return decodeOne(response, notificationMapper);
     },
 
     async markAsUnread(uniqueId: string): Promise<Notification> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/notifications/${uniqueId}/unread`, {});
       return decodeOne(response, notificationMapper);
     },

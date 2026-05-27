@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Message,
@@ -104,6 +105,7 @@ export function createMessagesService(transport: Transport, _config: { apiKey: s
     },
 
     async get(uniqueId: string): Promise<Message> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/messages/${uniqueId}`);
       return decodeOne(response, messageMapper);
     },
@@ -166,6 +168,7 @@ export function createMessagesService(transport: Transport, _config: { apiKey: s
     },
 
     async update(uniqueId: string, data: UpdateMessageRequest): Promise<Message> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/messages/${uniqueId}`, {
         message: {
             content: data.content,
@@ -178,10 +181,12 @@ export function createMessagesService(transport: Transport, _config: { apiKey: s
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/messages/${uniqueId}`);
     },
 
     async recover(uniqueId: string): Promise<Message> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/messages/${uniqueId}/recover`, {});
       return decodeOne(response, messageMapper);
     },

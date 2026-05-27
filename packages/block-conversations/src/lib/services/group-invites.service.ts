@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   GroupInvite,
@@ -59,6 +60,7 @@ export interface GroupInvitesService {
 export function createGroupInvitesService(transport: Transport, _config: { apiKey: string }): GroupInvitesService {
   return {
     async list(groupUniqueId: string, params?: ListGroupInvitesParams): Promise<PageResult<GroupInvite>> {
+      assertUuid(groupUniqueId, 'groupUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -72,6 +74,7 @@ export function createGroupInvitesService(transport: Transport, _config: { apiKe
     },
 
     async create(groupUniqueId: string, data?: CreateGroupInviteRequest): Promise<GroupInvite> {
+      assertUuid(groupUniqueId, 'groupUniqueId');
       const response = await transport.post<unknown>(`/groups/${groupUniqueId}/invites`, {
         invite: {
           max_uses: data?.maxUses,
@@ -82,10 +85,12 @@ export function createGroupInvitesService(transport: Transport, _config: { apiKe
     },
 
     async revoke(groupUniqueId: string, code: string): Promise<void> {
+      assertUuid(groupUniqueId, 'groupUniqueId');
       await transport.delete(`/groups/${groupUniqueId}/invites/${code}`);
     },
 
     async getQRCode(groupUniqueId: string, code: string): Promise<QRCodeResponse> {
+      assertUuid(groupUniqueId, 'groupUniqueId');
       const response = await transport.get<unknown>(`/groups/${groupUniqueId}/invites/${code}/qr`);
       // QR code endpoint typically returns the QR data directly
       const data = response as Record<string, unknown>;

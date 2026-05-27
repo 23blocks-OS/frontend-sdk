@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Group,
@@ -100,6 +101,7 @@ export function createGroupsService(transport: Transport, _config: { apiKey: str
     },
 
     async get(uniqueId: string): Promise<Group> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/groups/${uniqueId}`);
       return decodeOne(response, groupMapper);
     },
@@ -124,6 +126,7 @@ export function createGroupsService(transport: Transport, _config: { apiKey: str
     },
 
     async update(uniqueId: string, data: UpdateGroupRequest): Promise<Group> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/groups/${uniqueId}`, {
         group: {
             name: data.name,
@@ -141,10 +144,12 @@ export function createGroupsService(transport: Transport, _config: { apiKey: str
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/groups/${uniqueId}`);
     },
 
     async recover(uniqueId: string): Promise<Group> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/groups/${uniqueId}/recover`, {});
       return decodeOne(response, groupMapper);
     },
@@ -168,6 +173,7 @@ export function createGroupsService(transport: Transport, _config: { apiKey: str
     },
 
     async addMember(uniqueId: string, memberId: string): Promise<Group> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/groups/${uniqueId}/members`, {
         groupmember: {
             member_id: memberId,
@@ -177,6 +183,7 @@ export function createGroupsService(transport: Transport, _config: { apiKey: str
     },
 
     async removeMember(uniqueId: string, memberId: string): Promise<Group> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.delete<unknown>(`/groups/${uniqueId}/members/${memberId}`);
       return decodeOne(response, groupMapper);
     },

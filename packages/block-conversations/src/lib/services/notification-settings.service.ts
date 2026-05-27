@@ -1,4 +1,5 @@
 import type { Transport } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import type {
   NotificationSettings,
   UpdateNotificationSettingsRequest,
@@ -24,6 +25,7 @@ export interface NotificationSettingsService {
 export function createNotificationSettingsService(transport: Transport, _config: { apiKey: string }): NotificationSettingsService {
   return {
     async get(userUniqueId: string): Promise<NotificationSettings> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.get<{ data: any }>(`/users/${userUniqueId}/notifications/settings`);
       const attrs = response.data?.attributes || response.data || {};
 
@@ -42,6 +44,7 @@ export function createNotificationSettingsService(transport: Transport, _config:
     },
 
     async update(userUniqueId: string, data: UpdateNotificationSettingsRequest): Promise<NotificationSettings> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.put<{ data: any }>(`/users/${userUniqueId}/notifications/settings`, {
         notification_settings: {
           email_enabled: data.emailEnabled,

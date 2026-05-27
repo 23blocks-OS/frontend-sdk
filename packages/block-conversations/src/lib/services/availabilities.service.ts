@@ -1,4 +1,5 @@
 import type { Transport } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import type {
   UserAvailability,
   SetAvailabilityRequest,
@@ -30,6 +31,7 @@ export interface AvailabilitiesService {
 export function createAvailabilitiesService(transport: Transport, _config: { apiKey: string }): AvailabilitiesService {
   return {
     async get(userUniqueId: string): Promise<UserAvailability> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.get<{ data: any }>(`/users/${userUniqueId}/status`);
       const attrs = response.data?.attributes || response.data || {};
 

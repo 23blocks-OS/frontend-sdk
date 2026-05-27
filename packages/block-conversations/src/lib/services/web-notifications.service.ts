@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   WebNotification,
@@ -84,6 +85,7 @@ export function createWebNotificationsService(transport: Transport, _config: { a
     },
 
     async get(uniqueId: string): Promise<WebNotification> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/web_notifications/${uniqueId}`);
       return decodeOne(response, webNotificationMapper);
     },
@@ -128,11 +130,13 @@ export function createWebNotificationsService(transport: Transport, _config: { a
     },
 
     async markAsRead(uniqueId: string): Promise<WebNotification> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/web_notifications/${uniqueId}/read`, {});
       return decodeOne(response, webNotificationMapper);
     },
 
     async markAsClicked(uniqueId: string): Promise<WebNotification> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/web_notifications/${uniqueId}/click`, {});
       return decodeOne(response, webNotificationMapper);
     },
@@ -147,6 +151,7 @@ export function createWebNotificationsService(transport: Transport, _config: { a
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/web_notifications/${uniqueId}`);
     },
   };

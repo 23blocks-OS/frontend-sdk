@@ -1,4 +1,5 @@
 import type { Transport } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne } from '@23blocks/jsonapi-codec';
 import type { Source } from '../types/source.js';
 import { sourceMapper } from '../mappers/source.mapper.js';
@@ -15,6 +16,7 @@ export interface SourcesService {
 export function createSourcesService(transport: Transport, _config: { apiKey: string }): SourcesService {
   return {
     async get(uniqueId: string): Promise<Source> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/sources/${uniqueId}`);
       return decodeOne(response, sourceMapper);
     },

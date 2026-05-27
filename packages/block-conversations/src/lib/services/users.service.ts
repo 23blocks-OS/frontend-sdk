@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   ConversationsUser,
@@ -99,11 +100,13 @@ export function createUsersService(transport: Transport, _config: { apiKey: stri
     },
 
     async get(uniqueId: string): Promise<ConversationsUser> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/users/${uniqueId}`);
       return decodeOne(response, conversationsUserMapper);
     },
 
     async register(uniqueId: string, data?: RegisterUserRequest): Promise<ConversationsUser> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/users/${uniqueId}/register`, {
         user: {
           email: data?.email,
@@ -117,6 +120,7 @@ export function createUsersService(transport: Transport, _config: { apiKey: stri
     },
 
     async update(uniqueId: string, data: UpdateUserRequest): Promise<ConversationsUser> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/users/${uniqueId}`, {
         user: {
           name: data.name,
@@ -130,11 +134,13 @@ export function createUsersService(transport: Transport, _config: { apiKey: stri
     },
 
     async listGroups(uniqueId: string): Promise<PageResult<Group>> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/users/${uniqueId}/groups`);
       return decodePageResult(response, groupMapper);
     },
 
     async listConversations(uniqueId: string, params?: { page?: number; perPage?: number }): Promise<PageResult<Conversation>> {
+      assertUuid(uniqueId, 'uniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -163,6 +169,7 @@ export function createUsersService(transport: Transport, _config: { apiKey: stri
     },
 
     async listGroupConversations(uniqueId: string, params?: { page?: number; perPage?: number }): Promise<PageResult<Conversation>> {
+      assertUuid(uniqueId, 'uniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -190,11 +197,14 @@ export function createUsersService(transport: Transport, _config: { apiKey: stri
     },
 
     async listContextGroups(uniqueId: string, contextUniqueId: string): Promise<PageResult<Group>> {
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(contextUniqueId, 'contextUniqueId');
       const response = await transport.get<unknown>(`/users/${uniqueId}/context/${contextUniqueId}/groups`);
       return decodePageResult(response, groupMapper);
     },
 
     async getUnreadSummary(uniqueId: string, params?: UnreadSummaryParams): Promise<UnreadSummary> {
+      assertUuid(uniqueId, 'uniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.groupBy) queryParams['group_by'] = params.groupBy;
       if (params?.custom) {

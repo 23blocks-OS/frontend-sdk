@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Context,
@@ -64,6 +65,7 @@ export function createContextsService(transport: Transport, _config: { apiKey: s
     },
 
     async get(uniqueId: string): Promise<Context> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/contexts/${uniqueId}`);
       return decodeOne(response, contextMapper);
     },
@@ -82,6 +84,7 @@ export function createContextsService(transport: Transport, _config: { apiKey: s
     },
 
     async update(uniqueId: string, data: UpdateContextRequest): Promise<Context> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/contexts/${uniqueId}`, {
         context: {
           name: data.name,
@@ -96,6 +99,7 @@ export function createContextsService(transport: Transport, _config: { apiKey: s
     },
 
     async listGroups(contextUniqueId: string): Promise<PageResult<Group>> {
+      assertUuid(contextUniqueId, 'contextUniqueId');
       const response = await transport.get<unknown>(`/context/${contextUniqueId}/groups`);
       return decodePageResult(response, groupMapper);
     },

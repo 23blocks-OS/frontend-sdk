@@ -1,4 +1,5 @@
 import type { Transport } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne } from '@23blocks/jsonapi-codec';
 import type {
   MessageFile,
@@ -46,11 +47,14 @@ export interface MessageFilesService {
 export function createMessageFilesService(transport: Transport, _config: { apiKey: string }): MessageFilesService {
   return {
     async get(conversationUniqueId: string, fileUniqueId: string): Promise<MessageFile> {
+      assertUuid(conversationUniqueId, 'conversationUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.get<unknown>(`/conversations/${conversationUniqueId}/files/${fileUniqueId}`);
       return decodeOne(response, messageFileMapper);
     },
 
     async create(conversationUniqueId: string, data: CreateMessageFileRequest): Promise<MessageFile> {
+      assertUuid(conversationUniqueId, 'conversationUniqueId');
       const response = await transport.post<unknown>(`/conversations/${conversationUniqueId}/files`, {
         message_file: {
           name: data.name,
@@ -65,10 +69,13 @@ export function createMessageFilesService(transport: Transport, _config: { apiKe
     },
 
     async delete(conversationUniqueId: string, fileUniqueId: string): Promise<void> {
+      assertUuid(conversationUniqueId, 'conversationUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       await transport.delete(`/conversations/${conversationUniqueId}/files/${fileUniqueId}`);
     },
 
     async presign(conversationUniqueId: string, data: PresignMessageFileRequest): Promise<PresignMessageFileResponse> {
+      assertUuid(conversationUniqueId, 'conversationUniqueId');
       const response = await transport.put<{ data: any }>(`/conversations/${conversationUniqueId}/presign`, {
         file: {
           filename: data.filename,
