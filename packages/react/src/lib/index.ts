@@ -3,12 +3,17 @@
 //
 // `isUuid` and `assertUuid` (from @23blocks/contracts, re-exported via
 // @23blocks/sdk) are now used internally to validate path-param UUIDs on
-// endpoints confirmed to require strict RFC 4122 format. Coverage now
-// includes ALL methods of useConversationsBlock(), useJarvisBlock() (except
-// OpenAI-format thread/run identifiers), and useFilesBlock() (except the
-// base64url-encoded :url_id in storageFiles). Invalid UUIDs throw a
-// TypeError at the call site with an actionable message and a suggestion
-// to use `reference`/`source_id`/`source_alias` for custom identifiers.
+// endpoints confirmed to require strict RFC 4122 format. Coverage:
+//  - useConversationsBlock(): all path-param uniqueIds
+//  - useJarvisBlock(): all path-param uniqueIds (except OpenAI-format
+//    thread/run/msg identifiers)
+//  - useFilesBlock(): all path-param uniqueIds (except base64url :url_id)
+//  - useAuthenticationBlock(): users, roles, permissions, agent_registrations,
+//    service_tokens, mailtemplates, subscription_models, mfa — but NOT
+//    companies' :url_id, magic_link tokens, resolve codes, or block_code slugs.
+// Invalid UUIDs throw a TypeError at the call site with an actionable
+// message and a suggestion to use `reference`/`source_id`/`source_alias`
+// for custom identifiers.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ─────────────────────────────────────────────────────────────────────────────
