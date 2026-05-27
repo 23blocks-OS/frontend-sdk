@@ -19,6 +19,12 @@
 // triggerRun (action endpoint, not a list); getMandrillStats returns
 // MandrillTimeSeriesPoint[] (was a single misnamed stats object).
 //
+// block-authentication BREAKING: 10 methods removed (calling non-existent
+// routes: MagicLinks/RefreshTokens/UserDevices/TenantUsers resource
+// lookups, plus AdminRsaKeys/:keyId). 9 param renames to clarify intent
+// (apps uniqueId→appUrlId, blocks uniqueId→blockCode, services
+// uniqueId→id, companySubscriptions companyUniqueId→companyUrlId).
+//
 // `isUuid` and `assertUuid` (from @23blocks/contracts, re-exported via
 // @23blocks/sdk) are now used internally to validate path-param UUIDs on
 // endpoints confirmed to require strict RFC 4122 format. Coverage:
