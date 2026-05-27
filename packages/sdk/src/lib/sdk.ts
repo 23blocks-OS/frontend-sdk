@@ -40,6 +40,8 @@ export {
 // (was reading flat top-level fields, silently dropping everything):
 // jarvis.prompts.execute, jarvis.marvinChat.sendMessage,
 // jarvis.agentRuntime.initiateHandoff/getHandoffStatus,
+// jarvis.agentRuntime.getMessages/getConversation/getContext (messages come
+// from the JSON:API `included[]` array with source_alias→role translation),
 // products.visitors.create. Removed dead marvin routes
 // (getContext/createContext on /marvin/contexts).
 //
