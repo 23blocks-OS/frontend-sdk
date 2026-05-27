@@ -28,9 +28,17 @@ export {
 // ─────────────────────────────────────────────────────────────────────────────
 // Core (safe to re-export directly - no conflicts)
 //
-// `isUuid` and `assertUuid` are exported from @23blocks/contracts. The SDK
-// uses `assertUuid` internally to validate path-param UUIDs on endpoints
-// confirmed by each block's API team to require strict RFC 4122 format.
+// `isUuid` and `assertUuid` are exported from @23blocks/contracts.
+//
+// The user/storage/entity file mappers in @23blocks/block-files now read every
+// attribute declared on their respective types — including the AI/RAG fields
+// (schema_model, structured_content, file_structure, metadata, raw_content,
+// content) and the canonical name/description/tags fields that the earlier
+// mappers silently dropped.
+//
+// The SDK uses `assertUuid` internally to validate path-param UUIDs on
+// endpoints confirmed by each block's API team to require strict RFC 4122
+// format.
 // Coverage: block-conversations (all path-param uniqueIds), block-jarvis
 // (all path-param uniqueIds except OpenAI-format threadId/runId),
 // block-files (all path-param uniqueIds except :url_id which is base64url),
