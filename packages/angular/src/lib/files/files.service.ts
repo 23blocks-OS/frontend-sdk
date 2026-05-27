@@ -13,6 +13,13 @@ import { TRANSPORT, FILES_TRANSPORT, FILES_CONFIG } from '../tokens';
  * Exposes block sub-services directly via typed getters.
  * All methods return Promises - use `from()` to convert to Observables if needed.
  *
+ * Upload flow reminder (userFiles, storageFiles, entityFiles):
+ *   1. await sub.presignUpload(...)
+ *   2. PUT bytes to the returned `presignedUrl`
+ *   3. await sub.add(...) — the `name` field MUST equal `fileName` from step 1.
+ *      The original human-readable filename goes in `originalName`. Mismatching
+ *      `name` causes 404s on later downloads (the S3 key is UUID-based).
+ *
  * Breaking changes for the files block:
  *  - `storageFiles` methods now require a `urlId` (company tenant identifier) as
  *    the first argument. Routes moved to `/storage/:url_id/files`.
