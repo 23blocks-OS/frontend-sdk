@@ -39,9 +39,17 @@ export interface UserFilesService {
   get(userUniqueId: string, fileUniqueId: string): Promise<UserFile>;
 
   /**
-   * Add a new file record to a user
+   * Register a new file record to a user (final step of the upload flow).
+   *
+   * The `name` field MUST equal the `fileName` returned by `presignUpload` or
+   * `multipartComplete` — that is the actual S3 key (a UUID). The original,
+   * human-readable filename belongs in `originalName`. Mismatching `name`
+   * causes 404s on later downloads because the API regenerates download URLs
+   * from the `name` field.
+   *
    * @param userUniqueId - The unique identifier of the user
-   * @param data - File details including name, type, size, and URL
+   * @param data - File details. `data.name` MUST equal the `fileName` returned
+   *   from the presign step; put the user-facing filename in `data.originalName`.
    * @returns The newly created UserFile record
    */
   add(userUniqueId: string, data: AddUserFileRequest): Promise<UserFile>;
@@ -64,28 +72,56 @@ export interface UserFilesService {
   delete(userUniqueId: string, fileUniqueId: string): Promise<void>;
 
   // ---- Upload ----
+  //
+  // 3-step upload flow (single file):
+  //   1. const presign = await userFiles.presignUpload(userId, { fileName: 'photo.jpg' });
+  //   2. PUT the bytes to presign.presignedUrl (consumer-side).
+  //   3. await userFiles.add(userId, { name: presign.fileName, originalName: 'photo.jpg', ... });
+  //
+  // CRITICAL: when registering metadata in step 3, the `name` field MUST equal
+  // the `fileName` returned from presignUpload (the API generates a UUID-based
+  // S3 key — your original filename goes in `originalName`). Passing your
+  // original filename as `name` will cause 404s on subsequent downloads
+  // because the S3 key won't match.
 
   /**
-   * Get a presigned URL for single-part file upload
+   * Get a presigned URL for single-part file upload.
+   *
+   * Returns the S3 key (`fileName`, a UUID) that must be passed back as the
+   * `name` field when calling `add()` to register the file. The original
+   * human-readable filename belongs in `originalName`, never in `name`.
+   *
    * @param userUniqueId - The unique identifier of the user
-   * @param data - Upload metadata including file name and serialization
-   * @returns Presigned upload URL, file key, optional form fields, and expiration
+   * @param data - Upload metadata including the original file name
+   * @returns Object containing `presignedUrl` (PUT target), `signedUrl` /
+   *   `publicUrl` (read URLs), `fileName` (the UUID-based S3 key — use as
+   *   `name` when calling `add()`), `fileId`, and `expiresAt`.
    */
   presignUpload(userUniqueId: string, data: PresignUploadRequest): Promise<PresignUploadResponse>;
 
   /**
-   * Get presigned URLs for multipart file upload
+   * Get presigned URLs for multipart file upload (large files).
+   *
+   * Returns the S3 key (via `fileId`) plus part-level presigned URLs. The
+   * `fileId` returned here must be used as `fileName` in `multipartComplete`
+   * and as `name` when registering metadata via `add()`.
+   *
    * @param userUniqueId - The unique identifier of the user
-   * @param data - Upload metadata including file name, part count, and serialization
-   * @returns Upload ID, file key, and array of part-level presigned URLs
+   * @param data - Upload metadata including the original file name and part count
+   * @returns Upload ID, file id (UUID-based S3 key), and array of per-part presigned URLs
    */
   multipartPresign(userUniqueId: string, data: MultipartPresignRequest): Promise<MultipartPresignResponse>;
 
   /**
-   * Complete a multipart upload after all parts have been uploaded
+   * Complete a multipart upload after all parts have been uploaded to S3.
+   *
+   * Pass the same `fileName` you received from `multipartPresign` (as `fileId`).
+   * The returned `fileName` (UUID-based S3 key) must be used as the `name`
+   * field when registering metadata via `add()`.
+   *
    * @param userUniqueId - The unique identifier of the user
-   * @param data - Completion data including file name, upload ID, and part ETags
-   * @returns Confirmation with public URL, file id, and expiration
+   * @param data - Completion data including the UUID-based file name from multipartPresign, upload ID, and part ETags
+   * @returns Confirmation with `publicUrl`, `fileName` (S3 key), `fileId`, and `expiresAt`
    */
   multipartComplete(userUniqueId: string, data: MultipartCompleteRequest): Promise<MultipartCompleteResponse>;
 
