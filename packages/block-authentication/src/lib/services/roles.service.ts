@@ -1,4 +1,5 @@
 import type { Transport, PageResult, ListParams } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
 import type { Role, Permission } from '../types/index.js';
 import { roleMapper, permissionMapper } from '../mappers/index.js';
@@ -114,6 +115,7 @@ export function createRolesService(
     },
 
     async get(uniqueId: string): Promise<Role> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<{ data: unknown }>(
         `/roles/${uniqueId}`,
         { params: { include: 'permissions' } }
@@ -148,6 +150,7 @@ export function createRolesService(
     },
 
     async update(uniqueId: string, request: UpdateRoleRequest): Promise<Role> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<{ data: unknown }>(
         `/roles/${uniqueId}`,
         {
@@ -167,10 +170,12 @@ export function createRolesService(
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/roles/${uniqueId}`);
     },
 
     async getPermissions(roleUniqueId: string): Promise<Permission[]> {
+      assertUuid(roleUniqueId, 'roleUniqueId');
       const response = await transport.get<{ data: unknown[] }>(
         `/roles/${roleUniqueId}/permissions`
       );
@@ -178,6 +183,7 @@ export function createRolesService(
     },
 
     async setPermissions(roleUniqueId: string, permissionIds: string[]): Promise<Role> {
+      assertUuid(roleUniqueId, 'roleUniqueId');
       const response = await transport.put<{ data: unknown }>(
         `/roles/${roleUniqueId}/permissions`,
         { permission_ids: permissionIds }
@@ -186,6 +192,8 @@ export function createRolesService(
     },
 
     async addPermission(roleUniqueId: string, permissionUniqueId: string): Promise<Role> {
+      assertUuid(roleUniqueId, 'roleUniqueId');
+      assertUuid(permissionUniqueId, 'permissionUniqueId');
       const response = await transport.post<{ data: unknown }>(
         `/roles/${roleUniqueId}/permissions/${permissionUniqueId}`
       );
@@ -193,6 +201,8 @@ export function createRolesService(
     },
 
     async removePermission(roleUniqueId: string, permissionUniqueId: string): Promise<Role> {
+      assertUuid(roleUniqueId, 'roleUniqueId');
+      assertUuid(permissionUniqueId, 'permissionUniqueId');
       const response = await transport.delete<{ data: unknown }>(
         `/roles/${roleUniqueId}/permissions/${permissionUniqueId}`
       );

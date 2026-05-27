@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   UserAvatarFull,
@@ -103,6 +104,7 @@ export interface AvatarsService {
 export function createAvatarsService(transport: Transport, _config?: unknown): AvatarsService {
   return {
     async list(userUniqueId: string, params?: ListParams): Promise<PageResult<UserAvatarFull>> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -113,11 +115,13 @@ export function createAvatarsService(transport: Transport, _config?: unknown): A
     },
 
     async get(userUniqueId: string): Promise<UserAvatarFull> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.get<unknown>(`/users/${userUniqueId}/avatars/${userUniqueId}`);
       return decodeOne(response, avatarMapper);
     },
 
     async create(userUniqueId: string, request: CreateAvatarRequest): Promise<UserAvatarFull> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<unknown>(`/users/${userUniqueId}/avatars`, {
         avatar: {
           original_name: request.originalName,
@@ -135,6 +139,7 @@ export function createAvatarsService(transport: Transport, _config?: unknown): A
     },
 
     async update(userUniqueId: string, request: Partial<CreateAvatarRequest>): Promise<UserAvatarFull> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.put<unknown>(`/users/${userUniqueId}/avatars/${userUniqueId}`, {
         avatar: {
           original_name: request.originalName,
@@ -152,10 +157,12 @@ export function createAvatarsService(transport: Transport, _config?: unknown): A
     },
 
     async delete(userUniqueId: string): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
       await transport.delete(`/users/${userUniqueId}/avatars/${userUniqueId}`);
     },
 
     async presignUpload(userUniqueId: string, filename: string): Promise<AvatarPresignResponse> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.put<{
         upload_url: string;
         public_url: string;
@@ -172,6 +179,7 @@ export function createAvatarsService(transport: Transport, _config?: unknown): A
     },
 
     async multipartPresign(userUniqueId: string, request: MultipartPresignRequest): Promise<MultipartPresignResponse> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<{
         upload_id: string;
         key: string;
@@ -196,6 +204,7 @@ export function createAvatarsService(transport: Transport, _config?: unknown): A
     },
 
     async multipartComplete(userUniqueId: string, request: MultipartCompleteRequest): Promise<MultipartCompleteResponse> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<{
         public_url: string;
         file_name: string;

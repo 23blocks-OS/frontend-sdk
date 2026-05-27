@@ -1,4 +1,5 @@
 import type { Transport, PageResult, ListParams } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   ApiKey,
@@ -104,6 +105,7 @@ export function createApiKeysService(
     },
 
     async get(uniqueId: string): Promise<ApiKey> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<{ data: unknown }>(
         `/api_keys/${uniqueId}`
       );
@@ -140,6 +142,7 @@ export function createApiKeysService(
     },
 
     async update(uniqueId: string, request: UpdateApiKeyRequest): Promise<ApiKey> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<{ data: unknown }>(
         `/api_keys/${uniqueId}`,
         {
@@ -160,6 +163,7 @@ export function createApiKeysService(
     },
 
     async regenerate(uniqueId: string): Promise<ApiKeyWithSecret> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<{ data: unknown }>(
         `/api_keys/${uniqueId}/regenerate`
       );
@@ -167,6 +171,7 @@ export function createApiKeysService(
     },
 
     async revoke(uniqueId: string, request?: RevokeApiKeyRequest): Promise<ApiKey> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<{ data: unknown }>(
         `/api_keys/${uniqueId}/revoke`,
         { reason: request?.reason }
@@ -175,10 +180,12 @@ export function createApiKeysService(
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/api_keys/${uniqueId}`);
     },
 
     async getUsage(uniqueId: string, period: 'day' | 'week' | 'month' = 'week'): Promise<ApiKeyUsageStats> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<{
         data: {
           attributes: {

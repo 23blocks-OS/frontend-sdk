@@ -1,4 +1,5 @@
 import type { Transport, PageResult, ListParams } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type { Permission } from '../types/index.js';
 import { permissionMapper } from '../mappers/index.js';
@@ -82,6 +83,7 @@ export function createPermissionsService(
     },
 
     async get(uniqueId: string): Promise<Permission> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<{ data: unknown }>(
         `/permissions/${uniqueId}`
       );
@@ -106,6 +108,7 @@ export function createPermissionsService(
     },
 
     async update(uniqueId: string, request: UpdatePermissionRequest): Promise<Permission> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<{ data: unknown }>(
         `/permissions/${uniqueId}`,
         {
@@ -124,6 +127,7 @@ export function createPermissionsService(
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/permissions/${uniqueId}`);
     },
   };

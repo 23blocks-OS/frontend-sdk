@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Company,
@@ -145,6 +146,7 @@ export function createTenantsService(transport: Transport, _config?: unknown): T
     },
 
     async createTenantUser(userUniqueId: string, request: CreateTenantUserRequest): Promise<TenantUserFull> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<unknown>(`/users/${userUniqueId}/tenant`, {
         user: {
           parent_app_id: request.parentAppId,
@@ -166,6 +168,7 @@ export function createTenantsService(transport: Transport, _config?: unknown): T
       urlId: string,
       request: UpdateTenantUserOnboardingRequest
     ): Promise<TenantUserFull> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.put<unknown>(`/users/${userUniqueId}/tenant/${urlId}/onboarding`, {
         tenant_user: {
           onboarding_completed: request.onboardingCompleted,
@@ -180,6 +183,7 @@ export function createTenantsService(transport: Transport, _config?: unknown): T
       urlId: string,
       request: UpdateTenantUserSalesRequest
     ): Promise<TenantUserFull> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.put<unknown>(`/users/${userUniqueId}/tenant/${urlId}/sales`, {
         tenant_user: {
           purchase_completed: request.purchaseCompleted,

@@ -1,4 +1,5 @@
 import type { Transport } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import type {
   MfaSetupResponseFull,
   MfaEnableRequest,
@@ -58,6 +59,7 @@ export interface MfaService {
 export function createMfaService(transport: Transport, _config?: unknown): MfaService {
   return {
     async setup(userUniqueId: string, regenerate?: boolean): Promise<MfaSetupResponseFull> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<{
         data: {
           attributes: {
@@ -81,6 +83,7 @@ export function createMfaService(transport: Transport, _config?: unknown): MfaSe
     },
 
     async enable(userUniqueId: string, request: MfaEnableRequest): Promise<MfaOperationResponse> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<{
         data: {
           type: string;
@@ -100,6 +103,7 @@ export function createMfaService(transport: Transport, _config?: unknown): MfaSe
     },
 
     async disable(userUniqueId: string, request: MfaDisableRequest): Promise<MfaOperationResponse> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<{
         data: {
           type: string;
@@ -119,6 +123,7 @@ export function createMfaService(transport: Transport, _config?: unknown): MfaSe
     },
 
     async verify(userUniqueId: string, request: MfaVerifyRequestFull): Promise<MfaVerificationResponse> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<{
         data: {
           type: string;
@@ -139,6 +144,7 @@ export function createMfaService(transport: Transport, _config?: unknown): MfaSe
     },
 
     async status(userUniqueId: string): Promise<MfaStatusResponse> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.get<{
         data: {
           type: string;

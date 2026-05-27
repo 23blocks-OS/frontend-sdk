@@ -1,4 +1,5 @@
 import type { Transport, PageResult, ListParams } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import type { JsonApiDocument } from '@23blocks/jsonapi-codec';
 import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
@@ -168,6 +169,7 @@ export function createSubscriptionModelsService(
     },
 
     async get(uniqueId: string): Promise<SubscriptionModel> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<JsonApiDocument>(
         `/subscription_models/${uniqueId}`
       );
@@ -215,6 +217,7 @@ export function createUserSubscriptionsService(
     },
 
     async forUser(userUniqueId: string): Promise<UserSubscription[]> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.get<JsonApiDocument>(
         `/users/${userUniqueId}/subscriptions`,
         { params: { include: 'subscription_model' } }
@@ -226,6 +229,7 @@ export function createUserSubscriptionsService(
       userUniqueId: string,
       request: SubscribeRequest
     ): Promise<UserSubscription> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<JsonApiDocument>(
         `/users/${userUniqueId}/subscription`,
         {

@@ -1,4 +1,5 @@
 import type { Transport, PageResult, ListParams } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import type { JsonApiDocument } from '@23blocks/jsonapi-codec';
 import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
@@ -238,6 +239,7 @@ export function createGuestsService(
     },
 
     async get(uniqueId: string): Promise<Guest> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<JsonApiDocument>(`/guests/${uniqueId}`);
       return decodeOne(response, guestMapper);
     },
@@ -248,6 +250,7 @@ export function createGuestsService(
     },
 
     async convert(uniqueId: string): Promise<Guest> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<JsonApiDocument>(
         `/guests/${uniqueId}/convert`
       );
@@ -470,6 +473,7 @@ export function createMailTemplatesService(
     },
 
     async get(uniqueId: string): Promise<MailTemplate> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<JsonApiDocument>(
         `/mail_templates/${uniqueId}`
       );
@@ -484,6 +488,7 @@ export function createMailTemplatesService(
     },
 
     async update(uniqueId: string, template: Partial<MailTemplate>): Promise<MailTemplate> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<JsonApiDocument>(
         `/mail_templates/${uniqueId}`,
         {

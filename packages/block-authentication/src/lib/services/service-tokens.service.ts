@@ -1,4 +1,5 @@
 import type { Transport, PageResult, ListParams } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   ServiceToken,
@@ -72,6 +73,7 @@ export function createServiceTokensService(
     },
 
     async get(uniqueId: string): Promise<ServiceToken> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<{ data: unknown }>(
         `/service_tokens/${uniqueId}`
       );
@@ -94,10 +96,12 @@ export function createServiceTokensService(
     },
 
     async revoke(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/service_tokens/${uniqueId}`);
     },
 
     async regenerate(uniqueId: string): Promise<ServiceTokenWithJwt> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<{ data: unknown }>(
         `/service_tokens/${uniqueId}/regenerate`
       );

@@ -1,4 +1,5 @@
 import type { Transport } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import type {
   AgentRegistration,
   AgentRegistrationResponse,
@@ -115,6 +116,7 @@ export function createAgentRegistrationsService(transport: Transport): AgentRegi
     },
 
     async approve(uniqueId: string, data?: ApproveAgentRegistrationData): Promise<AgentRegistration> {
+      assertUuid(uniqueId, 'uniqueId');
       const body: Record<string, unknown> = {};
       if (data?.roleId) body['role_id'] = data.roleId;
       const response = await transport.post<unknown>(`/agent_registrations/${uniqueId}/approve`, body);
@@ -122,21 +124,25 @@ export function createAgentRegistrationsService(transport: Transport): AgentRegi
     },
 
     async reject(uniqueId: string): Promise<AgentRegistration> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/agent_registrations/${uniqueId}/reject`, {});
       return parseRegistration(extractAttrs(response));
     },
 
     async suspend(uniqueId: string): Promise<AgentRegistration> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/agent_registrations/${uniqueId}/suspend`, {});
       return parseRegistration(extractAttrs(response));
     },
 
     async reactivate(uniqueId: string): Promise<AgentRegistration> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/agent_registrations/${uniqueId}/reactivate`, {});
       return parseRegistration(extractAttrs(response));
     },
 
     async status(uniqueId: string, data: AgentRegistrationStatusRequest): Promise<AgentRegistration> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/agent_registrations/${uniqueId}/status`, {
         fingerprint: data.fingerprint,
       });

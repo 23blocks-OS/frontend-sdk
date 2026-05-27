@@ -1,4 +1,5 @@
 import type { Transport, PageResult, ListParams } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   User,
@@ -388,6 +389,7 @@ export function createUsersService(
     },
 
     async get(uniqueId: string): Promise<User> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<{ data: unknown }>(
         `/users/${uniqueId}`,
         { params: { include: 'role,user_avatar,user_profile' } }
@@ -396,6 +398,7 @@ export function createUsersService(
     },
 
     async getByUniqueId(uniqueId: string): Promise<User> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<{ data: unknown }>(
         `/users/by_unique_id/${uniqueId}`,
         { params: { include: 'role,user_avatar,user_profile' } }
@@ -404,6 +407,7 @@ export function createUsersService(
     },
 
     async update(uniqueId: string, request: UpdateUserRequest): Promise<User> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<{ data: unknown }>(
         `/users/${uniqueId}`,
         {
@@ -421,6 +425,7 @@ export function createUsersService(
     },
 
     async updateProfile(userUniqueId: string, request: UpdateProfileRequest): Promise<User> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.put<{ data: unknown }>(
         `/users/${userUniqueId}/profile`,
         {
@@ -458,10 +463,12 @@ export function createUsersService(
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/users/${uniqueId}`);
     },
 
     async activate(uniqueId: string): Promise<User> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<{ data: unknown }>(
         `/users/${uniqueId}/activate`
       );
@@ -469,6 +476,7 @@ export function createUsersService(
     },
 
     async deactivate(uniqueId: string): Promise<User> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<{ data: unknown }>(
         `/users/${uniqueId}/deactivate`
       );
@@ -476,6 +484,8 @@ export function createUsersService(
     },
 
     async changeRole(uniqueId: string, roleUniqueId: string, reason: string, forceReauth?: boolean): Promise<User> {
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(roleUniqueId, 'roleUniqueId');
       const response = await transport.put<{ data: unknown }>(
         `/users/${uniqueId}/role`,
         {
@@ -520,6 +530,7 @@ export function createUsersService(
     },
 
     async getProfile(userUniqueId: string): Promise<UserProfileFull> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.get<unknown>(`/users/${userUniqueId}/profile`);
       return decodeOne(response, profileMapper);
     },
@@ -560,6 +571,7 @@ export function createUsersService(
     },
 
     async updateEmail(userUniqueId: string, request: UpdateEmailRequest): Promise<User> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.put<{ data: unknown }>(`/users/${userUniqueId}/email`, {
         user: {
           email: request.email,
@@ -571,6 +583,7 @@ export function createUsersService(
     },
 
     async getDevices(userUniqueId: string, params?: ListParams): Promise<PageResult<UserDeviceFull>> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -595,11 +608,13 @@ export function createUsersService(
     },
 
     async getCompanies(userUniqueId: string): Promise<Company[]> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.get<{ data: unknown[] }>(`/users/${userUniqueId}/companies`);
       return (response.data || []).map((item) => companyMapper.map(item as any, new Map()));
     },
 
     async addSubscription(userUniqueId: string, request: AddUserSubscriptionRequest): Promise<UserSubscription> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const payload = typeof request.payload === 'string' ? request.payload : JSON.stringify(request.payload);
       const response = await transport.post<unknown>(`/users/${userUniqueId}/subscription`, {
         subscription: {
@@ -611,6 +626,7 @@ export function createUsersService(
     },
 
     async updateSubscription(userUniqueId: string, request: AddUserSubscriptionRequest): Promise<UserSubscription> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const payload = typeof request.payload === 'string' ? request.payload : JSON.stringify(request.payload);
       const response = await transport.put<unknown>(`/users/${userUniqueId}/subscription`, {
         subscription: {
@@ -622,6 +638,7 @@ export function createUsersService(
     },
 
     async resendConfirmationByUniqueId(userUniqueId: string): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
       await transport.post(`/users/${userUniqueId}/confirmation`, {});
     },
   };
