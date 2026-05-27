@@ -7,6 +7,10 @@
 // the canonical name/description/tags fields. The previous build silently
 // dropped these on every read.
 //
+// useAssetsBlock().users.listOwnership now surfaces the full Asset record
+// via the `asset` field on each UserOwnership (populated from the
+// JSON:API `included[]` array).
+//
 // Many endpoints now correctly parse JSON:API (was reading flat fields,
 // silently dropping everything): jarvis (prompts.execute,
 // marvinChat.sendMessage, agentRuntime initiate/get HandoffStatus +
