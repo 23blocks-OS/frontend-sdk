@@ -1,4 +1,5 @@
 import type { IdentityCore, EntityStatus } from '@23blocks/contracts';
+import type { Asset } from './asset.js';
 
 export interface AssetsUser extends IdentityCore {
   email: string;
@@ -39,4 +40,10 @@ export interface UserOwnership {
   acquiredAt: Date;
   transferredAt?: Date;
   payload?: Record<string, unknown>;
+  /**
+   * The full asset record, populated from the JSON:API `included` array on
+   * the listOwnership response. Saves an N+1 lookup when consumers need
+   * asset details (name, serial, image, etc.) alongside the ownership row.
+   */
+  asset?: Asset;
 }

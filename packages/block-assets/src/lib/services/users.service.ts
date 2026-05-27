@@ -119,8 +119,24 @@ export function createAssetsUsersService(transport: Transport, _config: { apiKey
     async listOwnership(uniqueId: string): Promise<UserOwnership[]> {
       const response = await transport.get<any>(`/users/${uniqueId}/ownership`);
       const items = Array.isArray(response?.data) ? response.data : [];
+
+      // Index `included[]` so we can pull each ownership row's full Asset
+      // record in O(1). The backend includes assets explicitly because
+      // ownership records are usually consumed alongside asset detail.
+      const includedMap = new Map<string, any>();
+      const included = Array.isArray(response?.included) ? response.included : [];
+      for (const inc of included) {
+        if (inc?.type === 'asset' || inc?.type === 'Asset') {
+          includedMap.set(String(inc.id ?? ''), inc);
+        }
+      }
+
       return items.map((d: any) => {
         const o = d?.attributes ?? d ?? {};
+        // The asset relationship lives in `d.relationships.asset.data.id`
+        // (JSON:API standard); fall back to attribute lookup if missing.
+        const relAssetId = d?.relationships?.asset?.data?.id;
+        const includedAsset = relAssetId ? includedMap.get(String(relAssetId)) : undefined;
         return {
           uniqueId: o.unique_id,
           assetUniqueId: o.asset_unique_id,
@@ -129,6 +145,12 @@ export function createAssetsUsersService(transport: Transport, _config: { apiKey
           acquiredAt: new Date(o.acquired_at),
           transferredAt: o.transferred_at ? new Date(o.transferred_at) : undefined,
           payload: o.payload,
+          asset: includedAsset
+            ? assetMapper.map(
+                { id: includedAsset.id, type: includedAsset.type ?? 'asset', attributes: includedAsset.attributes ?? {} },
+                new Map(),
+              )
+            : undefined,
         };
       });
     },
