@@ -7,11 +7,17 @@
 // the canonical name/description/tags fields. The previous build silently
 // dropped these on every read.
 //
-// Several jarvis/products endpoints also now correctly parse JSON:API
-// (prompts.execute, marvinChat.sendMessage, agentRuntime initiate/get
-// HandoffStatus + getMessages/getConversation/getContext message-reads,
-// products.visitors.create). Removed dead marvin /contexts routes
-// (getContext/createContext).
+// Many endpoints now correctly parse JSON:API (was reading flat fields,
+// silently dropping everything): jarvis (prompts.execute,
+// marvinChat.sendMessage, agentRuntime initiate/get HandoffStatus +
+// getMessages/getConversation/getContext message-reads), products
+// (visitors.create), and 13 methods in assets (entity access endpoints,
+// image-creation endpoints, user listOwnership/listEntities/listAssets,
+// assets.createOTP). Removed dead marvin /contexts routes.
+//
+// block-onboarding BREAKING: listAbandonedJourneys replaced by
+// triggerRun (action endpoint, not a list); getMandrillStats returns
+// MandrillTimeSeriesPoint[] (was a single misnamed stats object).
 //
 // `isUuid` and `assertUuid` (from @23blocks/contracts, re-exported via
 // @23blocks/sdk) are now used internally to validate path-param UUIDs on
