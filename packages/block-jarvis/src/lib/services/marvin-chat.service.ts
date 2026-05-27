@@ -1,10 +1,8 @@
 import type { Transport } from '@23blocks/contracts';
 import { assertUuid } from '@23blocks/contracts';
 import type {
-  MarvinContext,
   MarvinChatRequest,
   MarvinChatResponse,
-  CreateMarvinContextRequest,
   SendMarvinMessageRequest,
   SendMarvinMessageResponse,
 } from '../types/marvin-chat.js';
@@ -29,19 +27,8 @@ export interface MarvinChatService {
   chatV3(data: MarvinChatRequest): Promise<MarvinChatResponse>;
 
   /**
-   * Get an existing Marvin context by unique ID.
-   * @returns The MarvinContext with messages, model config, and metadata.
-   */
-  getContext(uniqueId: string): Promise<MarvinContext>;
-
-  /**
-   * Create a new Marvin context for conversations.
-   * @returns The newly created MarvinContext.
-   */
-  createContext(data?: CreateMarvinContextRequest): Promise<MarvinContext>;
-
-  /**
-   * Send a message within a Marvin context.
+   * Send a message within a Marvin context. Routes to the chat_engine#ai_chat
+   * controller and returns a JSON:API chat_response document.
    * @returns SendMarvinMessageResponse with the user message, AI response, and cost.
    */
   sendMessage(contextUniqueId: string, data: SendMarvinMessageRequest): Promise<SendMarvinMessageResponse>;
@@ -106,54 +93,17 @@ export function createMarvinChatService(transport: Transport, _config: { apiKey:
       };
     },
 
-    async getContext(uniqueId: string): Promise<MarvinContext> {
-      assertUuid(uniqueId, 'uniqueId');
-      const response = await transport.get<any>(`/marvin/contexts/${uniqueId}`);
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        messages: (response.messages || []).map((m: any) => ({
-          role: m.role,
-          content: m.content,
-          timestamp: new Date(m.timestamp),
-          tokens: m.tokens,
-          payload: m.payload,
-        })),
-        model: response.model,
-        temperature: response.temperature,
-        systemPrompt: response.system_prompt,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
-    },
-
-    async createContext(data?: CreateMarvinContextRequest): Promise<MarvinContext> {
-      const response = await transport.post<any>('/marvin/contexts', {
-        model: data?.model,
-        temperature: data?.temperature,
-        system_prompt: data?.systemPrompt,
-        payload: data?.payload,
-      });
-      return {
-        id: response.id,
-        uniqueId: response.unique_id,
-        messages: [],
-        model: response.model,
-        temperature: response.temperature,
-        systemPrompt: response.system_prompt,
-        payload: response.payload,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
-    },
-
     async sendMessage(contextUniqueId: string, data: SendMarvinMessageRequest): Promise<SendMarvinMessageResponse> {
       assertUuid(contextUniqueId, 'contextUniqueId');
+      // Backend (chat_engine#ai_chat) returns JSON:API:
+      // { data: { type: 'chat_response', attributes: { content, metadata: { usage: {...}, ... } } } }
       const response = await transport.post<any>(`/marvin/contexts/${contextUniqueId}/messages`, {
         message: data.message,
         payload: data.payload,
       });
+      const attrs = response?.data?.attributes ?? response ?? {};
+      const meta = attrs?.metadata ?? {};
+      const usage = meta?.usage ?? {};
       return {
         message: {
           role: 'user',
@@ -163,13 +113,13 @@ export function createMarvinChatService(transport: Transport, _config: { apiKey:
         },
         response: {
           role: 'assistant',
-          content: response.response,
-          timestamp: new Date(response.timestamp),
-          tokens: response.tokens,
-          payload: response.payload,
+          content: attrs.content ?? attrs.response ?? '',
+          timestamp: attrs.created_at ? new Date(attrs.created_at) : new Date(),
+          tokens: usage.total_tokens ?? usage.tokens ?? attrs.tokens,
+          payload: meta.payload ?? attrs.payload,
         },
-        tokens: response.tokens,
-        cost: response.cost,
+        tokens: usage.total_tokens ?? usage.tokens ?? attrs.tokens,
+        cost: usage.cost ?? attrs.cost,
       };
     },
   };

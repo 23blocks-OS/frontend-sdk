@@ -239,28 +239,32 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
     async initiateHandoff(agentUniqueId: string, contextUniqueId: string): Promise<HandoffStatus> {
       assertUuid(agentUniqueId, 'agentUniqueId');
       assertUuid(contextUniqueId, 'contextUniqueId');
+      // Backend returns JSON:API: { data: { type: 'handoff', attributes: {...} } }
       const response = await transport.post<any>(`/agents/${agentUniqueId}/context/${contextUniqueId}/handoff`, {});
+      const attrs = response?.data?.attributes ?? response ?? {};
       return {
-        delegationUniqueId: response.delegation_unique_id || response.unique_id,
-        status: response.status || 'active',
-        supervisorUserUid: response.supervisor_user_uid,
-        agentUniqueId: response.agent_unique_id || agentUniqueId,
-        contextUniqueId: response.context_unique_id || contextUniqueId,
-        createdAt: response.created_at ? new Date(response.created_at) : undefined,
+        delegationUniqueId: attrs.delegation_unique_id ?? attrs.unique_id,
+        status: attrs.status ?? 'active',
+        supervisorUserUid: attrs.supervisor_user_uid,
+        agentUniqueId: attrs.agent_unique_id ?? agentUniqueId,
+        contextUniqueId: attrs.context_unique_id ?? contextUniqueId,
+        createdAt: attrs.created_at ? new Date(attrs.created_at) : undefined,
       };
     },
 
     async getHandoffStatus(agentUniqueId: string, contextUniqueId: string): Promise<HandoffStatus> {
       assertUuid(agentUniqueId, 'agentUniqueId');
       assertUuid(contextUniqueId, 'contextUniqueId');
+      // Backend returns JSON:API (same shape as initiateHandoff).
       const response = await transport.get<any>(`/agents/${agentUniqueId}/context/${contextUniqueId}/handoff`);
+      const attrs = response?.data?.attributes ?? response ?? {};
       return {
-        delegationUniqueId: response.delegation_unique_id || response.unique_id,
-        status: response.status || 'none',
-        supervisorUserUid: response.supervisor_user_uid,
-        agentUniqueId: response.agent_unique_id || agentUniqueId,
-        contextUniqueId: response.context_unique_id || contextUniqueId,
-        createdAt: response.created_at ? new Date(response.created_at) : undefined,
+        delegationUniqueId: attrs.delegation_unique_id ?? attrs.unique_id,
+        status: attrs.status ?? 'none',
+        supervisorUserUid: attrs.supervisor_user_uid,
+        agentUniqueId: attrs.agent_unique_id ?? agentUniqueId,
+        contextUniqueId: attrs.context_unique_id ?? contextUniqueId,
+        createdAt: attrs.created_at ? new Date(attrs.created_at) : undefined,
       };
     },
 

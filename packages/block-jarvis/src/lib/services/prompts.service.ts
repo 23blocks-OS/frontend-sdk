@@ -108,17 +108,23 @@ export function createPromptsService(transport: Transport, _config: { apiKey: st
 
     async execute(uniqueId: string, data: ExecutePromptRequest): Promise<ExecutePromptResponse> {
       assertUuid(uniqueId, 'uniqueId');
+      // Backend (agents_runtime#ai_chat) returns JSON:API:
+      // { data: { type: 'chat_response', attributes: { content, metadata: { prompt_execution_id, usage: {...} } } } }
       const response = await transport.post<any>(`/prompts/${uniqueId}/execute`, {
         agent_unique_id: data.agentUniqueId,
         variables: data.variables,
       });
 
+      const attrs = response?.data?.attributes ?? response ?? {};
+      const meta = attrs?.metadata ?? {};
+      const usage = meta?.usage ?? {};
+
       return {
-        output: response.output,
-        executionUniqueId: response.execution_unique_id,
-        tokens: response.tokens,
-        cost: response.cost,
-        duration: response.duration,
+        output: attrs.content ?? attrs.output,
+        executionUniqueId: meta.prompt_execution_id ?? attrs.execution_unique_id,
+        tokens: usage.total_tokens ?? usage.tokens ?? attrs.tokens,
+        cost: usage.cost ?? attrs.cost,
+        duration: usage.duration ?? attrs.duration,
       };
     },
 
