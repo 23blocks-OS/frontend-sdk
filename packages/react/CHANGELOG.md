@@ -1,3 +1,18 @@
+## 15.4.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with corrected file mappers + schemas route ([d83448a](https://github.com/23blocks-OS/frontend-sdk/commit/d83448a))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-files to 6.1.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 15.3.0 (2026-05-27)
 
 ### 🚀 Features

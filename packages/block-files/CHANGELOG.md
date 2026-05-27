@@ -1,3 +1,14 @@
+## 6.1.1 (2026-05-27)
+
+### 🩹 Fixes
+
+- **@23blocks/block-files:** map all UserFile/StorageFile/EntityFile attributes + correct schemas route ([4b6f0c1](https://github.com/23blocks-OS/frontend-sdk/commit/4b6f0c1))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 6.1.0 (2026-05-27)
 
 ### 🚀 Features

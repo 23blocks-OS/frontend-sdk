@@ -1,3 +1,18 @@
+## 15.2.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/angular:** rebuild with corrected file mappers + schemas route ([0749f3b](https://github.com/23blocks-OS/frontend-sdk/commit/0749f3b))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-files to 6.1.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 15.1.2 (2026-05-27)
 
 ### 🧱 Updated Dependencies

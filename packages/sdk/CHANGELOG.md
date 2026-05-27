@@ -1,3 +1,18 @@
+## 14.4.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with corrected file mappers + schemas route ([5db9d01](https://github.com/23blocks-OS/frontend-sdk/commit/5db9d01))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-files to 6.1.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 14.3.0 (2026-05-27)
 
 ### 🚀 Features
