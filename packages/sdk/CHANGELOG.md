@@ -1,3 +1,14 @@
+## 14.5.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** llms.txt audit — add missing sub-services + UUID utilities + upload contract ([df2ce6d](https://github.com/23blocks-OS/frontend-sdk/commit/df2ce6d))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 14.4.0 (2026-05-27)
 
 ### 🚀 Features
