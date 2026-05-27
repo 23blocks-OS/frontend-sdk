@@ -56,3 +56,9 @@ export {
   generateRequestId,
   maskSensitiveData,
 } from './lib/logger.js';
+
+// UUID validation
+export {
+  isUuid,
+  assertUuid,
+} from './lib/uuid.js';
