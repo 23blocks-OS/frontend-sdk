@@ -64,23 +64,23 @@ export function createFileSchemasService(transport: Transport, _config: { apiKey
       if (params?.search) queryParams['search'] = params.search;
       if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
 
-      const response = await transport.get<unknown>('/file_schemas', { params: queryParams });
+      const response = await transport.get<unknown>('/schemas', { params: queryParams });
       return decodePageResult(response, fileSchemaMapper);
     },
 
     async get(uniqueId: string): Promise<FileSchema> {
       assertUuid(uniqueId, 'uniqueId');
-      const response = await transport.get<unknown>(`/file_schemas/${uniqueId}`);
+      const response = await transport.get<unknown>(`/schemas/${uniqueId}`);
       return decodeOne(response, fileSchemaMapper);
     },
 
     async getByCode(code: string): Promise<FileSchema> {
-      const response = await transport.get<unknown>(`/file_schemas/code/${code}`);
+      const response = await transport.get<unknown>(`/schemas/code/${code}`);
       return decodeOne(response, fileSchemaMapper);
     },
 
     async create(data: CreateFileSchemaRequest): Promise<FileSchema> {
-      const response = await transport.post<unknown>('/file_schemas', {
+      const response = await transport.post<unknown>('/schemas', {
         schema: {
           code: data.code,
           name: data.name,
@@ -93,7 +93,7 @@ export function createFileSchemasService(transport: Transport, _config: { apiKey
 
     async update(uniqueId: string, data: UpdateFileSchemaRequest): Promise<FileSchema> {
       assertUuid(uniqueId, 'uniqueId');
-      const response = await transport.put<unknown>(`/file_schemas/${uniqueId}`, {
+      const response = await transport.put<unknown>(`/schemas/${uniqueId}`, {
         schema: {
           name: data.name,
           description: data.description,
@@ -105,7 +105,7 @@ export function createFileSchemasService(transport: Transport, _config: { apiKey
 
     async delete(uniqueId: string): Promise<void> {
       assertUuid(uniqueId, 'uniqueId');
-      await transport.delete(`/file_schemas/${uniqueId}`);
+      await transport.delete(`/schemas/${uniqueId}`);
     },
   };
 }

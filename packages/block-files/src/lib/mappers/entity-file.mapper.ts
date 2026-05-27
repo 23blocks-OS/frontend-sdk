@@ -3,25 +3,31 @@ import type { EntityFile } from '../types/entity-file.js';
 import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const entityFileMapper: ResourceMapper<EntityFile> = {
-  type: 'EntityFile',
-  map: (resource) => ({
-    id: resource.id,
-    uniqueId: parseString(resource.attributes['unique_id']),
-    createdAt: parseDate(resource.attributes['created_at']) || new Date(),
-    updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
+  type: 'entity_file',
+  map: (resource) => {
+    const a = resource.attributes;
+    return {
+      id: resource.id,
+      uniqueId: parseString(a['unique_id']),
+      createdAt: parseDate(a['created_at']) || new Date(),
+      updatedAt: parseDate(a['updated_at']) || new Date(),
 
-    entityUniqueId: parseString(resource.attributes['entity_unique_id']) || '',
-    entityType: parseString(resource.attributes['entity_type']) || '',
-    fileUniqueId: parseString(resource.attributes['file_unique_id']) || '',
-    fileName: parseString(resource.attributes['file_name']) || '',
-    fileType: parseString(resource.attributes['file_type']),
-    fileSize: parseOptionalNumber(resource.attributes['file_size']),
-    mimeType: parseString(resource.attributes['mime_type']),
-    contentUrl: parseString(resource.attributes['content_url']),
-    thumbnailUrl: parseString(resource.attributes['thumbnail_url']),
-    displayOrder: parseOptionalNumber(resource.attributes['display_order']),
-    status: parseStatus(resource.attributes['status']),
-    enabled: parseBoolean(resource.attributes['enabled']),
-    payload: resource.attributes['payload'] as Record<string, unknown> | undefined,
-  }),
+      entityUniqueId: parseString(a['entity_unique_id']) || '',
+      entityType: parseString(a['entity_type']),
+      fileUniqueId: parseString(a['file_unique_id']),
+      name: parseString(a['name']),
+      originalName: parseString(a['original_name']),
+      url: parseString(a['url']),
+      thumbnailUrl: parseString(a['thumbnail_url']),
+      mediaUrl: parseString(a['media_url']),
+      contentUrl: parseString(a['content_url']),
+      imageUrl: parseString(a['image_url']),
+      fileType: parseString(a['file_type']),
+      fileSize: parseOptionalNumber(a['file_size']),
+      description: parseString(a['description']),
+      displayOrder: parseOptionalNumber(a['display_order']),
+      status: parseStatus(a['status']),
+      enabled: parseBoolean(a['enabled']),
+    };
+  },
 };
