@@ -73,14 +73,19 @@ export interface UpdateMandrillTemplateRequest {
   template_text?: string;
 }
 
-export interface MandrillTemplateStats {
-  slug: string;
-  name: string;
-  sentCount: number;
-  openCount: number;
-  clickCount: number;
-  bounceCount: number;
-  complaintCount: number;
-  createdAt: Date;
-  updatedAt: Date;
+/**
+ * One hourly data point from Mandrill's time_series API.
+ * The endpoint returns an array of these.
+ */
+export interface MandrillTimeSeriesPoint {
+  time: Date;
+  sent: number;
+  opens: number;
+  uniqueOpens: number;
+  clicks: number;
+  uniqueClicks: number;
+  hardBounces: number;
+  softBounces: number;
+  rejects: number;
+  complaints: number;
 }

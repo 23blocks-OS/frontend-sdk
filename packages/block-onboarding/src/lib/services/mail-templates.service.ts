@@ -7,7 +7,7 @@ import type {
   ListMailTemplatesParams,
   CreateMandrillTemplateRequest,
   UpdateMandrillTemplateRequest,
-  MandrillTemplateStats,
+  MandrillTimeSeriesPoint,
 } from '../types/mail-template.js';
 import { mailTemplateMapper } from '../mappers/mail-template.mapper.js';
 
@@ -37,10 +37,12 @@ export interface MailTemplatesService {
   update(uniqueId: string, data: UpdateMailTemplateRequest): Promise<MailTemplate>;
 
   /**
-   * Get delivery statistics for the linked Mandrill template.
-   * @returns MandrillTemplateStats with send, open, click, and bounce counts.
+   * Get hourly delivery statistics for the linked Mandrill template.
+   * The endpoint passes Mandrill's `templates.time_series` response through
+   * directly — an array of per-hour data points.
+   * @returns Array of MandrillTimeSeriesPoint, one per hour.
    */
-  getMandrillStats(uniqueId: string): Promise<MandrillTemplateStats>;
+  getMandrillStats(uniqueId: string): Promise<MandrillTimeSeriesPoint[]>;
 
   /**
    * Create a Mandrill template linked to this mail template.
@@ -125,19 +127,34 @@ export function createMailTemplatesService(transport: Transport, _config: { apiK
       return decodeOne(response, mailTemplateMapper);
     },
 
-    async getMandrillStats(uniqueId: string): Promise<MandrillTemplateStats> {
-      const response = await transport.get<any>(`/mailtemplates/${uniqueId}/mandrill/stats`);
-      return {
-        slug: response.slug,
-        name: response.name,
-        sentCount: response.sent_count || 0,
-        openCount: response.open_count || 0,
-        clickCount: response.click_count || 0,
-        bounceCount: response.bounce_count || 0,
-        complaintCount: response.complaint_count || 0,
-        createdAt: new Date(response.created_at),
-        updatedAt: new Date(response.updated_at),
-      };
+    async getMandrillStats(uniqueId: string): Promise<MandrillTimeSeriesPoint[]> {
+      // Mandrill returns an array of hourly time-series points at the top
+      // level. The controller passes the response through directly. On a
+      // Mandrill error the controller still returns 200 with an `errors`
+      // array — surface that as a thrown Error so the caller can handle it.
+      const response = await transport.get<unknown>(`/mailtemplates/${uniqueId}/mandrill/stats`);
+
+      if (!Array.isArray(response)) {
+        const errs = (response as { errors?: Array<{ detail?: string; title?: string }> } | null)?.errors;
+        if (Array.isArray(errs) && errs.length > 0) {
+          const e = errs[0];
+          throw new Error(`Mandrill stats error: ${e?.title ?? ''} ${e?.detail ?? ''}`.trim());
+        }
+        return [];
+      }
+
+      return (response as Array<Record<string, unknown>>).map((p) => ({
+        time: p['time'] ? new Date(p['time'] as string) : new Date(0),
+        sent: Number(p['sent'] ?? 0),
+        opens: Number(p['opens'] ?? 0),
+        uniqueOpens: Number(p['unique_opens'] ?? 0),
+        clicks: Number(p['clicks'] ?? 0),
+        uniqueClicks: Number(p['unique_clicks'] ?? 0),
+        hardBounces: Number(p['hard_bounces'] ?? 0),
+        softBounces: Number(p['soft_bounces'] ?? 0),
+        rejects: Number(p['rejects'] ?? 0),
+        complaints: Number(p['complaints'] ?? 0),
+      }));
     },
 
     async createMandrillTemplate(uniqueId: string, data: CreateMandrillTemplateRequest): Promise<MailTemplate> {

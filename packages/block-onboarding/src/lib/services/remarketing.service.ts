@@ -1,58 +1,52 @@
-import type { Transport, PageResult } from '@23blocks/contracts';
+import type { Transport } from '@23blocks/contracts';
 import type {
-  AbandonedJourney,
-  ListAbandonedJourneysParams,
+  TriggerRemarketingRunRequest,
+  RemarketingRunResult,
 } from '../types/remarketing.js';
 
 export interface RemarketingService {
   /**
-   * List abandoned onboarding journeys for remarketing purposes.
-   * @returns Paginated list of AbandonedJourney records with user and progress info.
+   * Trigger a remarketing run for abandoned onboarding journeys.
+   *
+   * Despite the GET verb, this endpoint has side effects: it identifies
+   * journeys whose last activity is older than `elapsedHours` and sends a
+   * remarketing email to each. Returns a summary of who was notified.
+   *
+   * @param params - Optional elapsedHours threshold (defaults to backend value)
+   * @returns Run summary with notified emails and timing info
    */
-  listAbandonedJourneys(params?: ListAbandonedJourneysParams): Promise<PageResult<AbandonedJourney>>;
+  triggerRun(params?: TriggerRemarketingRunRequest): Promise<RemarketingRunResult>;
 }
 
 export function createRemarketingService(transport: Transport, _config: { apiKey: string }): RemarketingService {
   return {
-    async listAbandonedJourneys(params?: ListAbandonedJourneysParams): Promise<PageResult<AbandonedJourney>> {
+    async triggerRun(params?: TriggerRemarketingRunRequest): Promise<RemarketingRunResult> {
       const queryParams: Record<string, string> = {};
-      if (params?.page) queryParams['page'] = String(params.page);
-      if (params?.perPage) queryParams['records'] = String(params.perPage);
-      if (params?.onboardingUniqueId) queryParams['onboarding_unique_id'] = params.onboardingUniqueId;
-      if (params?.minProgress !== undefined) queryParams['min_progress'] = String(params.minProgress);
-      if (params?.maxProgress !== undefined) queryParams['max_progress'] = String(params.maxProgress);
-      if (params?.abandonedAfter) queryParams['abandoned_after'] = params.abandonedAfter.toISOString();
-      if (params?.abandonedBefore) queryParams['abandoned_before'] = params.abandonedBefore.toISOString();
+      if (params?.elapsedHours !== undefined) queryParams['elapsed_hours'] = String(params.elapsedHours);
 
-      const response = await transport.get<any>('/tools/remarketing/abandoned_journeys', { params: queryParams });
-      const data = response.data || [];
+      const response = await transport.get<{
+        data: {
+          attributes: {
+            unique_id: string;
+            notified_users?: string[];
+            total_notified_users?: number;
+            started_at?: string;
+            ended_at?: string;
+            running_time?: string;
+            updated_at?: string;
+          };
+        };
+      }>('/tools/remarketing/abandoned_journeys', { params: queryParams });
+
+      const a = response.data.attributes;
       return {
-        data: data.map((j: any) => ({
-          id: j.id,
-          uniqueId: j.unique_id,
-          userUniqueId: j.user_unique_id,
-          onboardingUniqueId: j.onboarding_unique_id,
-          currentStep: j.current_step,
-          completedSteps: j.completed_steps || [],
-          status: j.status,
-          progress: j.progress || 0,
-          startedAt: new Date(j.started_at),
-          completedAt: j.completed_at ? new Date(j.completed_at) : undefined,
-          suspendedAt: j.suspended_at ? new Date(j.suspended_at) : undefined,
-          userEmail: j.user_email,
-          userName: j.user_name,
-          abandonedAt: new Date(j.abandoned_at || j.updated_at),
-          lastStepName: j.last_step_name,
-          payload: j.payload,
-          createdAt: new Date(j.created_at),
-          updatedAt: new Date(j.updated_at),
-        })),
-        meta: {
-          totalCount: response.meta?.total_count || data.length,
-          currentPage: response.meta?.current_page || 1,
-          perPage: response.meta?.per_page || data.length,
-          totalPages: response.meta?.total_pages || 1,
-        },
+        uniqueId: a.unique_id,
+        notifiedEmails: a.notified_users ?? [],
+        totalNotifiedUsers: a.total_notified_users ?? 0,
+        startedAt: a.started_at ? new Date(a.started_at) : new Date(),
+        endedAt: a.ended_at ? new Date(a.ended_at) : undefined,
+        runningTime: a.running_time,
+        updatedAt: a.updated_at ? new Date(a.updated_at) : undefined,
       };
     },
   };

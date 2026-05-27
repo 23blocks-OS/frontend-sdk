@@ -1,18 +1,14 @@
-import type { OnboardJourney } from './onboard.js';
-
-export interface AbandonedJourney extends OnboardJourney {
-  userEmail?: string;
-  userName?: string;
-  abandonedAt: Date;
-  lastStepName?: string;
+export interface TriggerRemarketingRunRequest {
+  /** Hours since last activity that qualifies a journey as abandoned. */
+  elapsedHours?: number;
 }
 
-export interface ListAbandonedJourneysParams {
-  page?: number;
-  perPage?: number;
-  onboardingUniqueId?: string;
-  minProgress?: number;
-  maxProgress?: number;
-  abandonedAfter?: Date;
-  abandonedBefore?: Date;
+export interface RemarketingRunResult {
+  uniqueId: string;
+  notifiedEmails: string[];
+  totalNotifiedUsers: number;
+  startedAt: Date;
+  endedAt?: Date;
+  runningTime?: string;
+  updatedAt?: Date;
 }
