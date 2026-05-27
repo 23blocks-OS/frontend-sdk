@@ -27,6 +27,13 @@ export {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Core (safe to re-export directly - no conflicts)
+//
+// `isUuid` and `assertUuid` are exported from @23blocks/contracts. The SDK
+// uses `assertUuid` internally to validate path-param UUIDs on endpoints
+// confirmed to require strict RFC 4122 format (block-conversations and the
+// block-jarvis context endpoint, currently). Invalid UUIDs throw a TypeError
+// at the call site with an actionable message instead of failing at the
+// backend with an opaque PostgreSQL error.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export * from '@23blocks/contracts';
