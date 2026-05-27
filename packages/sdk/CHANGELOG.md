@@ -1,3 +1,22 @@
+# 15.0.0 (2026-05-27)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/sdk:** rebuild with auth cleanup (dead method removal, param renames, currencies UUID) ([f5f487b](https://github.com/23blocks-OS/frontend-sdk/commit/f5f487b))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/sdk:** rebuild with auth cleanup (dead method removal, param renames, currencies UUID)  ([f5f487b](https://github.com/23blocks-OS/frontend-sdk/commit/f5f487b))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 8.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 14.8.0 (2026-05-27)
 
 ### 🚀 Features

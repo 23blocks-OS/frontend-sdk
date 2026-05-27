@@ -1,3 +1,22 @@
+# 8.0.0 (2026-05-27)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-authentication:** remove 10 dead methods, rename 9 params, add isUuid to currencies ([3023f26](https://github.com/23blocks-OS/frontend-sdk/commit/3023f26))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-authentication:** remove 10 dead methods, rename 9 params, add isUuid to currencies  ([3023f26](https://github.com/23blocks-OS/frontend-sdk/commit/3023f26))
+  The 10 method removals are signature-breaking for
+  TypeScript consumers (compile error on next install). Runtime impact
+  is none — those methods never reached a working endpoint.
+  Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 7.9.1 (2026-05-27)
 
 ### 🩹 Fixes

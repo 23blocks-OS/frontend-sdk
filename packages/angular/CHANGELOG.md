@@ -1,3 +1,9 @@
+## 15.2.5 (2026-05-27)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 8.0.0
+
 ## 15.2.4 (2026-05-27)
 
 ### 🧱 Updated Dependencies

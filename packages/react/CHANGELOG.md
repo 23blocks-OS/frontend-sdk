@@ -1,3 +1,22 @@
+# 16.0.0 (2026-05-27)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/react:** rebuild with auth cleanup (dead method removal, param renames, currencies UUID) ([a7d2ba6](https://github.com/23blocks-OS/frontend-sdk/commit/a7d2ba6))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/react:** rebuild with auth cleanup (dead method removal, param renames, currencies UUID)  ([a7d2ba6](https://github.com/23blocks-OS/frontend-sdk/commit/a7d2ba6))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 8.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 15.7.0 (2026-05-27)
 
 ### 🚀 Features
