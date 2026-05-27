@@ -13,6 +13,12 @@ import { TRANSPORT, FILES_TRANSPORT, FILES_CONFIG } from '../tokens';
  * Exposes block sub-services directly via typed getters.
  * All methods return Promises - use `from()` to convert to Observables if needed.
  *
+ * File mappers (UserFile / StorageFile / EntityFile) now read every
+ * attribute on the type — including AI/RAG fields (schemaModel,
+ * structuredContent, fileStructure, metadata, rawContent, content) that
+ * were previously dropped. The fileSchemas service path is also corrected
+ * from `/file_schemas/*` to `/schemas/*`.
+ *
  * Upload flow reminder (userFiles, storageFiles, entityFiles):
  *   1. await sub.presignUpload(...)
  *   2. PUT bytes to the returned `presignedUrl`
