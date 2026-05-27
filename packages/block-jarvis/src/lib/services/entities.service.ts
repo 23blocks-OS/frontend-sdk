@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Entity,
@@ -31,7 +32,10 @@ function buildEntityBody(data: RegisterEntityRequest): Record<string, unknown> {
 
 function buildContextBody(data: CreateContextRequest): Record<string, unknown> {
   const body: Record<string, unknown> = {};
-  if (data.uniqueId) body['unique_id'] = data.uniqueId;
+  if (data.uniqueId !== undefined) {
+    assertUuid(data.uniqueId, 'context.uniqueId');
+    body['unique_id'] = data.uniqueId;
+  }
   if (data.name) body['name'] = data.name;
   if (data.reference) body['reference'] = data.reference;
   if (data.source) body['source'] = data.source;
