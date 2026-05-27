@@ -1,3 +1,14 @@
+## 6.1.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/block-files:** validate path-param UUIDs at SDK entry ([715c39c](https://github.com/23blocks-OS/frontend-sdk/commit/715c39c))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 6.0.1 (2026-05-27)
 
 ### 📖 Documentation

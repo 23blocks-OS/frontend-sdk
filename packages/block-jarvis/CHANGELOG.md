@@ -1,3 +1,14 @@
+## 5.9.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/block-jarvis:** validate path-param UUIDs at SDK entry ([c705968](https://github.com/23blocks-OS/frontend-sdk/commit/c705968))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 5.8.1 (2026-05-27)
 
 ### 🩹 Fixes

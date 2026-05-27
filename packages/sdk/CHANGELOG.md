@@ -1,3 +1,19 @@
+## 14.2.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with broader UUID validation coverage ([4cd5c70](https://github.com/23blocks-OS/frontend-sdk/commit/4cd5c70))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.9.0
+- Updated @23blocks/block-files to 6.1.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 14.1.0 (2026-05-27)
 
 ### 🚀 Features

@@ -1,3 +1,19 @@
+## 15.2.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with broader UUID validation coverage ([3af05f1](https://github.com/23blocks-OS/frontend-sdk/commit/3af05f1))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.9.0
+- Updated @23blocks/block-files to 6.1.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 15.1.0 (2026-05-27)
 
 ### 🚀 Features
