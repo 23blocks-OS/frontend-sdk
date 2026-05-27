@@ -57,11 +57,6 @@ export interface MagicLinksService {
   list(params?: ListParams): Promise<PageResult<MagicLink>>;
 
   /**
-   * Get a magic link by unique ID
-   */
-  get(uniqueId: string): Promise<MagicLink>;
-
-  /**
    * Create a magic link
    */
   create(request: CreateMagicLinkRequest): Promise<MagicLink>;
@@ -70,11 +65,6 @@ export interface MagicLinksService {
    * Validate a magic link token
    */
   validate(token: string): Promise<MagicLink>;
-
-  /**
-   * Expire a magic link
-   */
-  expire(uniqueId: string): Promise<MagicLink>;
 }
 
 /**
@@ -85,16 +75,6 @@ export interface RefreshTokensService {
    * List refresh tokens for the current user
    */
   list(params?: ListParams): Promise<PageResult<RefreshToken>>;
-
-  /**
-   * Get a refresh token by unique ID
-   */
-  get(uniqueId: string): Promise<RefreshToken>;
-
-  /**
-   * Revoke a refresh token
-   */
-  revoke(uniqueId: string): Promise<RefreshToken>;
 
   /**
    * Revoke all refresh tokens for current user
@@ -117,11 +97,6 @@ export interface UserDevicesService {
   list(params?: ListParams): Promise<PageResult<UserDevice>>;
 
   /**
-   * Get a device by unique ID
-   */
-  get(uniqueId: string): Promise<UserDevice>;
-
-  /**
    * Register a new device
    */
   register(request: RegisterDeviceRequest): Promise<UserDevice>;
@@ -130,16 +105,6 @@ export interface UserDevicesService {
    * Update device settings
    */
   update(uniqueId: string, request: Partial<RegisterDeviceRequest>): Promise<UserDevice>;
-
-  /**
-   * Unregister a device
-   */
-  unregister(uniqueId: string): Promise<void>;
-
-  /**
-   * Set default device
-   */
-  setDefault(uniqueId: string): Promise<UserDevice>;
 }
 
 /**
@@ -150,11 +115,6 @@ export interface TenantUsersService {
    * Get current tenant user context
    */
   current(): Promise<TenantUser>;
-
-  /**
-   * Get tenant user by user ID
-   */
-  get(userUniqueId: string): Promise<TenantUser>;
 
   /**
    * List tenant users
@@ -275,13 +235,6 @@ export function createMagicLinksService(
       return decodePageResult(response, magicLinkMapper);
     },
 
-    async get(uniqueId: string): Promise<MagicLink> {
-      const response = await transport.get<JsonApiDocument>(
-        `/magic_links/${uniqueId}`
-      );
-      return decodeOne(response, magicLinkMapper);
-    },
-
     async create(request: CreateMagicLinkRequest): Promise<MagicLink> {
       const response = await transport.post<JsonApiDocument>('/magic_links', {
         magic_link: {
@@ -304,13 +257,6 @@ export function createMagicLinksService(
       );
       return decodeOne(response, magicLinkMapper);
     },
-
-    async expire(uniqueId: string): Promise<MagicLink> {
-      const response = await transport.post<JsonApiDocument>(
-        `/magic_links/${uniqueId}/expire`
-      );
-      return decodeOne(response, magicLinkMapper);
-    },
   };
 }
 
@@ -328,20 +274,6 @@ export function createRefreshTokensService(
         { params: buildListParams(params) }
       );
       return decodePageResult(response, refreshTokenMapper);
-    },
-
-    async get(uniqueId: string): Promise<RefreshToken> {
-      const response = await transport.get<JsonApiDocument>(
-        `/refresh_tokens/${uniqueId}`
-      );
-      return decodeOne(response, refreshTokenMapper);
-    },
-
-    async revoke(uniqueId: string): Promise<RefreshToken> {
-      const response = await transport.post<JsonApiDocument>(
-        `/refresh_tokens/${uniqueId}/revoke`
-      );
-      return decodeOne(response, refreshTokenMapper);
     },
 
     async revokeAll(): Promise<void> {
@@ -368,13 +300,6 @@ export function createUserDevicesService(
         { params: buildListParams(params) }
       );
       return decodePageResult(response, userDeviceMapper);
-    },
-
-    async get(uniqueId: string): Promise<UserDevice> {
-      const response = await transport.get<JsonApiDocument>(
-        `/user_devices/${uniqueId}`
-      );
-      return decodeOne(response, userDeviceMapper);
     },
 
     async register(request: RegisterDeviceRequest): Promise<UserDevice> {
@@ -410,17 +335,6 @@ export function createUserDevicesService(
       );
       return decodeOne(response, userDeviceMapper);
     },
-
-    async unregister(uniqueId: string): Promise<void> {
-      await transport.delete(`/user_devices/${uniqueId}`);
-    },
-
-    async setDefault(uniqueId: string): Promise<UserDevice> {
-      const response = await transport.post<JsonApiDocument>(
-        `/user_devices/${uniqueId}/set_default`
-      );
-      return decodeOne(response, userDeviceMapper);
-    },
   };
 }
 
@@ -435,13 +349,6 @@ export function createTenantUsersService(
     async current(): Promise<TenantUser> {
       const response = await transport.get<JsonApiDocument>(
         '/tenant_users/current'
-      );
-      return decodeOne(response, tenantUserMapper);
-    },
-
-    async get(userUniqueId: string): Promise<TenantUser> {
-      const response = await transport.get<JsonApiDocument>(
-        `/tenant_users/${userUniqueId}`
       );
       return decodeOne(response, tenantUserMapper);
     },

@@ -33,11 +33,6 @@ export interface AdminRsaKeysService {
   list(): Promise<RsaKey[]>;
 
   /**
-   * Get a specific RSA key by ID
-   */
-  get(keyId: string): Promise<RsaKey>;
-
-  /**
    * Create a new RSA key
    */
   create(request: CreateRsaKeyRequest): Promise<RsaKey>;
@@ -46,16 +41,6 @@ export interface AdminRsaKeysService {
    * Rotate RSA keys (create new key and deactivate old ones)
    */
   rotate(request: RotateRsaKeyRequest): Promise<RsaKey>;
-
-  /**
-   * Deactivate an RSA key
-   */
-  deactivate(keyId: string): Promise<RsaKey>;
-
-  /**
-   * Delete an RSA key
-   */
-  delete(keyId: string): Promise<void>;
 
   /**
    * Get the currently active RSA key
@@ -147,35 +132,6 @@ export function createAdminRsaKeysService(transport: Transport): AdminRsaKeysSer
       }));
     },
 
-    async get(keyId: string): Promise<RsaKey> {
-      const response = await transport.get<{
-        data: {
-          id: string;
-          type: string;
-          attributes: {
-            kid: string;
-            algorithm: string;
-            created_at: string;
-            expires_at?: string;
-            is_active: boolean;
-            public_key: string;
-          };
-        };
-      }>(`/admin/rsa_keys/${keyId}`);
-
-      return {
-        id: response.data.id,
-        kid: response.data.attributes.kid,
-        algorithm: response.data.attributes.algorithm,
-        createdAt: new Date(response.data.attributes.created_at),
-        expiresAt: response.data.attributes.expires_at
-          ? new Date(response.data.attributes.expires_at)
-          : undefined,
-        isActive: response.data.attributes.is_active,
-        publicKey: response.data.attributes.public_key,
-      };
-    },
-
     async create(request: CreateRsaKeyRequest): Promise<RsaKey> {
       const response = await transport.post<{
         data: {
@@ -242,39 +198,6 @@ export function createAdminRsaKeysService(transport: Transport): AdminRsaKeysSer
         isActive: response.data.attributes.is_active,
         publicKey: response.data.attributes.public_key,
       };
-    },
-
-    async deactivate(keyId: string): Promise<RsaKey> {
-      const response = await transport.put<{
-        data: {
-          id: string;
-          type: string;
-          attributes: {
-            kid: string;
-            algorithm: string;
-            created_at: string;
-            expires_at?: string;
-            is_active: boolean;
-            public_key: string;
-          };
-        };
-      }>(`/admin/rsa_keys/${keyId}/deactivate`, {});
-
-      return {
-        id: response.data.id,
-        kid: response.data.attributes.kid,
-        algorithm: response.data.attributes.algorithm,
-        createdAt: new Date(response.data.attributes.created_at),
-        expiresAt: response.data.attributes.expires_at
-          ? new Date(response.data.attributes.expires_at)
-          : undefined,
-        isActive: response.data.attributes.is_active,
-        publicKey: response.data.attributes.public_key,
-      };
-    },
-
-    async delete(keyId: string): Promise<void> {
-      await transport.delete(`/admin/rsa_keys/${keyId}`);
     },
 
     async getActive(): Promise<RsaKey | null> {

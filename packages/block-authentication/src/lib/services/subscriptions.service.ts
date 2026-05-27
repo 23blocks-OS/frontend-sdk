@@ -98,13 +98,15 @@ export interface CompanySubscriptionsService {
 
   /**
    * Get subscriptions for a company
+   * @param companyUrlId - The company's url_id (NOT a UUID)
    */
-  forCompany(companyUniqueId: string): Promise<CompanySubscription[]>;
+  forCompany(companyUrlId: string): Promise<CompanySubscription[]>;
 
   /**
    * Subscribe a company to a plan
+   * @param companyUrlId - The company's url_id (NOT a UUID)
    */
-  subscribe(companyUniqueId: string, request: SubscribeRequest): Promise<CompanySubscription>;
+  subscribe(companyUrlId: string, request: SubscribeRequest): Promise<CompanySubscription>;
 
   /**
    * Cancel a subscription
@@ -281,20 +283,20 @@ export function createCompanySubscriptionsService(
       return decodeOne(response, companySubscriptionMapper);
     },
 
-    async forCompany(companyUniqueId: string): Promise<CompanySubscription[]> {
+    async forCompany(companyUrlId: string): Promise<CompanySubscription[]> {
       const response = await transport.get<JsonApiDocument>(
-        `/companies/${companyUniqueId}/subscriptions`,
+        `/companies/${companyUrlId}/subscriptions`,
         { params: { include: 'subscription_model' } }
       );
       return decodeMany(response, companySubscriptionMapper);
     },
 
     async subscribe(
-      companyUniqueId: string,
+      companyUrlId: string,
       request: SubscribeRequest
     ): Promise<CompanySubscription> {
       const response = await transport.post<JsonApiDocument>(
-        `/companies/${companyUniqueId}/subscriptions`,
+        `/companies/${companyUrlId}/subscriptions`,
         {
           subscription: {
             subscription_unique_id: request.subscriptionModelCode,

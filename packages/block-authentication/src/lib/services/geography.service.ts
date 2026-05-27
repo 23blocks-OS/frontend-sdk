@@ -1,4 +1,5 @@
 import type { Transport, PageResult, ListParams } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import type { JsonApiDocument } from '@23blocks/jsonapi-codec';
 import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
 import type { Country, State, County, City, Currency } from '../types/index.js';
@@ -328,6 +329,7 @@ export function createCurrenciesService(
     },
 
     async get(uniqueId: string): Promise<Currency> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<JsonApiDocument>(`/currencies/${uniqueId}`);
       return decodeOne(response, currencyMapper);
     },

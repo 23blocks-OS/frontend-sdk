@@ -15,9 +15,10 @@ export interface AppsService {
   list(params?: ListParams): Promise<PageResult<App>>;
 
   /**
-   * Get an app by unique ID
+   * Get an app by URL ID
+   * @param appUrlId - The app's url_id (NOT a UUID — short base64-style identifier)
    */
-  get(uniqueId: string): Promise<App>;
+  get(appUrlId: string): Promise<App>;
 
   /**
    * Create a new app
@@ -26,18 +27,21 @@ export interface AppsService {
 
   /**
    * Update an app
+   * @param appUrlId - The app's url_id (NOT a UUID — short base64-style identifier)
    */
-  update(uniqueId: string, request: UpdateAppRequest): Promise<App>;
+  update(appUrlId: string, request: UpdateAppRequest): Promise<App>;
 
   /**
    * Delete an app
+   * @param appUrlId - The app's url_id (NOT a UUID — short base64-style identifier)
    */
-  delete(uniqueId: string): Promise<void>;
+  delete(appUrlId: string): Promise<void>;
 
   /**
    * Regenerate webhook secret
+   * @param appUrlId - The app's url_id (NOT a UUID — short base64-style identifier)
    */
-  regenerateWebhookSecret(uniqueId: string): Promise<App>;
+  regenerateWebhookSecret(appUrlId: string): Promise<App>;
 }
 
 /**
@@ -50,9 +54,10 @@ export interface BlocksService {
   list(companyUniqueId: string, params?: ListParams): Promise<PageResult<Block>>;
 
   /**
-   * Get a block by unique ID
+   * Get a block by code
+   * @param blockCode - The block code slug (e.g., 'files', 'jarvis' — NOT a UUID)
    */
-  get(uniqueId: string): Promise<Block>;
+  get(blockCode: string): Promise<Block>;
 
   /**
    * Add a block to a company
@@ -61,8 +66,9 @@ export interface BlocksService {
 
   /**
    * Remove a block from a company
+   * @param blockCode - The block code slug (e.g., 'files', 'jarvis' — NOT a UUID)
    */
-  remove(uniqueId: string): Promise<void>;
+  remove(blockCode: string): Promise<void>;
 }
 
 /**
@@ -75,9 +81,10 @@ export interface ServicesRegistryService {
   list(params?: ListParams): Promise<PageResult<Service>>;
 
   /**
-   * Get a service by unique ID
+   * Get a service by ID
+   * @param id - The service's numeric database id
    */
-  get(uniqueId: string): Promise<Service>;
+  get(id: string): Promise<Service>;
 
   /**
    * Get a service by code
@@ -141,8 +148,8 @@ export function createAppsService(
       return decodePageResult(response, appMapper);
     },
 
-    async get(uniqueId: string): Promise<App> {
-      const response = await transport.get<JsonApiDocument>(`/apps/${uniqueId}`);
+    async get(appUrlId: string): Promise<App> {
+      const response = await transport.get<JsonApiDocument>(`/apps/${appUrlId}`);
       return decodeOne(response, appMapper);
     },
 
@@ -165,8 +172,8 @@ export function createAppsService(
       return decodeOne(response, appMapper);
     },
 
-    async update(uniqueId: string, request: UpdateAppRequest): Promise<App> {
-      const response = await transport.put<JsonApiDocument>(`/apps/${uniqueId}`, {
+    async update(appUrlId: string, request: UpdateAppRequest): Promise<App> {
+      const response = await transport.put<JsonApiDocument>(`/apps/${appUrlId}`, {
         app: {
           name: request.name,
           description: request.description,
@@ -185,13 +192,13 @@ export function createAppsService(
       return decodeOne(response, appMapper);
     },
 
-    async delete(uniqueId: string): Promise<void> {
-      await transport.delete(`/apps/${uniqueId}`);
+    async delete(appUrlId: string): Promise<void> {
+      await transport.delete(`/apps/${appUrlId}`);
     },
 
-    async regenerateWebhookSecret(uniqueId: string): Promise<App> {
+    async regenerateWebhookSecret(appUrlId: string): Promise<App> {
       const response = await transport.post<JsonApiDocument>(
-        `/apps/${uniqueId}/regenerate_webhook_secret`
+        `/apps/${appUrlId}/regenerate_webhook_secret`
       );
       return decodeOne(response, appMapper);
     },
@@ -217,8 +224,8 @@ export function createBlocksService(
       return decodePageResult(response, blockMapper);
     },
 
-    async get(uniqueId: string): Promise<Block> {
-      const response = await transport.get<JsonApiDocument>(`/blocks/${uniqueId}`);
+    async get(blockCode: string): Promise<Block> {
+      const response = await transport.get<JsonApiDocument>(`/blocks/${blockCode}`);
       return decodeOne(response, blockMapper);
     },
 
@@ -230,8 +237,8 @@ export function createBlocksService(
       return decodeOne(response, blockMapper);
     },
 
-    async remove(uniqueId: string): Promise<void> {
-      await transport.delete(`/blocks/${uniqueId}`);
+    async remove(blockCode: string): Promise<void> {
+      await transport.delete(`/blocks/${blockCode}`);
     },
   };
 }
@@ -252,8 +259,8 @@ export function createServicesRegistryService(
       return decodePageResult(response, serviceMapper);
     },
 
-    async get(uniqueId: string): Promise<Service> {
-      const response = await transport.get<JsonApiDocument>(`/services/${uniqueId}`);
+    async get(id: string): Promise<Service> {
+      const response = await transport.get<JsonApiDocument>(`/services/${id}`);
       return decodeOne(response, serviceMapper);
     },
 
