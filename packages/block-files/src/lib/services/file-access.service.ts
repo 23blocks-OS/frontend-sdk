@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   FileAccess,
@@ -90,6 +91,7 @@ export function createFileAccessService(transport: Transport, _config: { apiKey:
     },
 
     async get(uniqueId: string): Promise<FileAccess> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/file_accesses/${uniqueId}`);
       return decodeOne(response, fileAccessMapper);
     },
@@ -108,6 +110,7 @@ export function createFileAccessService(transport: Transport, _config: { apiKey:
     },
 
     async update(uniqueId: string, data: UpdateFileAccessRequest): Promise<FileAccess> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/file_accesses/${uniqueId}`, {
         access: {
           access_type: data.accessType,
@@ -120,6 +123,7 @@ export function createFileAccessService(transport: Transport, _config: { apiKey:
     },
 
     async revoke(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/file_accesses/${uniqueId}`);
     },
 

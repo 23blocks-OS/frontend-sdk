@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   UserFile,
@@ -332,6 +333,7 @@ export interface UserFilesService {
 export function createUserFilesService(transport: Transport, _config: { apiKey: string }): UserFilesService {
   return {
     async list(userUniqueId: string, params?: ListUserFilesParams): Promise<PageResult<UserFile>> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -344,11 +346,14 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async get(userUniqueId: string, fileUniqueId: string): Promise<UserFile> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.get<unknown>(`/users/${userUniqueId}/files/${fileUniqueId}`);
       return decodeOne(response, userFileMapper);
     },
 
     async add(userUniqueId: string, data: AddUserFileRequest): Promise<UserFile> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<unknown>(`/users/${userUniqueId}/files`, {
         file: {
           name: data.name,
@@ -386,6 +391,8 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async update(userUniqueId: string, fileUniqueId: string, data: UpdateUserFileRequest): Promise<UserFile> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.put<unknown>(`/users/${userUniqueId}/files/${fileUniqueId}`, {
         file: {
           name: data.name,
@@ -423,10 +430,13 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async delete(userUniqueId: string, fileUniqueId: string): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       await transport.delete(`/users/${userUniqueId}/files/${fileUniqueId}`);
     },
 
     async presignUpload(userUniqueId: string, data: PresignUploadRequest): Promise<PresignUploadResponse> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.put<{
         data: {
           attributes: {
@@ -456,6 +466,7 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async multipartPresign(userUniqueId: string, data: MultipartPresignRequest): Promise<MultipartPresignResponse> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<{
         data: {
           attributes: {
@@ -483,6 +494,7 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async multipartComplete(userUniqueId: string, data: MultipartCompleteRequest): Promise<MultipartCompleteResponse> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<{
         data: {
           attributes: {
@@ -511,26 +523,36 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async approve(userUniqueId: string, fileUniqueId: string): Promise<UserFile> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.put<unknown>(`/users/${userUniqueId}/files/${fileUniqueId}/approve`, {});
       return decodeOne(response, userFileMapper);
     },
 
     async reject(userUniqueId: string, fileUniqueId: string): Promise<UserFile> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.put<unknown>(`/users/${userUniqueId}/files/${fileUniqueId}/reject`, {});
       return decodeOne(response, userFileMapper);
     },
 
     async publish(userUniqueId: string, fileUniqueId: string): Promise<UserFile> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.put<unknown>(`/users/${userUniqueId}/files/${fileUniqueId}/publish`, {});
       return decodeOne(response, userFileMapper);
     },
 
     async unpublish(userUniqueId: string, fileUniqueId: string): Promise<UserFile> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.put<unknown>(`/users/${userUniqueId}/files/${fileUniqueId}/unpublish`, {});
       return decodeOne(response, userFileMapper);
     },
 
     async addTag(userUniqueId: string, fileUniqueId: string, tagValue: string): Promise<UserFile> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.post<unknown>(`/users/${userUniqueId}/files/${fileUniqueId}/tags`, {
         tag: { tag: tagValue },
       });
@@ -538,16 +560,22 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async removeTag(userUniqueId: string, fileUniqueId: string, tagUniqueId: string): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
+      assertUuid(tagUniqueId, 'tagUniqueId');
       await transport.delete(`/users/${userUniqueId}/files/${fileUniqueId}/tags/${tagUniqueId}`);
     },
 
     async bulkUpdateTags(userUniqueId: string, tags: string[]): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
       await transport.post(`/users/${userUniqueId}/tags`, {
         file: { tags },
       });
     },
 
     async requestAccess(userUniqueId: string, fileUniqueId: string, data: UserFileAccessRequestInput): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       await transport.post(`/users/${userUniqueId}/files/${fileUniqueId}/requests/access`, {
         access: {
           user_unique_id: data.userUniqueId,
@@ -559,6 +587,8 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async getAccess(userUniqueId: string, fileUniqueId: string): Promise<UserFileAccessGrant[]> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.get<{ data: Array<Record<string, unknown>> }>(`/users/${userUniqueId}/files/${fileUniqueId}/access`);
       return (response.data || []).map((item) => ({
         uniqueId: String(item['unique_id'] ?? ''),
@@ -571,6 +601,8 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async grantAccess(userUniqueId: string, fileUniqueId: string, data: UserFileAccessInput): Promise<UserFileAccessGrant> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.post<Record<string, unknown>>(`/users/${userUniqueId}/files/${fileUniqueId}/access/grant`, {
         access: {
           user_unique_id: data.userUniqueId,
@@ -591,20 +623,28 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async revokeAccess(userUniqueId: string, fileUniqueId: string, accessUniqueId: string): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
+      assertUuid(accessUniqueId, 'accessUniqueId');
       await transport.delete(`/users/${userUniqueId}/files/${fileUniqueId}/access/${accessUniqueId}/revoke`);
     },
 
     async makePublic(userUniqueId: string, fileUniqueId: string): Promise<UserFile> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.post<unknown>(`/users/${userUniqueId}/files/${fileUniqueId}/access/make_public`, {});
       return decodeOne(response, userFileMapper);
     },
 
     async makePrivate(userUniqueId: string, fileUniqueId: string): Promise<UserFile> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.post<unknown>(`/users/${userUniqueId}/files/${fileUniqueId}/access/make_private`, {});
       return decodeOne(response, userFileMapper);
     },
 
     async bulkGrantAccess(userUniqueId: string, fileUniqueIds: string[], granteeUniqueIds: string[]): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
       await transport.post(`/users/${userUniqueId}/files/access/grant`, {
         access: {
           file_unique_ids: fileUniqueIds,
@@ -614,6 +654,7 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async bulkRevokeAccess(userUniqueId: string, fileUniqueIds: string[], granteeUniqueIds: string[]): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
       await transport.post(`/users/${userUniqueId}/files/access/revoke`, {
         access: {
           file_unique_ids: fileUniqueIds,
@@ -623,6 +664,8 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async listAccessRequests(userUniqueId: string, fileUniqueId: string): Promise<UserFileAccessGrant[]> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.get<{ data: Array<Record<string, unknown>> }>(`/users/${userUniqueId}/files/${fileUniqueId}/access/requests`);
       return (response.data || []).map((item) => ({
         uniqueId: String(item['unique_id'] ?? ''),
@@ -635,6 +678,9 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async approveAccessRequest(userUniqueId: string, fileUniqueId: string, requestUniqueId: string): Promise<UserFileAccessGrant> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
+      assertUuid(requestUniqueId, 'requestUniqueId');
       const response = await transport.put<Record<string, unknown>>(`/users/${userUniqueId}/files/${fileUniqueId}/access/requests/${requestUniqueId}/approve`, {});
       return {
         uniqueId: String(response['unique_id'] ?? ''),
@@ -647,10 +693,14 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async denyAccessRequest(userUniqueId: string, fileUniqueId: string, requestUniqueId: string): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
+      assertUuid(requestUniqueId, 'requestUniqueId');
       await transport.delete(`/users/${userUniqueId}/files/${fileUniqueId}/access/requests/${requestUniqueId}/deny`);
     },
 
     async listGrantedDelegations(userUniqueId: string): Promise<UserFileDelegationGrant[]> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.get<{ data: Array<Record<string, unknown>> }>(`/users/${userUniqueId}/delegations/granted`);
       return (response.data || []).map((item) => ({
         uniqueId: String(item['unique_id'] ?? ''),
@@ -663,6 +713,7 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async listReceivedDelegations(userUniqueId: string): Promise<UserFileDelegationGrant[]> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.get<{ data: Array<Record<string, unknown>> }>(`/users/${userUniqueId}/delegations/received`);
       return (response.data || []).map((item) => ({
         uniqueId: String(item['unique_id'] ?? ''),
@@ -675,6 +726,8 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async getDelegation(userUniqueId: string, delegationUniqueId: string): Promise<UserFileDelegationGrant> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(delegationUniqueId, 'delegationUniqueId');
       const response = await transport.get<Record<string, unknown>>(`/users/${userUniqueId}/delegations/${delegationUniqueId}`);
       return {
         uniqueId: String(response['unique_id'] ?? ''),
@@ -687,6 +740,7 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async createDelegation(userUniqueId: string, data: CreateDelegationRequest): Promise<UserFileDelegationGrant> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<Record<string, unknown>>(`/users/${userUniqueId}/delegations`, {
         access: {
           grantee_user_unique_id: data.granteeUserUniqueId,
@@ -706,6 +760,8 @@ export function createUserFilesService(transport: Transport, _config: { apiKey: 
     },
 
     async revokeDelegation(userUniqueId: string, delegationUniqueId: string): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(delegationUniqueId, 'delegationUniqueId');
       await transport.delete(`/users/${userUniqueId}/delegations/${delegationUniqueId}`);
     },
   };

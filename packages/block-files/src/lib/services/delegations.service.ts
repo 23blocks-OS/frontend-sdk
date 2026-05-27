@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   FileDelegation,
@@ -61,6 +62,7 @@ export interface DelegationsService {
 export function createDelegationsService(transport: Transport, _config: { apiKey: string }): DelegationsService {
   return {
     async list(userUniqueId: string, params?: ListFileDelegationsParams): Promise<PageResult<FileDelegation>> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -74,11 +76,14 @@ export function createDelegationsService(transport: Transport, _config: { apiKey
     },
 
     async get(userUniqueId: string, uniqueId: string): Promise<FileDelegation> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/users/${userUniqueId}/delegations/${uniqueId}`);
       return decodeOne(response, fileDelegationMapper);
     },
 
     async create(userUniqueId: string, data: CreateFileDelegationRequest): Promise<FileDelegation> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<unknown>(`/users/${userUniqueId}/delegations`, {
         access: {
           grantee_user_unique_id: data.granteeUserUniqueId,
@@ -91,6 +96,8 @@ export function createDelegationsService(transport: Transport, _config: { apiKey
     },
 
     async update(userUniqueId: string, uniqueId: string, data: UpdateFileDelegationRequest): Promise<FileDelegation> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/users/${userUniqueId}/delegations/${uniqueId}`, {
         access: {
           access_type: data.accessType,
@@ -103,10 +110,13 @@ export function createDelegationsService(transport: Transport, _config: { apiKey
     },
 
     async delete(userUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/users/${userUniqueId}/delegations/${uniqueId}`);
     },
 
     async listReceivedDelegations(userUniqueId: string): Promise<FileDelegation[]> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.get<unknown>(`/users/${userUniqueId}/delegations/received`);
       return decodeMany(response, fileDelegationMapper);
     },

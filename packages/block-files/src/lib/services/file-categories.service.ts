@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   FileCategory,
@@ -69,6 +70,7 @@ export function createFileCategoriesService(transport: Transport, _config: { api
     },
 
     async get(uniqueId: string): Promise<FileCategory> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/categories/${uniqueId}`);
       return decodeOne(response, fileCategoryMapper);
     },
@@ -90,6 +92,7 @@ export function createFileCategoriesService(transport: Transport, _config: { api
     },
 
     async update(uniqueId: string, data: UpdateFileCategoryRequest): Promise<FileCategory> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/categories/${uniqueId}`, {
         category: {
           name: data.name,
@@ -107,10 +110,12 @@ export function createFileCategoriesService(transport: Transport, _config: { api
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/categories/${uniqueId}`);
     },
 
     async listChildren(parentUniqueId: string): Promise<FileCategory[]> {
+      assertUuid(parentUniqueId, 'parentUniqueId');
       const response = await transport.get<unknown>(`/categories/${parentUniqueId}/children`);
       return decodeMany(response, fileCategoryMapper);
     },

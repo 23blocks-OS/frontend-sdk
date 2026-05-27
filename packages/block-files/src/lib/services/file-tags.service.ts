@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   FileTag,
@@ -79,6 +80,7 @@ export function createFileTagsService(transport: Transport, _config: { apiKey: s
     },
 
     async get(uniqueId: string): Promise<FileTag> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/tags/${uniqueId}`);
       return decodeOne(response, fileTagMapper);
     },
@@ -98,6 +100,7 @@ export function createFileTagsService(transport: Transport, _config: { apiKey: s
     },
 
     async update(uniqueId: string, data: UpdateFileTagRequest): Promise<FileTag> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/tags/${uniqueId}`, {
         tag: {
           tag: data.tag,
@@ -113,16 +116,22 @@ export function createFileTagsService(transport: Transport, _config: { apiKey: s
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/tags/${uniqueId}`);
     },
 
     async addToFile(userUniqueId: string, fileUniqueId: string, tagValue: string): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       await transport.post(`/users/${userUniqueId}/files/${fileUniqueId}/tags`, {
         tag: { tag: tagValue },
       });
     },
 
     async removeFromFile(userUniqueId: string, fileUniqueId: string, tagUniqueId: string): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
+      assertUuid(tagUniqueId, 'tagUniqueId');
       await transport.delete(`/users/${userUniqueId}/files/${fileUniqueId}/tags/${tagUniqueId}`);
     },
   };

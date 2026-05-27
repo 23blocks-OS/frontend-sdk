@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   StorageFile,
@@ -111,6 +112,7 @@ export function createStorageFilesService(transport: Transport, _config: { apiKe
     },
 
     async get(urlId: string, fileUniqueId: string): Promise<StorageFile> {
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.get<unknown>(`/storage/${urlId}/files/${fileUniqueId}`);
       return decodeOne(response, storageFileMapper);
     },
@@ -183,6 +185,7 @@ export function createStorageFilesService(transport: Transport, _config: { apiKe
     },
 
     async update(urlId: string, fileUniqueId: string, data: UpdateStorageFileRequest): Promise<StorageFile> {
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.put<unknown>(`/storage/${urlId}/files/${fileUniqueId}`, {
         file: {
           name: data.name,
@@ -221,24 +224,29 @@ export function createStorageFilesService(transport: Transport, _config: { apiKe
     },
 
     async delete(urlId: string, fileUniqueId: string): Promise<void> {
+      assertUuid(fileUniqueId, 'fileUniqueId');
       await transport.delete(`/storage/${urlId}/files/${fileUniqueId}`);
     },
 
     async approve(urlId: string, fileUniqueId: string): Promise<StorageFile> {
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.put<unknown>(`/storage/${urlId}/files/${fileUniqueId}/approve`, {});
       return decodeOne(response, storageFileMapper);
     },
 
     async reject(urlId: string, fileUniqueId: string): Promise<StorageFile> {
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.put<unknown>(`/storage/${urlId}/files/${fileUniqueId}/reject`, {});
       return decodeOne(response, storageFileMapper);
     },
 
     async publish(urlId: string, fileUniqueId: string): Promise<void> {
+      assertUuid(fileUniqueId, 'fileUniqueId');
       await transport.put<unknown>(`/storage/${urlId}/files/${fileUniqueId}/publish`, {});
     },
 
     async unpublish(urlId: string, fileUniqueId: string): Promise<void> {
+      assertUuid(fileUniqueId, 'fileUniqueId');
       await transport.put<unknown>(`/storage/${urlId}/files/${fileUniqueId}/unpublish`, {});
     },
   };

@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   FileSchema,
@@ -68,6 +69,7 @@ export function createFileSchemasService(transport: Transport, _config: { apiKey
     },
 
     async get(uniqueId: string): Promise<FileSchema> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/file_schemas/${uniqueId}`);
       return decodeOne(response, fileSchemaMapper);
     },
@@ -90,6 +92,7 @@ export function createFileSchemasService(transport: Transport, _config: { apiKey
     },
 
     async update(uniqueId: string, data: UpdateFileSchemaRequest): Promise<FileSchema> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/file_schemas/${uniqueId}`, {
         schema: {
           name: data.name,
@@ -101,6 +104,7 @@ export function createFileSchemasService(transport: Transport, _config: { apiKey
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/file_schemas/${uniqueId}`);
     },
   };

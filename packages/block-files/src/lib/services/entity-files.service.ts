@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   EntityFile,
@@ -150,11 +151,13 @@ export function createEntityFilesService(transport: Transport, _config: { apiKey
     },
 
     async getEntity(entityUniqueId: string): Promise<EntityIdentity> {
+      assertUuid(entityUniqueId, 'entityUniqueId');
       const response = await transport.get<{ data: Record<string, unknown> }>(`/entities/${entityUniqueId}`);
       return mapEntityIdentity(response.data);
     },
 
     async registerEntity(entityUniqueId: string, data: RegisterEntityRequest): Promise<EntityIdentity> {
+      assertUuid(entityUniqueId, 'entityUniqueId');
       const response = await transport.post<{ data: Record<string, unknown> }>(`/entities/${entityUniqueId}/register`, {
         entity: {
           entity_alias: data.entityAlias,
@@ -166,6 +169,7 @@ export function createEntityFilesService(transport: Transport, _config: { apiKey
     },
 
     async list(entityUniqueId: string, params?: ListEntityFilesParams): Promise<PageResult<EntityFile>> {
+      assertUuid(entityUniqueId, 'entityUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -179,11 +183,14 @@ export function createEntityFilesService(transport: Transport, _config: { apiKey
     },
 
     async get(entityUniqueId: string, fileUniqueId: string): Promise<EntityFile> {
+      assertUuid(entityUniqueId, 'entityUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.get<unknown>(`/entities/${entityUniqueId}/files/${fileUniqueId}`);
       return decodeOne(response, entityFileMapper);
     },
 
     async create(entityUniqueId: string, data: CreateEntityFileRequest): Promise<EntityFile> {
+      assertUuid(entityUniqueId, 'entityUniqueId');
       const response = await transport.post<unknown>(`/entities/${entityUniqueId}/files`, {
         file: {
           name: data.name,
@@ -202,6 +209,8 @@ export function createEntityFilesService(transport: Transport, _config: { apiKey
     },
 
     async update(entityUniqueId: string, fileUniqueId: string, data: UpdateEntityFileRequest): Promise<EntityFile> {
+      assertUuid(entityUniqueId, 'entityUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       const response = await transport.put<unknown>(`/entities/${entityUniqueId}/files/${fileUniqueId}`, {
         file: {
           name: data.name,
@@ -219,10 +228,13 @@ export function createEntityFilesService(transport: Transport, _config: { apiKey
     },
 
     async delete(entityUniqueId: string, fileUniqueId: string): Promise<void> {
+      assertUuid(entityUniqueId, 'entityUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       await transport.delete(`/entities/${entityUniqueId}/files/${fileUniqueId}`);
     },
 
     async presignUpload(entityUniqueId: string, data: EntityPresignUploadRequest): Promise<EntityPresignUploadResponse> {
+      assertUuid(entityUniqueId, 'entityUniqueId');
       const response = await transport.put<{
         signed_url: string;
         public_url: string;
@@ -238,6 +250,7 @@ export function createEntityFilesService(transport: Transport, _config: { apiKey
     },
 
     async multipartPresign(entityUniqueId: string, data: EntityMultipartPresignRequest): Promise<EntityMultipartPresignResponse> {
+      assertUuid(entityUniqueId, 'entityUniqueId');
       const response = await transport.post<{
         upload_id: string;
         presigned_urls: string[];
@@ -255,6 +268,7 @@ export function createEntityFilesService(transport: Transport, _config: { apiKey
     },
 
     async multipartComplete(entityUniqueId: string, data: EntityMultipartCompleteRequest): Promise<EntityMultipartCompleteResponse> {
+      assertUuid(entityUniqueId, 'entityUniqueId');
       const response = await transport.post<{
         public_url: string;
         file_name: string;
@@ -273,6 +287,7 @@ export function createEntityFilesService(transport: Transport, _config: { apiKey
     },
 
     async associate(entityUniqueId: string, data: AssociateFileRequest): Promise<EntityFile> {
+      assertUuid(entityUniqueId, 'entityUniqueId');
       const response = await transport.post<unknown>(`/entities/${entityUniqueId}/files/associate`, {
         file_unique_id: data.fileUniqueId,
         association_type: data.associationType,
@@ -282,6 +297,8 @@ export function createEntityFilesService(transport: Transport, _config: { apiKey
     },
 
     async disassociate(entityUniqueId: string, fileUniqueId: string): Promise<void> {
+      assertUuid(entityUniqueId, 'entityUniqueId');
+      assertUuid(fileUniqueId, 'fileUniqueId');
       await transport.delete(`/entities/${entityUniqueId}/files/${fileUniqueId}/disassociate`);
     },
   };

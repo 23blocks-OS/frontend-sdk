@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   FileAccessRequest,
@@ -96,6 +97,7 @@ export function createFileAccessRequestsService(
     },
 
     async get(uniqueId: string): Promise<FileAccessRequest> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/file_access_requests/${uniqueId}`);
       return decodeOne(response, fileAccessRequestMapper);
     },
@@ -113,6 +115,7 @@ export function createFileAccessRequestsService(
     },
 
     async review(uniqueId: string, decision: ReviewFileAccessRequestInput): Promise<FileAccessRequest> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/file_access_requests/${uniqueId}/review`, {
         access: {
           expires_at: decision.expiresAt,
@@ -122,6 +125,7 @@ export function createFileAccessRequestsService(
     },
 
     async cancel(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.put(`/file_access_requests/${uniqueId}/cancel`, {});
     },
 
