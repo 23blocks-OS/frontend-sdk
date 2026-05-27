@@ -30,10 +30,12 @@ export {
 //
 // `isUuid` and `assertUuid` are exported from @23blocks/contracts. The SDK
 // uses `assertUuid` internally to validate path-param UUIDs on endpoints
-// confirmed to require strict RFC 4122 format (block-conversations and the
-// block-jarvis context endpoint, currently). Invalid UUIDs throw a TypeError
-// at the call site with an actionable message instead of failing at the
-// backend with an opaque PostgreSQL error.
+// confirmed by each block's API team to require strict RFC 4122 format.
+// Coverage: block-conversations (all path-param uniqueIds), block-jarvis
+// (all path-param uniqueIds except OpenAI-format threadId/runId), and
+// block-files (all path-param uniqueIds except :url_id which is base64url).
+// Invalid UUIDs throw a TypeError at the call site with an actionable
+// message instead of failing at the backend with an opaque PostgreSQL error.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export * from '@23blocks/contracts';
