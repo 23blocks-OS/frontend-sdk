@@ -1,3 +1,18 @@
+## 15.6.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with jarvis conversation/message JSON:API parser ([5075fe6](https://github.com/23blocks-OS/frontend-sdk/commit/5075fe6))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.9.3
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 15.5.0 (2026-05-27)
 
 ### 🚀 Features

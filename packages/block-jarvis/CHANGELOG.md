@@ -1,3 +1,14 @@
+## 5.9.3 (2026-05-27)
+
+### 🩹 Fixes
+
+- **@23blocks/block-jarvis:** parse JSON:API conversation+messages in getMessages/getConversation/getContext ([3858b50](https://github.com/23blocks-OS/frontend-sdk/commit/3858b50))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 5.9.2 (2026-05-27)
 
 ### 🩹 Fixes
