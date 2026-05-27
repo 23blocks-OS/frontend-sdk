@@ -7,6 +7,11 @@
 // the canonical name/description/tags fields. The previous build silently
 // dropped these on every read.
 //
+// Several jarvis/products endpoints also now correctly parse JSON:API
+// (prompts.execute, marvinChat.sendMessage, agentRuntime initiate/get
+// HandoffStatus, products.visitors.create). Removed dead marvin
+// /contexts routes (getContext/createContext).
+//
 // `isUuid` and `assertUuid` (from @23blocks/contracts, re-exported via
 // @23blocks/sdk) are now used internally to validate path-param UUIDs on
 // endpoints confirmed to require strict RFC 4122 format. Coverage:
