@@ -1,3 +1,19 @@
+## 5.9.1 (2026-05-27)
+
+### 🩹 Fixes
+
+- **@23blocks/block-jarvis:** pin internal deps to caret ranges (no more wildcards) ([#3](https://github.com/23blocks-OS/frontend-sdk/issues/3))
+- **@23blocks/block-jarvis:** parseAgentThread reads JSON:API response shape ([#4](https://github.com/23blocks-OS/frontend-sdk/issues/4))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/jsonapi-codec to 3.3.4
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 5.9.0 (2026-05-27)
 
 ### 🚀 Features

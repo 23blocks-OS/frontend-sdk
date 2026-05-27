@@ -1,3 +1,28 @@
+## 15.2.1 (2026-05-27)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 7.9.1
+- Updated @23blocks/block-conversations to 4.6.1
+- Updated @23blocks/block-geolocation to 4.0.3
+- Updated @23blocks/block-onboarding to 5.0.4
+- Updated @23blocks/block-university to 4.0.3
+- Updated @23blocks/block-campaigns to 4.0.3
+- Updated @23blocks/block-products to 5.0.2
+- Updated @23blocks/transport-http to 3.3.4
+- Updated @23blocks/block-company to 4.0.3
+- Updated @23blocks/block-content to 4.0.3
+- Updated @23blocks/block-rewards to 4.0.3
+- Updated @23blocks/block-assets to 4.0.3
+- Updated @23blocks/block-jarvis to 5.9.1
+- Updated @23blocks/block-search to 6.0.3
+- Updated @23blocks/block-wallet to 4.0.3
+- Updated @23blocks/block-files to 6.1.2
+- Updated @23blocks/block-forms to 5.0.4
+- Updated @23blocks/block-sales to 8.0.4
+- Updated @23blocks/block-crm to 5.0.4
+- Updated @23blocks/block-rag to 2.1.2
+
 ## 15.2.0 (2026-05-27)
 
 ### 🚀 Features

@@ -1,3 +1,18 @@
+## 8.0.4 (2026-05-27)
+
+### 🩹 Fixes
+
+- **@23blocks/block-sales:** pin internal deps to caret ranges (no more wildcards) ([#3](https://github.com/23blocks-OS/frontend-sdk/issues/3))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/jsonapi-codec to 3.3.4
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 8.0.3 (2026-05-27)
 
 ### 🧱 Updated Dependencies

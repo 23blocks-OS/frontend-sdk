@@ -1,3 +1,9 @@
+## 4.0.3 (2026-05-27)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/jsonapi-codec to 3.3.4
+
 ## 4.0.2 (2026-05-27)
 
 ### 🧱 Updated Dependencies
