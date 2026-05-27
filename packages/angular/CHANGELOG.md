@@ -1,3 +1,10 @@
+## 15.2.4 (2026-05-27)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-onboarding to 6.0.0
+- Updated @23blocks/block-assets to 4.0.4
+
 ## 15.2.3 (2026-05-27)
 
 ### 🧱 Updated Dependencies

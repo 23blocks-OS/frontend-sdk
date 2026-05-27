@@ -1,3 +1,19 @@
+## 14.8.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with assets JSON:API parsers + onboarding breaking changes ([377d1ab](https://github.com/23blocks-OS/frontend-sdk/commit/377d1ab))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-onboarding to 6.0.0
+- Updated @23blocks/block-assets to 4.0.4
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 14.7.0 (2026-05-27)
 
 ### 🚀 Features

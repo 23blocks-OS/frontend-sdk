@@ -1,3 +1,19 @@
+## 15.7.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with assets JSON:API parsers + onboarding breaking changes ([2a6db0c](https://github.com/23blocks-OS/frontend-sdk/commit/2a6db0c))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-onboarding to 6.0.0
+- Updated @23blocks/block-assets to 4.0.4
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 15.6.0 (2026-05-27)
 
 ### 🚀 Features

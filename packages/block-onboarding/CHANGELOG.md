@@ -1,3 +1,22 @@
+# 6.0.0 (2026-05-27)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-onboarding:** replace listAbandonedJourneys w/ triggerRun; rewrite getMandrillStats shape ([c34ad4a](https://github.com/23blocks-OS/frontend-sdk/commit/c34ad4a))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-onboarding:** replace listAbandonedJourneys w/ triggerRun; rewrite getMandrillStats shape  ([c34ad4a](https://github.com/23blocks-OS/frontend-sdk/commit/c34ad4a))
+  RemarketingService.listAbandonedJourneys removed;
+  use triggerRun() instead. MailTemplate.getMandrillStats return type
+  changed from MandrillTemplateStats to MandrillTimeSeriesPoint[].
+  Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 5.0.4 (2026-05-27)
 
 ### 🩹 Fixes

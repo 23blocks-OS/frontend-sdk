@@ -1,3 +1,14 @@
+## 4.0.4 (2026-05-27)
+
+### 🩹 Fixes
+
+- **@23blocks/block-assets:** parse JSON:API in 13 methods that were silently dropping fields ([d4d3439](https://github.com/23blocks-OS/frontend-sdk/commit/d4d3439))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 4.0.3 (2026-05-27)
 
 ### 🩹 Fixes
