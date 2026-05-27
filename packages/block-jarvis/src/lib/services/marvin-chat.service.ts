@@ -1,4 +1,5 @@
 import type { Transport } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import type {
   MarvinContext,
   MarvinChatRequest,
@@ -106,6 +107,7 @@ export function createMarvinChatService(transport: Transport, _config: { apiKey:
     },
 
     async getContext(uniqueId: string): Promise<MarvinContext> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<any>(`/marvin/contexts/${uniqueId}`);
       return {
         id: response.id,
@@ -147,6 +149,7 @@ export function createMarvinChatService(transport: Transport, _config: { apiKey:
     },
 
     async sendMessage(contextUniqueId: string, data: SendMarvinMessageRequest): Promise<SendMarvinMessageResponse> {
+      assertUuid(contextUniqueId, 'contextUniqueId');
       const response = await transport.post<any>(`/marvin/contexts/${contextUniqueId}/messages`, {
         message: data.message,
         payload: data.payload,

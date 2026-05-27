@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   PromptTest,
@@ -42,6 +43,7 @@ export interface PromptTestsService {
 export function createPromptTestsService(transport: Transport, _config: { apiKey: string }): PromptTestsService {
   return {
     async list(promptUniqueId: string, params?: ListPromptTestsParams): Promise<PageResult<PromptTest>> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -54,11 +56,14 @@ export function createPromptTestsService(transport: Transport, _config: { apiKey
     },
 
     async get(promptUniqueId: string, testUniqueId: string): Promise<PromptTest> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
       const response = await transport.get<unknown>(`/prompts/${promptUniqueId}/tests/${testUniqueId}`);
       return decodeOne(response, promptTestMapper);
     },
 
     async create(promptUniqueId: string, data: CreatePromptTestRequest): Promise<PromptTest> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
       const response = await transport.post<unknown>(`/prompts/${promptUniqueId}/tests`, {
         prompt_test: buildPromptTestBody(data),
       });
@@ -66,6 +71,8 @@ export function createPromptTestsService(transport: Transport, _config: { apiKey
     },
 
     async update(promptUniqueId: string, testUniqueId: string, data: UpdatePromptTestRequest): Promise<PromptTest> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
       const response = await transport.put<unknown>(`/prompts/${promptUniqueId}/tests/${testUniqueId}`, {
         prompt_test: buildPromptTestBody(data),
       });
@@ -73,15 +80,22 @@ export function createPromptTestsService(transport: Transport, _config: { apiKey
     },
 
     async delete(promptUniqueId: string, testUniqueId: string): Promise<void> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
       await transport.delete(`/prompts/${promptUniqueId}/tests/${testUniqueId}`);
     },
 
     async run(promptUniqueId: string, testUniqueId: string): Promise<PromptTestResult> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
       const response = await transport.post<unknown>(`/prompts/${promptUniqueId}/tests/${testUniqueId}/run`, {});
       return decodeOne(response, promptTestResultMapper);
     },
 
     async runAgainstVersion(promptUniqueId: string, versionUniqueId: string, testUniqueId: string): Promise<PromptTestResult> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(versionUniqueId, 'versionUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
       const response = await transport.post<unknown>(
         `/prompts/${promptUniqueId}/versions/${versionUniqueId}/tests/${testUniqueId}/run`, {}
       );
@@ -89,6 +103,7 @@ export function createPromptTestsService(transport: Transport, _config: { apiKey
     },
 
     async runAll(promptUniqueId: string): Promise<PromptTestResult[]> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
       const response = await transport.post<unknown>(`/prompts/${promptUniqueId}/tests/run-all`, {});
       const raw = response as any;
       const data = raw.data || raw;
@@ -99,6 +114,8 @@ export function createPromptTestsService(transport: Transport, _config: { apiKey
     },
 
     async listResults(promptUniqueId: string, testUniqueId: string, params?: ListPromptTestResultsParams): Promise<PageResult<PromptTestResult>> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -109,11 +126,16 @@ export function createPromptTestsService(transport: Transport, _config: { apiKey
     },
 
     async getResult(promptUniqueId: string, testUniqueId: string, resultUniqueId: string): Promise<PromptTestResult> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
+      assertUuid(resultUniqueId, 'resultUniqueId');
       const response = await transport.get<unknown>(`/prompts/${promptUniqueId}/tests/${testUniqueId}/results/${resultUniqueId}`);
       return decodeOne(response, promptTestResultMapper);
     },
 
     async listVersionResults(promptUniqueId: string, versionUniqueId: string, params?: ListPromptTestResultsParams): Promise<PageResult<PromptTestResult>> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(versionUniqueId, 'versionUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -145,6 +167,7 @@ export function createPromptTestEvaluationsService(transport: Transport, _config
     },
 
     async get(uniqueId: string): Promise<PromptTestEvaluation> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/prompt-test-evaluations/${uniqueId}`);
       return decodeOne(response, promptTestEvaluationMapper);
     },
@@ -157,6 +180,7 @@ export function createPromptTestEvaluationsService(transport: Transport, _config
     },
 
     async run(uniqueId: string): Promise<PromptTestEvaluation> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/prompt-test-evaluations/${uniqueId}/run`, {});
       return decodeOne(response, promptTestEvaluationMapper);
     },

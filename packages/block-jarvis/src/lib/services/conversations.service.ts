@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Conversation,
@@ -34,6 +35,7 @@ export function createConversationsService(transport: Transport, _config: { apiK
     },
 
     async get(uniqueId: string): Promise<Conversation> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/conversations/${uniqueId}`);
       return decodeOne(response, conversationMapper);
     },
@@ -50,6 +52,7 @@ export function createConversationsService(transport: Transport, _config: { apiK
     },
 
     async sendMessage(uniqueId: string, data: SendConversationMessageRequest): Promise<SendConversationMessageResponse> {
+      assertUuid(uniqueId, 'uniqueId');
       const body: Record<string, unknown> = {};
       if (data.message) body['content'] = data.message;
       if (data.role) body['role'] = data.role;
@@ -77,6 +80,7 @@ export function createConversationsService(transport: Transport, _config: { apiK
     },
 
     async listByUser(userUniqueId: string, params?: ListConversationsParams): Promise<PageResult<Conversation>> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -89,6 +93,7 @@ export function createConversationsService(transport: Transport, _config: { apiK
     },
 
     async clear(uniqueId: string): Promise<Conversation> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/conversations/${uniqueId}/clear`, {});
       return decodeOne(response, conversationMapper);
     },

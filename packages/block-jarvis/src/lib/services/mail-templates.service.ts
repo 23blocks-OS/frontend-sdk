@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   MailTemplate,
@@ -66,6 +67,7 @@ export function createMailTemplatesService(transport: Transport, _config: { apiK
     },
 
     async get(uniqueId: string): Promise<MailTemplate> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/mailtemplates/${uniqueId}`);
       return decodeOne(response, mailTemplateMapper);
     },
@@ -78,6 +80,7 @@ export function createMailTemplatesService(transport: Transport, _config: { apiK
     },
 
     async update(uniqueId: string, data: UpdateMailTemplateRequest): Promise<MailTemplate> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/mailtemplates/${uniqueId}`, {
         mail_template: buildMailTemplateBody(data),
       });
@@ -85,6 +88,7 @@ export function createMailTemplatesService(transport: Transport, _config: { apiK
     },
 
     async createMandrillTemplate(uniqueId: string, data?: CreateMandrillTemplateRequest): Promise<MailTemplate> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/mailtemplates/${uniqueId}/mandrill`, data ? {
         mandrill: buildMandrillBody(data),
       } : {});
@@ -92,6 +96,7 @@ export function createMailTemplatesService(transport: Transport, _config: { apiK
     },
 
     async updateMandrillTemplate(uniqueId: string, data?: UpdateMandrillTemplateRequest): Promise<MailTemplate> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/mailtemplates/${uniqueId}/mandrill`, data ? {
         mandrill: buildMandrillBody(data),
       } : {});
@@ -99,11 +104,13 @@ export function createMailTemplatesService(transport: Transport, _config: { apiK
     },
 
     async publishMandrill(uniqueId: string): Promise<MailTemplate> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/mailtemplates/${uniqueId}/mandrill/publish`, {});
       return decodeOne(response, mailTemplateMapper);
     },
 
     async getMandrillStats(uniqueId: string): Promise<unknown> {
+      assertUuid(uniqueId, 'uniqueId');
       return transport.get<unknown>(`/mailtemplates/${uniqueId}/mandrill/stats`);
     },
   };

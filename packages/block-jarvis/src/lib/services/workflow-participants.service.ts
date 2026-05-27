@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   WorkflowParticipant,
@@ -29,6 +30,7 @@ export interface WorkflowParticipantsService {
 export function createWorkflowParticipantsService(transport: Transport, _config: { apiKey: string }): WorkflowParticipantsService {
   return {
     async list(workflowUniqueId: string, params?: ListWorkflowParticipantsParams): Promise<PageResult<WorkflowParticipant>> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -41,11 +43,14 @@ export function createWorkflowParticipantsService(transport: Transport, _config:
     },
 
     async get(workflowUniqueId: string, uniqueId: string): Promise<WorkflowParticipant> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/workflows/${workflowUniqueId}/participants/${uniqueId}`);
       return decodeOne(response, workflowParticipantMapper);
     },
 
     async add(workflowUniqueId: string, data: AddWorkflowParticipantRequest): Promise<WorkflowParticipant> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
       const response = await transport.post<unknown>(`/workflows/${workflowUniqueId}/participants`, {
         workflow_participant: buildParticipantBody(data),
       });
@@ -53,6 +58,8 @@ export function createWorkflowParticipantsService(transport: Transport, _config:
     },
 
     async update(workflowUniqueId: string, uniqueId: string, data: UpdateWorkflowParticipantRequest): Promise<WorkflowParticipant> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/workflows/${workflowUniqueId}/participants/${uniqueId}`, {
         workflow_participant: buildParticipantBody(data),
       });
@@ -60,6 +67,8 @@ export function createWorkflowParticipantsService(transport: Transport, _config:
     },
 
     async remove(workflowUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/workflows/${workflowUniqueId}/participants/${uniqueId}`);
     },
   };

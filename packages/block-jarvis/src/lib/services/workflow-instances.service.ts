@@ -1,4 +1,5 @@
 import type { Transport } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne } from '@23blocks/jsonapi-codec';
 import type {
   WorkflowInstance,
@@ -39,6 +40,7 @@ export interface WorkflowInstancesService {
 export function createWorkflowInstancesService(transport: Transport, _config: { apiKey: string }): WorkflowInstancesService {
   return {
     async start(workflowUniqueId: string, data?: StartWorkflowRequest): Promise<WorkflowInstance> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
       const body: Record<string, unknown> = {};
       if (data?.userUniqueId) body['user'] = { user_unique_id: data.userUniqueId };
       const dataBody: Record<string, unknown> = {};
@@ -53,11 +55,15 @@ export function createWorkflowInstancesService(transport: Transport, _config: { 
     },
 
     async get(workflowUniqueId: string, instanceUniqueId: string): Promise<WorkflowInstance> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(instanceUniqueId, 'instanceUniqueId');
       const response = await transport.get<unknown>(`/workflows/${workflowUniqueId}/instances/${instanceUniqueId}`);
       return decodeOne(response, workflowInstanceMapper);
     },
 
     async getDetails(workflowUniqueId: string, instanceUniqueId: string): Promise<WorkflowInstanceDetails> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(instanceUniqueId, 'instanceUniqueId');
       const response = await transport.get<unknown>(`/workflows/${workflowUniqueId}/instances/${instanceUniqueId}/details`);
       const doc = response as Record<string, unknown>;
       const instance = decodeOne(response, workflowInstanceMapper);
@@ -83,6 +89,8 @@ export function createWorkflowInstancesService(transport: Transport, _config: { 
     },
 
     async step(workflowUniqueId: string, instanceUniqueId: string, data?: StepWorkflowRequest): Promise<WorkflowInstance> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(instanceUniqueId, 'instanceUniqueId');
       const response = await transport.put<unknown>(`/workflows/${workflowUniqueId}/instances/${instanceUniqueId}/step`, data ? {
         step: buildStepBody(data),
       } : {});
@@ -90,6 +98,8 @@ export function createWorkflowInstancesService(transport: Transport, _config: { 
     },
 
     async logStep(workflowUniqueId: string, instanceUniqueId: string, data: LogWorkflowStepRequest): Promise<WorkflowInstance> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(instanceUniqueId, 'instanceUniqueId');
       const response = await transport.put<unknown>(`/workflows/${workflowUniqueId}/instances/${instanceUniqueId}/log_step`, {
         step: buildStepBody(data),
       });
@@ -97,6 +107,8 @@ export function createWorkflowInstancesService(transport: Transport, _config: { 
     },
 
     async executeStep(workflowUniqueId: string, instanceUniqueId: string, data?: ExecuteStepRequest): Promise<WorkflowInstance> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(instanceUniqueId, 'instanceUniqueId');
       const response = await transport.post<unknown>(`/workflows/${workflowUniqueId}/instances/${instanceUniqueId}/execute_step`, data?.placeholders ? {
         execute: { placeholders: data.placeholders },
       } : {});
@@ -104,6 +116,8 @@ export function createWorkflowInstancesService(transport: Transport, _config: { 
     },
 
     async executeNextStep(workflowUniqueId: string, instanceUniqueId: string, data?: ExecuteNextStepRequest): Promise<WorkflowInstance> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(instanceUniqueId, 'instanceUniqueId');
       const body: Record<string, unknown> = {};
       if (data?.transitionUniqueId) body['transition_unique_id'] = data.transitionUniqueId;
       if (data?.placeholders) body['placeholders'] = data.placeholders;
@@ -112,11 +126,15 @@ export function createWorkflowInstancesService(transport: Transport, _config: { 
     },
 
     async suspend(workflowUniqueId: string, instanceUniqueId: string): Promise<WorkflowInstance> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(instanceUniqueId, 'instanceUniqueId');
       const response = await transport.put<unknown>(`/workflows/${workflowUniqueId}/instances/${instanceUniqueId}/suspend`, {});
       return decodeOne(response, workflowInstanceMapper);
     },
 
     async resume(workflowUniqueId: string, instanceUniqueId: string): Promise<WorkflowInstance> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(instanceUniqueId, 'instanceUniqueId');
       const response = await transport.put<unknown>(`/workflows/${workflowUniqueId}/instances/${instanceUniqueId}/resume`, {});
       return decodeOne(response, workflowInstanceMapper);
     },

@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   JarvisUser,
@@ -53,11 +54,13 @@ export function createJarvisUsersService(transport: Transport, _config: { apiKey
     },
 
     async get(uniqueId: string): Promise<JarvisUser> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/identities/${uniqueId}`);
       return decodeOne(response, jarvisUserMapper);
     },
 
     async register(uniqueId: string, data?: RegisterJarvisUserRequest): Promise<JarvisUser> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/identities/${uniqueId}/register`, {
         user: data ? buildUserBody(data) : {},
       });
@@ -65,6 +68,7 @@ export function createJarvisUsersService(transport: Transport, _config: { apiKey
     },
 
     async update(uniqueId: string, data: UpdateJarvisUserRequest): Promise<JarvisUser> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/identities/${uniqueId}`, {
         user: buildUserBody(data),
       });
@@ -72,18 +76,23 @@ export function createJarvisUsersService(transport: Transport, _config: { apiKey
     },
 
     async addPrompt(uniqueId: string, promptUniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(promptUniqueId, 'promptUniqueId');
       await transport.post(`/identities/${uniqueId}/add_prompt`, {
         prompt: { unique_id: promptUniqueId },
       });
     },
 
     async createContext(uniqueId: string, data?: CreateContextRequest): Promise<unknown> {
+      assertUuid(uniqueId, 'uniqueId');
       return transport.post(`/identities/${uniqueId}/create_context`, {
         context: data ? buildContextBody(data) : {},
       });
     },
 
     async sendMessage(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<unknown> {
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(contextUniqueId, 'contextUniqueId');
       return transport.post(`/identities/${uniqueId}/contexts/${contextUniqueId}/send_message`, {
         message: buildMessageBody(data),
       });

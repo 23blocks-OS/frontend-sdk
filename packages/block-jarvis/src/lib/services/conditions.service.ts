@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Condition,
@@ -45,6 +46,7 @@ export function createConditionsService(transport: Transport, _config: { apiKey:
     },
 
     async get(uniqueId: string): Promise<Condition> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/conditions/${uniqueId}`);
       return decodeOne(response, conditionMapper);
     },
@@ -57,6 +59,7 @@ export function createConditionsService(transport: Transport, _config: { apiKey:
     },
 
     async update(uniqueId: string, data: UpdateConditionRequest): Promise<Condition> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/conditions/${uniqueId}`, {
         condition: buildConditionBody(data),
       });
@@ -64,6 +67,7 @@ export function createConditionsService(transport: Transport, _config: { apiKey:
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/conditions/${uniqueId}`);
     },
   };

@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   ExecutionComment,
@@ -44,6 +45,8 @@ export interface ExecutionCommentsService {
 export function createExecutionCommentsService(transport: Transport, _config: { apiKey: string }): ExecutionCommentsService {
   return {
     async list(promptUniqueId: string, executionUniqueId: string, params?: ListExecutionCommentsParams): Promise<PageResult<ExecutionComment>> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -57,11 +60,16 @@ export function createExecutionCommentsService(transport: Transport, _config: { 
     },
 
     async get(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<ExecutionComment> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments/${uniqueId}`);
       return decodeOne(response, executionCommentMapper);
     },
 
     async create(promptUniqueId: string, executionUniqueId: string, data: CreateExecutionCommentRequest): Promise<ExecutionComment> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
       const response = await transport.post<unknown>(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments`, {
         comment: buildCommentBody(data),
       });
@@ -69,6 +77,9 @@ export function createExecutionCommentsService(transport: Transport, _config: { 
     },
 
     async update(promptUniqueId: string, executionUniqueId: string, uniqueId: string, data: UpdateExecutionCommentRequest): Promise<ExecutionComment> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments/${uniqueId}`, {
         comment: buildCommentBody(data),
       });
@@ -76,18 +87,30 @@ export function createExecutionCommentsService(transport: Transport, _config: { 
     },
 
     async delete(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments/${uniqueId}`);
     },
 
     async like(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.put(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments/${uniqueId}/like`, {});
     },
 
     async dislike(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments/${uniqueId}/dislike`);
     },
 
     async reply(promptUniqueId: string, executionUniqueId: string, uniqueId: string, data: ReplyToCommentRequest): Promise<ExecutionComment> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments/${uniqueId}/reply`, {
         comment: buildCommentBody(data),
       });
@@ -95,18 +118,30 @@ export function createExecutionCommentsService(transport: Transport, _config: { 
     },
 
     async follow(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.put(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments/${uniqueId}/follow`, {});
     },
 
     async unfollow(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments/${uniqueId}/unfollow`);
     },
 
     async save(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.put(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments/${uniqueId}/save`, {});
     },
 
     async unsave(promptUniqueId: string, executionUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/prompts/${promptUniqueId}/executions/${executionUniqueId}/comments/${uniqueId}/unsave`);
     },
   };

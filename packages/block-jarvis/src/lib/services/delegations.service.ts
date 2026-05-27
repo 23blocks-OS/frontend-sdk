@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Delegation,
@@ -24,6 +25,7 @@ export interface DelegationsService {
 export function createDelegationsService(transport: Transport, _config: { apiKey: string }): DelegationsService {
   return {
     async list(identityUniqueId: string, params?: ListDelegationsParams): Promise<PageResult<Delegation>> {
+      assertUuid(identityUniqueId, 'identityUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -35,11 +37,14 @@ export function createDelegationsService(transport: Transport, _config: { apiKey
     },
 
     async get(identityUniqueId: string, delegationUniqueId: string): Promise<Delegation> {
+      assertUuid(identityUniqueId, 'identityUniqueId');
+      assertUuid(delegationUniqueId, 'delegationUniqueId');
       const response = await transport.get<unknown>(`/identities/${identityUniqueId}/delegations/${delegationUniqueId}`);
       return decodeOne(response, delegationMapper);
     },
 
     async create(identityUniqueId: string, data: CreateDelegationRequest): Promise<Delegation> {
+      assertUuid(identityUniqueId, 'identityUniqueId');
       const body: Record<string, unknown> = {};
       body['delegate_unique_id'] = data.delegateUniqueId;
       if (data.delegationType) body['delegation_type'] = data.delegationType;
@@ -54,6 +59,8 @@ export function createDelegationsService(transport: Transport, _config: { apiKey
     },
 
     async update(identityUniqueId: string, delegationUniqueId: string, data: UpdateDelegationRequest): Promise<Delegation> {
+      assertUuid(identityUniqueId, 'identityUniqueId');
+      assertUuid(delegationUniqueId, 'delegationUniqueId');
       const body: Record<string, unknown> = {};
       if (data.status) body['status'] = data.status;
       if (data.expiresAt) body['expires_at'] = data.expiresAt;
@@ -65,6 +72,8 @@ export function createDelegationsService(transport: Transport, _config: { apiKey
     },
 
     async revoke(identityUniqueId: string, delegationUniqueId: string): Promise<void> {
+      assertUuid(identityUniqueId, 'identityUniqueId');
+      assertUuid(delegationUniqueId, 'delegationUniqueId');
       await transport.delete(`/identities/${identityUniqueId}/delegations/${delegationUniqueId}`);
     },
   };

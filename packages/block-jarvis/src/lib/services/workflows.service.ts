@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Workflow,
@@ -79,6 +80,7 @@ export function createWorkflowsService(transport: Transport, _config: { apiKey: 
     },
 
     async get(uniqueId: string): Promise<Workflow> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/workflows/${uniqueId}`);
       return decodeOne(response, workflowMapper);
     },
@@ -91,6 +93,7 @@ export function createWorkflowsService(transport: Transport, _config: { apiKey: 
     },
 
     async update(uniqueId: string, data: UpdateWorkflowRequest): Promise<Workflow> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/workflows/${uniqueId}`, {
         workflow: buildWorkflowBody(data),
       });
@@ -98,10 +101,12 @@ export function createWorkflowsService(transport: Transport, _config: { apiKey: 
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/workflows/${uniqueId}`);
     },
 
     async addStep(uniqueId: string, data: AddWorkflowStepRequest): Promise<WorkflowStep> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/workflows/${uniqueId}/add_step`, {
         step: buildStepBody(data),
       });
@@ -109,6 +114,8 @@ export function createWorkflowsService(transport: Transport, _config: { apiKey: 
     },
 
     async updateStep(uniqueId: string, stepUniqueId: string, data: UpdateWorkflowStepRequest): Promise<WorkflowStep> {
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(stepUniqueId, 'stepUniqueId');
       const response = await transport.put<unknown>(`/workflows/${uniqueId}/steps/${stepUniqueId}`, {
         step: buildStepBody(data),
       });
@@ -116,6 +123,8 @@ export function createWorkflowsService(transport: Transport, _config: { apiKey: 
     },
 
     async removeStep(uniqueId: string, stepUniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(stepUniqueId, 'stepUniqueId');
       await transport.delete(`/workflows/${uniqueId}/steps/${stepUniqueId}`);
     },
   };

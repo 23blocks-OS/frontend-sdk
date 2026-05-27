@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Prompt,
@@ -80,6 +81,7 @@ export function createPromptsService(transport: Transport, _config: { apiKey: st
     },
 
     async get(uniqueId: string): Promise<Prompt> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/prompts/${uniqueId}`);
       return decodeOne(response, promptMapper);
     },
@@ -92,6 +94,7 @@ export function createPromptsService(transport: Transport, _config: { apiKey: st
     },
 
     async update(uniqueId: string, data: UpdatePromptRequest): Promise<Prompt> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/prompts/${uniqueId}`, {
         prompt: buildPromptBody(data),
       });
@@ -99,10 +102,12 @@ export function createPromptsService(transport: Transport, _config: { apiKey: st
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/prompts/${uniqueId}`);
     },
 
     async execute(uniqueId: string, data: ExecutePromptRequest): Promise<ExecutePromptResponse> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<any>(`/prompts/${uniqueId}/execute`, {
         agent_unique_id: data.agentUniqueId,
         variables: data.variables,
@@ -118,6 +123,8 @@ export function createPromptsService(transport: Transport, _config: { apiKey: st
     },
 
     async publish(uniqueId: string, versionUniqueId: string): Promise<Prompt> {
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(versionUniqueId, 'versionUniqueId');
       const response = await transport.post<unknown>(
         `/prompts/${uniqueId}/versions/${versionUniqueId}/publish`, {}
       );
@@ -125,6 +132,7 @@ export function createPromptsService(transport: Transport, _config: { apiKey: st
     },
 
     async executeStream(uniqueId: string, data: ExecutePromptRequest): Promise<ReadableStream<string>> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<Response>(
         `/prompts/${uniqueId}/execute/stream`,
         {
@@ -144,6 +152,8 @@ export function createPromptsService(transport: Transport, _config: { apiKey: st
     },
 
     async executeVersionStream(uniqueId: string, versionUniqueId: string, data: ExecutePromptRequest): Promise<ReadableStream<string>> {
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(versionUniqueId, 'versionUniqueId');
       const response = await transport.post<Response>(
         `/prompts/${uniqueId}/versions/${versionUniqueId}/execute/stream`,
         {
@@ -163,6 +173,7 @@ export function createPromptsService(transport: Transport, _config: { apiKey: st
     },
 
     async render(uniqueId: string, data: RenderPromptRequest): Promise<RenderPromptResponse> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<any>(`/prompts/${uniqueId}/render`, {
         placeholders: data.placeholders,
       });

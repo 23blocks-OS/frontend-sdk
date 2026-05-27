@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Cluster,
@@ -48,6 +49,7 @@ export interface ClustersService {
 export function createClustersService(transport: Transport, _config: { apiKey: string }): ClustersService {
   return {
     async list(userUniqueId: string, params?: ListClustersParams): Promise<PageResult<Cluster>> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -60,11 +62,14 @@ export function createClustersService(transport: Transport, _config: { apiKey: s
     },
 
     async get(userUniqueId: string, uniqueId: string): Promise<Cluster> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/users/${userUniqueId}/clusters/${uniqueId}`);
       return decodeOne(response, clusterMapper);
     },
 
     async create(userUniqueId: string, data: CreateClusterRequest): Promise<Cluster> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.post<unknown>(`/users/${userUniqueId}/clusters`, {
         cluster: buildClusterBody(data),
       });
@@ -72,6 +77,8 @@ export function createClustersService(transport: Transport, _config: { apiKey: s
     },
 
     async update(userUniqueId: string, uniqueId: string, data: UpdateClusterRequest): Promise<Cluster> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/users/${userUniqueId}/clusters/${uniqueId}`, {
         cluster: buildClusterBody(data),
       });
@@ -79,10 +86,15 @@ export function createClustersService(transport: Transport, _config: { apiKey: s
     },
 
     async delete(userUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/users/${userUniqueId}/clusters/${uniqueId}`);
     },
 
     async addPrompt(userUniqueId: string, uniqueId: string, promptUniqueId: string): Promise<Cluster> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(promptUniqueId, 'promptUniqueId');
       const response = await transport.post<unknown>(`/users/${userUniqueId}/clusters/${uniqueId}/prompts`, {
         prompt: { unique_id: promptUniqueId },
       });
@@ -90,12 +102,17 @@ export function createClustersService(transport: Transport, _config: { apiKey: s
     },
 
     async createContext(userUniqueId: string, uniqueId: string, data?: CreateContextRequest): Promise<unknown> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       return transport.post<unknown>(`/users/${userUniqueId}/clusters/${uniqueId}/contexts`, data ? {
         context: buildContextBody(data),
       } : {});
     },
 
     async sendMessage(userUniqueId: string, uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<unknown> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(contextUniqueId, 'contextUniqueId');
       return transport.post<unknown>(`/users/${userUniqueId}/clusters/${uniqueId}/contexts/${contextUniqueId}/messages`, {
         message: buildMessageBody(data),
       });

@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodeMany, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   AIModel,
@@ -63,6 +64,7 @@ export function createAIModelsService(transport: Transport, _config: { apiKey: s
     },
 
     async get(uniqueId: string): Promise<AIModel> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/ai_models/${uniqueId}`);
       return decodeOne(response, aiModelMapper);
     },
@@ -75,6 +77,7 @@ export function createAIModelsService(transport: Transport, _config: { apiKey: s
     },
 
     async update(uniqueId: string, data: UpdateAIModelRequest): Promise<AIModel> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/ai_models/${uniqueId}`, {
         ai_model: buildAIModelBody(data),
       });
@@ -82,6 +85,7 @@ export function createAIModelsService(transport: Transport, _config: { apiKey: s
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/ai_models/${uniqueId}`);
     },
 

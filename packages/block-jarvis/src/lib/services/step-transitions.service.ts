@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   StepTransition,
@@ -32,6 +33,7 @@ export interface StepTransitionsService {
 export function createStepTransitionsService(transport: Transport, _config: { apiKey: string }): StepTransitionsService {
   return {
     async list(stepUniqueId: string, params?: ListStepTransitionsParams): Promise<PageResult<StepTransition>> {
+      assertUuid(stepUniqueId, 'stepUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -43,11 +45,14 @@ export function createStepTransitionsService(transport: Transport, _config: { ap
     },
 
     async get(stepUniqueId: string, uniqueId: string): Promise<StepTransition> {
+      assertUuid(stepUniqueId, 'stepUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/steps/${stepUniqueId}/transitions/${uniqueId}`);
       return decodeOne(response, stepTransitionMapper);
     },
 
     async create(stepUniqueId: string, data: CreateStepTransitionRequest): Promise<StepTransition> {
+      assertUuid(stepUniqueId, 'stepUniqueId');
       const response = await transport.post<unknown>(`/steps/${stepUniqueId}/transitions`, {
         step_transition: buildStepTransitionBody(data),
       });
@@ -55,6 +60,8 @@ export function createStepTransitionsService(transport: Transport, _config: { ap
     },
 
     async update(stepUniqueId: string, uniqueId: string, data: UpdateStepTransitionRequest): Promise<StepTransition> {
+      assertUuid(stepUniqueId, 'stepUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/steps/${stepUniqueId}/transitions/${uniqueId}`, {
         step_transition: buildStepTransitionBody(data),
       });
@@ -62,6 +69,8 @@ export function createStepTransitionsService(transport: Transport, _config: { ap
     },
 
     async delete(stepUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(stepUniqueId, 'stepUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/steps/${stepUniqueId}/transitions/${uniqueId}`);
     },
   };

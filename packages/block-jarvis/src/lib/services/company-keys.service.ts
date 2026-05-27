@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type { CompanyKey, CreateCompanyKeyRequest } from '../types/company-key.js';
 import { companyKeyMapper } from '../mappers/company-key.mapper.js';
@@ -35,6 +36,7 @@ export function createCompanyKeysService(transport: Transport, _config: { apiKey
     },
 
     async delete(urlId: string, keyUniqueId: string): Promise<void> {
+      assertUuid(keyUniqueId, 'keyUniqueId');
       await transport.delete(`/companies/${urlId}/keys/${keyUniqueId}`);
     },
   };

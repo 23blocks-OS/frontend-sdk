@@ -1,4 +1,5 @@
 import type { Transport } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne } from '@23blocks/jsonapi-codec';
 import type {
   WorkflowStep,
@@ -49,11 +50,14 @@ export interface WorkflowStepsService {
 export function createWorkflowStepsService(transport: Transport, _config: { apiKey: string }): WorkflowStepsService {
   return {
     async get(workflowUniqueId: string, stepUniqueId: string): Promise<WorkflowStep> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(stepUniqueId, 'stepUniqueId');
       const response = await transport.get<unknown>(`/workflows/${workflowUniqueId}/steps/${stepUniqueId}`);
       return decodeOne(response, workflowStepMapper);
     },
 
     async add(workflowUniqueId: string, data: AddWorkflowStepRequest): Promise<WorkflowStep> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
       const response = await transport.post<unknown>(`/workflows/${workflowUniqueId}/steps`, {
         step: buildStepBody(data),
       });
@@ -61,6 +65,8 @@ export function createWorkflowStepsService(transport: Transport, _config: { apiK
     },
 
     async update(workflowUniqueId: string, stepUniqueId: string, data: UpdateWorkflowStepRequest): Promise<WorkflowStep> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(stepUniqueId, 'stepUniqueId');
       const response = await transport.put<unknown>(`/workflows/${workflowUniqueId}/steps/${stepUniqueId}`, {
         step: buildStepBody(data),
       });
@@ -68,16 +74,20 @@ export function createWorkflowStepsService(transport: Transport, _config: { apiK
     },
 
     async remove(workflowUniqueId: string, stepUniqueId: string): Promise<void> {
+      assertUuid(workflowUniqueId, 'workflowUniqueId');
+      assertUuid(stepUniqueId, 'stepUniqueId');
       await transport.delete(`/workflows/${workflowUniqueId}/steps/${stepUniqueId}`);
     },
 
     async addPrompt(stepUniqueId: string, data: AddStepPromptRequest): Promise<void> {
+      assertUuid(stepUniqueId, 'stepUniqueId');
       await transport.post(`/steps/${stepUniqueId}/prompts`, {
         prompt: { unique_id: data.uniqueId },
       });
     },
 
     async addAgent(stepUniqueId: string, data: AddStepAgentRequest): Promise<void> {
+      assertUuid(stepUniqueId, 'stepUniqueId');
       await transport.post(`/steps/${stepUniqueId}/agents`, {
         agent: { unique_id: data.uniqueId },
       });

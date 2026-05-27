@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   AgentToolAssignment,
@@ -19,6 +20,7 @@ export interface AgentToolAssignmentsService {
 export function createAgentToolAssignmentsService(transport: Transport, _config: { apiKey: string }): AgentToolAssignmentsService {
   return {
     async list(agentUniqueId: string, params?: ListAgentToolAssignmentsParams): Promise<PageResult<AgentToolAssignment>> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -30,11 +32,14 @@ export function createAgentToolAssignmentsService(transport: Transport, _config:
     },
 
     async get(agentUniqueId: string, uniqueId: string): Promise<AgentToolAssignment> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/agents/${agentUniqueId}/tool_assignments/${uniqueId}`);
       return decodeOne(response, agentToolAssignmentMapper);
     },
 
     async create(agentUniqueId: string, data: CreateAgentToolAssignmentRequest): Promise<AgentToolAssignment> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const body: Record<string, unknown> = {};
       if (data.toolUniqueId) body['tool_unique_id'] = data.toolUniqueId;
       if (data.enabled !== undefined) body['enabled'] = data.enabled;
@@ -46,6 +51,8 @@ export function createAgentToolAssignmentsService(transport: Transport, _config:
     },
 
     async update(agentUniqueId: string, uniqueId: string, data: UpdateAgentToolAssignmentRequest): Promise<AgentToolAssignment> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const body: Record<string, unknown> = {};
       if (data.enabled !== undefined) body['enabled'] = data.enabled;
       if (data.priority !== undefined) body['priority'] = data.priority;
@@ -56,6 +63,8 @@ export function createAgentToolAssignmentsService(transport: Transport, _config:
     },
 
     async delete(agentUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/agents/${agentUniqueId}/tool_assignments/${uniqueId}`);
     },
   };

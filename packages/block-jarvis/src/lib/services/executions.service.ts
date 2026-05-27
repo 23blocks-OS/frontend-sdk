@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type { Execution, ListExecutionsParams } from '../types/execution.js';
 import { executionMapper } from '../mappers/execution.mapper.js';
@@ -54,11 +55,13 @@ export function createExecutionsService(transport: Transport, _config: { apiKey:
     },
 
     async get(uniqueId: string): Promise<Execution> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/executions/${uniqueId}`);
       return decodeOne(response, executionMapper);
     },
 
     async listByAgent(agentUniqueId: string, params?: ListExecutionsParams): Promise<PageResult<Execution>> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -70,6 +73,7 @@ export function createExecutionsService(transport: Transport, _config: { apiKey:
     },
 
     async listByPrompt(promptUniqueId: string, params?: ListExecutionsParams): Promise<PageResult<Execution>> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -82,11 +86,14 @@ export function createExecutionsService(transport: Transport, _config: { apiKey:
     },
 
     async cancel(uniqueId: string): Promise<Execution> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/executions/${uniqueId}/cancel`, {});
       return decodeOne(response, executionMapper);
     },
 
     async listByPromptVersion(promptUniqueId: string, versionUniqueId: string, params?: ListExecutionsParams): Promise<PageResult<Execution>> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(versionUniqueId, 'versionUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -99,6 +106,8 @@ export function createExecutionsService(transport: Transport, _config: { apiKey:
     },
 
     async getByPrompt(promptUniqueId: string, executionUniqueId: string): Promise<Execution> {
+      assertUuid(promptUniqueId, 'promptUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
       const response = await transport.get<unknown>(`/prompts/${promptUniqueId}/executions/${executionUniqueId}`);
       return decodeOne(response, executionMapper);
     },

@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   AgentTool,
@@ -35,6 +36,7 @@ export interface AgentToolsService {
 export function createAgentToolsService(transport: Transport, _config: { apiKey: string }): AgentToolsService {
   return {
     async list(agentUniqueId: string, params?: ListAgentToolsParams): Promise<PageResult<AgentTool>> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -47,11 +49,14 @@ export function createAgentToolsService(transport: Transport, _config: { apiKey:
     },
 
     async get(agentUniqueId: string, uniqueId: string): Promise<AgentTool> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/agents/${agentUniqueId}/tools/${uniqueId}`);
       return decodeOne(response, agentToolMapper);
     },
 
     async create(agentUniqueId: string, data: CreateAgentToolRequest): Promise<AgentTool> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const response = await transport.post<unknown>(`/agents/${agentUniqueId}/tools`, {
         agent_tool: buildAgentToolBody(data),
       });
@@ -59,6 +64,8 @@ export function createAgentToolsService(transport: Transport, _config: { apiKey:
     },
 
     async update(agentUniqueId: string, uniqueId: string, data: UpdateAgentToolRequest): Promise<AgentTool> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/agents/${agentUniqueId}/tools/${uniqueId}`, {
         agent_tool: buildAgentToolBody(data),
       });
@@ -66,6 +73,8 @@ export function createAgentToolsService(transport: Transport, _config: { apiKey:
     },
 
     async delete(agentUniqueId: string, uniqueId: string): Promise<void> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/agents/${agentUniqueId}/tools/${uniqueId}`);
     },
   };

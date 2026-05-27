@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   AgentTest,
@@ -37,6 +38,7 @@ export interface AgentTestsService {
 export function createAgentTestsService(transport: Transport, _config: { apiKey: string }): AgentTestsService {
   return {
     async list(agentUniqueId: string, params?: ListAgentTestsParams): Promise<PageResult<AgentTest>> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -49,11 +51,14 @@ export function createAgentTestsService(transport: Transport, _config: { apiKey:
     },
 
     async get(agentUniqueId: string, testUniqueId: string): Promise<AgentTest> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
       const response = await transport.get<unknown>(`/agents/${agentUniqueId}/tests/${testUniqueId}`);
       return decodeOne(response, agentTestMapper);
     },
 
     async create(agentUniqueId: string, data: CreateAgentTestRequest): Promise<AgentTest> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const response = await transport.post<unknown>(`/agents/${agentUniqueId}/tests`, {
         agent_test: buildAgentTestBody(data),
       });
@@ -61,6 +66,8 @@ export function createAgentTestsService(transport: Transport, _config: { apiKey:
     },
 
     async update(agentUniqueId: string, testUniqueId: string, data: UpdateAgentTestRequest): Promise<AgentTest> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
       const response = await transport.put<unknown>(`/agents/${agentUniqueId}/tests/${testUniqueId}`, {
         agent_test: buildAgentTestBody(data),
       });
@@ -68,15 +75,20 @@ export function createAgentTestsService(transport: Transport, _config: { apiKey:
     },
 
     async delete(agentUniqueId: string, testUniqueId: string): Promise<void> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
       await transport.delete(`/agents/${agentUniqueId}/tests/${testUniqueId}`);
     },
 
     async run(agentUniqueId: string, testUniqueId: string): Promise<AgentTestResult> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
       const response = await transport.post<unknown>(`/agents/${agentUniqueId}/tests/${testUniqueId}/run`, {});
       return decodeOne(response, agentTestResultMapper);
     },
 
     async runAll(agentUniqueId: string): Promise<AgentTestResult[]> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const response = await transport.post<unknown>(`/agents/${agentUniqueId}/tests/run-all`, {});
       const raw = response as any;
       const data = raw.data || raw;
@@ -87,6 +99,8 @@ export function createAgentTestsService(transport: Transport, _config: { apiKey:
     },
 
     async listResults(agentUniqueId: string, testUniqueId: string, params?: ListAgentTestResultsParams): Promise<PageResult<AgentTestResult>> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -97,11 +111,15 @@ export function createAgentTestsService(transport: Transport, _config: { apiKey:
     },
 
     async getResult(agentUniqueId: string, testUniqueId: string, resultUniqueId: string): Promise<AgentTestResult> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(testUniqueId, 'testUniqueId');
+      assertUuid(resultUniqueId, 'resultUniqueId');
       const response = await transport.get<unknown>(`/agents/${agentUniqueId}/tests/${testUniqueId}/results/${resultUniqueId}`);
       return decodeOne(response, agentTestResultMapper);
     },
 
     async listAgentResults(agentUniqueId: string, params?: ListAgentTestResultsParams): Promise<PageResult<AgentTestResult>> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);

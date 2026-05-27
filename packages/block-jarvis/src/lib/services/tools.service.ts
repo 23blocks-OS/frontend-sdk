@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Tool,
@@ -47,6 +48,7 @@ export function createToolsService(transport: Transport, _config: { apiKey: stri
     },
 
     async get(uniqueId: string): Promise<Tool> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/tools/${uniqueId}`);
       return decodeOne(response, toolMapper);
     },
@@ -59,6 +61,7 @@ export function createToolsService(transport: Transport, _config: { apiKey: stri
     },
 
     async update(uniqueId: string, data: UpdateToolRequest): Promise<Tool> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/tools/${uniqueId}`, {
         tool: buildToolBody(data),
       });
@@ -66,6 +69,7 @@ export function createToolsService(transport: Transport, _config: { apiKey: stri
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/tools/${uniqueId}`);
     },
   };

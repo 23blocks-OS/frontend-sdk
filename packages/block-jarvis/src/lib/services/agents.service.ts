@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Agent,
@@ -81,6 +82,7 @@ export function createAgentsService(transport: Transport, _config: { apiKey: str
     },
 
     async get(uniqueId: string): Promise<Agent> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/agents/${uniqueId}`);
       return decodeOne(response, agentMapper);
     },
@@ -93,6 +95,7 @@ export function createAgentsService(transport: Transport, _config: { apiKey: str
     },
 
     async update(uniqueId: string, data: UpdateAgentRequest): Promise<Agent> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/agents/${uniqueId}`, {
         agent: buildAgentBody(data),
       });
@@ -100,10 +103,12 @@ export function createAgentsService(transport: Transport, _config: { apiKey: str
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/agents/${uniqueId}`);
     },
 
     async addPrompt(uniqueId: string, data: AddAgentPromptRequest): Promise<Agent> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/agents/${uniqueId}/add_prompt`, {
         prompt: { unique_id: data.uniqueId },
       });
@@ -111,6 +116,7 @@ export function createAgentsService(transport: Transport, _config: { apiKey: str
     },
 
     async addEntity(uniqueId: string, data: AddAgentEntityRequest): Promise<Agent> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/agents/${uniqueId}/add_entity`, {
         entity: {
           entity_unique_id: data.entityUniqueId,
@@ -121,6 +127,7 @@ export function createAgentsService(transport: Transport, _config: { apiKey: str
     },
 
     async removeEntity(uniqueId: string, data: AddAgentEntityRequest): Promise<Agent> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/agents/${uniqueId}/remove_entity`, {
         entity: {
           entity_unique_id: data.entityUniqueId,

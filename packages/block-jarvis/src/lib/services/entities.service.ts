@@ -107,11 +107,13 @@ export function createEntitiesService(transport: Transport, _config: { apiKey: s
     },
 
     async get(uniqueId: string): Promise<Entity> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.get<unknown>(`/entities/${uniqueId}`);
       return decodeOne(response, entityMapper);
     },
 
     async register(uniqueId: string, data?: RegisterEntityRequest): Promise<Entity> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.post<unknown>(`/entities/${uniqueId}/register`, {
         entity: data ? buildEntityBody(data) : {},
       });
@@ -119,6 +121,7 @@ export function createEntitiesService(transport: Transport, _config: { apiKey: s
     },
 
     async update(uniqueId: string, data: UpdateEntityRequest): Promise<Entity> {
+      assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/entities/${uniqueId}`, {
         entity: buildEntityBody(data),
       });
@@ -126,28 +129,36 @@ export function createEntitiesService(transport: Transport, _config: { apiKey: s
     },
 
     async delete(uniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
       await transport.delete(`/entities/${uniqueId}`);
     },
 
     async addPrompt(uniqueId: string, promptUniqueId: string): Promise<void> {
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(promptUniqueId, 'promptUniqueId');
       await transport.post(`/entities/${uniqueId}/add_prompt`, {
         prompt: { unique_id: promptUniqueId },
       });
     },
 
     async createContext(uniqueId: string, data?: CreateContextRequest): Promise<unknown> {
+      assertUuid(uniqueId, 'uniqueId');
       return transport.post(`/entities/${uniqueId}/create_context`, {
         context: data ? buildContextBody(data) : {},
       });
     },
 
     async sendMessage(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<unknown> {
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(contextUniqueId, 'contextUniqueId');
       return transport.post(`/entities/${uniqueId}/contexts/${contextUniqueId}/send_message`, {
         message: buildMessageBody(data),
       });
     },
 
     async sendMessageStream(uniqueId: string, contextUniqueId: string, data: SendMessageRequest): Promise<ReadableStream<string>> {
+      assertUuid(uniqueId, 'uniqueId');
+      assertUuid(contextUniqueId, 'contextUniqueId');
       const response = await transport.post<Response>(
         `/entities/${uniqueId}/contexts/${contextUniqueId}/send_message_stream`,
         { message: buildMessageBody(data) },

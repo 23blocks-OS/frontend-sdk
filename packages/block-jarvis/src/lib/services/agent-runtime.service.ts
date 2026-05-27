@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   AgentThread,
@@ -98,6 +99,8 @@ export interface AgentRuntimeService {
 export function createAgentRuntimeService(transport: Transport, _config: { apiKey: string }, sseUrl?: string): AgentRuntimeService {
   return {
     async getContext(agentUniqueId: string, contextUniqueId: string): Promise<AgentContext> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(contextUniqueId, 'contextUniqueId');
       const response = await transport.get<any>(`/agents/${agentUniqueId}/context/${contextUniqueId}`);
       return {
         thread: parseAgentThread(response.thread || response),
@@ -109,6 +112,7 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
     },
 
     async createContext(agentUniqueId: string, data?: CreateAgentContextRequest): Promise<AgentContext> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const response = await transport.post<any>(`/agents/${agentUniqueId}/context`, data ? {
         context: buildContextBody(data),
       } : {});
@@ -118,6 +122,8 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
     },
 
     async getConversation(agentUniqueId: string, contextUniqueId: string): Promise<{ messages: AgentMessage[] }> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(contextUniqueId, 'contextUniqueId');
       const response = await transport.get<any>(`/agents/${agentUniqueId}/conversations/${contextUniqueId}`);
       return {
         messages: (response.messages || []).map(parseAgentMessage),
@@ -125,11 +131,13 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
     },
 
     async getThread(agentUniqueId: string, threadId: string): Promise<AgentThread> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const response = await transport.get<any>(`/agents/${agentUniqueId}/threads/${threadId}`);
       return parseAgentThread(response);
     },
 
     async createThread(agentUniqueId: string, data?: CreateAgentThreadRequest): Promise<AgentThread> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const body: Record<string, unknown> = {};
       if (data?.metadata) body['metadata'] = data.metadata;
       if (data?.fileIds) body['file_ids'] = data.fileIds;
@@ -138,6 +146,7 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
     },
 
     async sendMessage(agentUniqueId: string, threadId: string, data: SendAgentMessageRequest): Promise<unknown> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const requestBody: Record<string, unknown> = {
         message: buildRuntimeMessageBody(data),
       };
@@ -148,6 +157,7 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
     },
 
     async sendMessageStream(agentUniqueId: string, threadId: string, data: SendAgentMessageRequest): Promise<ReadableStream<string>> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const requestBody: Record<string, unknown> = {
         message: buildRuntimeMessageBody(data),
       };
@@ -171,11 +181,13 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
     },
 
     async getMessages(agentUniqueId: string, threadId: string): Promise<AgentMessage[]> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const response = await transport.get<any>(`/agents/${agentUniqueId}/threads/${threadId}/messages`);
       return (response.messages || response || []).map(parseAgentMessage);
     },
 
     async listExecutions(agentUniqueId: string, params?: ListAgentRunExecutionsParams): Promise<PageResult<AgentRunExecution>> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
@@ -187,11 +199,14 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
     },
 
     async getExecution(agentUniqueId: string, executionUniqueId: string): Promise<AgentRunExecution> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(executionUniqueId, 'executionUniqueId');
       const response = await transport.get<unknown>(`/agents/${agentUniqueId}/executions/${executionUniqueId}`);
       return decodeOne(response, runExecutionMapper);
     },
 
     async getRunStatus(agentUniqueId: string, threadId: string, runId: string): Promise<AgentRunExecution> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
       const response = await transport.get<any>(`/agents/${agentUniqueId}/threads/${threadId}/runs/${runId}`);
       return {
         id: response.id,
@@ -212,6 +227,8 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
     },
 
     async initiateHandoff(agentUniqueId: string, contextUniqueId: string): Promise<HandoffStatus> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(contextUniqueId, 'contextUniqueId');
       const response = await transport.post<any>(`/agents/${agentUniqueId}/context/${contextUniqueId}/handoff`, {});
       return {
         delegationUniqueId: response.delegation_unique_id || response.unique_id,
@@ -224,6 +241,8 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
     },
 
     async getHandoffStatus(agentUniqueId: string, contextUniqueId: string): Promise<HandoffStatus> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(contextUniqueId, 'contextUniqueId');
       const response = await transport.get<any>(`/agents/${agentUniqueId}/context/${contextUniqueId}/handoff`);
       return {
         delegationUniqueId: response.delegation_unique_id || response.unique_id,
@@ -236,6 +255,9 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
     },
 
     async revokeHandoff(agentUniqueId: string, contextUniqueId: string, delegationUniqueId: string): Promise<void> {
+      assertUuid(agentUniqueId, 'agentUniqueId');
+      assertUuid(contextUniqueId, 'contextUniqueId');
+      assertUuid(delegationUniqueId, 'delegationUniqueId');
       await transport.delete(`/agents/${agentUniqueId}/context/${contextUniqueId}/handoff/${delegationUniqueId}`);
     },
   };
