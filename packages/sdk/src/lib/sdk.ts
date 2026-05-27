@@ -40,6 +40,10 @@ export {
 // (was reading flat top-level fields, silently dropping everything):
 // jarvis.prompts.execute, jarvis.marvinChat.sendMessage,
 // jarvis.agentRuntime.initiateHandoff/getHandoffStatus,
+// UserOwnership (block-assets) now surfaces the full Asset record via the
+// `asset` field, populated from the JSON:API `included[]` array — saves
+// N+1 lookups when consumers need asset details alongside ownership rows.
+//
 // jarvis.agentRuntime.getMessages/getConversation/getContext (messages come
 // from the JSON:API `included[]` array with source_alias→role translation),
 // products.visitors.create, and all 13 methods in block-assets
