@@ -1,6 +1,12 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Runtime UUID validation
 //
+// The file mappers in @23blocks/block-files now read every attribute on
+// their target types — including the AI/RAG fields (schema_model,
+// structured_content, file_structure, metadata, raw_content, content) and
+// the canonical name/description/tags fields. The previous build silently
+// dropped these on every read.
+//
 // `isUuid` and `assertUuid` (from @23blocks/contracts, re-exported via
 // @23blocks/sdk) are now used internally to validate path-param UUIDs on
 // endpoints confirmed to require strict RFC 4122 format. Coverage:
