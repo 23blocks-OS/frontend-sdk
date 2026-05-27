@@ -54,6 +54,16 @@ export {
 // (was a single stats object with fields that didn't exist in the
 // response).
 //
+// block-authentication BREAKING: 10 methods removed that were calling
+// non-existent routes (MagicLinksService.get/expire, RefreshTokensService.
+// get/revoke, UserDevicesService.get/unregister/setDefault, TenantUsersService.
+// get, AdminRsaKeysService.get/deactivate/delete). Also 9 param renames
+// to clarify intent (AppsService uniqueId→appUrlId, BlocksService
+// uniqueId→blockCode, ServicesRegistryService uniqueId→id,
+// CompanySubscriptionsService companyUniqueId→companyUrlId). Added
+// assertUuid to GeographyService.currencies.get (only geography endpoint
+// that takes a UUID; others are integer IDs).
+//
 // The SDK uses `assertUuid` internally to validate path-param UUIDs on
 // endpoints confirmed by each block's API team to require strict RFC 4122
 // format.
