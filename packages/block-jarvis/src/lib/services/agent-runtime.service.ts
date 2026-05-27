@@ -67,20 +67,59 @@ function parseAgentThread(response: any): AgentThread {
   };
 }
 
+function sourceAliasToRole(alias: unknown): 'user' | 'assistant' {
+  // Realtime API messages tag the author via `source_alias`. Anything that
+  // looks like an assistant/agent maps to 'assistant'; everything else
+  // (user, customer, blank) maps to 'user'.
+  const s = String(alias ?? '').toLowerCase();
+  return s === 'assistant' || s === 'agent' || s === 'bot' || s === 'ai' ? 'assistant' : 'user';
+}
+
 function parseAgentMessage(m: any): AgentMessage {
+  // Accept either:
+  //   - JSON:API included[]: { id, type: 'message', attributes: { id, content, source_alias, created_at, ... } }
+  //   - flat OpenAI message: { id, thread_id, role, content: [...], metadata, created_at }
+  const attrs = m?.attributes ?? m ?? {};
+  const rawContent = attrs.content;
+  const role: 'user' | 'assistant' = attrs.role
+    ? (attrs.role as 'user' | 'assistant')
+    : sourceAliasToRole(attrs.source_alias);
+
+  // For JSON:API messages, content is a string. For OpenAI, content is an
+  // array of content blocks. Normalize to the array shape used by AgentMessage.
+  const content = Array.isArray(rawContent)
+    ? rawContent.map((c: any) => ({
+        type: c.type,
+        text: c.text,
+        imageFile: c.image_file,
+        imageUrl: c.image_url,
+      }))
+    : rawContent
+      ? [{ type: 'text' as const, text: { value: String(rawContent) } }]
+      : [];
+
   return {
-    id: m.id,
-    threadId: m.thread_id,
-    role: m.role,
-    content: (m.content || []).map((c: any) => ({
-      type: c.type,
-      text: c.text,
-      imageFile: c.image_file,
-      imageUrl: c.image_url,
-    })),
-    metadata: m.metadata,
-    createdAt: new Date(m.created_at),
+    id: String(m?.id ?? attrs.id ?? ''),
+    threadId: String(attrs.thread_id ?? m?.thread_id ?? ''),
+    role,
+    content,
+    metadata: attrs.metadata,
+    createdAt: new Date(attrs.created_at ?? m?.created_at ?? Date.now()),
   };
+}
+
+// Extract messages from a JSON:API conversation response. The Realtime API's
+// LoadConversationService returns `{ data: { type: 'conversation', ... },
+// included: [{ type: 'message', attributes: {...} }, ...] }`. We also accept
+// legacy shapes: `{ messages: [...] }` and bare arrays.
+function extractMessages(response: any): any[] {
+  if (Array.isArray(response?.included)) {
+    return response.included.filter((r: any) => r?.type === 'message' || r?.type === 'Message');
+  }
+  if (Array.isArray(response?.messages)) return response.messages;
+  if (Array.isArray(response?.data)) return response.data;
+  if (Array.isArray(response)) return response;
+  return [];
 }
 
 export interface AgentRuntimeService {
@@ -109,11 +148,19 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
       assertUuid(agentUniqueId, 'agentUniqueId');
       assertUuid(contextUniqueId, 'contextUniqueId');
       const response = await transport.get<any>(`/agents/${agentUniqueId}/context/${contextUniqueId}`);
+      // The conversation slot may be a JSON:API document (with `included[]`
+      // for messages) or a legacy `{ unique_id, messages: [...] }` envelope.
+      const convoSource = response.conversation ?? response;
+      const convoData = convoSource?.data ?? convoSource;
+      const convoAttrs = convoData?.attributes ?? convoData ?? {};
+      const messages = extractMessages(convoSource).map(parseAgentMessage);
+      const conversationUniqueId =
+        convoAttrs.unique_id ?? convoData?.unique_id ?? convoSource?.unique_id;
       return {
-        thread: parseAgentThread(response.thread || response),
-        conversation: response.conversation ? {
-          uniqueId: response.conversation.unique_id,
-          messages: (response.conversation.messages || []).map(parseAgentMessage),
+        thread: parseAgentThread(response.thread ?? response),
+        conversation: conversationUniqueId || messages.length > 0 ? {
+          uniqueId: String(conversationUniqueId ?? ''),
+          messages,
         } : undefined,
       };
     },
@@ -134,9 +181,11 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
     async getConversation(agentUniqueId: string, contextUniqueId: string): Promise<{ messages: AgentMessage[] }> {
       assertUuid(agentUniqueId, 'agentUniqueId');
       assertUuid(contextUniqueId, 'contextUniqueId');
+      // Backend returns JSON:API document from Realtime API's
+      // LoadConversationService — messages live in `included[]` filtered by type.
       const response = await transport.get<any>(`/agents/${agentUniqueId}/conversations/${contextUniqueId}`);
       return {
-        messages: (response.messages || []).map(parseAgentMessage),
+        messages: extractMessages(response).map(parseAgentMessage),
       };
     },
 
@@ -192,8 +241,10 @@ export function createAgentRuntimeService(transport: Transport, _config: { apiKe
 
     async getMessages(agentUniqueId: string, threadId: string): Promise<AgentMessage[]> {
       assertUuid(agentUniqueId, 'agentUniqueId');
+      // Backend returns JSON:API conversation document (same as getConversation);
+      // messages are in `included[]`.
       const response = await transport.get<any>(`/agents/${agentUniqueId}/threads/${threadId}/messages`);
-      return (response.messages || response || []).map(parseAgentMessage);
+      return extractMessages(response).map(parseAgentMessage);
     },
 
     async listExecutions(agentUniqueId: string, params?: ListAgentRunExecutionsParams): Promise<PageResult<AgentRunExecution>> {
