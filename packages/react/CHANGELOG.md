@@ -1,3 +1,19 @@
+## 15.5.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with JSON:API parser fixes (jarvis + products visitors) ([b6d1526](https://github.com/23blocks-OS/frontend-sdk/commit/b6d1526))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-products to 5.0.3
+- Updated @23blocks/block-jarvis to 5.9.2
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 15.4.1 (2026-05-27)
 
 ### 🧱 Updated Dependencies

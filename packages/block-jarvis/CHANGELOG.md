@@ -1,3 +1,14 @@
+## 5.9.2 (2026-05-27)
+
+### 🩹 Fixes
+
+- **@23blocks/block-jarvis:** parse JSON:API in execute/handoff/marvin endpoints + remove dead marvin routes ([be7cf81](https://github.com/23blocks-OS/frontend-sdk/commit/be7cf81))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 5.9.1 (2026-05-27)
 
 ### 🩹 Fixes
