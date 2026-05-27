@@ -1,3 +1,18 @@
+## 15.1.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with UserOwnership.asset included field ([50b79a5](https://github.com/23blocks-OS/frontend-sdk/commit/50b79a5))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-assets to 4.1.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 # 15.0.0 (2026-05-27)
 
 ### 🚀 Features

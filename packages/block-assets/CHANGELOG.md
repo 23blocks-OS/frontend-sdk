@@ -1,3 +1,14 @@
+## 4.1.0 (2026-05-27)
+
+### 🚀 Features
+
+- **@23blocks/block-assets:** surface included Asset on UserOwnership ([77b7dfd](https://github.com/23blocks-OS/frontend-sdk/commit/77b7dfd))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 4.0.4 (2026-05-27)
 
 ### 🩹 Fixes

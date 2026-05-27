@@ -1,3 +1,9 @@
+## 15.2.6 (2026-05-27)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-assets to 4.1.0
+
 ## 15.2.5 (2026-05-27)
 
 ### 🧱 Updated Dependencies
