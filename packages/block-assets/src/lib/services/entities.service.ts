@@ -142,7 +142,26 @@ export function createAssetsEntitiesService(transport: Transport, _config: { api
 
     async listAccesses(uniqueId: string): Promise<EntityAccess[]> {
       const response = await transport.get<any>(`/entities/${uniqueId}/accesses`);
-      return (response.accesses || response || []).map((a: any) => ({
+      const items = Array.isArray(response?.data) ? response.data : [];
+      return items.map((d: any) => {
+        const a = d?.attributes ?? d ?? {};
+        return {
+          uniqueId: a.unique_id,
+          entityUniqueId: a.entity_unique_id,
+          userUniqueId: a.user_unique_id,
+          accessLevel: a.access_level,
+          grantedAt: new Date(a.granted_at),
+          expiresAt: a.expires_at ? new Date(a.expires_at) : undefined,
+          payload: a.payload,
+        };
+      });
+    },
+
+    async getAccess(uniqueId: string): Promise<EntityAccess> {
+      const response = await transport.get<any>(`/entities/${uniqueId}/access`);
+      const d = response?.data ?? response ?? {};
+      const a = d?.attributes ?? d ?? {};
+      return {
         uniqueId: a.unique_id,
         entityUniqueId: a.entity_unique_id,
         userUniqueId: a.user_unique_id,
@@ -150,19 +169,6 @@ export function createAssetsEntitiesService(transport: Transport, _config: { api
         grantedAt: new Date(a.granted_at),
         expiresAt: a.expires_at ? new Date(a.expires_at) : undefined,
         payload: a.payload,
-      }));
-    },
-
-    async getAccess(uniqueId: string): Promise<EntityAccess> {
-      const response = await transport.get<any>(`/entities/${uniqueId}/access`);
-      return {
-        uniqueId: response.unique_id,
-        entityUniqueId: response.entity_unique_id,
-        userUniqueId: response.user_unique_id,
-        accessLevel: response.access_level,
-        grantedAt: new Date(response.granted_at),
-        expiresAt: response.expires_at ? new Date(response.expires_at) : undefined,
-        payload: response.payload,
       };
     },
 
@@ -182,46 +188,54 @@ export function createAssetsEntitiesService(transport: Transport, _config: { api
           payload: data.payload,
         },
       });
+      const d = response?.data ?? response ?? {};
+      const a = d?.attributes ?? d ?? {};
       return {
-        uniqueId: response.unique_id,
-        entityUniqueId: response.entity_unique_id,
-        userUniqueId: response.user_unique_id,
-        requestedAccessLevel: response.requested_access_level,
-        status: response.status,
-        reason: response.reason,
-        requestedAt: new Date(response.requested_at),
-        resolvedAt: response.resolved_at ? new Date(response.resolved_at) : undefined,
-        payload: response.payload,
+        uniqueId: a.unique_id,
+        entityUniqueId: a.entity_unique_id,
+        userUniqueId: a.user_unique_id,
+        requestedAccessLevel: a.requested_access_level,
+        status: a.status,
+        reason: a.reason,
+        requestedAt: new Date(a.requested_at),
+        resolvedAt: a.resolved_at ? new Date(a.resolved_at) : undefined,
+        payload: a.payload,
       };
     },
 
     async listAccessRequests(uniqueId: string): Promise<AccessRequest[]> {
       const response = await transport.get<any>(`/entities/${uniqueId}/access/requests`);
-      return (response.access_requests || response || []).map((r: any) => ({
-        uniqueId: r.unique_id,
-        entityUniqueId: r.entity_unique_id,
-        userUniqueId: r.user_unique_id,
-        requestedAccessLevel: r.requested_access_level,
-        status: r.status,
-        reason: r.reason,
-        requestedAt: new Date(r.requested_at),
-        resolvedAt: r.resolved_at ? new Date(r.resolved_at) : undefined,
-        payload: r.payload,
-      }));
+      const items = Array.isArray(response?.data) ? response.data : [];
+      return items.map((d: any) => {
+        const a = d?.attributes ?? d ?? {};
+        return {
+          uniqueId: a.unique_id,
+          entityUniqueId: a.entity_unique_id,
+          userUniqueId: a.user_unique_id,
+          requestedAccessLevel: a.requested_access_level,
+          status: a.status,
+          reason: a.reason,
+          requestedAt: new Date(a.requested_at),
+          resolvedAt: a.resolved_at ? new Date(a.resolved_at) : undefined,
+          payload: a.payload,
+        };
+      });
     },
 
     async approveAccessRequest(uniqueId: string, requestUniqueId: string): Promise<AccessRequest> {
       const response = await transport.put<any>(`/entities/${uniqueId}/access/requests/${requestUniqueId}/approve`, {});
+      const d = response?.data ?? response ?? {};
+      const a = d?.attributes ?? d ?? {};
       return {
-        uniqueId: response.unique_id,
-        entityUniqueId: response.entity_unique_id,
-        userUniqueId: response.user_unique_id,
-        requestedAccessLevel: response.requested_access_level,
-        status: response.status,
-        reason: response.reason,
-        requestedAt: new Date(response.requested_at),
-        resolvedAt: response.resolved_at ? new Date(response.resolved_at) : undefined,
-        payload: response.payload,
+        uniqueId: a.unique_id,
+        entityUniqueId: a.entity_unique_id,
+        userUniqueId: a.user_unique_id,
+        requestedAccessLevel: a.requested_access_level,
+        status: a.status,
+        reason: a.reason,
+        requestedAt: new Date(a.requested_at),
+        resolvedAt: a.resolved_at ? new Date(a.resolved_at) : undefined,
+        payload: a.payload,
       };
     },
 

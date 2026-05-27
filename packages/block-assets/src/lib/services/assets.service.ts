@@ -301,9 +301,11 @@ export function createAssetsService(transport: Transport, _config: { apiKey: str
           payload: data?.payload,
         },
       });
+      const d = response?.data ?? response ?? {};
+      const a = d?.attributes ?? d ?? {};
       return {
-        code: response.code,
-        expiresAt: new Date(response.expires_at),
+        code: a.code,
+        expiresAt: new Date(a.expires_at),
       };
     },
   };

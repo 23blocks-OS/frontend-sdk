@@ -62,12 +62,14 @@ export function createAssetImagesService(transport: Transport, _config: { apiKey
           content_type: data.contentType,
         },
       });
+      const d = response?.data ?? response ?? {};
+      const a = d?.attributes ?? d ?? {};
       return {
-        uniqueId: response.unique_id,
-        url: response.url,
-        filename: response.filename,
-        contentType: response.content_type,
-        createdAt: new Date(response.created_at),
+        uniqueId: a.unique_id,
+        url: a.url,
+        filename: a.filename,
+        contentType: a.content_type,
+        createdAt: new Date(a.created_at),
       };
     },
 
@@ -92,12 +94,14 @@ export function createAssetImagesService(transport: Transport, _config: { apiKey
           content_type: data.contentType,
         },
       });
+      const d = response?.data ?? response ?? {};
+      const a = d?.attributes ?? d ?? {};
       return {
-        uniqueId: response.unique_id,
-        url: response.url,
-        filename: response.filename,
-        contentType: response.content_type,
-        createdAt: new Date(response.created_at),
+        uniqueId: a.unique_id,
+        url: a.url,
+        filename: a.filename,
+        contentType: a.content_type,
+        createdAt: new Date(a.created_at),
       };
     },
 

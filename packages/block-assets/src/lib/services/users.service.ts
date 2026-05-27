@@ -102,64 +102,35 @@ export function createAssetsUsersService(transport: Transport, _config: { apiKey
 
     async listEntities(uniqueId: string): Promise<AssetsEntity[]> {
       const response = await transport.get<any>(`/users/${uniqueId}/entities`);
-      // Could be JSON:API or plain array
-      if (response.data && Array.isArray(response.data)) {
-        return response.data.map((e: any) => assetsEntityMapper.map({ id: e.id, type: 'entity', attributes: e }, new Map()));
-      }
-      return (response.entities || response || []).map((e: any) => ({
-        id: e.id,
-        uniqueId: e.unique_id,
-        name: e.name,
-        description: e.description,
-        entityType: e.entity_type,
-        status: e.status,
-        enabled: e.enabled ?? true,
-        payload: e.payload,
-        createdAt: new Date(e.created_at),
-        updatedAt: new Date(e.updated_at),
-      }));
+      const items = Array.isArray(response?.data) ? response.data : [];
+      return items.map((e: any) =>
+        assetsEntityMapper.map({ id: e.id, type: e.type ?? 'entity', attributes: e.attributes ?? {} }, new Map())
+      );
     },
 
     async listAssets(uniqueId: string): Promise<Asset[]> {
       const response = await transport.get<any>(`/users/${uniqueId}/assets`);
-      if (response.data && Array.isArray(response.data)) {
-        return response.data.map((a: any) => assetMapper.map({ id: a.id, type: 'asset', attributes: a }, new Map()));
-      }
-      return (response.assets || response || []).map((a: any) => ({
-        id: a.id,
-        uniqueId: a.unique_id,
-        code: a.code,
-        name: a.name,
-        description: a.description,
-        assetType: a.asset_type,
-        serialNumber: a.serial_number,
-        model: a.model,
-        manufacturer: a.manufacturer,
-        purchaseDate: a.purchase_date ? new Date(a.purchase_date) : undefined,
-        purchasePrice: a.purchase_price,
-        currentValue: a.current_value,
-        locationUniqueId: a.location_unique_id,
-        assignedToUniqueId: a.assigned_to_unique_id,
-        status: a.status,
-        enabled: a.enabled ?? true,
-        payload: a.payload,
-        tags: a.tags,
-        createdAt: new Date(a.created_at),
-        updatedAt: new Date(a.updated_at),
-      }));
+      const items = Array.isArray(response?.data) ? response.data : [];
+      return items.map((a: any) =>
+        assetMapper.map({ id: a.id, type: a.type ?? 'asset', attributes: a.attributes ?? {} }, new Map())
+      );
     },
 
     async listOwnership(uniqueId: string): Promise<UserOwnership[]> {
       const response = await transport.get<any>(`/users/${uniqueId}/ownership`);
-      return (response.ownerships || response || []).map((o: any) => ({
-        uniqueId: o.unique_id,
-        assetUniqueId: o.asset_unique_id,
-        userUniqueId: o.user_unique_id,
-        ownershipType: o.ownership_type,
-        acquiredAt: new Date(o.acquired_at),
-        transferredAt: o.transferred_at ? new Date(o.transferred_at) : undefined,
-        payload: o.payload,
-      }));
+      const items = Array.isArray(response?.data) ? response.data : [];
+      return items.map((d: any) => {
+        const o = d?.attributes ?? d ?? {};
+        return {
+          uniqueId: o.unique_id,
+          assetUniqueId: o.asset_unique_id,
+          userUniqueId: o.user_unique_id,
+          ownershipType: o.ownership_type,
+          acquiredAt: new Date(o.acquired_at),
+          transferredAt: o.transferred_at ? new Date(o.transferred_at) : undefined,
+          payload: o.payload,
+        };
+      });
     },
   };
 }
