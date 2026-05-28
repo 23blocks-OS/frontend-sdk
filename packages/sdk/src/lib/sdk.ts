@@ -40,6 +40,15 @@ export {
 // (was reading flat top-level fields, silently dropping everything):
 // jarvis.prompts.execute, jarvis.marvinChat.sendMessage,
 // jarvis.agentRuntime.initiateHandoff/getHandoffStatus,
+// block-products BREAKING: ShoppingListsService rewritten. Methods now
+// take userUniqueId as a required positional arg; paths moved from the
+// non-existent flat /shopping_lists/* to /users/:uid/shoppinglists/*.
+// Item operations use the /products sub-resource (NOT /items) with
+// quantity-as-delta semantics on addItem. updateItemQuantity removed.
+//
+// `transport.delete` now supports a request body via `options.body`
+// (required by some 23blocks routes that read params from DELETE bodies).
+//
 // jarvis.conversations now correctly hits /identities/:uid/conversations
 // for listByUser (was 404'ing on /users/:uid/...) and exposes archive,
 // rename (top-level `name` field, not `title`), and restore methods that
