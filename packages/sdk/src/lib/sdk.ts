@@ -40,6 +40,11 @@ export {
 // (was reading flat top-level fields, silently dropping everything):
 // jarvis.prompts.execute, jarvis.marvinChat.sendMessage,
 // jarvis.agentRuntime.initiateHandoff/getHandoffStatus,
+// jarvis.conversations now correctly hits /identities/:uid/conversations
+// for listByUser (was 404'ing on /users/:uid/...) and exposes archive,
+// rename (top-level `name` field, not `title`), and restore methods that
+// the backend supported all along.
+//
 // UserOwnership (block-assets) now surfaces the full Asset record via the
 // `asset` field, populated from the JSON:API `included[]` array — saves
 // N+1 lookups when consumers need asset details alongside ownership rows.
