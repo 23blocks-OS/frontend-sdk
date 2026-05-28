@@ -1,3 +1,26 @@
+# 6.0.0 (2026-05-28)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-products:** rewrite ShoppingListsService for /users/:uid/shoppinglists routes ([#7](https://github.com/23blocks-OS/frontend-sdk/issues/7))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-products:** rewrite ShoppingListsService for /users/:uid/shoppinglists routes  ([#7](https://github.com/23blocks-OS/frontend-sdk/issues/7))
+  signature changes on all 8 methods + removal of
+  updateItemQuantity + removal of ListShoppingListsParams.userUniqueId.
+  Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/jsonapi-codec to 3.3.5
+- Updated @23blocks/contracts to 2.5.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 5.0.3 (2026-05-27)
 
 ### 🩹 Fixes

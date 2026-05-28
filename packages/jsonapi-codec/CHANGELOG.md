@@ -1,3 +1,9 @@
+## 3.3.5 (2026-05-28)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/contracts to 2.5.0
+
 ## 3.3.4 (2026-05-27)
 
 ### 🩹 Fixes

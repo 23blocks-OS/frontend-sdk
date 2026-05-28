@@ -1,3 +1,14 @@
+## 2.5.0 (2026-05-28)
+
+### 🚀 Features
+
+- **@23blocks/contracts:** add RequestOptions.body for DELETE-with-body endpoints ([b99977d](https://github.com/23blocks-OS/frontend-sdk/commit/b99977d))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 2.4.0 (2026-05-27)
 
 ### 🚀 Features

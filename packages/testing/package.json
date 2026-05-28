@@ -1,6 +1,6 @@
 {
   "name": "@23blocks/testing",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "Testing utilities for the 23blocks SDK - mock transport, fixtures, and assertion helpers",
   "license": "MIT",
   "author": "23blocks <hello@23blocks.com>",

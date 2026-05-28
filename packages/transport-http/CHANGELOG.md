@@ -1,3 +1,19 @@
+## 3.4.0 (2026-05-28)
+
+### 🚀 Features
+
+- **@23blocks/transport-http:** support body on DELETE via options.body ([0ce697a](https://github.com/23blocks-OS/frontend-sdk/commit/0ce697a))
+- **@23blocks/contracts:** add RequestOptions.body for DELETE-with-body endpoints ([b99977d](https://github.com/23blocks-OS/frontend-sdk/commit/b99977d))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/contracts to 2.5.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 3.3.4 (2026-05-27)
 
 ### 🩹 Fixes
