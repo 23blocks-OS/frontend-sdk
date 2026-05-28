@@ -41,6 +41,14 @@ export interface RequestOptions {
    * Used for routing specific requests to different domains (e.g., SSE streaming).
    */
   baseUrl?: string;
+  /**
+   * Request body for methods (like DELETE) whose top-level signature doesn't
+   * accept a body positional arg. Required for endpoints that read params
+   * from the DELETE body (non-standard but used by some 23blocks routes).
+   * Ignored when calling `post`, `put`, or `patch` (those take body as a
+   * positional argument).
+   */
+  body?: unknown;
 }
 
 /**

@@ -395,7 +395,7 @@ export function createHttpTransport(config: TransportConfig): Transport {
     },
 
     delete<T>(path: string, options?: RequestOptions): Promise<T> {
-      return request<T>('DELETE', path, undefined, options);
+      return request<T>('DELETE', path, options?.body, options);
     },
   };
 }
