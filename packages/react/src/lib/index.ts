@@ -7,6 +7,11 @@
 // the canonical name/description/tags fields. The previous build silently
 // dropped these on every read.
 //
+// block-products BREAKING: useProductsBlock().shoppingLists rewritten.
+// All methods now take userUniqueId as a required first arg; paths use
+// /users/:uid/shoppinglists/* (the flat /shopping_lists/* didn't exist).
+// addItem uses delta semantics; updateItemQuantity removed.
+//
 // useJarvisBlock().conversations.listByUser now uses the correct
 // /identities/:uid path (was 404'ing on /users/:uid/...). Also adds
 // archive, rename (top-level `name` field), and restore methods.
