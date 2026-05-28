@@ -7,6 +7,10 @@
 // the canonical name/description/tags fields. The previous build silently
 // dropped these on every read.
 //
+// useJarvisBlock().conversations.listByUser now uses the correct
+// /identities/:uid path (was 404'ing on /users/:uid/...). Also adds
+// archive, rename (top-level `name` field), and restore methods.
+//
 // useAssetsBlock().users.listOwnership now surfaces the full Asset record
 // via the `asset` field on each UserOwnership (populated from the
 // JSON:API `included[]` array).
