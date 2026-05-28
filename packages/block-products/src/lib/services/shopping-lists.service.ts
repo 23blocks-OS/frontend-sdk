@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   ShoppingList,
@@ -11,89 +12,97 @@ import { shoppingListMapper } from '../mappers/shopping-list.mapper.js';
 
 export interface ShoppingListsService {
   /**
-   * List shopping lists with optional filtering, sorting, and pagination.
-   * @param params - Filter options including status, user, and pagination
-   * @returns Paginated result containing an array of ShoppingList items and page metadata
+   * List shopping lists for a user.
+   * @param userUniqueId - The user's UUID
+   * @param params - Optional filtering, sorting, and pagination
+   * @returns Paginated result of ShoppingList records
    */
-  list(params?: ListShoppingListsParams): Promise<PageResult<ShoppingList>>;
+  list(userUniqueId: string, params?: ListShoppingListsParams): Promise<PageResult<ShoppingList>>;
 
   /**
-   * Get a single shopping list by its unique identifier.
-   * @param uniqueId - The shopping list unique ID
+   * Get a single shopping list belonging to a user.
+   * @param userUniqueId - The user's UUID
+   * @param listUniqueId - The shopping list's UUID
    * @returns The matching ShoppingList
    */
-  get(uniqueId: string): Promise<ShoppingList>;
+  get(userUniqueId: string, listUniqueId: string): Promise<ShoppingList>;
 
   /**
-   * Create a new shopping list.
-   * @param data - Shopping list creation payload including name, description, and visibility
+   * Create a new shopping list for a user.
+   * @param userUniqueId - The user's UUID
+   * @param data - Shopping list creation payload
    * @returns The newly created ShoppingList
    */
-  create(data: CreateShoppingListRequest): Promise<ShoppingList>;
+  create(userUniqueId: string, data: CreateShoppingListRequest): Promise<ShoppingList>;
 
   /**
    * Update an existing shopping list.
-   * @param uniqueId - The shopping list unique ID
-   * @param data - Fields to update on the shopping list
+   * @param userUniqueId - The user's UUID
+   * @param listUniqueId - The shopping list's UUID
+   * @param data - Fields to update
    * @returns The updated ShoppingList
    */
-  update(uniqueId: string, data: UpdateShoppingListRequest): Promise<ShoppingList>;
+  update(userUniqueId: string, listUniqueId: string, data: UpdateShoppingListRequest): Promise<ShoppingList>;
 
   /**
    * Delete a shopping list.
-   * @param uniqueId - The shopping list unique ID
-   * @returns Resolves when the shopping list has been deleted
+   * @param userUniqueId - The user's UUID
+   * @param listUniqueId - The shopping list's UUID
+   * @returns Resolves when the list has been deleted
    */
-  delete(uniqueId: string): Promise<void>;
+  delete(userUniqueId: string, listUniqueId: string): Promise<void>;
 
   /**
-   * Add a product item to the shopping list.
-   * @param uniqueId - The shopping list unique ID
-   * @param productUniqueId - The product unique ID to add
-   * @param quantity - Quantity of the product (defaults to 1)
-   * @returns The updated ShoppingList
+   * Add a product to a shopping list, or increase the quantity of an
+   * existing item. The `quantity` field is treated as a **delta**: if the
+   * SKU already exists in the list, the backend adds the value to the
+   * existing quantity (positive to increase, negative to decrease). When
+   * the resulting quantity goes to zero or below, the item is removed.
+   *
+   * To set an absolute quantity, calculate the delta from the current
+   * value and pass that. To reduce by one, pass `-1`.
+   *
+   * @param userUniqueId - The user's UUID
+   * @param listUniqueId - The shopping list's UUID
+   * @param data - Product SKU, quantity delta, and optional category/notes
+   * @returns The updated ShoppingList with full item state
    */
-  addItem(uniqueId: string, data: AddShoppingListItemRequest): Promise<ShoppingList>;
+  addItem(userUniqueId: string, listUniqueId: string, data: AddShoppingListItemRequest): Promise<ShoppingList>;
 
   /**
-   * Remove a product item from the shopping list.
-   * @param uniqueId - The shopping list unique ID
-   * @param productUniqueId - The product unique ID to remove
-   * @returns Resolves when the item has been removed
+   * Remove a product from the shopping list entirely.
+   * @param userUniqueId - The user's UUID
+   * @param listUniqueId - The shopping list's UUID
+   * @param sku - The product SKU to remove
+   * @returns The updated ShoppingList without the removed item
    */
-  removeItem(uniqueId: string, productUniqueId: string): Promise<void>;
-
-  /**
-   * Update the quantity of a product item in the shopping list.
-   * @param uniqueId - The shopping list unique ID
-   * @param productUniqueId - The product unique ID to update
-   * @param quantity - The new quantity
-   * @returns The updated ShoppingList
-   */
-  updateItemQuantity(uniqueId: string, productUniqueId: string, quantity: number): Promise<ShoppingList>;
+  removeItem(userUniqueId: string, listUniqueId: string, sku: string): Promise<ShoppingList>;
 }
 
 export function createShoppingListsService(transport: Transport, _config: { apiKey: string }): ShoppingListsService {
   return {
-    async list(params?: ListShoppingListsParams): Promise<PageResult<ShoppingList>> {
+    async list(userUniqueId: string, params?: ListShoppingListsParams): Promise<PageResult<ShoppingList>> {
+      assertUuid(userUniqueId, 'userUniqueId');
       const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
       if (params?.status) queryParams['status'] = params.status;
-      if (params?.userUniqueId) queryParams['user_unique_id'] = params.userUniqueId;
       if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
 
-      const response = await transport.get<unknown>('/shopping_lists/', { params: queryParams });
+      const response = await transport.get<unknown>(`/users/${userUniqueId}/shoppinglists`, { params: queryParams });
       return decodePageResult(response, shoppingListMapper);
     },
 
-    async get(uniqueId: string): Promise<ShoppingList> {
-      const response = await transport.get<unknown>(`/shopping_lists/${uniqueId}/`);
+    async get(userUniqueId: string, listUniqueId: string): Promise<ShoppingList> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(listUniqueId, 'listUniqueId');
+      const response = await transport.get<unknown>(`/users/${userUniqueId}/shoppinglists/${listUniqueId}`);
       return decodeOne(response, shoppingListMapper);
     },
 
-    async create(data: CreateShoppingListRequest): Promise<ShoppingList> {
-      const response = await transport.post<unknown>('/shopping_lists/', {
+    async create(userUniqueId: string, data: CreateShoppingListRequest): Promise<ShoppingList> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      const response = await transport.post<unknown>(`/users/${userUniqueId}/shoppinglists`, {
         shopping_list: {
           name: data.name,
           notes: data.notes,
@@ -106,8 +115,10 @@ export function createShoppingListsService(transport: Transport, _config: { apiK
       return decodeOne(response, shoppingListMapper);
     },
 
-    async update(uniqueId: string, data: UpdateShoppingListRequest): Promise<ShoppingList> {
-      const response = await transport.put<unknown>(`/shopping_lists/${uniqueId}`, {
+    async update(userUniqueId: string, listUniqueId: string, data: UpdateShoppingListRequest): Promise<ShoppingList> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(listUniqueId, 'listUniqueId');
+      const response = await transport.put<unknown>(`/users/${userUniqueId}/shoppinglists/${listUniqueId}`, {
         shopping_list: {
           name: data.name,
           notes: data.notes,
@@ -119,31 +130,38 @@ export function createShoppingListsService(transport: Transport, _config: { apiK
       return decodeOne(response, shoppingListMapper);
     },
 
-    async delete(uniqueId: string): Promise<void> {
-      await transport.delete(`/shopping_lists/${uniqueId}`);
+    async delete(userUniqueId: string, listUniqueId: string): Promise<void> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(listUniqueId, 'listUniqueId');
+      await transport.delete(`/users/${userUniqueId}/shoppinglists/${listUniqueId}`);
     },
 
-    async addItem(uniqueId: string, data: AddShoppingListItemRequest): Promise<ShoppingList> {
-      const response = await transport.post<unknown>(`/shopping_lists/${uniqueId}/items`, {
-        item: {
-          sku: data.sku,
-          quantity: data.quantity,
-          notes: data.notes,
-          category_name: data.categoryName,
-          category_unique_id: data.categoryUniqueId,
+    async addItem(userUniqueId: string, listUniqueId: string, data: AddShoppingListItemRequest): Promise<ShoppingList> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(listUniqueId, 'listUniqueId');
+      const response = await transport.post<unknown>(
+        `/users/${userUniqueId}/shoppinglists/${listUniqueId}/products`,
+        {
+          product: {
+            sku: data.sku,
+            quantity: data.quantity,
+            notes: data.notes,
+            category_name: data.categoryName,
+            category_unique_id: data.categoryUniqueId,
+          },
         },
-      });
+      );
       return decodeOne(response, shoppingListMapper);
     },
 
-    async removeItem(uniqueId: string, productUniqueId: string): Promise<void> {
-      await transport.delete(`/shopping_lists/${uniqueId}/items/${productUniqueId}`);
-    },
-
-    async updateItemQuantity(uniqueId: string, productUniqueId: string, quantity: number): Promise<ShoppingList> {
-      const response = await transport.put<unknown>(`/shopping_lists/${uniqueId}/items/${productUniqueId}`, {
-        item: { quantity },
-      });
+    async removeItem(userUniqueId: string, listUniqueId: string, sku: string): Promise<ShoppingList> {
+      assertUuid(userUniqueId, 'userUniqueId');
+      assertUuid(listUniqueId, 'listUniqueId');
+      // DELETE requires a body — Rails reads the SKU from there, not the URL.
+      const response = await transport.delete<unknown>(
+        `/users/${userUniqueId}/shoppinglists/${listUniqueId}/products`,
+        { body: { product: { sku } } },
+      );
       return decodeOne(response, shoppingListMapper);
     },
   };

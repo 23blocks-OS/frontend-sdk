@@ -21,7 +21,6 @@ export interface ListShoppingListsParams {
   page?: number;
   perPage?: number;
   status?: string;
-  userUniqueId?: string;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }
