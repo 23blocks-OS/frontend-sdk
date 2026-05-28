@@ -1,3 +1,18 @@
+## 16.2.0 (2026-05-28)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with jarvis conversations.listByUser path + archive/rename/restore methods ([f0997ec](https://github.com/23blocks-OS/frontend-sdk/commit/f0997ec))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 5.9.4
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 16.1.0 (2026-05-27)
 
 ### 🚀 Features

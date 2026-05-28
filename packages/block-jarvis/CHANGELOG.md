@@ -1,3 +1,14 @@
+## 5.9.4 (2026-05-28)
+
+### 🩹 Fixes
+
+- **@23blocks/block-jarvis:** conversations.listByUser path + add archive/rename/restore ([#5](https://github.com/23blocks-OS/frontend-sdk/issues/5), [#6](https://github.com/23blocks-OS/frontend-sdk/issues/6))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 5.9.3 (2026-05-27)
 
 ### 🩹 Fixes
