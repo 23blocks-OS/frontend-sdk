@@ -394,6 +394,11 @@ export function createHttpTransport(config: TransportConfig): Transport {
       return request<T>('PUT', path, body, options);
     },
 
+    /**
+     * Perform an HTTP DELETE. To send a request body (required by some
+     * 23blocks routes such as DELETE /users/:uid/shoppinglists/:sl/products
+     * which reads its SKU from the body), pass it via `options.body`.
+     */
     delete<T>(path: string, options?: RequestOptions): Promise<T> {
       return request<T>('DELETE', path, options?.body, options);
     },
