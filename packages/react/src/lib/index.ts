@@ -7,6 +7,12 @@
 // the canonical name/description/tags fields. The previous build silently
 // dropped these on every read.
 //
+// useJarvisBlock().prompts.create() and prompts.update() now return
+// `Prompt | PromptVersion` (union) instead of `Prompt`. As of the
+// 2026-05-30 Jarvis API change, those endpoints return the
+// newly-created PromptVersion; SDK is tolerant of both shapes during
+// the rollout. Use the `resourceType` discriminator on the result.
+//
 // useConversationsBlock().conversations.get() now supports the new
 // `summary` and `tasks` relationships. Pass `include: ['summary', 'tasks']`
 // to opt in; the returned Conversation will have optional `summary` and
