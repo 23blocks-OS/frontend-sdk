@@ -3,6 +3,7 @@ import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Prompt,
+  PromptOrVersion,
   CreatePromptRequest,
   UpdatePromptRequest,
   ListPromptsParams,
@@ -11,7 +12,22 @@ import type {
   RenderPromptRequest,
   RenderPromptResponse,
 } from '../types/prompt.js';
-import { promptMapper } from '../mappers/prompt.mapper.js';
+import { promptMapper, promptVersionMapper } from '../mappers/prompt.mapper.js';
+
+/**
+ * Decode the response from POST /prompts or PUT /prompts/:uid. As of
+ * 2026-05-30, Jarvis returns a PromptVersion (`data.type === 'PromptVersion'`).
+ * Older deployments return the parent Prompt (`data.type === 'Prompt'`).
+ * Pick the right mapper based on the inbound type discriminator.
+ */
+function decodePromptOrVersion(response: unknown): PromptOrVersion {
+  const doc = response as { data?: { type?: string } } | null | undefined;
+  const t = doc?.data?.type;
+  if (t === 'PromptVersion' || t === 'prompt_version') {
+    return decodeOne(response, promptVersionMapper);
+  }
+  return decodeOne(response, promptMapper);
+}
 
 function buildPromptBody(data: CreatePromptRequest): Record<string, unknown> {
   const body: Record<string, unknown> = {};
@@ -55,8 +71,31 @@ function buildPromptBody(data: CreatePromptRequest): Record<string, unknown> {
 export interface PromptsService {
   list(params?: ListPromptsParams): Promise<PageResult<Prompt>>;
   get(uniqueId: string): Promise<Prompt>;
-  create(data: CreatePromptRequest): Promise<Prompt>;
-  update(uniqueId: string, data: UpdatePromptRequest): Promise<Prompt>;
+  /**
+   * Create a new prompt.
+   *
+   * **Response shape note:** Jarvis API ≥ 2026-05-30 returns the newly-created
+   * PromptVersion; older deployments return the parent Prompt. The SDK
+   * returns the union `Prompt | PromptVersion` — discriminate via the
+   * `resourceType` field on the result.
+   *
+   * @returns The created PromptVersion (new API) or Prompt (legacy API)
+   */
+  create(data: CreatePromptRequest): Promise<PromptOrVersion>;
+  /**
+   * Update a prompt.
+   *
+   * **Response shape note:** Jarvis API ≥ 2026-05-30 returns a new
+   * PromptVersion representing the update; older deployments return the
+   * updated parent Prompt. The SDK returns the union `Prompt | PromptVersion`
+   * — discriminate via the `resourceType` field on the result.
+   *
+   * Also note: partial PUT updates now preserve unpassed fields (persona,
+   * model, temperature, etc.) — bug fix bundled with the response change.
+   *
+   * @returns The created PromptVersion (new API) or updated Prompt (legacy API)
+   */
+  update(uniqueId: string, data: UpdatePromptRequest): Promise<PromptOrVersion>;
   delete(uniqueId: string): Promise<void>;
   execute(uniqueId: string, data: ExecutePromptRequest): Promise<ExecutePromptResponse>;
   render(uniqueId: string, data: RenderPromptRequest): Promise<RenderPromptResponse>;
@@ -86,19 +125,19 @@ export function createPromptsService(transport: Transport, _config: { apiKey: st
       return decodeOne(response, promptMapper);
     },
 
-    async create(data: CreatePromptRequest): Promise<Prompt> {
+    async create(data: CreatePromptRequest): Promise<PromptOrVersion> {
       const response = await transport.post<unknown>('/prompts', {
         prompt: buildPromptBody(data),
       });
-      return decodeOne(response, promptMapper);
+      return decodePromptOrVersion(response);
     },
 
-    async update(uniqueId: string, data: UpdatePromptRequest): Promise<Prompt> {
+    async update(uniqueId: string, data: UpdatePromptRequest): Promise<PromptOrVersion> {
       assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/prompts/${uniqueId}`, {
         prompt: buildPromptBody(data),
       });
-      return decodeOne(response, promptMapper);
+      return decodePromptOrVersion(response);
     },
 
     async delete(uniqueId: string): Promise<void> {

@@ -11,6 +11,8 @@ export type {
   ListAgentsParams,
   // Prompt types
   Prompt,
+  PromptVersion,
+  PromptOrVersion,
   CreatePromptRequest,
   UpdatePromptRequest,
   ListPromptsParams,

@@ -1,10 +1,11 @@
 import type { ResourceMapper } from '@23blocks/jsonapi-codec';
-import type { Prompt } from '../types/prompt.js';
+import type { Prompt, PromptVersion } from '../types/prompt.js';
 import { parseString, parseDate, parseBoolean, parseOptionalNumber, parseStatus } from './utils.js';
 
 export const promptMapper: ResourceMapper<Prompt> = {
   type: 'Prompt',
   map: (resource) => ({
+    resourceType: 'Prompt' as const,
     id: resource.id,
     uniqueId: parseString(resource.attributes['unique_id']) || '',
     createdAt: parseDate(resource.attributes['created_at']) || new Date(),
@@ -64,5 +65,54 @@ export const promptMapper: ResourceMapper<Prompt> = {
     userName: parseString(resource.attributes['user_name']),
     userAlias: parseString(resource.attributes['user_alias']),
     userAvatarUrl: parseString(resource.attributes['user_avatar_url']),
+  }),
+};
+
+/**
+ * Maps the PromptVersion JSON:API response returned by POST /prompts and
+ * PUT /prompts/:uid as of 2026-05-30. Reads the version-snapshot fields
+ * (version, revision, prompt_unique_id) plus the model/persona/etc.
+ * snapshot copied from the parent Prompt at the time of the version.
+ */
+export const promptVersionMapper: ResourceMapper<PromptVersion> = {
+  type: 'PromptVersion',
+  map: (resource) => ({
+    resourceType: 'PromptVersion' as const,
+    id: resource.id,
+    uniqueId: parseString(resource.attributes['unique_id']) || '',
+    createdAt: parseDate(resource.attributes['created_at']) || new Date(),
+    updatedAt: parseDate(resource.attributes['updated_at']) || new Date(),
+
+    version: parseOptionalNumber(resource.attributes['version']),
+    revision: parseOptionalNumber(resource.attributes['revision']),
+    promptUniqueId: parseString(resource.attributes['prompt_unique_id']),
+
+    content: parseString(resource.attributes['content']),
+    provider: parseString(resource.attributes['provider']),
+    model: parseString(resource.attributes['model']),
+    frequencyPenalty: parseOptionalNumber(resource.attributes['frequency_penalty']),
+    maxTokens: parseOptionalNumber(resource.attributes['max_tokens']),
+    responses: parseOptionalNumber(resource.attributes['responses']),
+    responseFormat: parseString(resource.attributes['response_format']),
+    seed: parseOptionalNumber(resource.attributes['seed']),
+    temperature: parseOptionalNumber(resource.attributes['temperature']),
+    topP: parseOptionalNumber(resource.attributes['top_p']),
+
+    user: parseString(resource.attributes['user']),
+    persona: parseString(resource.attributes['persona']),
+    guidelines: parseString(resource.attributes['guidelines']),
+    actions: parseString(resource.attributes['actions']),
+    references: parseString(resource.attributes['references']),
+    sample: parseString(resource.attributes['sample']),
+    outputTemplate: parseString(resource.attributes['output_template']),
+    safeguard: parseString(resource.attributes['safeguard']),
+
+    userUniqueId: parseString(resource.attributes['user_unique_id']),
+    userName: parseString(resource.attributes['user_name']),
+    userAlias: parseString(resource.attributes['user_alias']),
+    userAvatarUrl: parseString(resource.attributes['user_avatar_url']),
+
+    status: parseStatus(resource.attributes['status']),
+    enabled: parseBoolean(resource.attributes['enabled']),
   }),
 };

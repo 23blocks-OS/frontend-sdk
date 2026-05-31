@@ -1,4 +1,12 @@
+/**
+ * Discriminator allowing consumers to narrow `Prompt | PromptVersion`
+ * returned from `prompts.create()` and `prompts.update()`. Use it to detect
+ * whether the backend returned the parent Prompt (legacy shape) or the
+ * newly-created PromptVersion (post-2026-05-30 Jarvis API change).
+ */
 export interface Prompt {
+  /** Discriminator — always 'Prompt' for this type. */
+  resourceType?: 'Prompt';
   id: string;
   uniqueId: string;
   promptVersionUniqueId?: string;
@@ -59,6 +67,75 @@ export interface Prompt {
   createdAt: Date;
   updatedAt: Date;
 }
+
+/**
+ * A snapshot version of a Prompt. As of 2026-05-30, POST /prompts and
+ * PUT /prompts/:uid return PromptVersion (the newly-created version),
+ * not the parent Prompt. Older deployments still return Prompt — the
+ * SDK normalizes by returning the union `Prompt | PromptVersion`.
+ *
+ * Discriminate via the `resourceType` field.
+ */
+export interface PromptVersion {
+  /** Discriminator — always 'PromptVersion' for this type. */
+  resourceType: 'PromptVersion';
+  id: string;
+  uniqueId: string;
+  /** Sequential version number assigned by the backend. */
+  version?: number;
+  /** Revision counter within a version (incremented on each save). */
+  revision?: number;
+  /** Parent Prompt's unique id. */
+  promptUniqueId?: string;
+
+  /** Snapshot of the prompt content at the time this version was created. */
+  content?: string;
+  provider?: string;
+  model?: string;
+  frequencyPenalty?: number;
+  maxTokens?: number;
+  responses?: number;
+  responseFormat?: string;
+  seed?: number;
+  temperature?: number;
+  topP?: number;
+
+  user?: string;
+  persona?: string;
+  guidelines?: string;
+  actions?: string;
+  references?: string;
+  sample?: string;
+  outputTemplate?: string;
+  safeguard?: string;
+
+  /** Author of the version (typically the user who saved it). */
+  userUniqueId?: string;
+  userName?: string;
+  userAlias?: string;
+  userAvatarUrl?: string;
+
+  status?: string;
+  enabled?: boolean;
+
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+/**
+ * Union returned by `prompts.create()` and `prompts.update()`. Discriminate
+ * via the `resourceType` field:
+ *
+ *   const result = await jarvis.prompts.create(data);
+ *   if (result.resourceType === 'PromptVersion') {
+ *     // post-2026-05-30 Jarvis API: result is a PromptVersion
+ *     console.log(result.version, result.revision, result.promptUniqueId);
+ *   } else {
+ *     // legacy / older deployments: result is a Prompt
+ *     console.log(result.name, result.version);
+ *   }
+ */
+export type PromptOrVersion = Prompt | PromptVersion;
 
 /** Matches prompt_params in prompts_controller.rb */
 export interface CreatePromptRequest {
