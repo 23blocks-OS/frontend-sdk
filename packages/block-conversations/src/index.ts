@@ -34,6 +34,11 @@ export type {
   Conversation,
   ConversationFile,
   ConversationMeta,
+  ConversationSummary,
+  ConversationSummaryContent,
+  Task,
+  DigestRequest,
+  DigestResponse,
   GetConversationParams,
   // WebSocket Token types
   WebSocketToken,

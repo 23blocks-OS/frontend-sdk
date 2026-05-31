@@ -4,10 +4,50 @@ import type {
   Conversation,
   GetConversationParams,
   ConversationSummary,
+  Task,
   DigestRequest,
   DigestResponse,
 } from '../types/conversation.js';
 import { messageMapper } from '../mappers/message.mapper.js';
+
+function extractIncludedSummary(included: any[], contextId: string): ConversationSummary | undefined {
+  const entry = included.find((r) => r?.type === 'ConversationSummary' || r?.type === 'conversation_summary');
+  if (!entry) return undefined;
+  const a = entry.attributes ?? {};
+  return {
+    contextUniqueId: String(a.context_unique_id ?? contextId),
+    status: (a.status ?? 'completed') as ConversationSummary['status'],
+    content: (a.overall_summary || a.key_points || a.action_items) ? {
+      summary: String(a.overall_summary ?? ''),
+      keyPoints: Array.isArray(a.key_points) ? a.key_points as string[] : undefined,
+      actionItems: Array.isArray(a.action_items) ? a.action_items as string[] : undefined,
+    } : undefined,
+    sentiment: a.sentiment as string | undefined,
+    summaryType: a.summary_type as string | undefined,
+    messageCount: a.message_count != null ? Number(a.message_count) : undefined,
+    fromCache: a.from_cache != null ? Boolean(a.from_cache) : undefined,
+  };
+}
+
+function extractIncludedTasks(included: any[]): Task[] {
+  return included
+    .filter((r) => r?.type === 'Task' || r?.type === 'task')
+    .map((entry) => {
+      const a = entry.attributes ?? {};
+      return {
+        uniqueId: String(a.unique_id ?? entry.id ?? ''),
+        description: String(a.description ?? ''),
+        priority: a.priority as string | undefined,
+        status: a.status as Task['status'],
+        completedAt: a.completed_at ? new Date(a.completed_at) : undefined,
+        dismissedAt: a.dismissed_at ? new Date(a.dismissed_at) : undefined,
+        contextUniqueId: a.context_unique_id as string | undefined,
+        userUniqueId: a.user_unique_id as string | undefined,
+        createdAt: a.created_at ? new Date(a.created_at) : undefined,
+        updatedAt: a.updated_at ? new Date(a.updated_at) : undefined,
+      };
+    });
+}
 
 export interface ConversationsService {
   /**
@@ -53,15 +93,27 @@ export function createConversationsService(transport: Transport, _config: { apiK
       if (params.perPage) queryParams['records'] = String(params.perPage);
       if (params.includeFiles) queryParams['with'] = 'files';
 
+      // JSON:API `include` param — comma-separated list. Auto-include 'messages'
+      // and (when includeFiles) 'message_files' for parity with the legacy
+      // `with=files` behavior; merge in caller-requested relationships
+      // (e.g., 'summary', 'tasks') from params.include.
+      const includeSet = new Set<string>(['messages']);
+      if (params.includeFiles) includeSet.add('message_files');
+      for (const rel of params.include ?? []) includeSet.add(rel);
+      if (includeSet.size > 0) queryParams['include'] = Array.from(includeSet).join(',');
+
       const response = await transport.get<unknown>(`/conversations/${params.context}`, { params: queryParams });
 
       // Decode messages
       const messages = decodeMany(response, messageMapper);
 
-      // Extract files and meta from response if available
+      // Extract files, meta, and the new included[] relationships
       const rawResponse = response as any;
       const files = rawResponse.files || [];
       const meta = rawResponse.meta || {};
+      const included: any[] = Array.isArray(rawResponse.included) ? rawResponse.included : [];
+      const summary = extractIncludedSummary(included, params.context);
+      const tasks = extractIncludedTasks(included);
 
       return {
         id: params.context,
@@ -69,6 +121,8 @@ export function createConversationsService(transport: Transport, _config: { apiK
         messages,
         files,
         meta,
+        ...(summary ? { summary } : {}),
+        ...(tasks.length > 0 ? { tasks } : {}),
       };
     },
 
