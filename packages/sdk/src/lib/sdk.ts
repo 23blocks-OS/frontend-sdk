@@ -40,6 +40,13 @@ export {
 // (was reading flat top-level fields, silently dropping everything):
 // jarvis.prompts.execute, jarvis.marvinChat.sendMessage,
 // jarvis.agentRuntime.initiateHandoff/getHandoffStatus,
+// block-jarvis BREAKING: prompts.create() and prompts.update() now return
+// `Promise<Prompt | PromptVersion>` (was `Promise<Prompt>`). As of the
+// 2026-05-30 Jarvis API change, those endpoints return the newly-created
+// PromptVersion instead of the parent Prompt — the SDK is tolerant of
+// both shapes during the rollout window. Discriminate the union via the
+// `resourceType` field on the returned object.
+//
 // block-conversations: GET /conversations/:id now supports the new
 // `summary` and `tasks` JSON:API relationships announced by realtime
 // (2026-05-29). Pass `include: ['summary', 'tasks']` in GetConversationParams
