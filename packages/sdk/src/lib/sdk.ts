@@ -40,6 +40,14 @@ export {
 // (was reading flat top-level fields, silently dropping everything):
 // jarvis.prompts.execute, jarvis.marvinChat.sendMessage,
 // jarvis.agentRuntime.initiateHandoff/getHandoffStatus,
+// block-conversations: GET /conversations/:id now supports the new
+// `summary` and `tasks` JSON:API relationships announced by realtime
+// (2026-05-29). Pass `include: ['summary', 'tasks']` in GetConversationParams
+// to opt in; the returned Conversation gains optional `summary` and `tasks`
+// fields populated from the response `included[]` array. Task management
+// helper methods (complete/dismiss/reopen) are pending the realtime team's
+// endpoint specs.
+//
 // block-products BREAKING: ShoppingListsService rewritten. Methods now
 // take userUniqueId as a required positional arg; paths moved from the
 // non-existent flat /shopping_lists/* to /users/:uid/shoppinglists/*.
