@@ -1,3 +1,14 @@
+## 4.7.0 (2026-05-31)
+
+### 🚀 Features
+
+- **@23blocks/block-conversations:** expose summary + tasks from GET /conversations/:id ([592028e](https://github.com/23blocks-OS/frontend-sdk/commit/592028e))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 4.6.2 (2026-05-28)
 
 ### 🧱 Updated Dependencies

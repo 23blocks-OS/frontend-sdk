@@ -1,3 +1,18 @@
+## 17.1.0 (2026-05-31)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with conversations summary+tasks relationships ([1c216f1](https://github.com/23blocks-OS/frontend-sdk/commit/1c216f1))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 4.7.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 # 17.0.0 (2026-05-28)
 
 ### 🚀 Features
