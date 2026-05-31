@@ -1,3 +1,24 @@
+# 6.0.0 (2026-05-31)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-jarvis:** tolerate Prompt | PromptVersion response from POST /prompts and PUT /prompts/:uid ([d78326f](https://github.com/23blocks-OS/frontend-sdk/commit/d78326f))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-jarvis:** tolerate Prompt | PromptVersion response from POST /prompts and PUT /prompts/:uid  ([d78326f](https://github.com/23blocks-OS/frontend-sdk/commit/d78326f))
+  \`Promise<Prompt>\` → \`Promise<Prompt | PromptVersion>\`
+  is a TypeScript breaking change. Consumers accessing Prompt-specific
+  fields without narrowing get a compile error. Major bump warranted.
+  Once production migrates, we can drop Prompt from the return union in
+  a future major.
+  Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 5.9.5 (2026-05-28)
 
 ### 🧱 Updated Dependencies

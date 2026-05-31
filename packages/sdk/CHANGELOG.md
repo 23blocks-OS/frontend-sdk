@@ -1,3 +1,22 @@
+# 17.0.0 (2026-05-31)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/sdk:** rebuild with jarvis prompts Prompt|PromptVersion tolerance ([8fb1330](https://github.com/23blocks-OS/frontend-sdk/commit/8fb1330))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/sdk:** rebuild with jarvis prompts Prompt|PromptVersion tolerance  ([8fb1330](https://github.com/23blocks-OS/frontend-sdk/commit/8fb1330))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-jarvis to 6.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 16.1.0 (2026-05-31)
 
 ### 🚀 Features
