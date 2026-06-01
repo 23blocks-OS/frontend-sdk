@@ -40,6 +40,18 @@ export {
 // (was reading flat top-level fields, silently dropping everything):
 // jarvis.prompts.execute, jarvis.marvinChat.sendMessage,
 // jarvis.agentRuntime.initiateHandoff/getHandoffStatus,
+// block-jarvis BREAKING: Conversation.title and CreateConversationRequest.title
+// renamed to .name to match the actual Conversations API contract (the
+// SDK's `title` field never existed in the API and always read back as
+// empty string). Conversation mapper now reads attributes.name (with a
+// transitional fallback to attributes.title). Mapper discriminator
+// changed from 'conversation' → 'Conversation' to match the API.
+//
+// block-onboarding BREAKING: RemarketingService split per the API's
+// CQRS-clean redesign (2026-06-01). listAbandonedJourneys is now read-only;
+// triggerRemarketing (renamed from triggerRun) calls the new POST endpoint;
+// added triggerRemarketingForJourney for single-journey trigger.
+//
 // block-jarvis BREAKING: prompts.create() and prompts.update() now return
 // `Promise<Prompt | PromptVersion>` (was `Promise<Prompt>`). As of the
 // 2026-05-30 Jarvis API change, those endpoints return the newly-created
