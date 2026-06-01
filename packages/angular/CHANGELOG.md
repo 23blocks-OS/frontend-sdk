@@ -1,3 +1,10 @@
+## 15.2.12 (2026-06-01)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-onboarding to 7.0.0
+- Updated @23blocks/block-jarvis to 7.0.0
+
 ## 15.2.11 (2026-06-01)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,23 @@
+# 19.0.0 (2026-06-01)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/react:** rebuild with jarvis title→name + onboarding remarketing split ([71314b2](https://github.com/23blocks-OS/frontend-sdk/commit/71314b2))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/react:** rebuild with jarvis title→name + onboarding remarketing split  ([71314b2](https://github.com/23blocks-OS/frontend-sdk/commit/71314b2))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-onboarding to 7.0.0
+- Updated @23blocks/block-jarvis to 7.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 18.1.0 (2026-06-01)
 
 ### 🚀 Features

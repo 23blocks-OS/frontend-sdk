@@ -1,3 +1,21 @@
+# 7.0.0 (2026-06-01)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-onboarding:** split remarketing into 3 CQRS-clean endpoints ([9a6cb88](https://github.com/23blocks-OS/frontend-sdk/commit/9a6cb88))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-onboarding:** split remarketing into 3 CQRS-clean endpoints  ([9a6cb88](https://github.com/23blocks-OS/frontend-sdk/commit/9a6cb88))
+  triggerRun removed; consumers must migrate to
+  triggerRemarketing.
+  Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 6.0.1 (2026-05-28)
 
 ### 🧱 Updated Dependencies

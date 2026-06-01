@@ -1,3 +1,23 @@
+# 7.0.0 (2026-06-01)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-jarvis:** Conversation.title → .name to match actual API contract ([b3dbc43](https://github.com/23blocks-OS/frontend-sdk/commit/b3dbc43))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-jarvis:** Conversation.title → .name to match actual API contract  ([b3dbc43](https://github.com/23blocks-OS/frontend-sdk/commit/b3dbc43))
+  consumers using `conversation.title` get a TS
+  compile error and need to switch to `conversation.name`. Runtime
+  behavior is actually a fix — `.title` was always undefined since the
+  field didn't exist.
+  Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 # 6.0.0 (2026-05-31)
 
 ### 🩹 Fixes
