@@ -7,6 +7,15 @@
 // the canonical name/description/tags fields. The previous build silently
 // dropped these on every read.
 //
+// useJarvisBlock().conversations Conversation type renamed `title` →
+// `name` to match the actual Conversations API contract. Consumers
+// using `.title` get a TS compile error and must switch to `.name`
+// (runtime impact is a fix — `.title` always read back empty).
+//
+// useOnboardingBlock().remarketing was split into 3 methods per the
+// API's CQRS-clean redesign: listAbandonedJourneys (read-only),
+// triggerRemarketing (bulk), triggerRemarketingForJourney (single).
+//
 // useJarvisBlock().prompts.create() and prompts.update() now return
 // `Prompt | PromptVersion` (union) instead of `Prompt`. As of the
 // 2026-05-30 Jarvis API change, those endpoints return the
