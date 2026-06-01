@@ -16,8 +16,11 @@
 // useConversationsBlock().conversations.get() now supports the new
 // `summary` and `tasks` relationships. Pass `include: ['summary', 'tasks']`
 // to opt in; the returned Conversation will have optional `summary` and
-// `tasks` fields populated from the JSON:API included[] array. Task
-// management helper methods are pending realtime team endpoint specs.
+// `tasks` fields populated from the JSON:API included[] array.
+//
+// useConversationsBlock().tasks is a new sub-service for managing the
+// persistent action items: list (per-conversation + per-user digest),
+// create, update, complete, dismiss, reopen, delete.
 //
 // block-products BREAKING: useProductsBlock().shoppingLists rewritten.
 // All methods now take userUniqueId as a required first arg; paths use
