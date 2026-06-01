@@ -51,9 +51,13 @@ export {
 // `summary` and `tasks` JSON:API relationships announced by realtime
 // (2026-05-29). Pass `include: ['summary', 'tasks']` in GetConversationParams
 // to opt in; the returned Conversation gains optional `summary` and `tasks`
-// fields populated from the response `included[]` array. Task management
-// helper methods (complete/dismiss/reopen) are pending the realtime team's
-// endpoint specs.
+// fields populated from the response `included[]` array.
+//
+// block-conversations: new `tasks` sub-service with listForConversation,
+// listForUser (cross-conversation digest), create, update, complete,
+// dismiss, reopen, delete. Backs the persistent action items auto-created
+// from AI summaries. Uses PUT for /tasks/:uid mutations (action_type
+// query param drives lifecycle transitions).
 //
 // block-products BREAKING: ShoppingListsService rewritten. Methods now
 // take userUniqueId as a required positional arg; paths moved from the
