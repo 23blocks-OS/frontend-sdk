@@ -1,3 +1,18 @@
+## 17.1.0 (2026-06-01)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with conversations tasks sub-service ([9e23c6f](https://github.com/23blocks-OS/frontend-sdk/commit/9e23c6f))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 4.8.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 # 17.0.0 (2026-05-31)
 
 ### 🚀 Features

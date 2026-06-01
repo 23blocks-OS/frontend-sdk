@@ -1,3 +1,14 @@
+## 4.8.0 (2026-06-01)
+
+### 🚀 Features
+
+- **@23blocks/block-conversations:** add tasks sub-service for AI-generated action items ([0f9f060](https://github.com/23blocks-OS/frontend-sdk/commit/0f9f060))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 4.7.0 (2026-05-31)
 
 ### 🚀 Features
