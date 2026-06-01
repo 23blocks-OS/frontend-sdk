@@ -16,6 +16,7 @@ import {
   createMeetingsService,
   createWebNotificationsService,
   createMessageActionsService,
+  createTasksService,
   type MessagesService,
   type DraftMessagesService,
   type GroupsService,
@@ -32,6 +33,7 @@ import {
   type MeetingsService,
   type WebNotificationsService,
   type MessageActionsService,
+  type TasksService,
 } from './services/index.js';
 
 /**
@@ -76,6 +78,13 @@ export interface ConversationsBlock {
   webNotifications: WebNotificationsService;
   /** Message action management (inline creation via messages.create) */
   messageActions: MessageActionsService;
+  /**
+   * Task management — persistent action items auto-created from AI
+   * conversation summaries (or manually filed). Covers per-conversation
+   * and cross-conversation listing, manual create, lifecycle transitions
+   * (complete/dismiss/reopen), attribute updates, and hard-delete.
+   */
+  tasks: TasksService;
   /** Ping the service health endpoint */
   health(): Promise<HealthCheckResponse>;
 }
@@ -110,6 +119,7 @@ export function createConversationsBlock(
     meetings: createMeetingsService(transport, config),
     webNotifications: createWebNotificationsService(transport, config),
     messageActions: createMessageActionsService(transport, config),
+    tasks: createTasksService(transport, config),
     health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
@@ -125,6 +135,7 @@ export const conversationsBlockMetadata: BlockMetadata = {
     'GroupInvite',
     'Notification',
     'Conversation',
+    'ConversationSummary',
     'Context',
     'MessageFile',
     'Source',
@@ -132,5 +143,6 @@ export const conversationsBlockMetadata: BlockMetadata = {
     'Meeting',
     'WebNotification',
     'MessageAction',
+    'Task',
   ],
 };

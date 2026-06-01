@@ -14,3 +14,4 @@ export * from './users.service.js';
 export * from './meetings.service.js';
 export * from './web-notifications.service.js';
 export * from './message-actions.service.js';
+export * from './tasks.service.js';
