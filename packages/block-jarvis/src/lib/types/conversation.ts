@@ -9,7 +9,13 @@ export interface Conversation {
   uniqueId: string;
   agentUniqueId?: string;
   userUniqueId?: string;
-  title?: string;
+  /**
+   * Human-readable conversation name. Maps to the backend's `name`
+   * attribute. (Earlier SDK versions called this `title`, but the
+   * Conversations API never had a `title` field — the rename happened
+   * in 2026-06-01 to align with the actual API contract.)
+   */
+  name?: string;
   messages: ConversationMessage[];
   status: string;
   createdAt: Date;
@@ -19,7 +25,8 @@ export interface Conversation {
 export interface CreateConversationRequest {
   agentUniqueId?: string;
   userUniqueId?: string;
-  title?: string;
+  /** Conversation name. Maps to backend's `name` attribute. */
+  name?: string;
 }
 
 export interface SendConversationMessageRequest {

@@ -60,7 +60,7 @@ export function createConversationsService(transport: Transport, _config: { apiK
       const body: Record<string, unknown> = {};
       if (data.agentUniqueId) body['agent_unique_id'] = data.agentUniqueId;
       if (data.userUniqueId) body['user_unique_id'] = data.userUniqueId;
-      if (data.title) body['title'] = data.title;
+      if (data.name) body['name'] = data.name;
       const response = await transport.post<unknown>('/conversations', {
         conversation: body,
       });
