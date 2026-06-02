@@ -147,11 +147,13 @@ export function createQuotesService(transport: Transport, _config: { apiKey: str
     },
 
     async search(query: string, params?: ListQuotesParams): Promise<PageResult<Quote>> {
+      // CRM API doesn't expose POST /quotes/search — search is a query-string
+      // filter on the index endpoint. Confirmed by api-crm in msg_1780362274.
       const queryParams: Record<string, string> = { search: query };
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
 
-      const response = await transport.post<unknown>('/quotes/search', { search: query }, { params: queryParams });
+      const response = await transport.get<unknown>('/quotes', { params: queryParams });
       return decodePageResult(response, quoteMapper);
     },
 

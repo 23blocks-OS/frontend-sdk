@@ -137,11 +137,13 @@ export function createContactsService(transport: Transport, _config: { apiKey: s
     },
 
     async search(query: string, params?: ListContactsParams): Promise<PageResult<Contact>> {
+      // CRM API doesn't expose POST /contacts/search — search is a query-string
+      // filter on the index endpoint. Confirmed by api-crm in msg_1780362274.
       const queryParams: Record<string, string> = { search: query };
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
 
-      const response = await transport.post<unknown>('/contacts/search', { search: query }, { params: queryParams });
+      const response = await transport.get<unknown>('/contacts', { params: queryParams });
       return decodePageResult(response, contactMapper);
     },
 

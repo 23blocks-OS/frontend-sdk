@@ -130,11 +130,13 @@ export function createAccountsService(transport: Transport, _config: { apiKey: s
     },
 
     async search(query: string, params?: ListAccountsParams): Promise<PageResult<Account>> {
+      // CRM API doesn't expose POST /accounts/search — search is a query-string
+      // filter on the index endpoint. Confirmed by api-crm in msg_1780362274.
       const queryParams: Record<string, string> = { search: query };
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
 
-      const response = await transport.post<unknown>('/accounts/search', { search: query }, { params: queryParams });
+      const response = await transport.get<unknown>('/accounts', { params: queryParams });
       return decodePageResult(response, accountMapper);
     },
 

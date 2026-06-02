@@ -147,11 +147,13 @@ export function createOpportunitiesService(transport: Transport, _config: { apiK
     },
 
     async search(query: string, params?: ListOpportunitiesParams): Promise<PageResult<Opportunity>> {
+      // CRM API doesn't expose POST /opportunities/search — search is a query-string
+      // filter on the index endpoint. Confirmed by api-crm in msg_1780362274.
       const queryParams: Record<string, string> = { search: query };
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
 
-      const response = await transport.post<unknown>('/opportunities/search', { search: query }, { params: queryParams });
+      const response = await transport.get<unknown>('/opportunities', { params: queryParams });
       return decodePageResult(response, opportunityMapper);
     },
 
