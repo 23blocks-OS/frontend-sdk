@@ -307,7 +307,13 @@ export function createProductsService(transport: Transport, _config: { apiKey: s
     },
 
     async search(query: string, params?: ListProductsParams): Promise<PageResult<Product>> {
-      const queryParams: Record<string, string> = { search: query };
+      // Drop the search term from query string — POST /products/search reads
+      // a structured `{search: {search_by, order_by}}` hash from the body.
+      // Sending `?search=<term>` as a query param causes a Rails param-merge
+      // collision (string vs hash) that silently overwrites search_by → nil
+      // → 0 rows. Confirmed root cause by api-products in msg_1780351870.
+      // Query params here are pagination only.
+      const queryParams: Record<string, string> = {};
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
 
