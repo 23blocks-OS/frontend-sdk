@@ -7,6 +7,10 @@
 // the canonical name/description/tags fields. The previous build silently
 // dropped these on every read.
 //
+// useProductsBlock().products.search() no longer sends ?search= as a
+// query param (was colliding with the body's {search:{search_by}} hash
+// via Rails param-merge, silently returning 0 rows). Body shape unchanged.
+//
 // useJarvisBlock().conversations Conversation type renamed `title` →
 // `name` to match the actual Conversations API contract. Consumers
 // using `.title` get a TS compile error and must switch to `.name`
