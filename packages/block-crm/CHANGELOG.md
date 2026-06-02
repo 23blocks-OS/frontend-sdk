@@ -1,3 +1,14 @@
+## 5.0.6 (2026-06-02)
+
+### 🩹 Fixes
+
+- **@23blocks/block-crm:** search methods use GET /resource?search= not POST /resource/search ([#8](https://github.com/23blocks-OS/frontend-sdk/issues/8))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 5.0.5 (2026-05-28)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,9 @@
+## 19.1.1 (2026-06-02)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-crm to 5.0.6
+
 ## 19.1.0 (2026-06-02)
 
 ### 🚀 Features

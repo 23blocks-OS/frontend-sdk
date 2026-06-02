@@ -1,3 +1,9 @@
+## 15.2.14 (2026-06-02)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-crm to 5.0.6
+
 ## 15.2.13 (2026-06-02)
 
 ### 🧱 Updated Dependencies
