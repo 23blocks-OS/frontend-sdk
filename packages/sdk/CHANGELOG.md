@@ -1,3 +1,18 @@
+## 18.1.0 (2026-06-02)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with products.search() body+query collision fix ([8674e39](https://github.com/23blocks-OS/frontend-sdk/commit/8674e39))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-products to 6.0.1
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 # 18.0.0 (2026-06-01)
 
 ### 🚀 Features

@@ -1,3 +1,14 @@
+## 6.0.1 (2026-06-02)
+
+### 🩹 Fixes
+
+- **@23blocks/block-products:** products.search() no longer collides body+query string ([#8](https://github.com/23blocks-OS/frontend-sdk/issues/8))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 # 6.0.0 (2026-05-28)
 
 ### 🩹 Fixes

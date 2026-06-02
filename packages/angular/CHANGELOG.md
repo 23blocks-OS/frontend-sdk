@@ -1,3 +1,9 @@
+## 15.2.13 (2026-06-02)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-products to 6.0.1
+
 ## 15.2.12 (2026-06-01)
 
 ### 🧱 Updated Dependencies
