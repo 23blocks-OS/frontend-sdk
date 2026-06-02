@@ -40,6 +40,14 @@ export {
 // (was reading flat top-level fields, silently dropping everything):
 // jarvis.prompts.execute, jarvis.marvinChat.sendMessage,
 // jarvis.agentRuntime.initiateHandoff/getHandoffStatus,
+// block-products: products.search() no longer sends `?search=<term>` as a
+// query param — that was colliding with the body's `{search: {search_by}}`
+// hash (Rails param-merge collision: string vs hash) and silently returning
+// 0 rows. Body shape unchanged; only the redundant query param was removed.
+// (Same pattern likely exists in 27 other search methods across block-content,
+// block-crm, block-conversations, block-geolocation — fix shipping per
+// block as each API team confirms.)
+//
 // block-jarvis BREAKING: Conversation.title and CreateConversationRequest.title
 // renamed to .name to match the actual Conversations API contract (the
 // SDK's `title` field never existed in the API and always read back as
