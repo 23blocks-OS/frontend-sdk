@@ -1,3 +1,22 @@
+# 5.0.0 (2026-06-03)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-conversations:** remove groups.search() — endpoint never existed ([#8](https://github.com/23blocks-OS/frontend-sdk/issues/8))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-conversations:** remove groups.search() — endpoint never existed  ([#8](https://github.com/23blocks-OS/frontend-sdk/issues/8))
+  method removal triggers TS compile errors for any
+  consumer referencing groups.search. Runtime behavior was already
+  broken (404s), so no working integration is lost.
+  Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 4.8.0 (2026-06-01)
 
 ### 🚀 Features

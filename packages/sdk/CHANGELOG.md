@@ -1,3 +1,9 @@
+## 18.1.2 (2026-06-03)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-conversations to 5.0.0
+
 ## 18.1.1 (2026-06-02)
 
 ### 🧱 Updated Dependencies
