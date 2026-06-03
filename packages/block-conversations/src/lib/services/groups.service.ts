@@ -53,13 +53,6 @@ export interface GroupsService {
    */
   recover(uniqueId: string): Promise<Group>;
 
-  /**
-   * Search groups by query string
-   * @param query - Search query text
-   * @param params - Optional pagination parameters
-   * @returns Paginated list of matching Group records with pagination metadata
-   */
-  search(query: string, params?: ListGroupsParams): Promise<PageResult<Group>>;
 
   /**
    * List soft-deleted groups
@@ -152,15 +145,6 @@ export function createGroupsService(transport: Transport, _config: { apiKey: str
       assertUuid(uniqueId, 'uniqueId');
       const response = await transport.put<unknown>(`/groups/${uniqueId}/recover`, {});
       return decodeOne(response, groupMapper);
-    },
-
-    async search(query: string, params?: ListGroupsParams): Promise<PageResult<Group>> {
-      const queryParams: Record<string, string> = { search: query };
-      if (params?.page) queryParams['page'] = String(params.page);
-      if (params?.perPage) queryParams['records'] = String(params.perPage);
-
-      const response = await transport.post<unknown>('/groups/search', { search: query }, { params: queryParams });
-      return decodePageResult(response, groupMapper);
     },
 
     async listDeleted(params?: ListGroupsParams): Promise<PageResult<Group>> {
