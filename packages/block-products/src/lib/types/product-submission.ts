@@ -2,6 +2,15 @@ import type { IdentityCore } from '@23blocks/contracts';
 
 export type ProductSubmissionStatus = 'pending' | 'in_review' | 'approved' | 'rejected' | 'duplicate';
 
+export type ProductSubmissionHistoryAction =
+  | 'submitted'
+  | 'assigned'
+  | 'updated'
+  | 'approved'
+  | 'rejected'
+  | 'marked_duplicate'
+  | 'enriched';
+
 export interface ProductSubmissionImage {
   url: string;
   isPrimary?: boolean;
@@ -9,14 +18,13 @@ export interface ProductSubmissionImage {
 }
 
 export interface ProductSubmission extends IdentityCore {
-  userUniqueId?: string;
   status: ProductSubmissionStatus;
   name: string;
   description?: string;
   brand?: string;
   upc?: string;
   sku?: string;
-  vintage?: string;
+  vintage?: number;
   varietal?: string;
   region?: string;
   alcoholContent?: number;
@@ -26,12 +34,48 @@ export interface ProductSubmission extends IdentityCore {
   foundAtStore?: string;
   source?: string;
   imageUrls?: ProductSubmissionImage[];
-  // Admin/review fields
+
+  /** UUID of the submitting user. */
+  submittedByUserId?: string;
+  /** Display email of the submitter (when available). */
+  submittedByEmail?: string;
+  submittedAt?: Date;
+
+  /** UUID of the admin/reviewer assigned to the submission. */
   assignedToUserId?: string;
+  assignedAt?: Date;
+
+  /** UUID of the reviewer who acted on the submission. */
+  reviewedByUserId?: string;
+  reviewedAt?: Date;
+  /** Free-form reviewer notes (admin scope only). */
   reviewNotes?: string;
+  /** Populated when status is 'rejected' or 'duplicate'. */
   rejectionReason?: string;
-  duplicateOfProductId?: string;
-  productUniqueId?: string; // populated on approval (the created Product)
+
+  /** Numeric DB id of the Product created on approval. */
+  approvedProductId?: number;
+  /** UUID of the Product created on approval. Prefer this for API calls. */
+  approvedProductUniqueId?: string;
+  /** Numeric DB id of the duplicate Product (when status='duplicate'). */
+  duplicateOfProductId?: number;
+  /** Numeric DB id of the duplicate Submission (when this one is itself marked duplicate). */
+  duplicateOfSubmissionId?: number;
+
+  /** Free-form JSONB metadata, including AI enrichment results. Reviewer scope. */
+  metadata?: Record<string, unknown>;
+}
+
+export interface ProductSubmissionHistoryRecord extends IdentityCore {
+  action: ProductSubmissionHistoryAction;
+  performedByUserId: string;
+  performedAt: Date;
+  previousStatus?: ProductSubmissionStatus | null;
+  newStatus?: ProductSubmissionStatus | null;
+  notes?: string;
+  metadata?: Record<string, unknown>;
+  /** Foreign-key UUID of the parent ProductSubmission. */
+  submissionUniqueId: string;
 }
 
 export interface CreateProductSubmissionRequest {
@@ -40,7 +84,7 @@ export interface CreateProductSubmissionRequest {
   brand?: string;
   upc?: string;
   sku?: string;
-  vintage?: string;
+  vintage?: number;
   varietal?: string;
   region?: string;
   alcoholContent?: number;
