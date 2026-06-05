@@ -1,3 +1,14 @@
+## 6.1.1 (2026-06-05)
+
+### 🩹 Fixes
+
+- **@23blocks/block-products:** productSubmissionMapper reads camelCase wire keys + missing fields ([5ec18a5](https://github.com/23blocks-OS/frontend-sdk/commit/5ec18a5))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 6.1.0 (2026-06-05)
 
 ### 🚀 Features
