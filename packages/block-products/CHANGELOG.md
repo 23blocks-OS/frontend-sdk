@@ -1,3 +1,14 @@
+## 6.1.0 (2026-06-05)
+
+### 🚀 Features
+
+- **@23blocks/block-products:** add userSubmissions + adminSubmissions sub-services ([e288d50](https://github.com/23blocks-OS/frontend-sdk/commit/e288d50))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 6.0.1 (2026-06-02)
 
 ### 🩹 Fixes
