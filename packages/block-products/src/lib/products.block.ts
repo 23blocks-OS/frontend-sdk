@@ -28,6 +28,8 @@ import {
   createTagsService,
   createCatalogsService,
   createCategoryImagesService,
+  createUserSubmissionsService,
+  createAdminSubmissionsService,
   type ProductsService,
   type CartService,
   type CartDetailsService,
@@ -56,6 +58,8 @@ import {
   type TagsService,
   type CatalogsService,
   type CategoryImagesService,
+  type UserSubmissionsService,
+  type AdminSubmissionsService,
 } from './services/index.js';
 
 /**
@@ -124,6 +128,10 @@ export interface ProductsBlock {
   catalogs: CatalogsService;
   /** Category image management */
   categoryImages: CategoryImagesService;
+  /** User-scoped product submissions (end users propose new products to the catalog) */
+  userSubmissions: UserSubmissionsService;
+  /** Admin-scoped product submissions (review, assign, approve, reject submissions) */
+  adminSubmissions: AdminSubmissionsService;
   /** Ping the service health endpoint */
   health(): Promise<HealthCheckResponse>;
 }
@@ -170,6 +178,8 @@ export function createProductsBlock(
     tags: createTagsService(transport, config),
     catalogs: createCatalogsService(transport, config),
     categoryImages: createCategoryImagesService(transport, config),
+    userSubmissions: createUserSubmissionsService(transport, config),
+    adminSubmissions: createAdminSubmissionsService(transport, config),
     health: () => transport.get<HealthCheckResponse>('/health'),
   };
 }
@@ -202,5 +212,6 @@ export const productsBlockMetadata: BlockMetadata = {
     'ProductVendor',
     'Tag',
     'CategoryImage',
+    'ProductSubmission',
   ],
 };

@@ -10,3 +10,4 @@ export * from './product-variation-review.js';
 export * from './product-vendor.js';
 export * from './tag.js';
 export * from './category-image.js';
+export * from './product-submission.js';

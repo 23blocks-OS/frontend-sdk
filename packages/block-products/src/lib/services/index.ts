@@ -21,3 +21,5 @@ export * from './product-vendors.service.js';
 export * from './tags.service.js';
 export * from './catalogs.service.js';
 export * from './category-images.service.js';
+export * from './user-submissions.service.js';
+export * from './admin-submissions.service.js';
