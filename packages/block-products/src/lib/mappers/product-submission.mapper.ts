@@ -21,13 +21,11 @@ function parseImageUrls(value: unknown): ProductSubmissionImage[] | undefined {
   return value
     .filter((item): item is Record<string, unknown> => typeof item === 'object' && item !== null)
     .map((item) => {
-      // Wire shape is camelCase (`isPrimary`) per the API contract — see
-      // msg_1780693590_77019542 from api-products.
       const img: ProductSubmissionImage = {
         url: String(item['url'] ?? ''),
       };
-      if (item['isPrimary'] !== undefined && item['isPrimary'] !== null) {
-        img.isPrimary = Boolean(item['isPrimary']);
+      if (item['is_primary'] !== undefined && item['is_primary'] !== null) {
+        img.isPrimary = Boolean(item['is_primary']);
       }
       if (item['caption'] !== undefined && item['caption'] !== null) {
         img.caption = String(item['caption']);
@@ -37,11 +35,9 @@ function parseImageUrls(value: unknown): ProductSubmissionImage[] | undefined {
 }
 
 /**
- * Maps the JSON:API ProductSubmission response. Unlike most 23blocks APIs
- * which emit snake_case attribute keys, this endpoint emits **camelCase**
- * wire keys (confirmed by api-products in msg_1780693590_77019542 —
- * ProductSubmissionSerializer outputs camelCase intentionally to align
- * with the consuming admin tool's display layer).
+ * Maps the JSON:API ProductSubmission response. Wire keys are
+ * snake_case per the JSON:API standard, matching all other
+ * 23blocks serializers (ProductSerializer, BrandSerializer, etc.).
  */
 export const productSubmissionMapper: ResourceMapper<ProductSubmission> = {
   type: 'product_submission',
@@ -49,7 +45,7 @@ export const productSubmissionMapper: ResourceMapper<ProductSubmission> = {
     const a = resource.attributes ?? {};
     return {
       id: resource.id,
-      uniqueId: parseString(a['uniqueId']) || resource.id,
+      uniqueId: parseString(a['unique_id']) || resource.id,
       status: parseSubmissionStatus(a['status']),
       name: parseString(a['name']),
       description: a['description'] != null ? parseString(a['description']) : undefined,
@@ -59,36 +55,36 @@ export const productSubmissionMapper: ResourceMapper<ProductSubmission> = {
       vintage: parseOptionalNumber(a['vintage']),
       varietal: a['varietal'] != null ? parseString(a['varietal']) : undefined,
       region: a['region'] != null ? parseString(a['region']) : undefined,
-      alcoholContent: parseOptionalNumber(a['alcoholContent']),
-      suggestedPrice: parseOptionalNumber(a['suggestedPrice']),
-      priceCurrency: a['priceCurrency'] != null ? parseString(a['priceCurrency']) : undefined,
-      submissionNotes: a['submissionNotes'] != null ? parseString(a['submissionNotes']) : undefined,
-      foundAtStore: a['foundAtStore'] != null ? parseString(a['foundAtStore']) : undefined,
+      alcoholContent: parseOptionalNumber(a['alcohol_content']),
+      suggestedPrice: parseOptionalNumber(a['suggested_price']),
+      priceCurrency: a['price_currency'] != null ? parseString(a['price_currency']) : undefined,
+      submissionNotes: a['submission_notes'] != null ? parseString(a['submission_notes']) : undefined,
+      foundAtStore: a['found_at_store'] != null ? parseString(a['found_at_store']) : undefined,
       source: a['source'] != null ? parseString(a['source']) : undefined,
-      imageUrls: parseImageUrls(a['imageUrls']),
+      imageUrls: parseImageUrls(a['image_urls']),
 
-      submittedByUserId: a['submittedByUserId'] != null ? parseString(a['submittedByUserId']) : undefined,
-      submittedByEmail: a['submittedByEmail'] != null ? parseString(a['submittedByEmail']) : undefined,
-      submittedAt: parseDate(a['submittedAt']),
+      submittedByUserId: a['submitted_by_user_id'] != null ? parseString(a['submitted_by_user_id']) : undefined,
+      submittedByEmail: a['submitted_by_email'] != null ? parseString(a['submitted_by_email']) : undefined,
+      submittedAt: parseDate(a['submitted_at']),
 
-      assignedToUserId: a['assignedToUserId'] != null ? parseString(a['assignedToUserId']) : undefined,
-      assignedAt: parseDate(a['assignedAt']),
+      assignedToUserId: a['assigned_to_user_id'] != null ? parseString(a['assigned_to_user_id']) : undefined,
+      assignedAt: parseDate(a['assigned_at']),
 
-      reviewedByUserId: a['reviewedByUserId'] != null ? parseString(a['reviewedByUserId']) : undefined,
-      reviewedAt: parseDate(a['reviewedAt']),
-      reviewNotes: a['reviewNotes'] != null ? parseString(a['reviewNotes']) : undefined,
-      rejectionReason: a['rejectionReason'] != null ? parseString(a['rejectionReason']) : undefined,
+      reviewedByUserId: a['reviewed_by_user_id'] != null ? parseString(a['reviewed_by_user_id']) : undefined,
+      reviewedAt: parseDate(a['reviewed_at']),
+      reviewNotes: a['review_notes'] != null ? parseString(a['review_notes']) : undefined,
+      rejectionReason: a['rejection_reason'] != null ? parseString(a['rejection_reason']) : undefined,
 
-      approvedProductId: parseOptionalNumber(a['approvedProductId']),
+      approvedProductId: parseOptionalNumber(a['approved_product_id']),
       approvedProductUniqueId:
-        a['approvedProductUniqueId'] != null ? parseString(a['approvedProductUniqueId']) : undefined,
-      duplicateOfProductId: parseOptionalNumber(a['duplicateOfProductId']),
-      duplicateOfSubmissionId: parseOptionalNumber(a['duplicateOfSubmissionId']),
+        a['approved_product_unique_id'] != null ? parseString(a['approved_product_unique_id']) : undefined,
+      duplicateOfProductId: parseOptionalNumber(a['duplicate_of_product_id']),
+      duplicateOfSubmissionId: parseOptionalNumber(a['duplicate_of_submission_id']),
 
       metadata: a['metadata'] as Record<string, unknown> | undefined,
 
-      createdAt: parseDate(a['createdAt']),
-      updatedAt: parseDate(a['updatedAt']),
+      createdAt: parseDate(a['created_at']),
+      updatedAt: parseDate(a['updated_at']),
     };
   },
 };
