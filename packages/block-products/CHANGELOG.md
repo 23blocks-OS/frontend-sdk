@@ -1,3 +1,14 @@
+## 6.1.2 (2026-06-05)
+
+### 🩹 Fixes
+
+- **@23blocks/block-products:** revert productSubmissionMapper to snake_case wire keys ([a821386](https://github.com/23blocks-OS/frontend-sdk/commit/a821386))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 6.1.1 (2026-06-05)
 
 ### 🩹 Fixes
