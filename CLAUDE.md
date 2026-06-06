@@ -63,9 +63,17 @@ Manual release: `npm run release` or `npm run release:dry-run`
 - Update `src/index.ts` with new public exports
 - **Build & verify:** `npx nx build @23blocks/block-xxx --skip-nx-cache`
 
-#### Step 2: Update meta-packages (ALL THREE — mandatory)
-Meta-packages bundle block code at build time. Publishing a new block version does NOT deliver fixes to meta-package consumers. You MUST rebuild all three:
+#### Step 2: Update meta-packages (only when needed — see when below)
+Meta-packages (`@23blocks/sdk`, `@23blocks/react`, `@23blocks/angular`) depend on each `@23blocks/block-*` as a regular npm package with caret ranges. Consumers receive block fixes via dep resolution on next install — block-internal patches do NOT require meta-package rebuilds.
 
+**Rebuild meta-packages only when:**
+- You added a new sub-service to a block (Angular needs a getter, sdk/react/angular need JSDoc reflecting the new sub-service)
+- You changed a block's public TypeScript surface (new types, renamed methods, removed exports) that flows through the meta-package's namespace re-export
+- You added a new block to the meta-package's deps list
+
+**For pure block-internal bug fixes (no API changes):** ship just the block commit. Skip meta-packages.
+
+When you DO touch meta-packages:
 - **Angular** (`packages/angular/`): Add getter to the relevant service (e.g., `get evaluations() { return this.ensureConfigured().evaluations; }`)
 - **SDK** (`packages/sdk/src/lib/sdk.ts`): Make a real file change (update JSDoc comment) — `--allow-empty` commits do NOT work with nx release
 - **React** (`packages/react/src/lib/index.ts`): Make a real file change (update JSDoc comment)
