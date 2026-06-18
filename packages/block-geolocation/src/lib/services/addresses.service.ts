@@ -53,14 +53,6 @@ export interface AddressesService {
   recover(uniqueId: string): Promise<Address>;
 
   /**
-   * Search addresses by query string
-   * @param query - The search query text
-   * @param params - Optional additional filtering and pagination
-   * @returns Paginated result of Address records matching the search query
-   */
-  search(query: string, params?: ListAddressesParams): Promise<PageResult<Address>>;
-
-  /**
    * List soft-deleted addresses
    * @param params - Optional pagination parameters
    * @returns Paginated result of deleted Address records
@@ -147,15 +139,6 @@ export function createAddressesService(transport: Transport, _config: { apiKey: 
     async recover(uniqueId: string): Promise<Address> {
       const response = await transport.put<unknown>(`/addresses/${uniqueId}/recover`, {});
       return decodeOne(response, addressMapper);
-    },
-
-    async search(query: string, params?: ListAddressesParams): Promise<PageResult<Address>> {
-      const queryParams: Record<string, string> = { search: query };
-      if (params?.page) queryParams['page'] = String(params.page);
-      if (params?.perPage) queryParams['records'] = String(params.perPage);
-
-      const response = await transport.post<unknown>('/addresses/search', { search: query }, { params: queryParams });
-      return decodePageResult(response, addressMapper);
     },
 
     async listDeleted(params?: ListAddressesParams): Promise<PageResult<Address>> {

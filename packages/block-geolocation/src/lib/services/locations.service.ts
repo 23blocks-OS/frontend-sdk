@@ -175,11 +175,14 @@ export function createLocationsService(transport: Transport, _config: { apiKey: 
     },
 
     async search(query: string, params?: ListLocationsParams): Promise<PageResult<Location>> {
+      // Geolocation API doesn't expose POST /locations/search — search is a
+      // query-string filter on the index endpoint. Confirmed by
+      // api-geolocation in msg_1781742840_c5f7175b.
       const queryParams: Record<string, string> = { search: query };
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
 
-      const response = await transport.post<unknown>('/locations/search', { search: query }, { params: queryParams });
+      const response = await transport.get<unknown>('/locations', { params: queryParams });
       return decodePageResult(response, locationMapper);
     },
 

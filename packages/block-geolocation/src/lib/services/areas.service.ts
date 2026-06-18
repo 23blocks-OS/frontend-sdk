@@ -53,14 +53,6 @@ export interface AreasService {
   recover(uniqueId: string): Promise<Area>;
 
   /**
-   * Search areas by query string
-   * @param query - The search query text
-   * @param params - Optional additional filtering and pagination
-   * @returns Paginated result of Area records matching the search query
-   */
-  search(query: string, params?: ListAreasParams): Promise<PageResult<Area>>;
-
-  /**
    * List soft-deleted areas
    * @param params - Optional pagination parameters
    * @returns Paginated result of deleted Area records
@@ -129,15 +121,6 @@ export function createAreasService(transport: Transport, _config: { apiKey: stri
     async recover(uniqueId: string): Promise<Area> {
       const response = await transport.put<unknown>(`/areas/${uniqueId}/recover`, {});
       return decodeOne(response, areaMapper);
-    },
-
-    async search(query: string, params?: ListAreasParams): Promise<PageResult<Area>> {
-      const queryParams: Record<string, string> = { search: query };
-      if (params?.page) queryParams['page'] = String(params.page);
-      if (params?.perPage) queryParams['records'] = String(params.perPage);
-
-      const response = await transport.post<unknown>('/areas/search', { search: query }, { params: queryParams });
-      return decodePageResult(response, areaMapper);
     },
 
     async listDeleted(params?: ListAreasParams): Promise<PageResult<Area>> {

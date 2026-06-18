@@ -1,4 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
+import { assertUuid } from '@23blocks/contracts';
 import { decodeOne, decodePageResult } from '@23blocks/jsonapi-codec';
 import type {
   Premise,
@@ -53,12 +54,15 @@ export interface PremisesService {
   recover(uniqueId: string): Promise<Premise>;
 
   /**
-   * Search premises by query string
+   * Search premises within a location by query string. Premises are scoped
+   * under a location on the geolocation API — this hits
+   * `GET /locations/:locationUniqueId/premises?search=<query>`.
+   * @param locationUniqueId - The location's UUID
    * @param query - The search query text
-   * @param params - Optional additional filtering and pagination
+   * @param params - Optional pagination parameters
    * @returns Paginated result of Premise records matching the search query
    */
-  search(query: string, params?: ListPremisesParams): Promise<PageResult<Premise>>;
+  search(locationUniqueId: string, query: string, params?: ListPremisesParams): Promise<PageResult<Premise>>;
 
   /**
    * List soft-deleted premises
@@ -148,12 +152,17 @@ export function createPremisesService(transport: Transport, _config: { apiKey: s
       return decodeOne(response, premiseMapper);
     },
 
-    async search(query: string, params?: ListPremisesParams): Promise<PageResult<Premise>> {
+    async search(locationUniqueId: string, query: string, params?: ListPremisesParams): Promise<PageResult<Premise>> {
+      // Premises are nested under locations on the geolocation API — search
+      // is a query-string filter on /locations/:id/premises (confirmed by
+      // api-geolocation in msg_1781742840_c5f7175b). The previous SDK
+      // calling POST /premises/search was 404'ing.
+      assertUuid(locationUniqueId, 'locationUniqueId');
       const queryParams: Record<string, string> = { search: query };
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
 
-      const response = await transport.post<unknown>('/premises/search', { search: query }, { params: queryParams });
+      const response = await transport.get<unknown>(`/locations/${locationUniqueId}/premises`, { params: queryParams });
       return decodePageResult(response, premiseMapper);
     },
 
