@@ -1,3 +1,18 @@
+# 5.0.0 (2026-06-18)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-geolocation:** remove unsupported search methods, switch supported ones to GET ([#8](https://github.com/23blocks-OS/frontend-sdk/issues/8))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-geolocation:** remove unsupported search methods, switch supported ones to GET  ([#8](https://github.com/23blocks-OS/frontend-sdk/issues/8))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 4.0.4 (2026-05-28)
 
 ### 🧱 Updated Dependencies

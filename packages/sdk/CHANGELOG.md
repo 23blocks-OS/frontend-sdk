@@ -1,3 +1,18 @@
+## 18.1.6 (2026-06-18)
+
+### 📖 Documentation
+
+- refresh CHANGELOG, llms.txt, and deployment checklist ([#1](https://github.com/23blocks-OS/frontend-sdk/issues/1), [#8](https://github.com/23blocks-OS/frontend-sdk/issues/8))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-geolocation to 5.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 18.1.5 (2026-06-05)
 
 ### 🧱 Updated Dependencies
