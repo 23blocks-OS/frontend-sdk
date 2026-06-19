@@ -282,11 +282,16 @@ export function createPostsService(transport: Transport, _config: { apiKey: stri
     },
 
     async search(query: string, params?: ListPostsParams): Promise<PageResult<Post>> {
+      // Content API doesn't expose POST /posts/search — that route 404s.
+      // Simple text search uses the index endpoint with a ?search= query
+      // string. Confirmed by api-content in msg_1781891314_6dbaa860.
+      // (For structured JSONB filtering, see the separate POST /posts/query
+      // endpoint — not yet exposed by this service.)
       const queryParams: Record<string, string> = { search: query };
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
 
-      const response = await transport.post<unknown>('/posts/search', { search: query }, { params: queryParams });
+      const response = await transport.get<unknown>('/posts', { params: queryParams });
       return decodePageResult(response, postMapper);
     },
 
