@@ -516,7 +516,7 @@ const [authHealth, crmHealth] = await Promise.all([
 
 ### rag (block-rag)
 - `scope` - Per-scope document processing and vector querying (scopes: entities, accounts, contacts, users, storage, products)
-  - `process(scope, scopeId, fileId, processingMode?)` - Process a file for vector indexing (modes: ocr_text, face_similarity, visual_general)
+  - `process(scope, scopeId, fileId, processingMode?)` - Process a file for vector indexing (modes: `ocr_text`, `face_similarity`, `visual_general`, `object_detection`). For `object_detection`, the ProcessResponse also carries `objectsDetected` count + `detectionMetadata[]` (per-object class / confidence / bbox / objectIndex / totalObjects). Each detected object gets its own CLIP embedding, enabling multi-product visual search from a single shelf photo.
   - `getFileMetadata(scope, scopeId, fileId)` - Get file metadata
   - `query(scope, scopeId, data)` - Semantic search with pagination, minScore, and reranking
 - `files` - Generic file processing by file unique ID
