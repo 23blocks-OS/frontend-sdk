@@ -1,3 +1,14 @@
+## 2.2.0 (2026-06-19)
+
+### 🚀 Features
+
+- **@23blocks/block-rag:** support object_detection processing mode ([e40e550](https://github.com/23blocks-OS/frontend-sdk/commit/e40e550))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 2.1.3 (2026-05-28)
 
 ### 🧱 Updated Dependencies

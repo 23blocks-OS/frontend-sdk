@@ -1,3 +1,18 @@
+# 6.0.0 (2026-06-19)
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-geolocation:** routes service uses /routes/* (was /travel_routes/*) ([79fc9d3](https://github.com/23blocks-OS/frontend-sdk/commit/79fc9d3))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-geolocation:** routes service uses /routes/* (was /travel_routes/*)  ([79fc9d3](https://github.com/23blocks-OS/frontend-sdk/commit/79fc9d3))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 # 5.0.0 (2026-06-18)
 
 ### 🩹 Fixes

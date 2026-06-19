@@ -1,3 +1,19 @@
+## 18.1.7 (2026-06-19)
+
+### 📖 Documentation
+
+- document RAG object_detection mode in llms.txt ([32d3168](https://github.com/23blocks-OS/frontend-sdk/commit/32d3168))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-geolocation to 6.0.0
+- Updated @23blocks/block-rag to 2.2.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 18.1.6 (2026-06-18)
 
 ### 📖 Documentation

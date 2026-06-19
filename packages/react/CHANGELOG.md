@@ -1,3 +1,10 @@
+## 19.1.7 (2026-06-19)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-geolocation to 6.0.0
+- Updated @23blocks/block-rag to 2.2.0
+
 ## 19.1.6 (2026-06-18)
 
 ### 🧱 Updated Dependencies
