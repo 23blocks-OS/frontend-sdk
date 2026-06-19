@@ -1,3 +1,18 @@
+## 18.1.9 (2026-06-19)
+
+### 📖 Documentation
+
+- document UnifiedSearchQuery.useObjectDetection in llms.txt ([949e295](https://github.com/23blocks-OS/frontend-sdk/commit/949e295))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-rag to 2.3.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 18.1.8 (2026-06-19)
 
 ### 🧱 Updated Dependencies

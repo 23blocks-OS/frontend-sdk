@@ -1,3 +1,14 @@
+## 2.3.0 (2026-06-19)
+
+### 🚀 Features
+
+- **@23blocks/block-rag:** UnifiedSearchQuery.useObjectDetection for product/image search ([2d1c857](https://github.com/23blocks-OS/frontend-sdk/commit/2d1c857))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 2.2.0 (2026-06-19)
 
 ### 🚀 Features

@@ -1,3 +1,9 @@
+## 19.1.9 (2026-06-19)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-rag to 2.3.0
+
 ## 19.1.8 (2026-06-19)
 
 ### 🧱 Updated Dependencies
