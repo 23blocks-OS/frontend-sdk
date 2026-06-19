@@ -61,18 +61,20 @@ export function createImagesService(
 
     async search(data: ImageSearchRequest) {
       const q = data.query;
-      return transport.post<JsonApiDocument>('/images/search', {
-        query: {
-          image_url: q.imageUrl,
-          image_base64: q.imageBase64,
-          text: q.text,
-          limit: q.limit,
-          similarity_threshold: q.similarityThreshold,
-          text_weight: q.textWeight,
-          image_weight: q.imageWeight,
-          filters: q.filters,
-        },
-      });
+      const queryBody: Record<string, unknown> = {
+        image_url: q.imageUrl,
+        image_base64: q.imageBase64,
+        text: q.text,
+        limit: q.limit,
+        similarity_threshold: q.similarityThreshold,
+        text_weight: q.textWeight,
+        image_weight: q.imageWeight,
+        filters: q.filters,
+      };
+      if (q.useObjectDetection !== undefined) {
+        queryBody['use_object_detection'] = q.useObjectDetection;
+      }
+      return transport.post<JsonApiDocument>('/images/search', { query: queryBody });
     },
   };
 }
