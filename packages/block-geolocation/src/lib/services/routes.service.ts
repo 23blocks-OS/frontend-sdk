@@ -79,17 +79,17 @@ export function createTravelRoutesService(transport: Transport, _config: { apiKe
       if (params?.search) queryParams['search'] = params.search;
       if (params?.sortBy) queryParams['sort'] = params.sortOrder === 'desc' ? `-${params.sortBy}` : params.sortBy;
 
-      const response = await transport.get<unknown>('/travel_routes', { params: queryParams });
+      const response = await transport.get<unknown>('/routes', { params: queryParams });
       return decodePageResult(response, travelRouteMapper);
     },
 
     async get(uniqueId: string): Promise<TravelRoute> {
-      const response = await transport.get<unknown>(`/travel_routes/${uniqueId}`);
+      const response = await transport.get<unknown>(`/routes/${uniqueId}`);
       return decodeOne(response, travelRouteMapper);
     },
 
     async create(data: CreateTravelRouteRequest): Promise<TravelRoute> {
-      const response = await transport.post<unknown>('/travel_routes', {
+      const response = await transport.post<unknown>('/routes', {
         travelroute: {
             name: data.name,
             code: data.code,
@@ -103,7 +103,7 @@ export function createTravelRoutesService(transport: Transport, _config: { apiKe
     },
 
     async update(uniqueId: string, data: UpdateTravelRouteRequest): Promise<TravelRoute> {
-      const response = await transport.put<unknown>(`/travel_routes/${uniqueId}`, {
+      const response = await transport.put<unknown>(`/routes/${uniqueId}`, {
         travelroute: {
             name: data.name,
             code: data.code,
@@ -118,20 +118,23 @@ export function createTravelRoutesService(transport: Transport, _config: { apiKe
     },
 
     async delete(uniqueId: string): Promise<void> {
-      await transport.delete(`/travel_routes/${uniqueId}`);
+      await transport.delete(`/routes/${uniqueId}`);
     },
 
     async recover(uniqueId: string): Promise<TravelRoute> {
-      const response = await transport.put<unknown>(`/travel_routes/${uniqueId}/recover`, {});
+      const response = await transport.put<unknown>(`/routes/${uniqueId}/recover`, {});
       return decodeOne(response, travelRouteMapper);
     },
 
     async search(query: string, params?: ListTravelRoutesParams): Promise<PageResult<TravelRoute>> {
+      // Geolocation API doesn't expose POST /routes/search — search is a
+      // query-string filter on the index endpoint. Confirmed by
+      // api-geolocation in msg_1781747130_54654cb0.
       const queryParams: Record<string, string> = { search: query };
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
 
-      const response = await transport.post<unknown>('/travel_routes/search', { search: query }, { params: queryParams });
+      const response = await transport.get<unknown>('/routes', { params: queryParams });
       return decodePageResult(response, travelRouteMapper);
     },
 
@@ -140,7 +143,7 @@ export function createTravelRoutesService(transport: Transport, _config: { apiKe
       if (params?.page) queryParams['page'] = String(params.page);
       if (params?.perPage) queryParams['records'] = String(params.perPage);
 
-      const response = await transport.get<unknown>('/travel_routes/trash/show', { params: queryParams });
+      const response = await transport.get<unknown>('/routes/trash/show', { params: queryParams });
       return decodePageResult(response, travelRouteMapper);
     },
   };
