@@ -4,9 +4,18 @@
 export type RagScope = 'entities' | 'accounts' | 'contacts' | 'users' | 'storage' | 'products';
 
 /**
- * Processing mode for document ingestion
+ * Processing mode for document ingestion.
+ *
+ *   - `ocr_text` — OCR + text-embedding ingestion (default for documents)
+ *   - `face_similarity` — face detection + CLIP embedding per face
+ *   - `visual_general` — single-image CLIP embedding
+ *   - `object_detection` — multi-object detection on a single image; each
+ *     detected object gets its own CLIP embedding (useful for shelf-photo
+ *     visual search: one photo with multiple products → per-product embeddings).
+ *     Returns per-object `objects_detected` count and `detection_metadata`
+ *     entries on the process response.
  */
-export type ProcessingMode = 'ocr_text' | 'face_similarity' | 'visual_general';
+export type ProcessingMode = 'ocr_text' | 'face_similarity' | 'visual_general' | 'object_detection';
 
 /**
  * Request to query documents within a scope
@@ -62,12 +71,33 @@ export interface QueryResponse {
 }
 
 /**
- * Job response from process endpoints (JSON:API type: ragProcessResponse)
+ * A single detected object in an `object_detection` ingestion. Bounding box
+ * coordinates are `[x1, y1, x2, y2]` in image pixels.
+ */
+export interface ObjectDetection {
+  class: string;
+  confidence: number;
+  bbox: [number, number, number, number];
+  objectIndex: number;
+  totalObjects: number;
+}
+
+/**
+ * Job response from process endpoints (JSON:API type: ragProcessResponse).
+ *
+ * When `processing_mode === 'object_detection'`, the response also carries
+ * `objectsDetected` and `detectionMetadata` describing each detected object.
+ * Each detected object becomes its own CLIP-embedded chunk that can be
+ * found independently via `query()`.
  */
 export interface ProcessResponse {
   jobId: string;
   status: string;
   message: string;
+  /** Total number of objects detected (only present for `object_detection` mode). */
+  objectsDetected?: number;
+  /** Per-object detection metadata (only present for `object_detection` mode). */
+  detectionMetadata?: ObjectDetection[];
 }
 
 /**

@@ -6,6 +6,7 @@ export type {
   QueryMeta,
   QueryResponse,
   ProcessResponse,
+  ObjectDetection,
   FileMetadata,
 } from './scope.js';
 

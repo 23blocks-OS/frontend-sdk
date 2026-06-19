@@ -36,18 +36,39 @@ export const queryResultChunkMapper: ResourceMapper<QueryResultChunk> = {
 };
 
 /**
- * Mapper for RAG process response (JSON:API type: ragProcessResponse)
+ * Mapper for RAG process response (JSON:API type: ragProcessResponse).
+ *
+ * For the `object_detection` processing mode, the response also carries
+ * `objects_detected` (count) and `detection_metadata` (per-object info).
+ * The mapper surfaces them as optional `objectsDetected` and
+ * `detectionMetadata` fields when present.
  */
 export const processResponseMapper: ResourceMapper<ProcessResponse> = {
   type: 'ragProcessResponse',
 
   map(resource: JsonApiResource, _included: IncludedMap): ProcessResponse {
     const attrs = resource.attributes ?? {};
-    return {
+    const detectionRaw = attrs.detection_metadata;
+    const result: ProcessResponse = {
       jobId: parseString(attrs.job_id),
       status: parseString(attrs.status),
       message: parseString(attrs.message),
     };
+    if (attrs.objects_detected !== undefined && attrs.objects_detected !== null) {
+      result.objectsDetected = Number(attrs.objects_detected);
+    }
+    if (Array.isArray(detectionRaw)) {
+      result.detectionMetadata = detectionRaw
+        .filter((d): d is Record<string, unknown> => typeof d === 'object' && d !== null)
+        .map((d) => ({
+          class: String(d['class'] ?? ''),
+          confidence: Number(d['confidence'] ?? 0),
+          bbox: Array.isArray(d['bbox']) ? (d['bbox'] as [number, number, number, number]) : [0, 0, 0, 0],
+          objectIndex: Number(d['object_index'] ?? 0),
+          totalObjects: Number(d['total_objects'] ?? 0),
+        }));
+    }
+    return result;
   },
 };
 
