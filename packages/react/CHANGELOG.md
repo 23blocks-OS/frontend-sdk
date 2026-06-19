@@ -1,3 +1,9 @@
+## 19.1.8 (2026-06-19)
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-content to 4.0.5
+
 ## 19.1.7 (2026-06-19)
 
 ### 🧱 Updated Dependencies

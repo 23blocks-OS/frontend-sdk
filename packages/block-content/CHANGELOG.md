@@ -1,3 +1,14 @@
+## 4.0.5 (2026-06-19)
+
+### 🩹 Fixes
+
+- **@23blocks/block-content:** posts.search() uses GET /posts?search= (was POST /posts/search 404) ([07cb76e](https://github.com/23blocks-OS/frontend-sdk/commit/07cb76e))
+
+### ❤️ Thank You
+
+- Claude Opus 4.7 (1M context)
+- Juan Pelaez
+
 ## 4.0.4 (2026-05-28)
 
 ### 🧱 Updated Dependencies
