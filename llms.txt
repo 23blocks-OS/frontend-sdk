@@ -519,8 +519,8 @@ const [authHealth, crmHealth] = await Promise.all([
   - `query(scope, scopeId, data)` - Semantic search with pagination, minScore, and reranking
 - `files` - Generic file processing by file unique ID
 - `jobs` - Async job status tracking (progress, pages, chunks, embeddings, timing)
-- `images` - Image upload for vector indexing and unified search (text, image URL, base64, filters, similarity threshold)
-- `products` - Product identification from images and unified product search
+- `images` - Image upload for vector indexing and unified search (text, image URL, base64, filters, similarity threshold). UnifiedSearchQuery also accepts `useObjectDetection?: boolean` — defaults TRUE server-side; runs YOLO detection on the query image and switches to multi-object search when 2+ objects are detected (auto-fallback to standard search for 0–1 objects). When multi-object behavior triggers, the response's top-level `meta` carries `objects_detected` and each result's `attributes` carries `detection_metadata`.
+- `products` - Product identification from images and unified product search. Same `useObjectDetection` flag on the query — typical use case is shelf photos where one image holds multiple products and the consumer wants each one returned independently.
 - `evaluations.datasets` - CRUD evaluation datasets
 - `evaluations.questions` - Batch create and list questions per dataset
 - `evaluations.runs` - Create (async), get, list, cancel evaluation runs with polling helper
