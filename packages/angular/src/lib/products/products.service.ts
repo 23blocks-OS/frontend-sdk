@@ -70,6 +70,8 @@ export class ProductsService {
   get tags() { return this.ensureConfigured().tags; }
   get catalogs() { return this.ensureConfigured().catalogs; }
   get categoryImages() { return this.ensureConfigured().categoryImages; }
+  get userSubmissions() { return this.ensureConfigured().userSubmissions; }
+  get adminSubmissions() { return this.ensureConfigured().adminSubmissions; }
 
   /** Full block access */
   get productsBlock(): ProductsBlock { return this.ensureConfigured(); }
