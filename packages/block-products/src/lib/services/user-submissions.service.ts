@@ -55,10 +55,6 @@ export function createUserSubmissionsService(
           brand: data.brand,
           upc: data.upc,
           sku: data.sku,
-          vintage: data.vintage,
-          varietal: data.varietal,
-          region: data.region,
-          alcohol_content: data.alcoholContent,
           suggested_price: data.suggestedPrice,
           price_currency: data.priceCurrency,
           submission_notes: data.submissionNotes,
@@ -69,6 +65,7 @@ export function createUserSubmissionsService(
             is_primary: img.isPrimary,
             caption: img.caption,
           })),
+          payload: data.payload,
         },
       });
       return decodeOne(response, productSubmissionMapper);

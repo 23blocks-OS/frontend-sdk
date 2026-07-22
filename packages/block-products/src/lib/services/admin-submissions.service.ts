@@ -108,6 +108,7 @@ export function createAdminSubmissionsService(
           review_notes: data?.reviewNotes,
           enriched_data: data?.enrichedData
             ? {
+                category_id: data.enrichedData.categoryId,
                 vendor_id: data.enrichedData.vendorId,
                 tags: data.enrichedData.tags,
               }
@@ -124,6 +125,7 @@ export function createAdminSubmissionsService(
           rejection_reason: data.rejectionReason,
           review_notes: data.reviewNotes,
           duplicate_of_product_id: data.duplicateOfProductId,
+          duplicate_of_submission_id: data.duplicateOfSubmissionId,
         },
       });
       return decodeOne(response, productSubmissionMapper);
@@ -138,10 +140,6 @@ export function createAdminSubmissionsService(
           brand: data.brand,
           upc: data.upc,
           sku: data.sku,
-          vintage: data.vintage,
-          varietal: data.varietal,
-          region: data.region,
-          alcohol_content: data.alcoholContent,
           suggested_price: data.suggestedPrice,
           price_currency: data.priceCurrency,
           submission_notes: data.submissionNotes,
@@ -152,6 +150,7 @@ export function createAdminSubmissionsService(
             is_primary: img.isPrimary,
             caption: img.caption,
           })),
+          payload: data.payload,
         },
       });
       return decodeOne(response, productSubmissionMapper);

@@ -24,16 +24,20 @@ export interface ProductSubmission extends IdentityCore {
   brand?: string;
   upc?: string;
   sku?: string;
-  vintage?: number;
-  varietal?: string;
-  region?: string;
-  alcoholContent?: number;
   suggestedPrice?: number;
   priceCurrency?: string;
   submissionNotes?: string;
   foundAtStore?: string;
   source?: string;
   imageUrls?: ProductSubmissionImage[];
+
+  /**
+   * Generic JSONB bag for product-type-specific attributes (same convention as
+   * `Product.payload`). Wine submissions carry `{ vintage, varietal, region,
+   * alcohol_content }` here; any other product type carries its own keys. On
+   * approval this maps verbatim to the created `Product.payload`.
+   */
+  payload?: Record<string, unknown>;
 
   /** UUID of the submitting user. */
   submittedByUserId?: string;
@@ -84,16 +88,19 @@ export interface CreateProductSubmissionRequest {
   brand?: string;
   upc?: string;
   sku?: string;
-  vintage?: number;
-  varietal?: string;
-  region?: string;
-  alcoholContent?: number;
   suggestedPrice?: number;
   priceCurrency?: string;
   submissionNotes?: string;
   foundAtStore?: string;
   source?: string;
   imageUrls?: ProductSubmissionImage[];
+
+  /**
+   * Product-type-specific attributes (e.g. wine: `{ vintage, varietal, region,
+   * alcoholContent }`). Sent verbatim to the server's generic `payload` jsonb
+   * column — arbitrary, nested keys allowed. Bypasses strong-params server-side.
+   */
+  payload?: Record<string, unknown>;
 }
 
 export type UpdateProductSubmissionRequest = Partial<CreateProductSubmissionRequest>;
@@ -120,6 +127,7 @@ export interface AssignSubmissionRequest {
 export interface ApproveSubmissionRequest {
   reviewNotes?: string;
   enrichedData?: {
+    categoryId?: string;
     vendorId?: string;
     tags?: string[];
   };
@@ -129,4 +137,5 @@ export interface RejectSubmissionRequest {
   rejectionReason: string;
   reviewNotes?: string;
   duplicateOfProductId?: string;
+  duplicateOfSubmissionId?: string;
 }
