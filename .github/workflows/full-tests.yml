@@ -159,7 +159,9 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Upgrade npm for OIDC
-        run: npm install -g npm@latest
+        # Pin to npm@11: npm@latest (12.x) requires Node >=22 and fails
+        # EBADENGINE on this Node 20 runner. npm@11 is Node-20-compatible.
+        run: npm install -g npm@11
 
       - name: Install dependencies
         run: npm ci
