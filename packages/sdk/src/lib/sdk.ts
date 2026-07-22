@@ -30,6 +30,14 @@ export {
 //
 // `isUuid` and `assertUuid` are exported from @23blocks/contracts.
 //
+// block-products BREAKING (7.0.0): product submissions are now generic, not
+// wine-specific. products.userSubmissions.create / products.adminSubmissions.
+// update no longer accept top-level vintage/varietal/region/alcoholContent —
+// pass any product-type-specific attributes under `payload` (Record<string,
+// unknown>), mirroring product.payload; on approval it maps verbatim to the
+// created Product.payload. adminSubmissions.approve gains enrichedData.
+// categoryId; adminSubmissions.reject gains duplicateOfSubmissionId.
+//
 // The user/storage/entity file mappers in @23blocks/block-files now read every
 // attribute declared on their respective types — including the AI/RAG fields
 // (schema_model, structured_content, file_structure, metadata, raw_content,
