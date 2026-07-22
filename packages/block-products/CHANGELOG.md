@@ -1,3 +1,23 @@
+# 7.0.0 (2026-07-22)
+
+### 🚀 Features
+
+- ⚠️  **@23blocks/block-products:** submissions carry type-specific fields in generic payload ([4511bec](https://github.com/23blocks-OS/frontend-sdk/commit/4511bec))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-products:** submissions carry type-specific fields in generic payload  ([4511bec](https://github.com/23blocks-OS/frontend-sdk/commit/4511bec))
+  ProductSubmission, CreateProductSubmissionRequest and
+  UpdateProductSubmissionRequest no longer expose vintage/varietal/region/
+  alcoholContent. Move those into `payload`. Requires the payload-shape API
+  (live in prod as of the 2026-07-22 cutover).
+  Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Opus 4.8 (1M context)
+- Juan Pelaez
+
 ## 6.1.2 (2026-06-05)
 
 ### 🩹 Fixes

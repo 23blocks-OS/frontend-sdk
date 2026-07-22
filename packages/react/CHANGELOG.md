@@ -1,3 +1,18 @@
+## 19.2.0 (2026-07-22)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with submissions payload restructure ([90be786](https://github.com/23blocks-OS/frontend-sdk/commit/90be786))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-products to 7.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.8 (1M context)
+- Juan Pelaez
+
 ## 19.1.9 (2026-06-19)
 
 ### 🧱 Updated Dependencies

@@ -1,3 +1,18 @@
+## 15.3.0 (2026-07-22)
+
+### 🚀 Features
+
+- **@23blocks/angular:** add userSubmissions + adminSubmissions getters to ProductsService ([ddfb233](https://github.com/23blocks-OS/frontend-sdk/commit/ddfb233))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-products to 7.0.0
+
+### ❤️ Thank You
+
+- Claude Opus 4.8 (1M context)
+- Juan Pelaez
+
 ## 15.2.22 (2026-06-19)
 
 ### 🧱 Updated Dependencies
