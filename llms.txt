@@ -409,7 +409,7 @@ const [authHealth, crmHealth] = await Promise.all([
 - `myCarts`, `remarketing`, `visitors` - User cart history and remarketing
 - `productVendors` - Product-vendor relationships
 - `tags`, `catalogs`, `categoryImages` - Product tagging, catalog organization, category imagery
-- `userSubmissions` - User-submitted product candidates (POST /users/:uid/submissions, list/get). Consumers (typically shoppers) propose new products via this endpoint; submissions flow into the admin review queue.
+- `userSubmissions` - User-submitted product candidates (POST /users/:uid/submissions, list/get). Consumers (typically shoppers) propose new products via this endpoint; submissions flow into the admin review queue. Product-type-specific attributes (e.g. wine's `vintage`/`varietal`/`region`/`alcoholContent`) go in the generic `payload` object — NOT as top-level fields — mirroring `product.payload`. On approval `payload` maps verbatim to the created `Product.payload`.
 - `adminSubmissions` - Admin/reviewer queue for product submissions (`/admin/products/submissions`). Methods: list (filter by status / assigned_to), get (with history relationships), assign, approve (creates a Product), reject (with reason + optional duplicate link), update. Status enum: `pending` | `in_review` | `approved` | `rejected` | `duplicate`. Requires `products:admin` scope.
 
 ### crm (block-crm)
