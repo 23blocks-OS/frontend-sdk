@@ -40,6 +40,14 @@
 // /users/:uid/shoppinglists/* (the flat /shopping_lists/* didn't exist).
 // addItem uses delta semantics; updateItemQuantity removed.
 //
+// block-products BREAKING (7.0.0): useProductsBlock().userSubmissions/
+// adminSubmissions are now generic, not wine-specific. create/update no
+// longer accept top-level vintage/varietal/region/alcoholContent — pass any
+// product-type-specific attributes under `payload` (Record<string, unknown>),
+// mirroring product.payload; on approval it maps verbatim to Product.payload.
+// adminSubmissions.approve gains enrichedData.categoryId; reject gains
+// duplicateOfSubmissionId.
+//
 // useJarvisBlock().conversations.listByUser now uses the correct
 // /identities/:uid path (was 404'ing on /users/:uid/...). Also adds
 // archive, rename (top-level `name` field), and restore methods.
