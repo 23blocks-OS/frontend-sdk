@@ -1,3 +1,18 @@
+## 18.3.0 (2026-10-21)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with auth groups ([4414f5c](https://github.com/23blocks-OS/frontend-sdk/commit/4414f5c))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 8.1.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 18.2.0 (2026-07-22)
 
 ### 🚀 Features

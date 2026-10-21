@@ -1,3 +1,18 @@
+## 15.4.0 (2026-10-21)
+
+### 🚀 Features
+
+- **@23blocks/angular:** expose auth groups on AuthenticationService ([b8bf487](https://github.com/23blocks-OS/frontend-sdk/commit/b8bf487))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 8.1.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 15.3.0 (2026-07-22)
 
 ### 🚀 Features

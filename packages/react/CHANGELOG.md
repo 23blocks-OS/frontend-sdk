@@ -1,3 +1,18 @@
+## 19.3.0 (2026-10-21)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with auth groups ([b921c60](https://github.com/23blocks-OS/frontend-sdk/commit/b921c60))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 8.1.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 19.2.0 (2026-07-22)
 
 ### 🚀 Features

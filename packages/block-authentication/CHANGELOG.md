@@ -1,3 +1,14 @@
+## 8.1.0 (2026-10-21)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** add groups and members (service, types, JWT group claims) ([a7ff780](https://github.com/23blocks-OS/frontend-sdk/commit/a7ff780))
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 8.0.1 (2026-05-28)
 
 ### 🧱 Updated Dependencies
