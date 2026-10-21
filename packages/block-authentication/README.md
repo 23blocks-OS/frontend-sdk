@@ -439,6 +439,35 @@ await auth.apiKeys.delete('key-id');
 const stats = await auth.apiKeys.getUsageStats('key-id');
 ```
 
+### groups - Groups and Members
+
+Multi-user groups for shared paid plans (owner, admins, members). Scopes: `groups:read`, `groups:write`, `groups:delete`, `groups:admin`.
+
+```typescript
+// Create a group (owner defaults to the current user and is added as a member)
+const group = await auth.groups.create({ name: 'Family Plan', description: 'Household' });
+
+// List groups a user belongs to / owns (no filter requires groups:admin)
+const { data: mine } = await auth.groups.list({ userId: 'user-uuid' });
+const { data: owned } = await auth.groups.list({ ownerId: 'user-uuid' });
+
+// Get a group with its members
+const detail = await auth.groups.get(group.uniqueId);
+
+// Update / delete (soft delete)
+await auth.groups.update(group.uniqueId, { name: 'Smith Family' });
+await auth.groups.delete(group.uniqueId);
+
+// Members (the owner cannot be removed)
+const member = await auth.groups.addMember(group.uniqueId, { userUniqueId: 'user-uuid', role: 'member' });
+await auth.groups.removeMember(group.uniqueId, 'user-uuid');
+
+// All groups for a user
+const groups = await auth.groups.listForUser('user-uuid');
+```
+
+Access tokens of users in groups carry optional `group_id`, `group_owner_id`, `group_role` and `group_ids` claims, typed as `GroupJwtClaims` / `AccessTokenPayload`.
+
 ### mfa - Multi-Factor Authentication
 
 ```typescript

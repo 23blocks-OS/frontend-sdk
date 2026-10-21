@@ -116,6 +116,18 @@ export {
   type UpdateTenantUserSalesRequest,
   type ResendInvitationRequest,
 
+  // Group types
+  type Group,
+  type GroupMember,
+  type GroupRole,
+  type GroupStatus,
+  type CreateGroupRequest,
+  type UpdateGroupRequest,
+  type AddGroupMemberRequest,
+  type ListGroupsParams,
+  type GroupJwtClaims,
+  type AccessTokenPayload,
+
   // App types
   type App,
   type Block,
@@ -179,6 +191,7 @@ export {
   type UpdateRoleRequest,
   type ApiKeyUsageStats,
   type ServiceTokensService,
+  type GroupsService,
   type MfaService,
   type OAuthService,
   type AvatarsService,

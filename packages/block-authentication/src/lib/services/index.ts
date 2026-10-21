@@ -58,6 +58,9 @@ export {
 // Service Tokens
 export { createServiceTokensService, type ServiceTokensService } from './service-tokens.service.js';
 
+// Groups
+export { createGroupsService, type GroupsService } from './groups.service.js';
+
 // MFA
 export { createMfaService, type MfaService } from './mfa.service.js';
 

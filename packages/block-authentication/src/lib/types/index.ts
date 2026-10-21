@@ -66,6 +66,20 @@ export {
   type CreateServiceTokenRequest,
 } from './service-token.js';
 
+// Group types
+export {
+  type Group,
+  type GroupMember,
+  type GroupRole,
+  type GroupStatus,
+  type CreateGroupRequest,
+  type UpdateGroupRequest,
+  type AddGroupMemberRequest,
+  type ListGroupsParams,
+  type GroupJwtClaims,
+  type AccessTokenPayload,
+} from './group.js';
+
 // App types
 export {
   type App,
