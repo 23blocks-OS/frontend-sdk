@@ -12,3 +12,4 @@ export * from './stripe.service.js';
 export * from './mercadopago.service.js';
 export * from './vendor-payments.service.js';
 export * from './purchases.service.js';
+export * from './apple.service.js';

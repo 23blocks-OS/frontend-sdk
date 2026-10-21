@@ -17,3 +17,4 @@ export * from './order-detail-vendor.mapper.js';
 export * from './stripe.mapper.js';
 export * from './mercadopago.mapper.js';
 export * from './utils.js';
+export * from './apple.mapper.js';

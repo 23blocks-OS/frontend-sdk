@@ -13,3 +13,4 @@ export * from './mercadopago.js';
 export * from './vendor-payment.js';
 export * from './report.js';
 export * from './purchase.js';
+export * from './apple.js';

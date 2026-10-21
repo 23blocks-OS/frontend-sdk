@@ -12,6 +12,7 @@ import {
   createSalesCustomersService,
   createFlexibleOrdersService,
   createStripeService,
+  createAppleService,
   createMercadoPagoService,
   createVendorPaymentsService,
   createPurchasesService,
@@ -26,6 +27,7 @@ import {
   type SalesCustomersService,
   type FlexibleOrdersService,
   type StripeService,
+  type AppleService,
   type MercadoPagoService,
   type VendorPaymentsService,
   type PurchasesService,
@@ -63,6 +65,8 @@ export interface SalesBlock {
   flexibleOrders: FlexibleOrdersService;
   /** Stripe payment integration */
   stripe: StripeService;
+  /** Apple In-App Purchase (App Store) */
+  apple: AppleService;
   /** MercadoPago payment integration */
   mercadopago: MercadoPagoService;
   /** Vendor payment management */
@@ -98,6 +102,7 @@ export function createSalesBlock(
     customers: createSalesCustomersService(transport, config),
     flexibleOrders: createFlexibleOrdersService(transport, config),
     stripe: createStripeService(transport, config),
+    apple: createAppleService(transport, config),
     mercadopago: createMercadoPagoService(transport, config),
     vendorPayments: createVendorPaymentsService(transport, config),
     purchases: createPurchasesService(transport, config),
