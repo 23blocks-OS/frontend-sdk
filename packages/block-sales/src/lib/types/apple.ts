@@ -44,8 +44,9 @@ export interface RestoreAppleTransactionsRequest {
   signedTransactions: string[];
 }
 
+/** Per-transaction failure in a restore response (the call still returns 200 if at least one was linked) */
 export interface AppleRestoreError {
-  [key: string]: unknown;
+  detail: string;
 }
 
 export interface AppleRestoreResult {
