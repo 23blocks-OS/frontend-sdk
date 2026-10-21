@@ -40,6 +40,9 @@
 // /users/:uid/shoppinglists/* (the flat /shopping_lists/* didn't exist).
 // addItem uses delta semantics; updateItemQuantity removed.
 //
+// block-authentication: adds groups (useAuthenticationBlock().groups) and
+// GroupJwtClaims/AccessTokenPayload types for shared paid plans.
+//
 // block-products BREAKING (7.0.0): useProductsBlock().userSubmissions/
 // adminSubmissions are now generic, not wine-specific. create/update no
 // longer accept top-level vintage/varietal/region/alcoholContent — pass any
