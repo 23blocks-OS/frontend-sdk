@@ -400,7 +400,7 @@ export class AuthenticationService {
   get apiKeys() { return this.ensureConfigured().apiKeys; }
   /** Service token management for machine-to-machine authentication */
   get serviceTokens() { return this.ensureConfigured().serviceTokens; }
-  /** Groups and members for shared paid plans */
+  /** Groups, members and invitations for shared paid plans */
   get groups() { return this.ensureConfigured().groups; }
   /** Multi-factor authentication setup and verification */
   get mfa() { return this.ensureConfigured().mfa; }
