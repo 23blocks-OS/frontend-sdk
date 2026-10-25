@@ -31,6 +31,16 @@ export interface SignInResponse {
 /**
  * Sign up request
  */
+/**
+ * Self-service account deletion request (DELETE /me)
+ */
+export interface DeleteAccountRequest {
+  /** Current password, required to confirm deletion */
+  password: string;
+  /** Anonymize email, name, profile PII and avatar after the 6-hour recovery window */
+  anonymizeAfterGracePeriod?: boolean;
+}
+
 export interface SignUpRequest {
   email: string;
   password: string;

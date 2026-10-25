@@ -30,7 +30,7 @@ export {
 export { serviceTokenMapper, serviceTokenWithJwtMapper } from './service-token.mapper.js';
 
 // Group mappers
-export { groupMapper, groupMemberMapper } from './group.mapper.js';
+export { groupMapper, groupMemberMapper, groupInvitationMapper } from './group.mapper.js';
 
 // Utilities
 export { parseString, parseDate, parseBoolean, parseNumber, parseStringArray } from './utils.js';

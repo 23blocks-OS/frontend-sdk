@@ -7,9 +7,11 @@ import type {
   CreateGroupRequest,
   UpdateGroupRequest,
   AddGroupMemberRequest,
+  GroupInvitation,
+  CreateGroupInvitationRequest,
   ListGroupsParams,
 } from '../types/index.js';
-import { groupMapper, groupMemberMapper } from '../mappers/index.js';
+import { groupMapper, groupMemberMapper, groupInvitationMapper } from '../mappers/index.js';
 import type { AuthenticationBlockConfig } from '../authentication.block.js';
 
 /**
@@ -59,6 +61,27 @@ export interface GroupsService {
    * List all groups a user belongs to
    */
   listForUser(userUniqueId: string): Promise<Group[]>;
+
+  /**
+   * Invite someone by email (owner or admin). Role defaults to 'member'.
+   */
+  createInvitation(groupId: string, request: CreateGroupInvitationRequest): Promise<GroupInvitation>;
+
+  /**
+   * List a group's pending invitations
+   */
+  listInvitations(groupId: string): Promise<GroupInvitation[]>;
+
+  /**
+   * Revoke a pending invitation
+   */
+  revokeInvitation(groupId: string, invitationId: string): Promise<void>;
+
+  /**
+   * Accept an invitation by token. The signed-in user's email must match the
+   * invited email (403 GW-INV-008). Returns the group with its members.
+   */
+  acceptInvitation(token: string): Promise<Group>;
 }
 
 /**
@@ -137,6 +160,39 @@ export function createGroupsService(
       assertUuid(userUniqueId, 'userUniqueId');
       const response = await transport.get<{ data: unknown[] }>(`/users/${userUniqueId}/groups`);
       return decodeMany(response, groupMapper);
+    },
+
+    async createInvitation(
+      groupId: string,
+      request: CreateGroupInvitationRequest
+    ): Promise<GroupInvitation> {
+      assertUuid(groupId, 'groupId');
+      const response = await transport.post<{ data: Record<string, unknown> }>(
+        `/groups/${groupId}/invitations`,
+        { email: request.email, role: request.role }
+      );
+      return groupInvitationMapper(response.data);
+    },
+
+    async listInvitations(groupId: string): Promise<GroupInvitation[]> {
+      assertUuid(groupId, 'groupId');
+      const response = await transport.get<{ data?: Record<string, unknown>[] }>(
+        `/groups/${groupId}/invitations`
+      );
+      return (response.data ?? []).map(groupInvitationMapper);
+    },
+
+    async revokeInvitation(groupId: string, invitationId: string): Promise<void> {
+      assertUuid(groupId, 'groupId');
+      assertUuid(invitationId, 'invitationId');
+      await transport.delete(`/groups/${groupId}/invitations/${invitationId}`);
+    },
+
+    async acceptInvitation(token: string): Promise<Group> {
+      const response = await transport.post<{ data: unknown }>(
+        `/groups/invitations/${encodeURIComponent(token)}/accept`
+      );
+      return decodeOne(response, groupMapper);
     },
   };
 }

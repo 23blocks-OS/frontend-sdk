@@ -4,6 +4,7 @@ import type {
   SignInRequest,
   SignInResponse,
   SignUpRequest,
+  DeleteAccountRequest,
   SignUpResponse,
   PasswordResetRequest,
   PasswordUpdateRequest,
@@ -190,6 +191,17 @@ export interface AuthService {
   resendInvitation(request: ResendInvitationRequest): Promise<User>;
 
   /**
+   * Delete the current user's account (soft delete, requires password confirmation).
+   * Revokes refresh tokens and blocks login; the account can be recovered within
+   * 6 hours via `requestAccountRecovery`. With `anonymizeAfterGracePeriod`, personal
+   * data is anonymized afterwards (`unique_id` is kept).
+   *
+   * Errors: 422 GW-DEL-002 (password missing), 401 GW-DEL-003 (wrong password),
+   * 422 GW-DEL-004 (already deleted), 404 GW-DEL-001 (user not found).
+   */
+  deleteAccount(request: DeleteAccountRequest): Promise<void>;
+
+  /**
    * Request account recovery for a deleted/deactivated account. Sends a recovery email.
    *
    * @returns AccountRecoveryResponse with `success` and `message`.
@@ -282,6 +294,15 @@ export function createAuthService(
         accessToken: response.meta?.auth?.access_token ?? response.meta?.access_token ?? response.meta?.token,
         message: response.meta?.message,
       };
+    },
+
+    async deleteAccount(request: DeleteAccountRequest): Promise<void> {
+      await transport.delete('/me', {
+        body: {
+          password: request.password,
+          anonymize_after_grace_period: request.anonymizeAfterGracePeriod ?? false,
+        },
+      });
     },
 
     async signOut(): Promise<void> {

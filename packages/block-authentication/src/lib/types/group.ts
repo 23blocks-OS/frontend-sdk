@@ -68,6 +68,32 @@ export interface AddGroupMemberRequest {
 }
 
 /**
+ * Invitation role (owner cannot be invited)
+ */
+export type GroupInvitationRole = 'admin' | 'member';
+
+/**
+ * Pending invitation to join a group
+ */
+export interface GroupInvitation {
+  id: string;
+  email: string;
+  role: GroupInvitationRole;
+  expiresAt: Date;
+  /** Unique ID of the inviting user (only returned when listing) */
+  invitedBy: string | null;
+}
+
+/**
+ * Create group invitation request
+ */
+export interface CreateGroupInvitationRequest {
+  email: string;
+  /** Defaults to 'member' */
+  role?: GroupInvitationRole;
+}
+
+/**
  * List groups filters. Without a filter, the `groups:admin` scope is required.
  */
 export interface ListGroupsParams {

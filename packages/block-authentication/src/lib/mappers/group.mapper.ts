@@ -1,5 +1,5 @@
 import type { ResourceMapper, IncludedMap, JsonApiResource } from '@23blocks/jsonapi-codec';
-import type { Group, GroupMember } from '../types/index.js';
+import type { Group, GroupInvitation, GroupMember } from '../types/index.js';
 import { parseDate, parseString, parseNumber } from './utils.js';
 
 /**
@@ -54,3 +54,16 @@ export const groupMapper: ResourceMapper<Group> = {
     return group;
   },
 };
+
+/**
+ * Map a group invitation (plain JSON `{ data }`, snake_case)
+ */
+export function groupInvitationMapper(raw: Record<string, unknown>): GroupInvitation {
+  return {
+    id: parseString(raw['id']),
+    email: parseString(raw['email']),
+    role: (raw['role'] as GroupInvitation['role']) ?? 'member',
+    expiresAt: parseDate(raw['expires_at']),
+    invitedBy: raw['invited_by'] ? parseString(raw['invited_by']) : null,
+  };
+}
