@@ -1,3 +1,18 @@
+## 19.4.0 (2026-10-25)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with auth account deletion and group invitations ([fd8e74e](https://github.com/23blocks-OS/frontend-sdk/commit/fd8e74e))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 8.2.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 19.3.0 (2026-10-21)
 
 ### 🚀 Features

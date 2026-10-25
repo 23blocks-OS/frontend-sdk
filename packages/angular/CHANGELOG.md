@@ -1,3 +1,18 @@
+## 15.5.0 (2026-10-25)
+
+### 🚀 Features
+
+- **@23blocks/angular:** document auth groups invitations and account deletion ([d386115](https://github.com/23blocks-OS/frontend-sdk/commit/d386115))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 8.2.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 15.4.0 (2026-10-21)
 
 ### 🚀 Features

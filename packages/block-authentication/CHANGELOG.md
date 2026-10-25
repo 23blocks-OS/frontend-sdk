@@ -1,3 +1,14 @@
+## 8.2.0 (2026-10-25)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** add account deletion (DELETE /me) and group invitations ([4191bf5](https://github.com/23blocks-OS/frontend-sdk/commit/4191bf5))
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 8.1.0 (2026-10-21)
 
 ### 🚀 Features
