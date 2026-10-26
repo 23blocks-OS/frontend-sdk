@@ -1,3 +1,18 @@
+## 19.5.0 (2026-10-26)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with signUp refreshToken ([d7e2057](https://github.com/23blocks-OS/frontend-sdk/commit/d7e2057))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 8.3.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 19.4.0 (2026-10-25)
 
 ### 🚀 Features

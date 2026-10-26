@@ -1,3 +1,14 @@
+## 8.3.0 (2026-10-26)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** return refreshToken from signUp (Auth v4.49.6) ([23baebe](https://github.com/23blocks-OS/frontend-sdk/commit/23baebe))
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 8.2.0 (2026-10-25)
 
 ### 🚀 Features

@@ -1,3 +1,18 @@
+## 18.5.0 (2026-10-26)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with signUp refreshToken ([74bdcf7](https://github.com/23blocks-OS/frontend-sdk/commit/74bdcf7))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 8.3.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 18.4.0 (2026-10-25)
 
 ### 🚀 Features

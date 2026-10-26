@@ -1,3 +1,18 @@
+## 15.6.0 (2026-10-26)
+
+### 🚀 Features
+
+- **@23blocks/angular:** store signUp refresh token in token mode ([e1b49f9](https://github.com/23blocks-OS/frontend-sdk/commit/e1b49f9))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 8.3.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 15.5.0 (2026-10-25)
 
 ### 🚀 Features
