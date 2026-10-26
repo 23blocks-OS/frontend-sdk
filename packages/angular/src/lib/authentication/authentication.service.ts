@@ -130,7 +130,7 @@ export class AuthenticationService {
     return from(this.ensureConfigured().auth.signUp(request)).pipe(
       tap((response) => {
         if (this.isTokenMode && this.tokenManager && response.accessToken) {
-          this.tokenManager.setTokens(response.accessToken);
+          this.tokenManager.setTokens(response.accessToken, response.refreshToken);
           this.lifecycle?.start();
         }
       })
