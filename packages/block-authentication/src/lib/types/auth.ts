@@ -79,6 +79,8 @@ export interface SignUpResponse {
   user: User;
   /** Access token (only present if email confirmation is NOT required). */
   accessToken?: string;
+  /** Refresh token (Auth API v4.49.6+, present with the access token). Store it securely; it is the only copy. */
+  refreshToken?: string;
   /** Server message (e.g., 'Confirmation email sent'). */
   message?: string;
 }

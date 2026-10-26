@@ -292,6 +292,7 @@ export function createAuthService(
       return {
         user,
         accessToken: response.meta?.auth?.access_token ?? response.meta?.access_token ?? response.meta?.token,
+        refreshToken: response.meta?.auth?.refresh_token,
         message: response.meta?.message,
       };
     },
