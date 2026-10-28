@@ -42,7 +42,7 @@
 //
 // block-authentication: adds groups (useAuthenticationBlock().groups, incl. invitations),
 // auth.deleteAccount (DELETE /me), signUp now returns refreshToken (Auth v4.49.6) and
-// GroupJwtClaims/AccessTokenPayload types for shared paid plans.
+// GroupJwtClaims/AccessTokenPayload types for shared paid plans. block-sales: privileged user/customer/entity fields documented as admin-scope only.
 //
 // block-products BREAKING (7.0.0): useProductsBlock().userSubmissions/
 // adminSubmissions are now generic, not wine-specific. create/update no
