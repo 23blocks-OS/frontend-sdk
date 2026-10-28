@@ -1,5 +1,5 @@
 import type { Transport, PageResult } from '@23blocks/contracts';
-import { decodeOne, decodeMany, decodePageResult, extractPageMeta } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodeMany, decodePageResult, extractPageMeta, type JsonApiMeta } from '@23blocks/jsonapi-codec';
 import type {
   UserJourney,
   StartJourneyRequest,
@@ -162,7 +162,7 @@ export function createUserJourneysService(transport: Transport, _config: { apiKe
         },
       });
       const decoded = decodeMany(response, userJourneyMapper);
-      const pageMeta = extractPageMeta(response);
+      const pageMeta = extractPageMeta(response as JsonApiMeta);
       const doc = response as Record<string, unknown>;
       const metaObj = (doc['meta'] || {}) as Record<string, unknown>;
       const summaryObj = (metaObj['summary'] || {}) as Record<string, unknown>;

@@ -1,5 +1,5 @@
 import type { Transport } from '@23blocks/contracts';
-import { decodeOne, decodeMany, extractPageMeta } from '@23blocks/jsonapi-codec';
+import { decodeOne, decodeMany, extractPageMeta, type JsonApiMeta } from '@23blocks/jsonapi-codec';
 import type {
   VendorPayment,
   CreateVendorPaymentRequest,
@@ -157,7 +157,7 @@ export function createVendorPaymentsService(transport: Transport, _config: { api
         per_page: params.perPage,
       });
       const decoded = decodeMany(response, vendorPaymentMapper);
-      const pageMeta = extractPageMeta(response);
+      const pageMeta = extractPageMeta(response as JsonApiMeta);
       const doc = response as Record<string, unknown>;
       const metaObj = (doc['meta'] || {}) as Record<string, unknown>;
       const summaryObj = (metaObj['summary'] || {}) as Record<string, unknown>;
@@ -225,7 +225,7 @@ export function createVendorPaymentsService(transport: Transport, _config: { api
         per_page: params.perPage,
       });
       const decoded = decodeMany(response, orderDetailVendorMapper);
-      const pageMeta = extractPageMeta(response);
+      const pageMeta = extractPageMeta(response as JsonApiMeta);
       const doc = response as Record<string, unknown>;
       const metaObj = (doc['meta'] || {}) as Record<string, unknown>;
       const summaryObj = (metaObj['summary'] || {}) as Record<string, unknown>;
