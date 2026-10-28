@@ -33,6 +33,9 @@ env:
   API_IMAGE: ${{ vars.API_IMAGE || '23blocks/api' }}
   API_VERSION: ${{ vars.API_VERSION || 'latest' }}
 
+permissions:
+  contents: read
+
 jobs:
   full-tests:
     name: "Full Test Suite"
@@ -41,12 +44,16 @@ jobs:
 
     steps:
       - name: Log trigger info
+        env:
+          INPUT_REASON: ${{ inputs.reason }}
+          INPUT_RELEASE_AFTER: ${{ inputs.release_after }}
+          INPUT_SEED_LEVEL: ${{ inputs.seed_level }}
         run: |
           echo "## Full Test Suite Triggered" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Reason:** ${{ inputs.reason }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Release after:** ${{ inputs.release_after }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Seed level:** ${{ inputs.seed_level }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Reason:** $INPUT_REASON" >> $GITHUB_STEP_SUMMARY
+          echo "**Release after:** $INPUT_RELEASE_AFTER" >> $GITHUB_STEP_SUMMARY
+          echo "**Seed level:** $INPUT_SEED_LEVEL" >> $GITHUB_STEP_SUMMARY
           echo "**Triggered by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "**Ref:** ${{ github.ref }}" >> $GITHUB_STEP_SUMMARY
 
@@ -56,7 +63,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       # Uncomment when ECR is configured
@@ -150,7 +157,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       - name: Configure Git

@@ -4,6 +4,18 @@ All notable changes to the 23blocks SDK monorepo.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Per-package versioning via [Conventional Commits](https://www.conventionalcommits.org/) + [nx release](https://nx.dev/recipes/nx-release). Per-package details live in each package's own `CHANGELOG.md`; this file is a higher-level index of what shipped when.
 
+## Security: review and updates, 2026-10-28
+
+Repository tooling only. No published package changed, so no package version was bumped (package versions are set by `nx release` from commits; the root `package.json` is private at 0.0.0).
+
+- Dependencies: `npm audit --omit=dev` reports 0 vulnerabilities, so nothing the published packages depend on is affected. `npm audit fix` (no breaking changes) updated the lock file for the development tooling: advisories went from 81 (6 critical, 47 high, 24 moderate, 4 low) to 30 (2 critical, 13 high, 13 moderate, 2 low). Build of all 26 projects, the 32 unit tests and the typecheck result (86 existing type errors, same before and after) are unchanged.
+- Still open: the 2 critical advisories (`vitest` and `tinypool`) and the `vite` advisory are fixed only in vitest 5, a major upgrade of the test runner. The `nx` 22.2.3 advisories have no fixed version available yet. Both affect development machines and CI only.
+- CI: Node 20 is end of life, so jobs now run Node 22, and the test matrix is 22 and 24 (it was 20 and 22). Use a Node release that includes the October 2026 security fixes (22.23.4, 24.22.1 or newer); `setup-node` picks the latest patch.
+- CI: `ci.yml`, `pr-checks.yml`, `merge-tests.yml` and `full-tests.yml` now declare `permissions: contents: read`. Jobs that publish keep their own `id-token` and `contents: write` permissions.
+- CI: workflow inputs (`reason`, `version`, `preid`, `dry_run`) in `full-tests.yml` and `publish-manual.yml` were written into shell commands with `${{ }}`; they now pass through environment variables, so an input can no longer inject commands.
+- `docker/docker-compose.yml`: the API, Postgres (password `postgres`) and Redis (no password) ports are published on `127.0.0.1` only, not on every network interface.
+- Reviewed, nothing to change: no committed secrets in history; no `eval`, `new Function`, `dangerouslySetInnerHTML` or `child_process` in package sources; no shell scripts.
+
 ---
 
 ## Current published versions (as of 2026-06-06)
