@@ -1,3 +1,14 @@
+## 8.1.0 (2026-10-28)
+
+### 🚀 Features
+
+- **@23blocks/block-sales:** document privileged fields as admin-scope only (Sales v7.2.0) ([bbe1cf3](https://github.com/23blocks-OS/frontend-sdk/commit/bbe1cf3))
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 8.0.5 (2026-05-28)
 
 ### 🧱 Updated Dependencies

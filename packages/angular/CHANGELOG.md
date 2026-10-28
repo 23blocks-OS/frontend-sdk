@@ -1,3 +1,18 @@
+## 15.7.0 (2026-10-28)
+
+### 🚀 Features
+
+- **@23blocks/angular:** rebuild with sales admin-scope field docs ([5b9d2cb](https://github.com/23blocks-OS/frontend-sdk/commit/5b9d2cb))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 8.1.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 15.6.0 (2026-10-26)
 
 ### 🚀 Features

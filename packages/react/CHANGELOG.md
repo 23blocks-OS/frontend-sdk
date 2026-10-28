@@ -1,3 +1,18 @@
+## 19.6.0 (2026-10-28)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with sales admin-scope field docs ([cadb98a](https://github.com/23blocks-OS/frontend-sdk/commit/cadb98a))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 8.1.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 19.5.0 (2026-10-26)
 
 ### 🚀 Features

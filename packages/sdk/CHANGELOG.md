@@ -1,3 +1,18 @@
+## 18.6.0 (2026-10-28)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with sales admin-scope field docs ([b876452](https://github.com/23blocks-OS/frontend-sdk/commit/b876452))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-sales to 8.1.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 18.5.0 (2026-10-26)
 
 ### 🚀 Features
