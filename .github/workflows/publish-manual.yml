@@ -41,7 +41,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
 
@@ -61,19 +61,25 @@ jobs:
 
       - name: Version packages
         run: |
-          if [ -n "${{ github.event.inputs.preid }}" ]; then
-            npx nx release version ${{ github.event.inputs.version }} --preid=${{ github.event.inputs.preid }} ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
+          DRY=""
+          if [ "$INPUT_DRY_RUN" = "true" ]; then DRY="--dry-run"; fi
+          if [ -n "$INPUT_PREID" ]; then
+            npx nx release version "$INPUT_VERSION" --preid="$INPUT_PREID" $DRY
           else
-            npx nx release version ${{ github.event.inputs.version }} ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
+            npx nx release version "$INPUT_VERSION" $DRY
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+          INPUT_PREID: ${{ github.event.inputs.preid }}
+          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run }}
 
       - name: Generate changelog
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: npx nx release changelog ${{ github.event.inputs.version }}
+        run: npx nx release changelog "$INPUT_VERSION"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_VERSION: ${{ github.event.inputs.version }}
 
       - name: Publish to NPM
         if: ${{ github.event.inputs.dry_run != 'true' }}
