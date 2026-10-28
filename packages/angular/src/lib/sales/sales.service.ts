@@ -1,3 +1,4 @@
+// Bundles block-sales (privileged user/customer/entity fields are admin-scope only; ignored otherwise)
 import { Injectable, Inject, Optional } from '@angular/core';
 import type { Transport } from '@23blocks/contracts';
 import {
