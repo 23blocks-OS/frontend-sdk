@@ -29,8 +29,11 @@ export interface RegisterSalesUserRequest {
   email?: string;
   phone?: string;
   avatarUrl?: string;
+  /** Admin-scope token only (tenants:admin); silently ignored otherwise. */
   roleName?: string;
+  /** Admin-scope token only (tenants:admin); silently ignored otherwise. */
   roleUniqueId?: string;
+  /** Admin-scope token only (tenants:admin); silently ignored otherwise. */
   stripeId?: string;
   timeZone?: string;
   preferredLanguage?: string;

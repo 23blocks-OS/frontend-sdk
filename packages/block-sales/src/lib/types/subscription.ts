@@ -35,6 +35,7 @@ export interface SubscriptionItem {
 
 /** Matches subscription_params in subscriptions_controller.rb */
 export interface CreateSubscriptionRequest {
+  /** Admin-scope token only (tenants:admin); silently ignored otherwise. */
   stripeCustomerId?: string;
   accountUniqueId?: string;
   accountCode?: string;

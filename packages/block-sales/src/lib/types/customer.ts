@@ -28,6 +28,7 @@ export interface RegisterSalesCustomerRequest {
   email?: string;
   phone?: string;
   companyUniqueId?: string;
+  /** Admin-scope token only (tenants:admin); silently ignored otherwise. */
   stripeId?: string;
   status?: string;
   timeZone?: string;

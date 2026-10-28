@@ -20,6 +20,7 @@ export interface RegisterSalesEntityRequest {
   entityAlias?: string;
   entitySource?: string;
   entityUrl?: string;
+  /** Admin-scope token only (tenants:admin); silently ignored otherwise. */
   stripeId?: string;
   status?: string;
   timeZone?: string;
