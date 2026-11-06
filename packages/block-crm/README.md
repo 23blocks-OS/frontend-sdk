@@ -3,7 +3,7 @@
 CRM block for the 23blocks SDK - accounts, contacts, leads, opportunities, meetings, and more.
 
 [![npm version](https://img.shields.io/npm/v/@23blocks/block-crm.svg)](https://www.npmjs.com/package/@23blocks/block-crm)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Installation
 
@@ -265,4 +265,4 @@ import type {
 
 ## License
 
-MIT - Copyright (c) 2024 23blocks
+Apache-2.0 - Copyright (c) 2024 23blocks

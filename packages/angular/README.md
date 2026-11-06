@@ -3,7 +3,7 @@
 Angular bindings for the 23blocks SDK - Injectable services with typed delegation to block APIs.
 
 [![npm version](https://img.shields.io/npm/v/@23blocks/angular.svg)](https://www.npmjs.com/package/@23blocks/angular)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
 
 > **v7.0.0** - Complete rewrite from Observable wrappers to typed getter delegation. See [CHANGELOG.md](./CHANGELOG.md) for migration guide.
 
@@ -578,4 +578,4 @@ export const appConfig: ApplicationConfig = {
 
 ## License
 
-MIT - Copyright (c) 2024 23blocks
+Apache-2.0 - Copyright (c) 2024 23blocks

@@ -2,7 +2,7 @@
   "name": "@23blocks/block-sales",
   "version": "8.1.0",
   "description": "Sales block for 23blocks SDK - orders, payments, subscriptions, transactions",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

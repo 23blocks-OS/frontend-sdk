@@ -2,7 +2,7 @@
   "name": "@23blocks/block-products",
   "version": "7.0.0",
   "description": "Products block for 23blocks SDK - e-commerce, carts, inventory, catalog management",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

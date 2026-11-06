@@ -2,7 +2,7 @@
   "name": "@23blocks/block-forms",
   "version": "5.0.5",
   "description": "Forms block for 23blocks SDK - dynamic forms, schemas, submissions, and form management",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

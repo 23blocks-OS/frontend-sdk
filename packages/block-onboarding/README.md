@@ -3,7 +3,7 @@
 Onboarding block for the 23blocks SDK - user onboarding flows and identity verification.
 
 [![npm version](https://img.shields.io/npm/v/@23blocks/block-onboarding.svg)](https://www.npmjs.com/package/@23blocks/block-onboarding)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Installation
 
@@ -294,4 +294,4 @@ try {
 
 ## License
 
-MIT - Copyright (c) 2024 23blocks
+Apache-2.0 - Copyright (c) 2024 23blocks

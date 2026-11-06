@@ -2,7 +2,7 @@
   "name": "@23blocks/jsonapi-codec",
   "version": "3.3.5",
   "description": "JSON:API v1.0 codec for encoding/decoding API responses",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@
   "name": "@23blocks/block-conversations",
   "version": "5.0.0",
   "description": "Conversations block for 23blocks SDK - messaging, groups, notifications, and conversations management",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@
   "name": "@23blocks/testing",
   "version": "2.2.5",
   "description": "Testing utilities for the 23blocks SDK - mock transport, fixtures, and assertion helpers",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

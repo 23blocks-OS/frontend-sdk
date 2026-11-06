@@ -2,7 +2,7 @@
   "name": "@23blocks/block-search",
   "version": "6.0.4",
   "description": "Search block for 23blocks SDK - full-text search, history, favorites",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

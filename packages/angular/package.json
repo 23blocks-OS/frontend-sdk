@@ -2,7 +2,7 @@
   "name": "@23blocks/angular",
   "version": "15.7.0",
   "description": "Angular bindings for 23blocks SDK - Injectable services with typed delegation to block APIs",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

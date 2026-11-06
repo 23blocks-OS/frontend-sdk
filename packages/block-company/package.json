@@ -2,7 +2,7 @@
   "name": "@23blocks/block-company",
   "version": "4.0.4",
   "description": "Company block for 23blocks SDK - organizational structure, departments, teams, and quarters",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

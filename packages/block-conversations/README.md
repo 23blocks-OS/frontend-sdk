@@ -59,4 +59,4 @@ See the [full documentation](https://github.com/23blocks-OS/frontend-sdk/tree/ma
 
 ## License
 
-MIT
+Apache-2.0

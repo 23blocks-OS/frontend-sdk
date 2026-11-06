@@ -2,7 +2,7 @@
   "name": "@23blocks/block-authentication",
   "version": "8.3.0",
   "description": "Authentication block for 23blocks SDK - users, roles, API keys, subscriptions",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

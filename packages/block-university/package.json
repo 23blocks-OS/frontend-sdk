@@ -2,7 +2,7 @@
   "name": "@23blocks/block-university",
   "version": "4.0.4",
   "description": "University block for 23blocks SDK - courses, lessons, enrollments, assignments, submissions",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

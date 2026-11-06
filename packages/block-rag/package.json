@@ -2,7 +2,7 @@
   "name": "@23blocks/block-rag",
   "version": "2.3.0",
   "description": "RAG block for 23blocks SDK - vector search, document processing, image search, product identification",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

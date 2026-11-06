@@ -2,7 +2,7 @@
   "name": "@23blocks/block-crm",
   "version": "5.0.6",
   "description": "CRM block for 23blocks SDK - accounts, contacts, leads, opportunities, meetings",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "23blocks <hello@23blocks.com>",
   "repository": {
     "type": "git",

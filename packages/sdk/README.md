@@ -3,7 +3,7 @@
 The complete 23blocks SDK - all blocks in a single package with automatic token management.
 
 [![npm version](https://img.shields.io/npm/v/@23blocks/sdk.svg)](https://www.npmjs.com/package/@23blocks/sdk)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Installation
 
@@ -470,4 +470,4 @@ See the [main README](https://github.com/23blocks-OS/frontend-sdk) for the compl
 
 ## License
 
-MIT - Copyright (c) 2024 23blocks
+Apache-2.0 - Copyright (c) 2024 23blocks
