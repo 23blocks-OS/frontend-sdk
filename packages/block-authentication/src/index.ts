@@ -87,6 +87,12 @@ export {
   type TenantContextResponse,
   type TenantContextRevokeRequest,
   type TenantContextAuditEntry,
+  type DeviceAuthorizationRequest,
+  type DeviceAuthorizationResponse,
+  type DeviceVerificationRequest,
+  type DeviceVerificationResponse,
+  type DeviceTokenPollRequest,
+  type DeviceTokenResponse,
 
   // Extended User types
   type UserProfileFull,

@@ -1,4 +1,4 @@
-import type { Transport } from '@23blocks/contracts';
+import { BlockErrorException, type Transport } from '@23blocks/contracts';
 import { decodeOne } from '@23blocks/jsonapi-codec';
 import type {
   OAuthSocialLoginRequest,
@@ -12,6 +12,12 @@ import type {
   TenantContextRevokeRequest,
   TenantContextAuditEntry,
   SignInResponse,
+  DeviceAuthorizationRequest,
+  DeviceAuthorizationResponse,
+  DeviceVerificationRequest,
+  DeviceVerificationResponse,
+  DeviceTokenPollRequest,
+  DeviceTokenResponse,
 } from '../types/index.js';
 import { userMapper } from '../mappers/index.js';
 
@@ -92,6 +98,30 @@ export interface OAuthService {
    * @returns Array of TenantContextAuditEntry with `companyName`, `switchReason`, `active`, `revoked`.
    */
   getTenantContextAudit(): Promise<TenantContextAuditEntry[]>;
+
+  /**
+   * Start an OAuth device authorization (RFC 8628). Show `userCode` and `verificationUri`
+   * to the user, then call `pollDeviceToken`.
+   *
+   * @returns DeviceAuthorizationResponse with `deviceCode`, `userCode`, `verificationUri`, `expiresIn`, `interval`.
+   */
+  authorizeDevice(request?: DeviceAuthorizationRequest): Promise<DeviceAuthorizationResponse>;
+
+  /**
+   * Approve a device by its user code. Requires a signed-in user (Bearer token).
+   *
+   * @returns DeviceVerificationResponse with `status` ('approved').
+   */
+  verifyDevice(request: DeviceVerificationRequest): Promise<DeviceVerificationResponse>;
+
+  /**
+   * Poll `/oauth/token` until the user approves the device.
+   * Waits `interval` seconds between polls, adds 5s on `slow_down`, and rejects with a
+   * BlockErrorException (code `access_denied`, `expired_token`, or `aborted`) when the flow ends.
+   *
+   * @returns DeviceTokenResponse with `accessToken`, optional `refreshToken`, `tokenType`, `expiresIn`.
+   */
+  pollDeviceToken(request: DeviceTokenPollRequest): Promise<DeviceTokenResponse>;
 }
 
 /**
@@ -357,6 +387,96 @@ export function createOAuthService(transport: Transport, _config?: unknown): OAu
         revokedAt: item.attributes.revoked_at,
         ipAddress: item.attributes.ip_address,
         active: item.attributes.active,
+
+    async authorizeDevice(request?: DeviceAuthorizationRequest): Promise<DeviceAuthorizationResponse> {
+      const response = await transport.post<{
+        device_code: string;
+        user_code: string;
+        verification_uri: string;
+        verification_uri_complete?: string;
+        expires_in: number;
+        interval: number;
+      }>('/device/authorize', {
+        client_id: request?.clientId,
+        scope: request?.scope,
+      });
+
+      return {
+        deviceCode: response.device_code,
+        userCode: response.user_code,
+        verificationUri: response.verification_uri,
+        verificationUriComplete: response.verification_uri_complete,
+        expiresIn: response.expires_in,
+        interval: response.interval,
+      };
+    },
+
+    async verifyDevice(request: DeviceVerificationRequest): Promise<DeviceVerificationResponse> {
+      const response = await transport.post<{
+        data: { type: string; attributes: { status: string } };
+      }>('/device/verify', {
+        user_code: request.userCode,
+      });
+
+      return { status: response.data.attributes.status };
+    },
+
+    async pollDeviceToken(request: DeviceTokenPollRequest): Promise<DeviceTokenResponse> {
+      let intervalMs = (request.interval ?? 5) * 1000;
+      const deadline = request.expiresIn ? Date.now() + request.expiresIn * 1000 : undefined;
+
+      const wait = (ms: number) =>
+        new Promise<void>((resolve, reject) => {
+          const onAbort = () => {
+            clearTimeout(timer);
+            reject(new BlockErrorException({ code: 'aborted', message: 'Device polling aborted', status: 0 }));
+          };
+          const timer = setTimeout(() => {
+            request.signal?.removeEventListener('abort', onAbort);
+            resolve();
+          }, ms);
+          request.signal?.addEventListener('abort', onAbort, { once: true });
+        });
+
+      for (;;) {
+        if (request.signal?.aborted) {
+          throw new BlockErrorException({ code: 'aborted', message: 'Device polling aborted', status: 0 });
+        }
+        await wait(intervalMs);
+        if (deadline && Date.now() > deadline) {
+          throw new BlockErrorException({ code: 'expired_token', message: 'Device code expired', status: 400 });
+        }
+
+        try {
+          const response = await transport.post<{
+            access_token: string;
+            refresh_token?: string;
+            token_type: string;
+            expires_in?: number;
+          }>('/oauth/token', {
+            grant_type: 'urn:ietf:params:oauth:grant-type:device_code',
+            device_code: request.deviceCode,
+            client_id: request.clientId,
+          });
+
+          return {
+            accessToken: response.access_token,
+            refreshToken: response.refresh_token,
+            tokenType: response.token_type,
+            expiresIn: response.expires_in,
+          };
+        } catch (error) {
+          if (error instanceof BlockErrorException) {
+            if (error.code === 'authorization_pending') continue;
+            if (error.code === 'slow_down') {
+              intervalMs += 5000;
+              continue;
+            }
+          }
+          throw error;
+        }
+      }
+    },
       }));
     },
   };
