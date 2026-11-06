@@ -1,3 +1,30 @@
+# 9.0.0 (2026-11-06)
+
+### 🚀 Features
+
+- **@23blocks/block-authentication:** add OAuth device flow (RFC 8628) ([eeb7837](https://github.com/23blocks-OS/frontend-sdk/commit/eeb7837))
+
+### 🩹 Fixes
+
+- ⚠️  **@23blocks/block-authentication:** stop sending roleId on signup/social login, drop Company.apiAccessKey ([7dcab94](https://github.com/23blocks-OS/frontend-sdk/commit/7dcab94))
+
+### ⚠️  Breaking Changes
+
+- **@23blocks/block-authentication:** stop sending roleId on signup/social login, drop Company.apiAccessKey  ([7dcab94](https://github.com/23blocks-OS/frontend-sdk/commit/7dcab94))
+  SignUpRequest.roleId, OAuthSocialLoginRequest.roleId and
+  Company.apiAccessKey are removed. Self-service signup and social login must not
+  choose their own role, and the company access key must not be exposed to clients.
+  Admin flows (invites, users, tenants, agent registration) keep roleId.
+  Also repairs the brace placement in oauth.service.ts and types/oauth.ts left by the
+  previous device-flow commit, and documents the current_password_required behavior
+  of updatePassword.
+  Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 8.3.0 (2026-10-26)
 
 ### 🚀 Features

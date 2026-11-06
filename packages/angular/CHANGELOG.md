@@ -1,3 +1,18 @@
+## 15.8.0 (2026-11-06)
+
+### 🚀 Features
+
+- **@23blocks/angular:** rebuild with OAuth device flow ([cf6083b](https://github.com/23blocks-OS/frontend-sdk/commit/cf6083b))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 9.0.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 15.7.0 (2026-10-28)
 
 ### 🚀 Features

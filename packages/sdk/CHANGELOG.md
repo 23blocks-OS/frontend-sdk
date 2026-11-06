@@ -1,3 +1,22 @@
+## 18.7.0 (2026-11-06)
+
+### 🚀 Features
+
+- **@23blocks/sdk:** rebuild with OAuth device flow ([7710bac](https://github.com/23blocks-OS/frontend-sdk/commit/7710bac))
+
+### 📖 Documentation
+
+- reorganize into docs/ and internal/, fix links, scrub changelog ([d11112f](https://github.com/23blocks-OS/frontend-sdk/commit/d11112f))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 9.0.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 18.6.0 (2026-10-28)
 
 ### 🚀 Features

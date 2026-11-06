@@ -1,3 +1,18 @@
+## 19.7.0 (2026-11-06)
+
+### 🚀 Features
+
+- **@23blocks/react:** rebuild with OAuth device flow ([932b728](https://github.com/23blocks-OS/frontend-sdk/commit/932b728))
+
+### 🧱 Updated Dependencies
+
+- Updated @23blocks/block-authentication to 9.0.0
+
+### ❤️ Thank You
+
+- Claude Sonnet 5.5
+- Juan Pelaez
+
 ## 19.6.0 (2026-10-28)
 
 ### 🚀 Features
