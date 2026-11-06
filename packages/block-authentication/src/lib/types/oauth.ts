@@ -4,7 +4,6 @@
 export interface OAuthSocialLoginRequest {
   token: string;
   subscription?: string;
-  roleId?: string;
   /** When true, sends X-OAuth-Mode header to return an OAuth 2.0 token pair (access + refresh tokens). */
   oauthMode?: boolean;
 }
@@ -113,6 +112,7 @@ export interface TenantContextAuditEntry {
   revokedAt: string | null;
   ipAddress: string;
   active: boolean;
+}
 
 /**
  * Device Authorization Request (RFC 8628)
@@ -173,5 +173,4 @@ export interface DeviceTokenResponse {
   refreshToken?: string;
   tokenType: string;
   expiresIn?: number;
-}
 }

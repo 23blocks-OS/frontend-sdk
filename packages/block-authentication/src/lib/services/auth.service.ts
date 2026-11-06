@@ -99,7 +99,12 @@ export interface AuthService {
   /**
    * Update password using either a reset token or the current password.
    *
-   * @param request - Provide `resetPasswordToken` for reset flow, or `currentPassword` for change flow.
+   * @param request - Provide `resetPasswordToken` for the reset flow (token carries
+   *   the `password:reset` scope, e.g. from the OTP / reset-email flow), OR
+   *   `currentPassword` for the logged-in "change my own password" flow.
+   *   As of Auth API 2026-07-30, the logged-in flow REQUIRES `currentPassword`
+   *   — a plain JWT Bearer token without it returns 401 `current_password_required`.
+   *   (The DeviseTokenAuth header flow is unaffected.)
    */
   updatePassword(request: PasswordUpdateRequest): Promise<void>;
 
@@ -277,7 +282,6 @@ export function createAuthService(
           password_confirmation: request.passwordConfirmation,
           name: request.name,
           username: request.username,
-          role_id: request.roleId,
           time_zone: request.timeZone,
           preferred_language: request.preferredLanguage,
           payload: request.payload,

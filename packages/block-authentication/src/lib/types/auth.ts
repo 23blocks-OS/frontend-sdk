@@ -47,7 +47,6 @@ export interface SignUpRequest {
   passwordConfirmation: string;
   name?: string;
   username?: string;
-  roleId?: string;
   /** URL to redirect after email confirmation (required if email confirmation is enabled and no server default is set) */
   confirmSuccessUrl?: string;
   /** User's timezone (e.g., 'America/New_York') */

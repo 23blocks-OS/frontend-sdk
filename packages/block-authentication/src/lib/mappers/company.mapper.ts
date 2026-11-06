@@ -98,7 +98,6 @@ export const companyMapper: ResourceMapper<Company> = {
       preferredDomain: parseString(attrs.preferred_domain),
       agentAuthorizationDomain: parseString(attrs.agent_authorization_domain) || null,
       apiUrl: parseString(attrs.api_url),
-      apiAccessKey: parseString(attrs.api_access_key),
       payload: attrs.payload as Record<string, unknown> | null,
       status: (attrs.status as Company['status']) ?? 'active',
       publicStorageUrl: parseString(attrs.public_storage_url),

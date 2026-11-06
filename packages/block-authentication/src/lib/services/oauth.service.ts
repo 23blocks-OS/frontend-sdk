@@ -144,7 +144,6 @@ export function createOAuthService(transport: Transport, _config?: unknown): OAu
         {
           token: request.token,
           subscription: request.subscription,
-          role_id: request.roleId,
         },
         request.oauthMode ? { headers: { 'X-OAuth-Mode': 'true' } } : undefined,
       );
@@ -174,7 +173,6 @@ export function createOAuthService(transport: Transport, _config?: unknown): OAu
         {
           token: request.token,
           subscription: request.subscription,
-          role_id: request.roleId,
         },
         request.oauthMode ? { headers: { 'X-OAuth-Mode': 'true' } } : undefined,
       );
@@ -387,6 +385,8 @@ export function createOAuthService(transport: Transport, _config?: unknown): OAu
         revokedAt: item.attributes.revoked_at,
         ipAddress: item.attributes.ip_address,
         active: item.attributes.active,
+      }));
+    },
 
     async authorizeDevice(request?: DeviceAuthorizationRequest): Promise<DeviceAuthorizationResponse> {
       const response = await transport.post<{
@@ -476,8 +476,6 @@ export function createOAuthService(transport: Transport, _config?: unknown): OAu
           throw error;
         }
       }
-    },
-      }));
     },
   };
 }

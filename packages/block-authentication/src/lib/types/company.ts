@@ -10,7 +10,6 @@ export interface Company extends IdentityCore {
   preferredDomain: string | null;
   agentAuthorizationDomain: string | null;
   apiUrl: string | null;
-  apiAccessKey: string | null;
   payload: Record<string, unknown> | null;
   status: EntityStatus;
   publicStorageUrl: string | null;
