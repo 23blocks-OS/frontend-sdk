@@ -1577,8 +1577,7 @@
   Or import directly from individual packages:
     import { Category } from '@23blocks/block-crm';
     import { User } from '@23blocks/block-authentication';
-  Fixes: Conflicting star exports bug reported by Prima Climatica
-  Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+  Fixes: Conflicting star exports bug reported by a customer
 
 ### 🧱 Updated Dependencies
 

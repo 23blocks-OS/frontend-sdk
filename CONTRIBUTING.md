@@ -132,7 +132,7 @@ packages/
 
 ### Local Testing
 
-See the [Development Guide](DEVELOPMENT.md) for detailed instructions on testing locally with yalc, npm link, or a local registry.
+See the [Development Guide](docs/contributing/development.md) for detailed instructions on testing locally with yalc, npm link, or a local registry.
 
 ## Pull Request Process
 

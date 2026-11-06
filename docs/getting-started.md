@@ -63,7 +63,7 @@ npm install @23blocks/sdk @23blocks/transport-http @23blocks/angular
 npm install @23blocks/transport-http @23blocks/block-authentication @23blocks/angular
 ```
 
-See [Angular Guide](./angular.md) for setup instructions.
+See [Angular Guide](./guides/angular.md) for setup instructions.
 
 ### React / Next.js
 
@@ -75,7 +75,7 @@ npm install @23blocks/sdk @23blocks/transport-http @23blocks/react
 npm install @23blocks/transport-http @23blocks/block-authentication @23blocks/react
 ```
 
-See [Next.js Guide](./nextjs.md) for setup instructions.
+See [Next.js Guide](./guides/nextjs.md) for setup instructions.
 
 ### Vanilla TypeScript
 
@@ -87,7 +87,7 @@ npm install @23blocks/sdk @23blocks/transport-http
 npm install @23blocks/transport-http @23blocks/block-authentication
 ```
 
-See [Vanilla TypeScript Guide](./vanilla.md) for setup instructions.
+See [Vanilla TypeScript Guide](./guides/vanilla.md) for setup instructions.
 
 ## Package Dependencies
 

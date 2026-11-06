@@ -8,7 +8,7 @@
     <a href="https://www.npmjs.com/package/@23blocks/sdk"><img src="https://img.shields.io/npm/v/@23blocks/sdk.svg?style=flat-square&color=blue" alt="npm version"></a>
     <a href="https://www.npmjs.com/package/@23blocks/sdk"><img src="https://img.shields.io/npm/dm/@23blocks/sdk.svg?style=flat-square&color=green" alt="npm downloads"></a>
     <a href="https://github.com/23blocks-OS/frontend-sdk/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/23blocks-OS/frontend-sdk/ci.yml?style=flat-square" alt="CI"></a>
-    <a href="https://github.com/23blocks-OS/frontend-sdk/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="MIT License"></a>
+    <a href="https://github.com/23blocks-OS/frontend-sdk/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache_2.0-blue.svg?style=flat-square" alt="Apache 2.0 License"></a>
   </p>
 
   <!-- Tech Stack Badges -->
@@ -21,6 +21,7 @@
   </p>
 
   <p>
+    <a href="https://23blocks.com/developers">Developer Docs</a> &bull;
     <a href="https://23blocks.com/docs">Documentation</a> &bull;
     <a href="https://23blocks.com">Website</a> &bull;
     <a href="https://github.com/23blocks-OS/frontend-sdk/issues">Issues</a>
@@ -97,7 +98,7 @@ const client = create23BlocksClient({
 | Request tracing | ✅ Built-in | ❌ | ❌ | ❌ Build yourself |
 | Self-hostable | ✅ | ❌ | ✅ | ✅ |
 | Bring your own backend | ✅ Contract-based | ❌ Locked | ❌ Locked | N/A |
-| Open source SDK | ✅ MIT | ✅ | ✅ | N/A |
+| Open source SDK | ✅ Apache 2.0 | ✅ | ✅ | N/A |
 
 ## Quick Start
 
@@ -127,7 +128,7 @@ await client.auth.signOut();
 
 > **Works with any compatible backend!** Use [23blocks managed services](https://23blocks.com) for instant setup, or implement the [JSON:API contract](https://23blocks.com/frontend-sdk) on your own servers.
 
-See [Installation Guide](./docs/installation.md) for detailed options.
+See [Installation Guide](./docs/getting-started.md) for detailed options.
 
 ## Debug Mode
 
@@ -175,10 +176,10 @@ try {
 
 | Guide | Description |
 |-------|-------------|
-| [Installation](./docs/installation.md) | Full SDK vs individual packages |
-| [Angular](./docs/angular.md) | Setup with Injectable services and RxJS |
-| [Next.js / React](./docs/nextjs.md) | Setup with hooks and context |
-| [Vanilla TypeScript](./docs/vanilla.md) | Framework-agnostic usage |
+| [Installation](./docs/getting-started.md) | Full SDK vs individual packages |
+| [Angular](./docs/guides/angular.md) | Setup with Injectable services and RxJS |
+| [Next.js / React](./docs/guides/nextjs.md) | Setup with hooks and context |
+| [Vanilla TypeScript](./docs/guides/vanilla.md) | Framework-agnostic usage |
 
 ## Available Packages
 
@@ -265,7 +266,7 @@ try {
 
 ## Contributing
 
-We welcome contributions! Please see our [Development Guide](./DEVELOPMENT.md) for details.
+We welcome contributions! Please see our [Development Guide](./docs/contributing/development.md) for details.
 
 ## Support the Project
 
@@ -279,4 +280,4 @@ If 23blocks SDK helps you build faster, consider giving us a star! It helps othe
 
 ## License
 
-[MIT](./LICENSE) - Copyright (c) 2024 23blocks
+[Apache 2.0](./LICENSE) - Copyright (c) 2024 23blocks
